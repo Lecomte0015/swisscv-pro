@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwissCV Pro — Précision suisse pour votre carrière</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+            --swiss-blue-light: #EEF3FF;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--swiss-white);
+            color: var(--swiss-black);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: var(--swiss-white);
+            border-bottom: 1px solid var(--swiss-gray);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text strong {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--swiss-black);
+        }
+        
+        .logo-text span {
+            font-size: 11px;
+            font-weight: 400;
+            color: #666;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+        
+        .card {
+            background: var(--swiss-white);
+            border: 1px solid var(--swiss-gray);
+            border-radius: 4px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .upload-zone {
+            border: 2px dashed var(--swiss-gray);
+            border-radius: 4px;
+            padding: 80px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #FAFAFA;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--swiss-red);
+            background: var(--swiss-white);
+        }
+        
+        .upload-zone.dragover {
+            border-color: var(--swiss-red);
+            background: var(--swiss-blue-light);
+            transform: scale(1.01);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+            opacity: 0.7;
+        }
+        
+        .upload-zone h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        
+        .upload-zone p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            background: var(--swiss-red);
+            color: var(--swiss-white);
+            border: none;
+            padding: 16px 48px;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: -0.2px;
+            display: inline-block;
+        }
+        
+        .btn:hover:not(:disabled) {
+            background: #B80000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.25);
+        }
+        
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .selected-file {
+            margin-top: 24px;
+            padding: 20px;
+            background: #F0F9FF;
+            border: 1px solid #BAE6FF;
+            border-radius: 4px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .selected-file.show {
+            display: block;
+        }
+        
+        .selected-file strong {
+            color: var(--swiss-black);
+            font-weight: 600;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 80px 40px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner-ring {
+            width: 64px;
+            height: 64px;
+            border: 3px solid var(--swiss-gray);
+            border-top: 3px solid var(--swiss-red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 32px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        
+        .loading p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 0;
+            margin-bottom: 60px;
+            background: linear-gradient(180deg, #FAFAFA 0%, var(--swiss-white) 100%);
+            border-radius: 4px;
+        }
+        
+        .circular-score {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 32px;
+        }
+        
+        .circular-score svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .score-circle-bg {
+            fill: none;
+            stroke: var(--swiss-gray);
+            stroke-width: 8;
+        }
+        
+        .score-circle {
+            fill: none;
+            stroke: var(--swiss-red);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 565.48;
+            stroke-dashoffset: 565.48;
+            transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .score-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            letter-spacing: -2px;
+        }
+        
+        .score-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .score-comment {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            letter-spacing: -0.3px;
+        }
+        
+        .section {
+            margin-bottom: 48px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            margin-bottom: 24px;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-icon {
+            font-size: 24px;
+        }
+        
+        .advice-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .advice-item {
+            padding: 20px 24px;
+            background: #FAFAFA;
+            border-left: 3px solid var(--swiss-gray);
+            border-radius: 2px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--swiss-black);
+            transition: all 0.2s;
+        }
+        
+        .advice-item:hover {
+            background: var(--swiss-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .advice-item.positive {
+            background: #F0FDF4;
+            border-left-color: #16A34A;
+        }
+        
+        .advice-item.warning {
+            background: #FFF7ED;
+            border-left-color: #EA580C;
+        }
+        
+        .advice-item.info {
+            background: var(--swiss-blue-light);
+            border-left-color: #0284C7;
+        }
+        
+        .reset-btn {
+            display: block;
+            margin: 48px auto 0;
+            background: var(--swiss-black);
+        }
+        
+        .reset-btn:hover {
+            background: #2D2D2D;
+        }
+        
+        .error {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .card {
+                padding: 32px 24px;
+            }
+            
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .circular-score {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .score-number {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🇨🇭</div>
+                <div class="logo-text">
+                    <strong>SwissCV Pro</strong>
+                    <span>Précision suisse</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div id="uploadSection">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📄</div>
+                    <h3>Déposez votre CV ici</h3>
+                    <p>Format PDF uniquement • Maximum 5 MB</p>
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf">
+                </div>
+                
+                <div class="selected-file" id="selectedFile">
+                    <strong>Fichier sélectionné :</strong> <span id="fileName"></span>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn" id="analyzeBtn" disabled>Analyser mon CV</button>
+                </div>
+                
+                <div class="error" id="errorMsg"></div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner-ring"></div>
+                <h3>Analyse en cours</h3>
+                <p>Notre IA évalue votre CV selon les standards suisses</p>
+            </div>
+            
+            <div class="results" id="results">
+                <div class="score-container">
+                    <p class="score-label">Votre score</p>
+                    <div class="circular-score">
+                        <svg viewBox="0 0 200 200">
+                            <circle class="score-circle-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="score-circle" id="scoreCircle" cx="100" cy="100" r="90"></circle>
+                        </svg>
+                        <div class="score-number" id="scoreNumber">0</div>
+                    </div>
+                    <p class="score-comment" id="scoreComment">—</p>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">
+                        <span class="section-icon">✓</span>
+                        Points forts
+                    </h3>
+                    <ul class="advice-list" id="strongPoints"></ul>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">
+                        <span class="section-icon">⚠</span>
+                        À améliorer
+                    </h3>
+                    <ul class="advice-list" id="improvements"></ul>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">
+                        <span class="section-icon">🇨🇭</span>
+                        Spécificités Suisse romande
+                    </h3>
+                    <ul class="advice-list" id="swissAdvice"></ul>
+                </div>
+                
+                <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        // ⚠️ CHANGE CETTE URL PAR TON URL CLOUDFLARE WORKER
+        const API_ENDPOINT = 'https://swisscv-api.dallyhermann-71e.workers.dev/';
+        
+        let selectedFile = null;
+        
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const selectedFileDiv = document.getElementById('selectedFile');
+        const fileName = document.getElementById('fileName');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const uploadSection = document.getElementById('uploadSection');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        const errorMsg = document.getElementById('errorMsg');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        function handleFile(file) {
+            if (file.type !== 'application/pdf') {
+                showError('Format invalide. Veuillez sélectionner un fichier PDF.');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Fichier trop volumineux. Maximum 5 MB.');
+                return;
+            }
+            
+            selectedFile = file;
+            fileName.textContent = file.name;
+            selectedFileDiv.classList.add('show');
+            analyzeBtn.disabled = false;
+            errorMsg.classList.remove('show');
+        }
+        
+        analyzeBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                showError('Veuillez sélectionner un CV');
+                return;
+            }
+            
+            uploadSection.style.display = 'none';
+            loading.classList.add('show');
+            
+            try {
+                const cvText = await extractTextFromPDF(selectedFile);
+                const analysis = await analyzeCVWithBackend(cvText);
+                displayResults(analysis);
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Erreur lors de l\'analyse : ' + error.message);
+                uploadSection.style.display = 'block';
+                loading.classList.remove('show');
+            }
+        });
+        
+        async function extractTextFromPDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n';
+            }
+            
+            return fullText;
+        }
+        
+        async function analyzeCVWithBackend(cvText) {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cvText })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Erreur serveur');
+            }
+            
+            return await response.json();
+        }
+        
+        function displayResults(analysis) {
+            loading.classList.remove('show');
+            results.classList.add('show');
+            
+            const scoreCircle = document.getElementById('scoreCircle');
+            const circumference = 2 * Math.PI * 90;
+            const offset = circumference - (analysis.score / 100) * circumference;
+            
+            setTimeout(() => {
+                scoreCircle.style.strokeDashoffset = offset;
+            }, 100);
+            
+            animateNumber(0, analysis.score, 2000);
+            
+            document.getElementById('scoreComment').textContent = analysis.scoreComment;
+            
+            const strongPointsList = document.getElementById('strongPoints');
+            strongPointsList.innerHTML = '';
+            analysis.strongPoints.forEach(point => {
+                const li = document.createElement('li');
+                li.className = 'advice-item positive';
+                li.textContent = point;
+                strongPointsList.appendChild(li);
+            });
+            
+            const improvementsList = document.getElementById('improvements');
+            improvementsList.innerHTML = '';
+            analysis.improvements.forEach(point => {
+                const li = document.createElement('li');
+                li.className = 'advice-item warning';
+                li.textContent = point;
+                improvementsList.appendChild(li);
+            });
+            
+            const swissAdviceList = document.getElementById('swissAdvice');
+            swissAdviceList.innerHTML = '';
+            analysis.swissAdvice.forEach(point => {
+                const li = document.createElement('li');
+                li.className = 'advice-item info';
+                li.textContent = point;
+                swissAdviceList.appendChild(li);
+            });
+        }
+        
+        function animateNumber(start, end, duration) {
+            const scoreNumberEl = document.getElementById('scoreNumber');
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (end - start) * eased);
+                
+                scoreNumberEl.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+        }
+        
+        resetBtn.addEventListener('click', () => {
+            results.classList.remove('show');
+            uploadSection.style.display = 'block';
+            selectedFile = null;
+            fileInput.value = '';
+            selectedFileDiv.classList.remove('show');
+            analyzeBtn.disabled = true;
+            errorMsg.classList.remove('show');
+            
+            const scoreCircle = document.getElementById('scoreCircle');
+            scoreCircle.style.strokeDashoffset = 565.48;
+            document.getElementById('scoreNumber').textContent = '0';
+        });
+    </script>
+</body>
+</html>
