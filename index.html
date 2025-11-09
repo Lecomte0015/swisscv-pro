@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwissCV Pro — Optimisez votre CV pour le marché suisse</title>
+    <meta name="description" content="Analysez et optimisez votre CV gratuitement selon les standards du marché suisse romand. Score détaillé en 2 minutes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+            --swiss-blue-light: #EEF3FF;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--swiss-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: var(--swiss-white);
+            border-bottom: 1px solid var(--swiss-gray);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+        }
+        
+        .logo-text strong {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--swiss-black);
+        }
+        
+        .header-cta {
+            background: var(--swiss-red);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .header-cta:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #0D0D0D 0%, #2D2D2D 100%);
+            color: white;
+            padding: 120px 40px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(213, 0, 0, 0.2);
+            color: var(--swiss-red);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(213, 0, 0, 0.3);
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+        
+        .hero-highlight {
+            color: var(--swiss-red);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            display: inline-block;
+            background: var(--swiss-red);
+            color: white;
+            padding: 18px 48px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(213, 0, 0, 0.4);
+        }
+        
+        .hero-cta:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(213, 0, 0, 0.6);
+        }
+        
+        .hero-note {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .features {
+            padding: 100px 40px;
+            background: white;
+        }
+        
+        .features-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        
+        .feature-card {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .why-swiss {
+            padding: 100px 40px;
+            background: #FAFAFA;
+        }
+        
+        .why-swiss-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .why-list {
+            display: grid;
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .why-item {
+            background: white;
+            padding: 32px;
+            border-left: 4px solid var(--swiss-red);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .why-item h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .why-item p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .cta-section {
+            padding: 100px 40px;
+            background: var(--swiss-black);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .footer {
+            background: white;
+            border-top: 1px solid var(--swiss-gray);
+            padding: 60px 40px 40px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-about h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .footer-about p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .footer-links h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--swiss-red);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--swiss-gray);
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .section-header h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🇨🇭</div>
+                <div class="logo-text">
+                    <strong>SwissCV Pro</strong>
+                </div>
+            </a>
+            <a href="app.html" class="header-cta">Analyser mon CV</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🇨🇭 Spécial Suisse Romande</div>
+            <h1>Votre CV mérite la <span class="hero-highlight">précision suisse</span></h1>
+            <p>Analysez gratuitement votre CV selon les standards du marché suisse romand. Score détaillé + conseils personnalisés en 2 minutes.</p>
+            <a href="app.html" class="hero-cta">Analyser mon CV gratuitement</a>
+            <p class="hero-note">✓ 100% gratuit • ✓ Aucune inscription • ✓ Résultat immédiat</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-content">
+            <div class="section-header">
+                <h2>Comment ça marche ?</h2>
+                <p>Trois étapes simples pour un CV optimisé</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>1. Uploadez votre CV</h3>
+                    <p>Glissez simplement votre CV au format PDF. Aucune donnée n'est stockée.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>2. Analyse IA instantanée</h3>
+                    <p>Notre IA évalue votre CV selon les critères spécifiques du marché suisse.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>3. Recevez vos conseils</h3>
+                    <p>Score détaillé + points forts + recommandations concrètes pour vous démarquer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-swiss">
+        <div class="why-swiss-content">
+            <div class="section-header">
+                <h2>Pourquoi un outil spécial Suisse ?</h2>
+                <p>Le marché suisse a des attentes très spécifiques</p>
+            </div>
+            <div class="why-list">
+                <div class="why-item">
+                    <h3>📸 Photo professionnelle obligatoire</h3>
+                    <p>Contrairement à d'autres pays, la photo est attendue en Suisse. Elle doit être récente, professionnelle et de qualité.</p>
+                </div>
+                <div class="why-item">
+                    <h3>🆔 Informations personnelles complètes</h3>
+                    <p>Âge, nationalité et permis de travail sont essentiels. Les RH suisses regardent ces informations en premier.</p>
+                </div>
+                <div class="why-item">
+                    <h3>🌍 Langues avec niveaux précis</h3>
+                    <p>Dans un contexte multilingue, préciser vos niveaux (A1-C2) est crucial pour démontrer vos compétences réelles.</p>
+                </div>
+                <div class="why-item">
+                    <h3>✉️ Références suisses valorisées</h3>
+                    <p>Mentionner des références ou "Disponibles sur demande" est une pratique standard appréciée des recruteurs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Prêt à optimiser votre CV ?</h2>
+        <p>Rejoignez les candidats qui ont déjà amélioré leurs chances</p>
+        <a href="app.html" class="hero-cta">Commencer l'analyse gratuite</a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>🇨🇭 SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="#features">Fonctionnalités</a></li>
+                    <li><a href="#why">Pourquoi Suisse</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="#">Confidentialité</a></li>
+                    <li><a href="#">Conditions</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SwissCV Pro. Fait avec 🇨🇭 pour la Suisse romande.</p>
+        </div>
+    </footer>
+</body>
+</html>
