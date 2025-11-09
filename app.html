@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwissCV Pro — Précision suisse pour votre carrière</title>
+    <title>SwissCV Pro — Analyseur de CV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -53,6 +53,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
         }
         
         .logo-icon {
@@ -361,6 +362,52 @@
             background: #2D2D2D;
         }
         
+        .feedback-section {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 2px solid var(--swiss-gray);
+        }
+        
+        .feedback-section h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+            font-weight: 700;
+        }
+        
+        .feedback-section p {
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .feedback-btn {
+            display: inline-block;
+            background: var(--swiss-red);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(213, 0, 0, 0.2);
+        }
+        
+        .feedback-btn:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
+        }
+        
+        .feedback-note {
+            font-size: 13px;
+            color: #999;
+            margin-top: 16px;
+        }
+        
         .error {
             background: #FEF2F2;
             color: #991B1B;
@@ -403,13 +450,13 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <div class="logo-icon">🇨🇭</div>
                 <div class="logo-text">
                     <strong>SwissCV Pro</strong>
                     <span>Précision suisse</span>
                 </div>
-            </div>
+            </a>
         </div>
     </header>
 
@@ -478,6 +525,17 @@
                 </div>
                 
                 <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
+                
+                <div class="feedback-section">
+                    <h3>💬 Aidez-nous à améliorer SwissCV Pro</h3>
+                    <p>Votre feedback nous aide à créer le meilleur outil CV pour la Suisse romande.<br>Cela ne prend que 2 minutes !</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9Wh4DQvxfDWVcaWAcordgJ5x4lvNGQazhpogNqRAVvd9pYA/viewform" 
+                       target="_blank" 
+                       class="feedback-btn">
+                        Donner mon feedback
+                    </a>
+                    <p class="feedback-note">🎁 Les 20 premiers testeurs recevront un accès gratuit à vie aux futures features premium</p>
+                </div>
             </div>
         </div>
     </div>
