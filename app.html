@@ -540,13 +540,14 @@
                     <input type="file" id="fileInput" class="file-input" accept=".pdf">
                 </div>
                 
-                <div style="margin-top: 24px; padding: 20px; background: #F0F9FF; border: 1px solid #BAE6FF; border-radius: 4px; display: none;" id="photoCheck">
-                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px;">
-                        <input type="checkbox" id="hasPhoto" style="width: 18px; height: 18px; cursor: pointer;">
-                        <span>Mon CV contient une photo professionnelle</span>
+                <div style="margin-top: 24px; padding: 20px; background: #FFF7ED; border: 1px solid #FFA726; border-radius: 4px; display: none;" id="photoCheck">
+                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; font-weight: 500;">
+                        <input type="checkbox" id="hasPhoto" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--swiss-red);">
+                        <span>✓ Mon CV contient une photo professionnelle</span>
                     </label>
-                    <p style="font-size: 13px; color: #666; margin-top: 8px; margin-left: 30px;">
-                        ℹ️ Cochez cette case si votre CV contient déjà une photo (obligatoire en Suisse)
+                    <p style="font-size: 13px; color: #E65100; margin-top: 12px; margin-left: 32px; line-height: 1.5;">
+                        ⚠️ <strong>Important :</strong> Cette case est cochée par défaut.<br>
+                        Décochez-la UNIQUEMENT si votre CV n'a PAS de photo.
                     </p>
                 </div>
                 
@@ -610,8 +611,10 @@
                     <ul class="advice-list" id="swissAdvice"></ul>
                 </div>
                 
-                <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
-                <button class="btn pdf-btn" id="exportPdfBtn">📄 Télécharger en PDF</button>
+                <div class="buttons-container">
+                    <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
+                    <button class="btn pdf-btn" id="exportPdfBtn">📄 Télécharger en PDF</button>
+                </div>
                 
                 <div class="feedback-section">
                     <h3>💬 Aidez-nous à améliorer SwissCV Pro</h3>
@@ -685,7 +688,12 @@
             selectedFile = file;
             fileName.textContent = file.name;
             selectedFileDiv.classList.add('show');
-            document.getElementById('photoCheck').style.display = 'block';
+            
+            // Afficher et cocher par défaut la case photo
+            const photoCheckDiv = document.getElementById('photoCheck');
+            photoCheckDiv.style.display = 'block';
+            document.getElementById('hasPhoto').checked = true;
+            
             analyzeBtn.disabled = false;
             errorMsg.classList.remove('show');
         }
