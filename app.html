@@ -408,6 +408,76 @@
             margin-top: 16px;
         }
         
+        .pdf-btn {
+            display: inline-block;
+            background: var(--swiss-black);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+        
+        .pdf-btn:hover {
+            background: #2D2D2D;
+            transform: translateY(-1px);
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .header, .reset-btn, .feedback-section, .pdf-btn {
+                display: none !important;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 20px;
+            }
+            
+            .score-container {
+                page-break-after: avoid;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .advice-item {
+                page-break-inside: avoid;
+            }
+            
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 40px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid var(--swiss-red);
+            }
+            
+            .print-header h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+            
+            .print-header p {
+                color: #666;
+                font-size: 14px;
+            }
+        }
+        
+        .print-header {
+            display: none;
+        }
+        
         .error {
             background: #FEF2F2;
             color: #991B1B;
@@ -498,6 +568,12 @@
             </div>
             
             <div class="results" id="results">
+                <div class="print-header">
+                    <h1>🇨🇭 SwissCV Pro - Rapport d'Analyse</h1>
+                    <p>Analyse détaillée de votre CV pour le marché suisse romand</p>
+                    <p style="font-size: 12px; margin-top: 8px;">swisscv-pro.ch • Date : <span id="printDate"></span></p>
+                </div>
+                
                 <div class="score-container">
                     <p class="score-label">Votre score</p>
                     <div class="circular-score">
@@ -535,6 +611,7 @@
                 </div>
                 
                 <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
+                <button class="btn pdf-btn" id="exportPdfBtn">📄 Télécharger en PDF</button>
                 
                 <div class="feedback-section">
                     <h3>💬 Aidez-nous à améliorer SwissCV Pro</h3>
@@ -675,6 +752,15 @@
             loading.classList.remove('show');
             results.classList.add('show');
             
+            // Set print date
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('fr-CH', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('printDate').textContent = dateStr;
+            
             const scoreCircle = document.getElementById('scoreCircle');
             const circumference = 2 * Math.PI * 90;
             const offset = circumference - (analysis.score / 100) * circumference;
@@ -754,6 +840,12 @@
             const scoreCircle = document.getElementById('scoreCircle');
             scoreCircle.style.strokeDashoffset = 565.48;
             document.getElementById('scoreNumber').textContent = '0';
+        });
+        
+        // Export PDF functionality
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        exportPdfBtn.addEventListener('click', () => {
+            window.print();
         });
     </script>
 </body>
