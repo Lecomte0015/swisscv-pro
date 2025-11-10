@@ -8,17 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VE7PJZTF8L');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VE7PJZTF8L');
+    </script>
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -160,6 +158,50 @@
             opacity: 0.7;
         }
         
+        .swiss-badge-section {
+            padding: 60px 40px;
+            background: #FAFAFA;
+            border-top: 1px solid var(--swiss-gray);
+            border-bottom: 1px solid var(--swiss-gray);
+        }
+        
+        .swiss-badge-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .swiss-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 40px;
+            background: white;
+            border: 2px solid #E6E6E6;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .swiss-badge-icon {
+            font-size: 32px;
+        }
+        
+        .swiss-badge-text {
+            text-align: left;
+        }
+        
+        .swiss-badge-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0D0D0D;
+            margin-bottom: 4px;
+        }
+        
+        .swiss-badge-subtitle {
+            font-size: 13px;
+            color: #666;
+        }
+        
         .features {
             padding: 100px 40px;
             background: white;
@@ -294,6 +336,28 @@
         .footer-about p {
             color: #666;
             line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .footer-email {
+            margin-top: 16px;
+            font-size: 15px;
+        }
+        
+        .footer-email a {
+            color: var(--swiss-red);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer-email a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-hosting {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
         }
         
         .footer-links h4 {
@@ -335,6 +399,15 @@
                 font-size: 16px;
             }
             
+            .swiss-badge {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .swiss-badge-text {
+                text-align: center;
+            }
+            
             .features-grid {
                 grid-template-columns: 1fr;
             }
@@ -370,6 +443,19 @@
             <p>Analysez gratuitement votre CV selon les standards du marché suisse romand. Score détaillé + conseils personnalisés en 2 minutes.</p>
             <a href="app.html" class="hero-cta">Analyser mon CV gratuitement</a>
             <p class="hero-note">✓ 100% gratuit • ✓ Aucune inscription • ✓ Résultat immédiat</p>
+        </div>
+    </section>
+
+    <!-- Badge Hébergé en Suisse -->
+    <section class="swiss-badge-section">
+        <div class="swiss-badge-container">
+            <div class="swiss-badge">
+                <span class="swiss-badge-icon">🇨🇭</span>
+                <div class="swiss-badge-text">
+                    <div class="swiss-badge-title">Hébergé 100% en Suisse</div>
+                    <div class="swiss-badge-subtitle">Vos données CV restent en Suisse • Datacenter éco-responsable Genève</div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -437,6 +523,8 @@
             <div class="footer-about">
                 <h3>🇨🇭 SwissCV Pro</h3>
                 <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée.</p>
+                <p class="footer-email">📧 <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a></p>
+                <p class="footer-hosting">🇨🇭 Hébergé en Suisse • Données traitées selon standards suisses</p>
             </div>
             <div class="footer-links">
                 <h4>Produit</h4>
@@ -451,7 +539,7 @@
                 <ul>
                     <li><a href="#">Confidentialité</a></li>
                     <li><a href="#">Conditions</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="mailto:contact@swisscv-pro.ch">Contact</a></li>
                 </ul>
             </div>
         </div>
