@@ -622,6 +622,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         
@@ -838,8 +840,59 @@
             document.getElementById('scoreNumber').textContent = '0';
         });
         
-        document.getElementById('exportPdfBtn').addEventListener('click', () => {
-            window.print();
+        document.getElementById('exportPdfBtn').addEventListener('click', async () => {
+            const exportBtn = document.getElementById('exportPdfBtn');
+            const originalText = exportBtn.textContent;
+            exportBtn.textContent = '⏳ Génération PDF...';
+            exportBtn.disabled = true;
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const resultsElement = document.getElementById('results');
+                
+                // Cacher temporairement les boutons pour le PDF
+                const buttonsContainer = document.querySelector('.buttons-container');
+                const feedbackSection = document.querySelector('.feedback-section');
+                buttonsContainer.style.display = 'none';
+                feedbackSection.style.display = 'none';
+                
+                // Capturer le contenu
+                const canvas = await html2canvas(resultsElement, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    windowWidth: 900
+                });
+                
+                // Remettre les boutons
+                buttonsContainer.style.display = 'block';
+                feedbackSection.style.display = 'block';
+                
+                // Créer le PDF
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // Télécharger
+                const date = new Date().toISOString().split('T')[0];
+                pdf.save(`SwissCV_Pro_Analyse_${date}.pdf`);
+                
+                exportBtn.textContent = originalText;
+                exportBtn.disabled = false;
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                alert('Erreur lors de la génération du PDF. Veuillez réessayer.');
+                exportBtn.textContent = originalText;
+                exportBtn.disabled = false;
+            }
         });
     </script>
 </body>
