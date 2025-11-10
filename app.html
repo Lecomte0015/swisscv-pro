@@ -293,6 +293,9 @@
             font-weight: 600;
             color: var(--swiss-black);
             letter-spacing: -0.3px;
+            text-align: center;
+            max-width: 600px;
+            padding: 0 20px;
         }
         
         .section {
@@ -352,14 +355,28 @@
             border-left-color: #0284C7;
         }
         
-        .reset-btn {
-            display: block;
-            margin: 48px auto 0;
-            background: var(--swiss-black);
+        .buttons-container {
+            text-align: center;
+            margin-top: 48px;
         }
         
-        .reset-btn:hover {
+        .reset-btn, .pdf-btn {
+            display: inline-block;
+            background: var(--swiss-black);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            margin: 0 8px;
+        }
+        
+        .reset-btn:hover, .pdf-btn:hover {
             background: #2D2D2D;
+            transform: translateY(-1px);
         }
         
         .feedback-section {
@@ -408,24 +425,8 @@
             margin-top: 16px;
         }
         
-        .pdf-btn {
-            display: inline-block;
-            background: var(--swiss-black);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            margin-left: 16px;
-        }
-        
-        .pdf-btn:hover {
-            background: #2D2D2D;
-            transform: translateY(-1px);
+        .print-header {
+            display: none;
         }
         
         @media print {
@@ -433,7 +434,7 @@
                 background: white;
             }
             
-            .header, .reset-btn, .feedback-section, .pdf-btn {
+            .header, .buttons-container, .feedback-section {
                 display: none !important;
             }
             
@@ -441,18 +442,6 @@
                 box-shadow: none;
                 border: none;
                 padding: 20px;
-            }
-            
-            .score-container {
-                page-break-after: avoid;
-            }
-            
-            .section {
-                page-break-inside: avoid;
-            }
-            
-            .advice-item {
-                page-break-inside: avoid;
             }
             
             .print-header {
@@ -472,10 +461,6 @@
                 color: #666;
                 font-size: 14px;
             }
-        }
-        
-        .print-header {
-            display: none;
         }
         
         .error {
@@ -514,6 +499,12 @@
             .score-number {
                 font-size: 48px;
             }
+            
+            .reset-btn, .pdf-btn {
+                display: block;
+                width: 100%;
+                margin: 8px 0;
+            }
         }
     </style>
 </head>
@@ -540,19 +531,19 @@
                     <input type="file" id="fileInput" class="file-input" accept=".pdf">
                 </div>
                 
-                <div style="margin-top: 24px; padding: 20px; background: #FFF7ED; border: 1px solid #FFA726; border-radius: 4px; display: none;" id="photoCheck">
-                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; font-weight: 500;">
-                        <input type="checkbox" id="hasPhoto" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--swiss-red);">
-                        <span>✓ Mon CV contient une photo professionnelle</span>
-                    </label>
-                    <p style="font-size: 13px; color: #E65100; margin-top: 12px; margin-left: 32px; line-height: 1.5;">
-                        ⚠️ <strong>Important :</strong> Cette case est cochée par défaut.<br>
-                        Décochez-la UNIQUEMENT si votre CV n'a PAS de photo.
-                    </p>
-                </div>
-                
                 <div class="selected-file" id="selectedFile">
                     <strong>Fichier sélectionné :</strong> <span id="fileName"></span>
+                </div>
+                
+                <div style="margin-top: 24px; padding: 20px; background: #FFF7ED; border: 2px solid #FF9800; border-radius: 4px; display: none;" id="photoCheck">
+                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 16px; font-weight: 600;">
+                        <input type="checkbox" id="hasPhoto" checked style="width: 22px; height: 22px; cursor: pointer; accent-color: var(--swiss-red);">
+                        <span>✓ Mon CV contient une photo professionnelle</span>
+                    </label>
+                    <p style="font-size: 14px; color: #E65100; margin-top: 12px; margin-left: 34px; line-height: 1.6; font-weight: 500;">
+                        ⚠️ <strong>IMPORTANT :</strong> Cette case est cochée par défaut (photo attendue en Suisse).<br>
+                        Décochez-la UNIQUEMENT si votre CV n'a PAS de photo.
+                    </p>
                 </div>
                 
                 <div style="text-align: center; margin-top: 40px;">
@@ -612,8 +603,8 @@
                 </div>
                 
                 <div class="buttons-container">
-                    <button class="btn reset-btn" id="resetBtn">Analyser un autre CV</button>
-                    <button class="btn pdf-btn" id="exportPdfBtn">📄 Télécharger en PDF</button>
+                    <button class="reset-btn" id="resetBtn">Analyser un autre CV</button>
+                    <button class="pdf-btn" id="exportPdfBtn">📄 Télécharger en PDF</button>
                 </div>
                 
                 <div class="feedback-section">
@@ -689,7 +680,6 @@
             fileName.textContent = file.name;
             selectedFileDiv.classList.add('show');
             
-            // Afficher et cocher par défaut la case photo
             const photoCheckDiv = document.getElementById('photoCheck');
             photoCheckDiv.style.display = 'block';
             document.getElementById('hasPhoto').checked = true;
@@ -709,7 +699,8 @@
             
             try {
                 const cvText = await extractTextFromPDF(selectedFile);
-                const analysis = await analyzeCVWithBackend(cvText);
+                const hasPhoto = document.getElementById('hasPhoto').checked;
+                const analysis = await analyzeCVWithBackend(cvText, hasPhoto);
                 displayResults(analysis);
             } catch (error) {
                 console.error('Error:', error);
@@ -734,9 +725,7 @@
             return fullText;
         }
         
-        async function analyzeCVWithBackend(cvText) {
-            const hasPhoto = document.getElementById('hasPhoto').checked;
-            
+        async function analyzeCVWithBackend(cvText, hasPhoto) {
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: {
@@ -760,7 +749,6 @@
             loading.classList.remove('show');
             results.classList.add('show');
             
-            // Set print date
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-CH', { 
                 year: 'numeric', 
@@ -850,9 +838,7 @@
             document.getElementById('scoreNumber').textContent = '0';
         });
         
-        // Export PDF functionality
-        const exportPdfBtn = document.getElementById('exportPdfBtn');
-        exportPdfBtn.addEventListener('click', () => {
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
             window.print();
         });
     </script>
