@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs — SwissCV Pro</title>
+    <meta name="description" content="Plans SwissCV Pro : Gratuit, Premium et Pro. Paiement sécurisé par Stripe et TWINT.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VE7PJZTF8L');
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+            --swiss-blue-light: #EEF3FF;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--swiss-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--swiss-white);
+        }
+        
+        /* HEADER */
+        .header {
+            background: var(--swiss-white);
+            border-bottom: 1px solid var(--swiss-gray);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+        }
+        
+        .logo-text strong {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--swiss-black);
+        }
+        
+        .logo-text span {
+            font-size: 11px;
+            font-weight: 400;
+            color: #666;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .header-cta {
+            background: var(--swiss-red);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .header-cta:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+        }
+        
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0D0D0D 0%, #2D2D2D 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+        
+        .hero-highlight {
+            color: var(--swiss-red);
+        }
+        
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+        
+        /* PRICING */
+        .pricing-section {
+            padding: 80px 40px;
+            background: #FAFAFA;
+        }
+        
+        .pricing-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+        
+        .pricing-card {
+            background: var(--swiss-white);
+            border: 2px solid var(--swiss-gray);
+            border-radius: 8px;
+            padding: 40px 32px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+        
+        .pricing-card.featured {
+            border: 3px solid var(--swiss-red);
+            box-shadow: 0 8px 24px rgba(213, 0, 0, 0.15);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--swiss-red);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .pricing-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--swiss-black);
+        }
+        
+        .pricing-card .plan-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            min-height: 40px;
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+        
+        .price span {
+            font-size: 20px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .price-period {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 32px;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+        
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--swiss-gray);
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .features-list li::before {
+            content: "✓";
+            color: var(--swiss-red);
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .btn-pricing {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.25);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--swiss-black);
+            border: 2px solid var(--swiss-gray);
+        }
+        
+        .btn-secondary:hover {
+            background: #FAFAFA;
+            border-color: var(--swiss-black);
+        }
+        
+        /* PAYMENT METHODS */
+        .payment-methods {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .payment-methods p {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+        
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .payment-icon {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--swiss-gray);
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            padding: 80px 40px;
+            background: white;
+        }
+        
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .faq-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .faq-item {
+            background: #FAFAFA;
+            padding: 32px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--swiss-red);
+        }
+        
+        .faq-item h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--swiss-black);
+        }
+        
+        .faq-item p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* CTA SECTION */
+        .cta-section {
+            padding: 80px 40px;
+            background: var(--swiss-black);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: white;
+            border-top: 1px solid var(--swiss-gray);
+            padding: 60px 40px 40px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-about h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .footer-about p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .footer-links h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--swiss-red);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--swiss-gray);
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🇨🇭</div>
+                <div class="logo-text">
+                    <strong>SwissCV Pro</strong>
+                    <span>Précision Suisse</span>
+                </div>
+            </a>
+            <a href="app.html" class="header-cta">Analyser mon CV</a>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Choisissez le plan <span class="hero-highlight">parfait</span> pour vous</h1>
+            <p>Des outils professionnels pour optimiser votre CV selon les standards suisses</p>
+            <p style="font-size: 14px; opacity: 0.7; margin-top: 20px;">💳 Paiement sécurisé Stripe • 📱 TWINT accepté • 🔒 SSL 256-bit</p>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing-section">
+        <div class="pricing-content">
+            <div class="pricing-grid">
+                <!-- FREE PLAN -->
+                <div class="pricing-card">
+                    <h3>Gratuit</h3>
+                    <p class="plan-description">Idéal pour découvrir notre outil</p>
+                    <div class="price">CHF 0</div>
+                    <div class="price-period">Toujours gratuit</div>
+                    
+                    <ul class="features-list">
+                        <li>3 analyses CV par mois</li>
+                        <li>Score détaillé /100</li>
+                        <li>Points forts & à améliorer</li>
+                        <li>Conseils spécifiques Suisse</li>
+                        <li>Analyse photo professionnelle</li>
+                    </ul>
+                    
+                    <a href="app.html" class="btn-pricing btn-secondary">Commencer gratuitement</a>
+                </div>
+
+                <!-- PREMIUM PLAN -->
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">⭐ Recommandé</div>
+                    <h3>Premium</h3>
+                    <p class="plan-description">Pour optimiser sérieusement votre CV</p>
+                    <div class="price">CHF 9<span>/mois</span></div>
+                    <div class="price-period">Sans engagement • Résiliation à tout moment</div>
+                    
+                    <ul class="features-list">
+                        <li><strong>Analyses CV illimitées</strong></li>
+                        <li><strong>Export PDF professionnel</strong></li>
+                        <li>Génération lettres de motivation</li>
+                        <li>Templates CV suisses (3 modèles)</li>
+                        <li>Optimisation profil LinkedIn</li>
+                        <li>Conseils sectoriels avancés</li>
+                        <li>Suggestions mots-clés ATS</li>
+                        <li>Support prioritaire email</li>
+                    </ul>
+                    
+                    <a href="#" class="btn-pricing btn-primary" onclick="selectPlan('premium'); return false;">
+                        Passer à Premium
+                    </a>
+                    
+                    <div class="payment-methods">
+                        <p>Moyens de paiement acceptés :</p>
+                        <div class="payment-icons">
+                            <span class="payment-icon">💳 Visa</span>
+                            <span class="payment-icon">💳 Mastercard</span>
+                            <span class="payment-icon">📱 TWINT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRO PLAN -->
+                <div class="pricing-card">
+                    <h3>Pro</h3>
+                    <p class="plan-description">Pour RH & agences de recrutement</p>
+                    <div class="price">CHF 29<span>/mois</span></div>
+                    <div class="price-period">Facturation mensuelle</div>
+                    
+                    <ul class="features-list">
+                        <li><strong>Tout Premium +</strong></li>
+                        <li>Analyses comparatives marché</li>
+                        <li>Dashboard équipe (5 membres)</li>
+                        <li>Export en masse (CSV)</li>
+                        <li>API access (100 requêtes/jour)</li>
+                        <li>Branding personnalisé</li>
+                        <li>Statistiques sectorielles</li>
+                        <li>Support téléphonique prioritaire</li>
+                        <li>Formation onboarding 1h</li>
+                    </ul>
+                    
+                    <a href="#" class="btn-pricing btn-secondary" onclick="selectPlan('pro'); return false;">
+                        Passer à Pro
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="faq-content">
+            <div class="faq-header">
+                <h2>Questions fréquentes</h2>
+            </div>
+            
+            <div class="faq-item">
+                <h3>📱 Comment payer avec TWINT ?</h3>
+                <p>Lors du paiement, sélectionnez "TWINT" comme moyen de paiement. Vous serez redirigé vers l'application TWINT pour finaliser votre achat en toute sécurité. C'est instantané et 100% suisse.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>🔒 Mes données sont-elles sécurisées ?</h3>
+                <p>Absolument. Nous utilisons Stripe pour les paiements (certifié PCI DSS niveau 1). Vos CV ne sont jamais stockés sur nos serveurs et toutes les communications sont chiffrées SSL 256-bit. Serveurs hébergés en Suisse.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>🔄 Puis-je changer de plan ?</h3>
+                <p>Oui, vous pouvez passer d'un plan à l'autre à tout moment. En cas d'upgrade, la différence est calculée au prorata. En cas de downgrade, le changement prend effet au prochain cycle de facturation.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>❌ Comment résilier mon abonnement ?</h3>
+                <p>Aucun engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre espace client ou en nous contactant à contact@swisscv-pro.ch. Aucune pénalité. Votre accès Premium reste actif jusqu'à la fin de la période payée.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>🇨🇭 Pourquoi les prix sont en CHF ?</h3>
+                <p>SwissCV Pro est une entreprise suisse, hébergée en Suisse, avec des serveurs en Suisse. Nos prix sont en francs suisses pour éviter les frais de change et garantir la transparence pour nos utilisateurs suisses.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>📧 J'ai d'autres questions ?</h3>
+                <p>Notre équipe est là pour vous aider ! Contactez-nous à contact@swisscv-pro.ch ou utilisez le chat en bas à droite. Temps de réponse moyen : 2h en semaine.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Prêt à booster votre carrière ?</h2>
+        <p>Rejoignez des centaines de candidats qui optimisent leur CV avec SwissCV Pro</p>
+        <a href="app.html" class="btn-pricing btn-primary" style="display: inline-block; width: auto; padding: 18px 48px;">
+            Commencer gratuitement
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>🇨🇭 SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée.</p>
+                <p>📧 contact@swisscv-pro.ch</p>
+                <p style="font-size: 12px; color: #999; margin-top: 8px;">🇨🇭 Hébergé en Suisse • Données traitées selon standards suisses</p>
+            </div>
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="#">Confidentialité</a></li>
+                    <li><a href="#">Conditions</a></li>
+                    <li><a href="mailto:contact@swisscv-pro.ch">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SwissCV Pro. Fait avec 🇨🇭 pour la Suisse romande.</p>
+        </div>
+    </footer>
+
+    <script>
+        function selectPlan(plan) {
+            // Track avec Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'select_plan', {
+                    'plan_type': plan
+                });
+            }
+            
+            // Afficher modal ou rediriger vers Stripe
+            if (plan === 'premium') {
+                // TODO: Remplacer par ton Stripe Payment Link Premium
+                alert('🚀 Redirection vers paiement Premium...\n\nPaiement sécurisé Stripe + TWINT\n\n(Lien Stripe à configurer)');
+                // window.location.href = 'https://buy.stripe.com/VOTRE_LIEN_PREMIUM';
+            } else if (plan === 'pro') {
+                // TODO: Remplacer par ton Stripe Payment Link Pro
+                alert('💼 Redirection vers paiement Pro...\n\nPaiement sécurisé Stripe + TWINT\n\n(Lien Stripe à configurer)');
+                // window.location.href = 'https://buy.stripe.com/VOTRE_LIEN_PRO';
+            }
+        }
+    </script>
+</body>
+</html>
