@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarifs — SwissCV Pro</title>
-    <meta name="description" content="Plans SwissCV Pro : Gratuit, Premium et Pro. Paiement sécurisé par Stripe et TWINT.">
+    <meta name="description" content="Plans SwissCV Pro : Gratuit, Premium et Pro. Paiement sécurisé par Stripe.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,7 +28,6 @@
             --swiss-black: #0D0D0D;
             --swiss-white: #FFFFFF;
             --swiss-gray: #E6E6E6;
-            --swiss-blue-light: #EEF3FF;
         }
         
         body {
@@ -39,7 +38,6 @@
             background: var(--swiss-white);
         }
         
-        /* HEADER */
         .header {
             background: var(--swiss-white);
             border-bottom: 1px solid var(--swiss-gray);
@@ -101,7 +99,6 @@
             transform: translateY(-1px);
         }
         
-        /* HERO */
         .hero {
             background: linear-gradient(135deg, #0D0D0D 0%, #2D2D2D 100%);
             color: white;
@@ -132,7 +129,6 @@
             margin-bottom: 16px;
         }
         
-        /* PRICING */
         .pricing-section {
             padding: 80px 40px;
             background: #FAFAFA;
@@ -191,7 +187,7 @@
             color: var(--swiss-black);
         }
         
-        .pricing-card .plan-description {
+        .plan-description {
             font-size: 14px;
             color: #666;
             margin-bottom: 24px;
@@ -280,7 +276,6 @@
             border-color: var(--swiss-black);
         }
         
-        /* PAYMENT METHODS */
         .payment-methods {
             margin-top: 20px;
             text-align: center;
@@ -308,12 +303,8 @@
             font-size: 13px;
             font-weight: 600;
             color: #666;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         
-        /* FAQ */
         .faq-section {
             padding: 80px 40px;
             background: white;
@@ -356,7 +347,6 @@
             line-height: 1.7;
         }
         
-        /* CTA SECTION */
         .cta-section {
             padding: 80px 40px;
             background: var(--swiss-black);
@@ -376,7 +366,6 @@
             margin-bottom: 32px;
         }
         
-        /* FOOTER */
         .footer {
             background: white;
             border-top: 1px solid var(--swiss-gray);
@@ -434,7 +423,6 @@
             font-size: 14px;
         }
         
-        /* RESPONSIVE */
         @media (max-width: 968px) {
             .pricing-grid {
                 grid-template-columns: 1fr;
@@ -455,7 +443,6 @@
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">
@@ -469,26 +456,22 @@
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
             <h1>Choisissez le plan <span class="hero-highlight">parfait</span> pour vous</h1>
             <p>Des outils professionnels pour optimiser votre CV selon les standards suisses</p>
-            <p style="font-size: 14px; opacity: 0.7; margin-top: 20px;">💳 Paiement sécurisé Stripe • 📱 TWINT accepté • 🔒 SSL 256-bit</p>
+            <p style="font-size: 14px; opacity: 0.7; margin-top: 20px;">💳 Paiement sécurisé Stripe • 🔒 SSL 256-bit</p>
         </div>
     </section>
 
-    <!-- PRICING -->
     <section class="pricing-section">
         <div class="pricing-content">
             <div class="pricing-grid">
-                <!-- FREE PLAN -->
                 <div class="pricing-card">
                     <h3>Gratuit</h3>
                     <p class="plan-description">Idéal pour découvrir notre outil</p>
                     <div class="price">CHF 0</div>
                     <div class="price-period">Toujours gratuit</div>
-                    
                     <ul class="features-list">
                         <li>3 analyses CV par mois</li>
                         <li>Score détaillé /100</li>
@@ -496,18 +479,15 @@
                         <li>Conseils spécifiques Suisse</li>
                         <li>Analyse photo professionnelle</li>
                     </ul>
-                    
                     <a href="app.html" class="btn-pricing btn-secondary">Commencer gratuitement</a>
                 </div>
 
-                <!-- PREMIUM PLAN -->
                 <div class="pricing-card featured">
                     <div class="pricing-badge">⭐ Recommandé</div>
                     <h3>Premium</h3>
                     <p class="plan-description">Pour optimiser sérieusement votre CV</p>
                     <div class="price">CHF 9<span>/mois</span></div>
                     <div class="price-period">Sans engagement • Résiliation à tout moment</div>
-                    
                     <ul class="features-list">
                         <li><strong>Analyses CV illimitées</strong></li>
                         <li><strong>Export PDF professionnel</strong></li>
@@ -518,28 +498,23 @@
                         <li>Suggestions mots-clés ATS</li>
                         <li>Support prioritaire email</li>
                     </ul>
-                    
                     <a href="#" class="btn-pricing btn-primary" onclick="selectPlan('premium'); return false;">
                         Passer à Premium
                     </a>
-                    
                     <div class="payment-methods">
                         <p>Moyens de paiement acceptés :</p>
                         <div class="payment-icons">
                             <span class="payment-icon">💳 Visa</span>
                             <span class="payment-icon">💳 Mastercard</span>
-                            <span class="payment-icon">📱 TWINT</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- PRO PLAN -->
                 <div class="pricing-card">
                     <h3>Pro</h3>
                     <p class="plan-description">Pour RH & agences de recrutement</p>
                     <div class="price">CHF 29<span>/mois</span></div>
                     <div class="price-period">Facturation mensuelle</div>
-                    
                     <ul class="features-list">
                         <li><strong>Tout Premium +</strong></li>
                         <li>Analyses comparatives marché</li>
@@ -551,7 +526,6 @@
                         <li>Support téléphonique prioritaire</li>
                         <li>Formation onboarding 1h</li>
                     </ul>
-                    
                     <a href="#" class="btn-pricing btn-secondary" onclick="selectPlan('pro'); return false;">
                         Passer à Pro
                     </a>
@@ -560,46 +534,26 @@
         </div>
     </section>
 
-    <!-- FAQ -->
     <section class="faq-section">
         <div class="faq-content">
             <div class="faq-header">
                 <h2>Questions fréquentes</h2>
             </div>
-            
-            <div class="faq-item">
-                <h3>📱 Comment payer avec TWINT ?</h3>
-                <p>Lors du paiement, sélectionnez "TWINT" comme moyen de paiement. Vous serez redirigé vers l'application TWINT pour finaliser votre achat en toute sécurité. C'est instantané et 100% suisse.</p>
-            </div>
-            
             <div class="faq-item">
                 <h3>🔒 Mes données sont-elles sécurisées ?</h3>
-                <p>Absolument. Nous utilisons Stripe pour les paiements (certifié PCI DSS niveau 1). Vos CV ne sont jamais stockés sur nos serveurs et toutes les communications sont chiffrées SSL 256-bit. Serveurs hébergés en Suisse.</p>
+                <p>Absolument. Nous utilisons Stripe pour les paiements (certifié PCI DSS niveau 1). Vos CV ne sont jamais stockés sur nos serveurs et toutes les communications sont chiffrées SSL 256-bit.</p>
             </div>
-            
             <div class="faq-item">
                 <h3>🔄 Puis-je changer de plan ?</h3>
-                <p>Oui, vous pouvez passer d'un plan à l'autre à tout moment. En cas d'upgrade, la différence est calculée au prorata. En cas de downgrade, le changement prend effet au prochain cycle de facturation.</p>
+                <p>Oui, vous pouvez passer d'un plan à l'autre à tout moment. En cas d'upgrade, la différence est calculée au prorata.</p>
             </div>
-            
             <div class="faq-item">
                 <h3>❌ Comment résilier mon abonnement ?</h3>
-                <p>Aucun engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre espace client ou en nous contactant à contact@swisscv-pro.ch. Aucune pénalité. Votre accès Premium reste actif jusqu'à la fin de la période payée.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3>🇨🇭 Pourquoi les prix sont en CHF ?</h3>
-                <p>SwissCV Pro est une entreprise suisse, hébergée en Suisse, avec des serveurs en Suisse. Nos prix sont en francs suisses pour éviter les frais de change et garantir la transparence pour nos utilisateurs suisses.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3>📧 J'ai d'autres questions ?</h3>
-                <p>Notre équipe est là pour vous aider ! Contactez-nous à contact@swisscv-pro.ch ou utilisez le chat en bas à droite. Temps de réponse moyen : 2h en semaine.</p>
+                <p>Aucun engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre espace client ou en nous contactant à contact@swisscv-pro.ch.</p>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-section">
         <h2>Prêt à booster votre carrière ?</h2>
         <p>Rejoignez des centaines de candidats qui optimisent leur CV avec SwissCV Pro</p>
@@ -608,21 +562,19 @@
         </a>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-about">
                 <h3>🇨🇭 SwissCV Pro</h3>
-                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée.</p>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand.</p>
                 <p>📧 contact@swisscv-pro.ch</p>
-                <p style="font-size: 12px; color: #999; margin-top: 8px;">🇨🇭 Hébergé en Suisse • Données traitées selon standards suisses</p>
             </div>
             <div class="footer-links">
                 <h4>Produit</h4>
                 <ul>
                     <li><a href="app.html">Analyser mon CV</a></li>
                     <li><a href="pricing.html">Tarifs</a></li>
-                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                    <li><a href="index.html">Accueil</a></li>
                 </ul>
             </div>
             <div class="footer-links">
@@ -641,22 +593,14 @@
 
     <script>
         function selectPlan(plan) {
-            // Track avec Google Analytics
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'select_plan', {
-                    'plan_type': plan
-                });
+                gtag('event', 'select_plan', { 'plan_type': plan });
             }
             
-            // Afficher modal ou rediriger vers Stripe
             if (plan === 'premium') {
-                // TODO: Remplacer par ton Stripe Payment Link Premium
-                alert('🚀 Redirection vers paiement Premium...\n\nPaiement sécurisé Stripe + TWINT\n\n(Lien Stripe à configurer)');
-                // window.location.href = 'https://buy.stripe.com/VOTRE_LIEN_PREMIUM';
+                window.location.href = 'https://buy.stripe.com/test_8x2cN495z5Is7gE1NF6AM00';
             } else if (plan === 'pro') {
-                // TODO: Remplacer par ton Stripe Payment Link Pro
-                alert('💼 Redirection vers paiement Pro...\n\nPaiement sécurisé Stripe + TWINT\n\n(Lien Stripe à configurer)');
-                // window.location.href = 'https://buy.stripe.com/VOTRE_LIEN_PRO';
+                window.location.href = 'https://buy.stripe.com/test_8x24gy6Xrb2M9oMfEv6AM01';
             }
         }
     </script>
