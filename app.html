@@ -489,6 +489,8 @@
             
             .header-content {
                 padding: 0 20px;
+                flex-direction: column;
+                gap: 16px;
             }
             
             .circular-score {
@@ -506,6 +508,126 @@
                 margin: 8px 0;
             }
         }
+        
+        /* FREEMIUM MODAL */
+        .upgrade-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .upgrade-modal.show {
+            display: flex;
+        }
+        
+        .upgrade-modal-content {
+            background: white;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 8px;
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .upgrade-modal-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+        
+        .upgrade-modal h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+            letter-spacing: -1px;
+        }
+        
+        .upgrade-modal p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .upgrade-modal-features {
+            background: #FAFAFA;
+            padding: 24px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        
+        .upgrade-modal-features h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+        }
+        
+        .upgrade-modal-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .upgrade-modal-features li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .upgrade-modal-features li::before {
+            content: "✓";
+            color: var(--swiss-red);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .upgrade-modal-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .upgrade-modal-buttons .btn {
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .btn-secondary-modal {
+            background: white;
+            color: var(--swiss-black);
+            border: 2px solid var(--swiss-gray);
+        }
+        
+        .btn-secondary-modal:hover {
+            background: #FAFAFA;
+            border-color: var(--swiss-black);
+        }
     </style>
 </head>
 <body>
@@ -518,6 +640,14 @@
                     <span>Précision suisse</span>
                 </div>
             </a>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div id="usageCounter" style="font-size: 13px; color: #666; font-weight: 500;">
+                    Analyses: <span id="analysisCount" style="color: var(--swiss-red); font-weight: 700;">0</span>/3
+                </div>
+                <a href="pricing.html" style="background: var(--swiss-red); color: white; padding: 10px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='#B80000'" onmouseout="this.style.background='var(--swiss-red)'">
+                    ⭐ Premium
+                </a>
+            </div>
         </div>
     </header>
 
@@ -617,6 +747,36 @@
                     </a>
                     <p class="feedback-note">🎁 Les 20 premiers testeurs recevront un accès gratuit à vie aux futures features premium</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPGRADE MODAL -->
+    <div class="upgrade-modal" id="upgradeModal">
+        <div class="upgrade-modal-content">
+            <div class="upgrade-modal-icon">🔒</div>
+            <h2>Limite gratuite atteinte</h2>
+            <p>Vous avez utilisé vos <strong>3 analyses gratuites</strong> du mois.<br>
+            Passez à Premium pour des analyses illimitées !</p>
+            
+            <div class="upgrade-modal-features">
+                <h3>✨ Avec Premium, débloquez :</h3>
+                <ul>
+                    <li><strong>Analyses CV illimitées</strong></li>
+                    <li>Export PDF professionnel</li>
+                    <li>Génération lettres de motivation</li>
+                    <li>Templates CV suisses</li>
+                    <li>Support prioritaire</li>
+                </ul>
+            </div>
+            
+            <div class="upgrade-modal-buttons">
+                <button class="btn btn-secondary-modal" onclick="closeUpgradeModal()">
+                    Peut-être plus tard
+                </button>
+                <a href="pricing.html" class="btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                    ⭐ Passer à Premium (CHF 9/mois)
+                </a>
             </div>
         </div>
     </div>
@@ -843,6 +1003,132 @@
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
             window.print();
         });
+        
+        // ==================== FREEMIUM SYSTEM ====================
+        const FREE_ANALYSIS_LIMIT = 3;
+        
+        function getAnalysisCount() {
+            const count = localStorage.getItem('swisscv_analysis_count');
+            const month = localStorage.getItem('swisscv_analysis_month');
+            const currentMonth = new Date().getMonth();
+            
+            // Reset counter si nouveau mois
+            if (month !== currentMonth.toString()) {
+                localStorage.setItem('swisscv_analysis_count', '0');
+                localStorage.setItem('swisscv_analysis_month', currentMonth.toString());
+                return 0;
+            }
+            
+            return parseInt(count) || 0;
+        }
+        
+        function incrementAnalysisCount() {
+            const currentCount = getAnalysisCount();
+            const newCount = currentCount + 1;
+            localStorage.setItem('swisscv_analysis_count', newCount.toString());
+            updateCounterDisplay();
+            return newCount;
+        }
+        
+        function updateCounterDisplay() {
+            const count = getAnalysisCount();
+            document.getElementById('analysisCount').textContent = count;
+            
+            // Changer couleur si limite proche
+            const counterEl = document.getElementById('analysisCount');
+            if (count >= FREE_ANALYSIS_LIMIT) {
+                counterEl.style.color = '#E65100';
+            } else if (count === FREE_ANALYSIS_LIMIT - 1) {
+                counterEl.style.color = '#FF9800';
+            }
+        }
+        
+        function canAnalyze() {
+            return getAnalysisCount() < FREE_ANALYSIS_LIMIT;
+        }
+        
+        function showUpgradeModal() {
+            document.getElementById('upgradeModal').classList.add('show');
+            
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'limit_reached', {
+                    'event_category': 'freemium'
+                });
+            }
+        }
+        
+        function closeUpgradeModal() {
+            document.getElementById('upgradeModal').classList.remove('show');
+        }
+        
+        // Fermer modal si clic en dehors
+        document.getElementById('upgradeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'upgradeModal') {
+                closeUpgradeModal();
+            }
+        });
+        
+        // Intercepter le bouton analyser
+        const originalAnalyzeClick = analyzeBtn.onclick;
+        analyzeBtn.addEventListener('click', async (e) => {
+            if (!canAnalyze()) {
+                e.preventDefault();
+                e.stopPropagation();
+                showUpgradeModal();
+                return;
+            }
+        });
+        
+        // Override de la fonction analyzeBtn originale
+        const originalAnalyze = analyzeBtn.onclick;
+        analyzeBtn.onclick = null; // Remove original
+        
+        analyzeBtn.addEventListener('click', async () => {
+            // Vérifier limite
+            if (!canAnalyze()) {
+                showUpgradeModal();
+                return;
+            }
+            
+            if (!selectedFile) {
+                showError('Veuillez sélectionner un CV');
+                return;
+            }
+            
+            // Incrémenter compteur AVANT l'analyse
+            incrementAnalysisCount();
+            
+            uploadSection.style.display = 'none';
+            loading.classList.add('show');
+            
+            try {
+                const cvText = await extractTextFromPDF(selectedFile);
+                const hasPhoto = document.getElementById('hasPhoto').checked;
+                const analysis = await analyzeCVWithBackend(cvText, hasPhoto);
+                displayResults(analysis);
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Erreur lors de l\'analyse : ' + error.message);
+                uploadSection.style.display = 'block';
+                loading.classList.remove('show');
+                
+                // Décrémenter si erreur
+                const currentCount = getAnalysisCount();
+                if (currentCount > 0) {
+                    localStorage.setItem('swisscv_analysis_count', (currentCount - 1).toString());
+                    updateCounterDisplay();
+                }
+            }
+        });
+        
+        // Initialiser compteur au chargement
+        updateCounterDisplay();
+        
+        // Vérifier au chargement si limite atteinte
+        if (!canAnalyze()) {
+            analyzeBtn.textContent = '🔒 Limite atteinte - Passer à Premium';
+        }
     </script>
 </body>
 </html>
