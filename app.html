@@ -749,11 +749,11 @@
         }
         
         /* ============================================================ */
-        /* 🖨️ STYLES D'IMPRESSION - SÉPARÉS CV ET LETTRE               */
+        /* 🖨️ STYLES D'IMPRESSION (si besoin de Ctrl+P direct)        */
         /* ============================================================ */
         
         @media print {
-            .header, .actions, .btn, .usage-counter, .modal-overlay {
+            .header, .actions, .btn, .usage-counter, .modal-overlay, #coverLetterSection {
                 display: none !important;
             }
             
@@ -765,32 +765,6 @@
             
             body {
                 background: white;
-            }
-            
-            .letter-preview {
-                border: none;
-                padding: 0;
-            }
-            
-            /* Par défaut, masquer la lettre lors de l'impression */
-            #coverLetterSection {
-                display: none !important;
-            }
-            
-            /* Classe pour n'imprimer QUE la lettre */
-            body.print-letter-only #results,
-            body.print-letter-only .container:not(:has(#coverLetterSection)) {
-                display: none !important;
-            }
-            
-            body.print-letter-only #coverLetterSection {
-                display: block !important;
-            }
-            
-            body.print-letter-only .premium-feature-header,
-            body.print-letter-only #coverLetterForm,
-            body.print-letter-only #coverLetterResult > div:first-child {
-                display: none !important;
             }
         }
     </style>
@@ -1303,9 +1277,172 @@
         });
         
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
-            // ✅ S'assurer que seul le CV est imprimé (pas la lettre)
-            document.body.classList.remove('print-letter-only');
-            window.print();
+            // ✅ Créer une nouvelle fenêtre avec SEULEMENT le rapport CV
+            const printWindow = window.open('', '_blank');
+            
+            // Récupérer le contenu du CV
+            const resultsContent = document.getElementById('results').cloneNode(true);
+            
+            // Retirer les boutons d'action du clone
+            const actionsDiv = resultsContent.querySelector('.actions');
+            if (actionsDiv) actionsDiv.remove();
+            
+            // Créer le HTML de la fenêtre d'impression
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Analyse CV - SwissCV Pro</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        body {
+                            font-family: 'Inter', -apple-system, sans-serif;
+                            background: white;
+                            color: #0D0D0D;
+                            padding: 40px;
+                            line-height: 1.6;
+                        }
+                        .score-container {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            padding: 60px 0;
+                            margin-bottom: 60px;
+                            background: linear-gradient(180deg, #FAFAFA 0%, white 100%);
+                            border-radius: 4px;
+                        }
+                        .circular-score {
+                            position: relative;
+                            width: 200px;
+                            height: 200px;
+                            margin-bottom: 32px;
+                        }
+                        .circular-score svg {
+                            transform: rotate(-90deg);
+                            width: 100%;
+                            height: 100%;
+                        }
+                        .score-ring {
+                            fill: none;
+                            stroke: #E6E6E6;
+                            stroke-width: 8;
+                        }
+                        .score-fill {
+                            fill: none;
+                            stroke: #D50000;
+                            stroke-width: 8;
+                            stroke-linecap: round;
+                        }
+                        .score-text {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            text-align: center;
+                        }
+                        .score-number {
+                            font-size: 56px;
+                            font-weight: 700;
+                            letter-spacing: -2px;
+                            color: #0D0D0D;
+                        }
+                        .score-label {
+                            font-size: 13px;
+                            color: #666;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            font-weight: 500;
+                        }
+                        .score-comment {
+                            max-width: 600px;
+                            text-align: center;
+                            font-size: 16px;
+                            color: #666;
+                            line-height: 1.6;
+                            padding: 0 20px;
+                        }
+                        .section-title {
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #0D0D0D;
+                            margin-bottom: 24px;
+                            letter-spacing: -0.5px;
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                        }
+                        .section-icon {
+                            font-size: 24px;
+                        }
+                        .advice-list {
+                            list-style: none;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 16px;
+                            margin-bottom: 48px;
+                        }
+                        .advice-item {
+                            padding: 20px 24px;
+                            border-radius: 4px;
+                            border-left: 4px solid;
+                            font-size: 15px;
+                            line-height: 1.6;
+                        }
+                        .advice-item.positive {
+                            background: #F0FDF4;
+                            border-color: #16A34A;
+                            color: #15803D;
+                        }
+                        .advice-item.warning {
+                            background: #FFF7ED;
+                            border-color: #EA580C;
+                            color: #C2410C;
+                        }
+                        .advice-item.info {
+                            background: #EFF6FF;
+                            border-color: #2563EB;
+                            color: #1E40AF;
+                        }
+                        .footer {
+                            text-align: center;
+                            margin-top: 60px;
+                            padding-top: 24px;
+                            border-top: 1px solid #E6E6E6;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                        @media print {
+                            body {
+                                padding: 20px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${resultsContent.innerHTML}
+                    <div class="footer">
+                        <p>Analyse générée le ${new Date().toLocaleDateString('fr-CH', { year: 'numeric', month: 'long', day: 'numeric' })} par SwissCV Pro</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            
+            // Attendre que le contenu soit chargé puis imprimer
+            printWindow.onload = function() {
+                printWindow.print();
+                // Fermer après impression (optionnel)
+                printWindow.onafterprint = function() {
+                    printWindow.close();
+                };
+            };
         });
         
         // ==================== FREEMIUM SYSTEM (CORRECTED) ====================
@@ -1620,13 +1757,83 @@
         
         // Export PDF de la lettre
         document.getElementById('exportLetterPdfBtn').addEventListener('click', () => {
-            // ✅ N'imprimer QUE la lettre (masquer le CV)
-            document.body.classList.add('print-letter-only');
-            window.print();
-            // Retirer la classe après impression
-            setTimeout(() => {
-                document.body.classList.remove('print-letter-only');
-            }, 1000);
+            // ✅ Créer une nouvelle fenêtre avec SEULEMENT la lettre
+            const printWindow = window.open('', '_blank');
+            
+            // Récupérer le contenu de la lettre
+            const sender = document.getElementById('letterSender').innerHTML;
+            const recipient = document.getElementById('letterRecipient').innerHTML;
+            const date = document.getElementById('letterDate').innerHTML;
+            const object = document.getElementById('letterObject').innerHTML;
+            const body = document.getElementById('letterBody').innerHTML;
+            const signature = document.getElementById('letterSignature').innerHTML;
+            
+            // Créer le HTML de la fenêtre d'impression
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Lettre de Motivation - SwissCV Pro</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+                    <style>
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        body {
+                            font-family: 'Georgia', serif;
+                            background: white;
+                            color: #0D0D0D;
+                            padding: 60px 80px;
+                            line-height: 1.8;
+                            max-width: 210mm;
+                            margin: 0 auto;
+                        }
+                        .letter-header > div {
+                            margin-bottom: 16px;
+                        }
+                        .letter-body {
+                            margin: 32px 0;
+                            white-space: pre-wrap;
+                        }
+                        .letter-signature {
+                            margin-top: 40px;
+                        }
+                        @media print {
+                            body {
+                                padding: 40px 60px;
+                            }
+                            @page {
+                                margin: 2cm;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="letter-header">
+                        <div>${sender}</div>
+                        <div>${recipient}</div>
+                        <div>${date}</div>
+                        <div>${object}</div>
+                    </div>
+                    <div class="letter-body">${body}</div>
+                    <div class="letter-signature">${signature}</div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            
+            // Attendre que le contenu soit chargé puis imprimer
+            printWindow.onload = function() {
+                printWindow.print();
+                // Fermer après impression (optionnel)
+                printWindow.onafterprint = function() {
+                    printWindow.close();
+                };
+            };
         });
         
         // Ajouter bouton "Générer lettre" dans les actions (après analyse CV)
