@@ -1434,15 +1434,12 @@
             `);
             
             printWindow.document.close();
+            printWindow.focus();
             
-            // Attendre que le contenu soit chargé puis imprimer
-            printWindow.onload = function() {
+            // Attendre un court instant que le contenu soit rendu puis imprimer
+            setTimeout(() => {
                 printWindow.print();
-                // Fermer après impression (optionnel)
-                printWindow.onafterprint = function() {
-                    printWindow.close();
-                };
-            };
+            }, 250);
         });
         
         // ==================== FREEMIUM SYSTEM (CORRECTED) ====================
@@ -1825,15 +1822,12 @@
             `);
             
             printWindow.document.close();
+            printWindow.focus();
             
-            // Attendre que le contenu soit chargé puis imprimer
-            printWindow.onload = function() {
+            // Attendre un court instant que le contenu soit rendu puis imprimer
+            setTimeout(() => {
                 printWindow.print();
-                // Fermer après impression (optionnel)
-                printWindow.onafterprint = function() {
-                    printWindow.close();
-                };
-            };
+            }, 250);
         });
         
         // Ajouter bouton "Générer lettre" dans les actions (après analyse CV)
