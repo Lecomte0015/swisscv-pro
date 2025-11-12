@@ -559,6 +559,160 @@
             }
         }
         
+        /* ============================================================ */
+        /* 🎨 STYLES MODULE LETTRE DE MOTIVATION                       */
+        /* ============================================================ */
+        
+        /* Premium Badge inline */
+        .premium-badge-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: var(--swiss-black);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .premium-feature-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--swiss-gray);
+        }
+
+        /* Formulaire */
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            margin-bottom: 12px;
+        }
+
+        .form-label-icon {
+            font-size: 18px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 4px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+            box-shadow: 0 0 0 3px rgba(213, 0, 0, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Radio buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: var(--swiss-red);
+            background: #FFF5F5;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-top: 2px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            accent-color: var(--swiss-red);
+        }
+
+        .radio-label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .radio-label strong {
+            font-size: 15px;
+            color: var(--swiss-black);
+        }
+
+        .radio-label small {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Aperçu lettre */
+        .letter-preview {
+            background: white;
+            border: 1px solid var(--swiss-gray);
+            border-radius: 4px;
+            padding: 60px;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: var(--swiss-black);
+        }
+
+        .letter-header {
+            margin-bottom: 40px;
+        }
+
+        .letter-header > div {
+            margin-bottom: 16px;
+        }
+
+        .letter-body {
+            margin: 32px 0;
+            white-space: pre-wrap;
+        }
+
+        .letter-body:focus {
+            outline: 2px solid var(--swiss-red);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .letter-signature {
+            margin-top: 40px;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
@@ -583,6 +737,35 @@
             
             .actions {
                 flex-direction: column;
+            }
+            
+            .letter-preview {
+                padding: 32px 20px;
+            }
+            
+            .radio-group {
+                gap: 8px;
+            }
+        }
+        
+        @media print {
+            .header, .actions, .btn, .usage-counter {
+                display: none;
+            }
+            
+            .card {
+                border: none;
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .letter-preview {
+                border: none;
+                padding: 0;
             }
         }
     </style>
@@ -683,6 +866,184 @@
                 
                 <div style="text-align: center; margin-top: 24px; font-size: 12px; color: #999;">
                     <p>Analyse générée le <span id="printDate"></span> par SwissCV Pro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- 📝 MODULE GÉNÉRATION LETTRE DE MOTIVATION (Premium Feature)     -->
+    <!-- ================================================================ -->
+    <div class="container" id="coverLetterSection" style="display: none;">
+        <div class="card">
+            <div class="premium-feature-header">
+                <span class="premium-badge-inline">⭐ PREMIUM</span>
+                <h2 style="font-size: 28px; font-weight: 700; margin: 16px 0 8px 0;">
+                    ✉️ Génération de Lettre de Motivation
+                </h2>
+                <p style="color: #666; font-size: 15px; margin-bottom: 32px;">
+                    Créez une lettre de motivation professionnelle, adaptée au marché suisse romand
+                </p>
+            </div>
+
+            <!-- Formulaire -->
+            <div id="coverLetterForm">
+                <!-- Type de lettre -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="form-label-icon">📋</span>
+                        Type de lettre
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="letterType" value="response" checked>
+                            <span class="radio-label">
+                                <strong>Réponse à une offre</strong>
+                                <small>Vous répondez à une annonce spécifique</small>
+                            </span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="letterType" value="spontaneous">
+                            <span class="radio-label">
+                                <strong>Candidature spontanée</strong>
+                                <small>Vous proposez vos services sans offre précise</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Entreprise -->
+                <div class="form-group">
+                    <label for="companyName" class="form-label">
+                        <span class="form-label-icon">🏢</span>
+                        Nom de l'entreprise *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="companyName" 
+                        class="form-input"
+                        placeholder="Ex: Nestlé SA, Credit Suisse, Rolex..."
+                        required
+                    >
+                </div>
+
+                <!-- Poste visé -->
+                <div class="form-group">
+                    <label for="targetPosition" class="form-label">
+                        <span class="form-label-icon">💼</span>
+                        Poste visé *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="targetPosition" 
+                        class="form-input"
+                        placeholder="Ex: Manager Retail, Développeur Full-Stack, Chef de projet..."
+                        required
+                    >
+                </div>
+
+                <!-- Secteur d'activité -->
+                <div class="form-group">
+                    <label for="industry" class="form-label">
+                        <span class="form-label-icon">🏭</span>
+                        Secteur d'activité
+                    </label>
+                    <select id="industry" class="form-select">
+                        <option value="">Sélectionnez un secteur</option>
+                        <option value="banque-finance">Banque & Finance</option>
+                        <option value="horlogerie-luxe">Horlogerie & Luxe</option>
+                        <option value="pharma-sante">Pharma & Santé</option>
+                        <option value="it-tech">IT & Technologies</option>
+                        <option value="retail-commerce">Retail & Commerce</option>
+                        <option value="industrie-ingenierie">Industrie & Ingénierie</option>
+                        <option value="hotellerie-restauration">Hôtellerie & Restauration</option>
+                        <option value="education-formation">Éducation & Formation</option>
+                        <option value="administration-publique">Administration Publique</option>
+                        <option value="conseil-audit">Conseil & Audit</option>
+                        <option value="communication-marketing">Communication & Marketing</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+
+                <!-- Offre d'emploi -->
+                <div class="form-group" id="jobOfferGroup">
+                    <label for="jobOffer" class="form-label">
+                        <span class="form-label-icon">📄</span>
+                        Description de l'offre (optionnel)
+                    </label>
+                    <textarea 
+                        id="jobOffer" 
+                        class="form-textarea"
+                        rows="4"
+                        placeholder="Copiez-collez l'annonce ou décrivez les principales responsabilités..."
+                    ></textarea>
+                    <small style="color: #666; font-size: 13px; display: block; margin-top: 8px;">
+                        Plus vous donnez d'informations, plus la lettre sera personnalisée
+                    </small>
+                </div>
+
+                <!-- Motivations personnelles -->
+                <div class="form-group">
+                    <label for="motivation" class="form-label">
+                        <span class="form-label-icon">💡</span>
+                        Vos motivations (optionnel)
+                    </label>
+                    <textarea 
+                        id="motivation" 
+                        class="form-textarea"
+                        rows="3"
+                        placeholder="Pourquoi ce poste ? Qu'est-ce qui vous attire dans cette entreprise ?"
+                    ></textarea>
+                </div>
+
+                <!-- Messages d'erreur/succès -->
+                <div id="coverLetterError" class="error-msg"></div>
+
+                <!-- Boutons d'action -->
+                <div style="display: flex; gap: 16px; margin-top: 32px;">
+                    <button id="generateLetterBtn" class="btn" style="flex: 1;">
+                        ✨ Générer la lettre de motivation
+                    </button>
+                    <button id="closeCoverLetterBtn" class="btn btn-secondary">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+
+            <!-- Résultat de la lettre -->
+            <div id="coverLetterResult" style="display: none;">
+                <div style="background: #F0FDF4; border: 2px solid #16A34A; border-radius: 4px; padding: 24px; margin-bottom: 32px;">
+                    <h3 style="color: #15803D; margin-bottom: 8px; font-size: 18px;">
+                        ✅ Lettre générée avec succès !
+                    </h3>
+                    <p style="color: #166534; font-size: 14px;">
+                        Votre lettre de motivation est prête. Vous pouvez la modifier directement ci-dessous avant de l'exporter.
+                    </p>
+                </div>
+
+                <!-- Aperçu lettre -->
+                <div class="letter-preview">
+                    <div class="letter-header">
+                        <div id="letterSender"></div>
+                        <div id="letterRecipient"></div>
+                        <div id="letterDate"></div>
+                        <div id="letterObject"></div>
+                    </div>
+                    <div id="letterBody" class="letter-body" contenteditable="true"></div>
+                    <div id="letterSignature" class="letter-signature"></div>
+                </div>
+
+                <!-- Actions -->
+                <div style="display: flex; gap: 16px; margin-top: 32px;">
+                    <button id="exportLetterPdfBtn" class="btn" style="flex: 1;">
+                        📥 Exporter en PDF
+                    </button>
+                    <button id="copyLetterBtn" class="btn btn-secondary">
+                        📋 Copier le texte
+                    </button>
+                    <button id="newLetterBtn" class="btn btn-secondary">
+                        🔄 Nouvelle lettre
+                    </button>
                 </div>
             </div>
         </div>
@@ -870,6 +1231,9 @@
                 li.textContent = point;
                 swissAdviceList.appendChild(li);
             });
+            
+            // ✅ Ajouter le bouton lettre de motivation pour Premium
+            addCoverLetterButton();
         }
         
         function animateNumber(start, end, duration) {
@@ -1080,6 +1444,178 @@
                 analyzeBtn.textContent = '🔒 Limite atteinte - Passer à Premium';
             }
         });
+        
+        // ==================== MODULE LETTRE DE MOTIVATION ====================
+        
+        // Fonction pour afficher le module lettre
+        function showCoverLetterModule() {
+            // Vérifier si Premium
+            if (!isPremiumUser()) {
+                alert('⭐ Cette fonctionnalité est réservée aux membres Premium.\n\nPassez à Premium pour débloquer la génération de lettres de motivation personnalisées !');
+                window.location.href = 'pricing.html';
+                return;
+            }
+            
+            // Afficher le module
+            document.getElementById('coverLetterSection').style.display = 'block';
+            
+            // Scroll vers le module
+            document.getElementById('coverLetterSection').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+        
+        // Gérer le changement de type de lettre
+        document.querySelectorAll('input[name="letterType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const jobOfferGroup = document.getElementById('jobOfferGroup');
+                if (e.target.value === 'spontaneous') {
+                    jobOfferGroup.style.display = 'none';
+                } else {
+                    jobOfferGroup.style.display = 'block';
+                }
+            });
+        });
+        
+        // Bouton fermer
+        document.getElementById('closeCoverLetterBtn').addEventListener('click', () => {
+            document.getElementById('coverLetterSection').style.display = 'none';
+        });
+        
+        // Générer la lettre
+        document.getElementById('generateLetterBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('generateLetterBtn');
+            const errorMsg = document.getElementById('coverLetterError');
+            
+            // Récupérer les valeurs
+            const letterType = document.querySelector('input[name="letterType"]:checked').value;
+            const companyName = document.getElementById('companyName').value.trim();
+            const targetPosition = document.getElementById('targetPosition').value.trim();
+            const industry = document.getElementById('industry').value;
+            const jobOffer = document.getElementById('jobOffer').value.trim();
+            const motivation = document.getElementById('motivation').value.trim();
+            
+            // Validation
+            if (!companyName || !targetPosition) {
+                errorMsg.textContent = '⚠️ Veuillez remplir les champs obligatoires (entreprise et poste)';
+                errorMsg.classList.add('show');
+                return;
+            }
+            
+            // Masquer erreur
+            errorMsg.classList.remove('show');
+            
+            // Désactiver bouton
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération en cours...';
+            
+            try {
+                // Appeler l'API
+                const response = await fetch(`${API_ENDPOINT}/generate-cover-letter`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        letterType,
+                        companyName,
+                        targetPosition,
+                        industry,
+                        jobOffer,
+                        motivation,
+                        cvText: selectedFile ? await extractTextFromPDF(selectedFile) : ''
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erreur serveur');
+                }
+                
+                const data = await response.json();
+                
+                // Afficher le résultat
+                displayCoverLetter(data);
+                
+                // Masquer le formulaire
+                document.getElementById('coverLetterForm').style.display = 'none';
+                document.getElementById('coverLetterResult').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorMsg.textContent = '❌ Erreur lors de la génération. Veuillez réessayer.';
+                errorMsg.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✨ Générer la lettre de motivation';
+            }
+        });
+        
+        // Afficher la lettre générée
+        function displayCoverLetter(data) {
+            document.getElementById('letterSender').innerHTML = data.sender;
+            document.getElementById('letterRecipient').innerHTML = data.recipient;
+            document.getElementById('letterDate').innerHTML = data.date;
+            document.getElementById('letterObject').innerHTML = `<strong>Objet :</strong> ${data.object}`;
+            document.getElementById('letterBody').innerHTML = data.body;
+            document.getElementById('letterSignature').innerHTML = data.signature;
+        }
+        
+        // Nouvelle lettre
+        document.getElementById('newLetterBtn').addEventListener('click', () => {
+            // Réinitialiser le formulaire
+            document.getElementById('companyName').value = '';
+            document.getElementById('targetPosition').value = '';
+            document.getElementById('industry').value = '';
+            document.getElementById('jobOffer').value = '';
+            document.getElementById('motivation').value = '';
+            document.querySelector('input[name="letterType"][value="response"]').checked = true;
+            
+            // Afficher le formulaire
+            document.getElementById('coverLetterForm').style.display = 'block';
+            document.getElementById('coverLetterResult').style.display = 'none';
+        });
+        
+        // Copier le texte
+        document.getElementById('copyLetterBtn').addEventListener('click', () => {
+            const letterText = 
+                document.getElementById('letterSender').innerText + '\n\n' +
+                document.getElementById('letterRecipient').innerText + '\n\n' +
+                document.getElementById('letterDate').innerText + '\n\n' +
+                document.getElementById('letterObject').innerText + '\n\n' +
+                document.getElementById('letterBody').innerText + '\n\n' +
+                document.getElementById('letterSignature').innerText;
+            
+            navigator.clipboard.writeText(letterText).then(() => {
+                alert('✅ Lettre copiée dans le presse-papier !');
+            });
+        });
+        
+        // Export PDF de la lettre
+        document.getElementById('exportLetterPdfBtn').addEventListener('click', () => {
+            window.print();
+        });
+        
+        // Ajouter bouton "Générer lettre" dans les actions (après analyse CV)
+        function addCoverLetterButton() {
+            if (isPremiumUser()) {
+                const actionsDiv = document.querySelector('.actions');
+                
+                // Vérifier si le bouton existe déjà
+                if (!document.getElementById('openCoverLetterBtn')) {
+                    const coverLetterBtn = document.createElement('button');
+                    coverLetterBtn.id = 'openCoverLetterBtn';
+                    coverLetterBtn.className = 'btn';
+                    coverLetterBtn.innerHTML = '✉️ Générer lettre de motivation';
+                    coverLetterBtn.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+                    coverLetterBtn.style.color = 'var(--swiss-black)';
+                    
+                    coverLetterBtn.addEventListener('click', showCoverLetterModule);
+                    
+                    actionsDiv.appendChild(coverLetterBtn);
+                }
+            }
+        }
     </script>
 </body>
 </html>
