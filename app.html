@@ -748,9 +748,13 @@
             }
         }
         
+        /* ============================================================ */
+        /* 🖨️ STYLES D'IMPRESSION - SÉPARÉS CV ET LETTRE               */
+        /* ============================================================ */
+        
         @media print {
-            .header, .actions, .btn, .usage-counter {
-                display: none;
+            .header, .actions, .btn, .usage-counter, .modal-overlay {
+                display: none !important;
             }
             
             .card {
@@ -766,6 +770,27 @@
             .letter-preview {
                 border: none;
                 padding: 0;
+            }
+            
+            /* Par défaut, masquer la lettre lors de l'impression */
+            #coverLetterSection {
+                display: none !important;
+            }
+            
+            /* Classe pour n'imprimer QUE la lettre */
+            body.print-letter-only #results,
+            body.print-letter-only .container:not(:has(#coverLetterSection)) {
+                display: none !important;
+            }
+            
+            body.print-letter-only #coverLetterSection {
+                display: block !important;
+            }
+            
+            body.print-letter-only .premium-feature-header,
+            body.print-letter-only #coverLetterForm,
+            body.print-letter-only #coverLetterResult > div:first-child {
+                display: none !important;
             }
         }
     </style>
@@ -1278,6 +1303,8 @@
         });
         
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            // ✅ S'assurer que seul le CV est imprimé (pas la lettre)
+            document.body.classList.remove('print-letter-only');
             window.print();
         });
         
@@ -1593,7 +1620,13 @@
         
         // Export PDF de la lettre
         document.getElementById('exportLetterPdfBtn').addEventListener('click', () => {
+            // ✅ N'imprimer QUE la lettre (masquer le CV)
+            document.body.classList.add('print-letter-only');
             window.print();
+            // Retirer la classe après impression
+            setTimeout(() => {
+                document.body.classList.remove('print-letter-only');
+            }, 1000);
         });
         
         // Ajouter bouton "Générer lettre" dans les actions (après analyse CV)
