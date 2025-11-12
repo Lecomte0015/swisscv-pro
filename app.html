@@ -749,6 +749,291 @@
         }
         
         /* ============================================================ */
+        /* 🎯 STYLES MODULE ATS (TÂCHE #2)                             */
+        /* ============================================================ */
+        
+        .ats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--swiss-gray);
+        }
+        
+        .ats-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .ats-score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #D50000 0%, #B80000 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(213, 0, 0, 0.3);
+        }
+        
+        .ats-gauge-container {
+            background: #FAFAFA;
+            padding: 24px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+        }
+        
+        .ats-gauge-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--swiss-black);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .ats-gauge-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--swiss-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .ats-gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D50000 0%, #FF4444 100%);
+            border-radius: 12px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+        
+        .ats-gauge-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .ats-gauge-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        .ats-score-interpretation {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .sector-detection {
+            background: #F0F0F0;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sector-icon {
+            font-size: 24px;
+        }
+        
+        .sector-text {
+            flex: 1;
+        }
+        
+        .sector-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sector-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--swiss-red);
+            margin-top: 4px;
+        }
+        
+        .keywords-container {
+            margin-bottom: 32px;
+        }
+        
+        .keywords-subtitle {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .keywords-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid var(--swiss-gray);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .keywords-table thead {
+            background: #FAFAFA;
+        }
+        
+        .keywords-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--swiss-gray);
+        }
+        
+        .keywords-table tbody tr {
+            border-bottom: 1px solid #F0F0F0;
+            transition: background 0.2s;
+        }
+        
+        .keywords-table tbody tr:hover {
+            background: #FAFAFA;
+        }
+        
+        .keywords-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .keywords-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .importance-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .importance-high {
+            background: #FFE6E6;
+            color: #D50000;
+            border: 2px solid #D50000;
+        }
+        
+        .importance-medium {
+            background: #FFF4E6;
+            color: #FF8800;
+            border: 2px solid #FF8800;
+        }
+        
+        .importance-low {
+            background: #F0F0F0;
+            color: #999;
+            border: 2px solid #CCCCCC;
+        }
+        
+        .keyword-text {
+            font-weight: 600;
+            color: var(--swiss-black);
+        }
+        
+        .keyword-detected {
+            color: #00AA00;
+            font-weight: 700;
+        }
+        
+        .keyword-missing {
+            color: #D50000;
+            font-weight: 700;
+        }
+        
+        .sector-advice-container {
+            background: linear-gradient(135deg, #FFF4E6 0%, #FFE6E6 100%);
+            padding: 24px;
+            border-radius: 8px;
+            border-left: 4px solid var(--swiss-red);
+        }
+        
+        .advice-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .advice-list-ats {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .advice-list-ats li {
+            padding: 12px 0;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .advice-list-ats li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .advice-list-ats li::before {
+            content: "💡";
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .ats-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            gap: 16px;
+        }
+        
+        /* ============================================================ */
         /* 🖨️ STYLES D'IMPRESSION (si besoin de Ctrl+P direct)        */
         /* ============================================================ */
         
@@ -868,6 +1153,91 @@
                 </div>
             </div>
         </div>
+
+        <!-- ================================================================ -->
+        <!-- 🎯 MODULE ANALYSE ATS (TÂCHE #2)                               -->
+        <!-- ================================================================ -->
+        
+        <!-- Section ATS complète (masquée par défaut) -->
+        <div id="atsSection" class="card" style="display: none; margin-top: 40px;">
+            <!-- En-tête avec score -->
+            <div class="ats-header">
+                <h2 class="ats-title">
+                    🎯 Analyse ATS (Applicant Tracking System)
+                </h2>
+                <div class="ats-score-badge">
+                    <span>Score:</span>
+                    <span id="atsScoreValue">--</span>
+                    <span>/100</span>
+                </div>
+            </div>
+            
+            <!-- Jauge de score -->
+            <div class="ats-gauge-container">
+                <div class="ats-gauge-title">Compatibilité avec les systèmes de recrutement automatisés</div>
+                <div class="ats-gauge-bar">
+                    <div id="atsGaugeFill" class="ats-gauge-fill" style="width: 0%;"></div>
+                </div>
+                <div class="ats-gauge-labels">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+                <div id="atsScoreInterpretation" class="ats-score-interpretation"></div>
+            </div>
+            
+            <!-- Détection secteur -->
+            <div id="sectorDetection" class="sector-detection">
+                <div class="sector-icon">🏢</div>
+                <div class="sector-text">
+                    <div class="sector-label">Secteur détecté</div>
+                    <div id="sectorName" class="sector-name">--</div>
+                </div>
+            </div>
+            
+            <!-- Mots-clés détectés -->
+            <div class="keywords-container">
+                <h3 class="keywords-subtitle">✅ Mots-clés présents dans votre CV</h3>
+                <div id="detectedKeywordsContainer"></div>
+            </div>
+            
+            <!-- Mots-clés manquants -->
+            <div class="keywords-container">
+                <h3 class="keywords-subtitle">⚠️ Mots-clés recommandés à ajouter</h3>
+                <table class="keywords-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Mot-clé</th>
+                            <th style="width: 25%;">Importance</th>
+                            <th style="width: 35%;">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="missingKeywordsBody">
+                        <!-- Rempli dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Conseils sectoriels -->
+            <div id="sectorAdviceContainer" class="sector-advice-container">
+                <h3 class="advice-title">
+                    💼 Conseils spécifiques pour le marché suisse
+                </h3>
+                <ul id="adviceList" class="advice-list-ats">
+                    <!-- Rempli dynamiquement -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- État de chargement ATS -->
+        <div id="atsLoadingState" class="card ats-loading" style="display: none; margin-top: 40px;">
+            <div class="spinner-ring" style="margin: 0 auto 32px;"></div>
+            <p style="text-align: center; font-weight: 500;">Analyse ATS en cours...</p>
+            <p style="text-align: center; font-size: 13px; color: #999;">Extraction des mots-clés et détection du secteur</p>
+        </div>
+        
     </div>
 
     <!-- ================================================================ -->
@@ -1271,6 +1641,9 @@
             analyzeBtn.disabled = true;
             errorMsg.classList.remove('show');
             
+            // ✅ TÂCHE #2 : Masquer les sections ATS lors du reset
+            hideATSSection();
+            
             const scoreCircle = document.getElementById('scoreCircle');
             scoreCircle.style.strokeDashoffset = 565.48;
             document.getElementById('scoreNumber').textContent = '0';
@@ -1567,6 +1940,10 @@
                 const hasPhoto = document.getElementById('hasPhoto').checked;
                 const analysis = await analyzeCVWithBackend(cvText, hasPhoto);
                 displayResults(analysis);
+                
+                // ✅ TÂCHE #2 : Lancer l'analyse ATS automatiquement après l'analyse CV
+                await performATSAnalysis(cvText);
+                
             } catch (error) {
                 console.error('Error:', error);
                 showError('Erreur lors de l\'analyse : ' + error.message);
@@ -1605,6 +1982,169 @@
                 analyzeBtn.textContent = '🔒 Limite atteinte - Passer à Premium';
             }
         });
+        
+        // ==================== MODULE ANALYSE ATS (TÂCHE #2) ====================
+        
+        /**
+         * Appel API pour l'analyse ATS
+         * @param {string} cvText - Texte du CV
+         * @returns {Promise<Object>} Résultat de l'analyse ATS
+         */
+        async function analyzeATSWithBackend(cvText) {
+            const response = await fetch(`${API_ENDPOINT}/analyze-ats`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cv_text: cvText
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'analyse ATS');
+            }
+            
+            return await response.json();
+        }
+        
+        /**
+         * Affiche les résultats de l'analyse ATS
+         * @param {Object} atsData - Données retournées par l'API /analyze-ats
+         */
+        function displayATSResults(atsData) {
+            // Masquer le chargement
+            document.getElementById('atsLoadingState').style.display = 'none';
+            
+            // Afficher la section
+            const atsSection = document.getElementById('atsSection');
+            atsSection.style.display = 'block';
+            
+            // 1. Afficher le score
+            const score = atsData.ats_score || 0;
+            document.getElementById('atsScoreValue').textContent = score;
+            
+            // Animer la jauge
+            setTimeout(() => {
+                document.getElementById('atsGaugeFill').style.width = score + '%';
+            }, 100);
+            
+            // Interprétation du score
+            const interpretation = document.getElementById('atsScoreInterpretation');
+            if (score >= 80) {
+                interpretation.innerHTML = '🟢 <strong>Excellent</strong> - Votre CV devrait passer les filtres ATS';
+                interpretation.style.color = '#00AA00';
+            } else if (score >= 60) {
+                interpretation.innerHTML = '🟠 <strong>Correct</strong> - Quelques améliorations recommandées';
+                interpretation.style.color = '#FF8800';
+            } else {
+                interpretation.innerHTML = '🔴 <strong>À améliorer</strong> - Ajoutez les mots-clés manquants';
+                interpretation.style.color = '#D50000';
+            }
+            
+            // 2. Afficher le secteur détecté
+            document.getElementById('sectorName').textContent = atsData.sector_detected || 'Non identifié';
+            
+            // 3. Afficher les mots-clés détectés
+            const detectedContainer = document.getElementById('detectedKeywordsContainer');
+            if (atsData.keywords_detected && atsData.keywords_detected.length > 0) {
+                const detectedBadges = atsData.keywords_detected
+                    .map(kw => `<span class="importance-badge" style="background: #E6F7E6; color: #00AA00; border-color: #00AA00; margin: 4px;">${kw}</span>`)
+                    .join('');
+                detectedContainer.innerHTML = `<div style="display: flex; flex-wrap: wrap; gap: 8px;">${detectedBadges}</div>`;
+            } else {
+                detectedContainer.innerHTML = '<p style="color: #999; font-style: italic;">Aucun mot-clé sectoriel détecté</p>';
+            }
+            
+            // 4. Afficher les mots-clés manquants
+            const missingBody = document.getElementById('missingKeywordsBody');
+            missingBody.innerHTML = '';
+            
+            if (atsData.missing_keywords && atsData.missing_keywords.length > 0) {
+                atsData.missing_keywords.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    const importanceClass = {
+                        'high': 'importance-high',
+                        'medium': 'importance-medium',
+                        'low': 'importance-low'
+                    }[item.importance] || 'importance-low';
+                    
+                    const importanceLabel = {
+                        'high': 'Haute',
+                        'medium': 'Moyenne',
+                        'low': 'Faible'
+                    }[item.importance] || 'Faible';
+                    
+                    row.innerHTML = `
+                        <td><span class="keyword-text">${item.keyword}</span></td>
+                        <td><span class="importance-badge ${importanceClass}">${importanceLabel}</span></td>
+                        <td><span class="keyword-missing">À ajouter</span></td>
+                    `;
+                    
+                    missingBody.appendChild(row);
+                });
+            } else {
+                missingBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #999; font-style: italic;">Tous les mots-clés importants sont présents</td></tr>';
+            }
+            
+            // 5. Afficher les conseils sectoriels
+            const adviceList = document.getElementById('adviceList');
+            adviceList.innerHTML = '';
+            
+            if (atsData.sector_advice && atsData.sector_advice.length > 0) {
+                atsData.sector_advice.forEach(advice => {
+                    const li = document.createElement('li');
+                    li.textContent = advice;
+                    adviceList.appendChild(li);
+                });
+            } else {
+                adviceList.innerHTML = '<li style="border: none;">Aucun conseil spécifique pour ce secteur</li>';
+            }
+            
+            // Scroller jusqu'à la section ATS
+            setTimeout(() => {
+                atsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+        
+        /**
+         * Affiche l'état de chargement ATS
+         */
+        function showATSLoading() {
+            document.getElementById('atsSection').style.display = 'none';
+            document.getElementById('atsLoadingState').style.display = 'flex';
+        }
+        
+        /**
+         * Masque tout (pour réinitialisation)
+         */
+        function hideATSSection() {
+            document.getElementById('atsSection').style.display = 'none';
+            document.getElementById('atsLoadingState').style.display = 'none';
+        }
+        
+        /**
+         * Lance l'analyse ATS (appelée après l'analyse CV)
+         * @param {string} cvText - Texte du CV
+         */
+        async function performATSAnalysis(cvText) {
+            try {
+                // Afficher le chargement
+                showATSLoading();
+                
+                // Appeler l'API
+                const atsData = await analyzeATSWithBackend(cvText);
+                
+                // Afficher les résultats
+                displayATSResults(atsData);
+                
+            } catch (error) {
+                console.error('Erreur analyse ATS:', error);
+                hideATSSection();
+                // On ne bloque pas l'utilisateur, l'analyse CV reste visible
+            }
+        }
         
         // ==================== MODULE LETTRE DE MOTIVATION ====================
         
