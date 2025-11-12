@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement réussi — SwissCV Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VE7PJZTF8L');
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0D0D0D 0%, #2D2D2D 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .success-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            background: white;
+            color: var(--swiss-black);
+            padding: 60px 40px;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--swiss-gray);
+            border-top: 4px solid var(--swiss-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 32px;
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .info-box {
+            background: #FAFAFA;
+            padding: 24px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        
+        .info-box h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-box li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .info-box li::before {
+            content: "✓";
+            color: var(--swiss-red);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--swiss-red);
+            color: white;
+            padding: 18px 48px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(213, 0, 0, 0.4);
+        }
+        
+        .btn:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(213, 0, 0, 0.6);
+        }
+        
+        .support-note {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--swiss-gray);
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .support-note a {
+            color: var(--swiss-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .support-note a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-container {
+            display: none;
+        }
+        
+        .error-container.show {
+            display: block;
+        }
+        
+        .error-icon {
+            font-size: 80px;
+            margin-bottom: 32px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <!-- ✅ État de chargement -->
+        <div id="loadingState" class="loading-container">
+            <div class="spinner"></div>
+            <h2>Vérification du paiement...</h2>
+            <p style="color: #999;">Merci de patienter un instant</p>
+        </div>
+
+        <!-- ✅ État de succès -->
+        <div id="successState" class="hidden">
+            <div class="success-icon">🎉</div>
+            <h1>Bienvenue chez SwissCV Pro Premium !</h1>
+            <p>Votre paiement a été vérifié avec succès. Vous avez maintenant accès à toutes les fonctionnalités Premium.</p>
+            
+            <div class="info-box">
+                <h3>✨ Ce qui est maintenant débloqué :</h3>
+                <ul>
+                    <li><strong>Analyses CV illimitées</strong></li>
+                    <li>Export PDF professionnel</li>
+                    <li>Génération lettres de motivation</li>
+                    <li>Templates CV suisses (3 modèles)</li>
+                    <li>Optimisation profil LinkedIn</li>
+                    <li>Support prioritaire email</li>
+                </ul>
+            </div>
+            
+            <p><strong>📧 Confirmation envoyée par email</strong><br>
+            <span id="userEmail"></span></p>
+            
+            <a href="app.html?premium=true" class="btn">🚀 Commencer à analyser</a>
+            
+            <div class="support-note">
+                <p>Une question ? Besoin d'aide ?<br>
+                Contactez-nous à <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a></p>
+            </div>
+        </div>
+
+        <!-- ❌ État d'erreur -->
+        <div id="errorState" class="error-container">
+            <div class="error-icon">❌</div>
+            <h1>Erreur de vérification</h1>
+            <p>Nous n'avons pas pu vérifier votre paiement. Cela peut être dû à :</p>
+            <ul style="text-align: left; margin: 24px 0; color: #666;">
+                <li>Le paiement n'a pas encore été traité</li>
+                <li>Une erreur temporaire s'est produite</li>
+                <li>Le lien de confirmation est invalide</li>
+            </ul>
+            <p><strong>Pas d'inquiétude !</strong> Si vous avez bien effectué le paiement, votre accès Premium sera automatiquement activé sous quelques minutes.</p>
+            
+            <a href="app.html" class="btn">Retour à l'accueil</a>
+            
+            <div class="support-note">
+                <p>Si le problème persiste, contactez-nous à<br>
+                <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a><br>
+                en indiquant votre email de paiement.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ✅ Configuration
+        const API_ENDPOINT = 'https://swisscv-api.dallyhermann-71e.workers.dev';
+        
+        // ✅ Vérifier le paiement au chargement
+        async function verifyPayment() {
+            try {
+                // Récupérer le session_id de Stripe depuis l'URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionId = urlParams.get('session_id');
+                
+                if (!sessionId) {
+                    throw new Error('No session ID found');
+                }
+                
+                // ✅ Appeler l'API du worker pour vérifier
+                const response = await fetch(
+                    `${API_ENDPOINT}/verify-premium?session_id=${sessionId}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Verification failed');
+                }
+                
+                const data = await response.json();
+                
+                // ✅ Si le paiement est vérifié
+                if (data.premium === true) {
+                    // Enregistrer le statut Premium
+                    localStorage.setItem('swisscv_premium', 'true');
+                    localStorage.setItem('swisscv_premium_email', data.email || '');
+                    localStorage.setItem('swisscv_premium_session', sessionId);
+                    
+                    // Afficher l'état de succès
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('successState').classList.remove('hidden');
+                    
+                    // Afficher l'email si disponible
+                    if (data.email) {
+                        document.getElementById('userEmail').textContent = 
+                            `Reçu de paiement envoyé à ${data.email}`;
+                    }
+                    
+                    // Track conversion
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'purchase', {
+                            'transaction_id': sessionId,
+                            'value': data.amount || 9.00,
+                            'currency': data.currency || 'CHF'
+                        });
+                        
+                        gtag('event', 'premium_activated', {
+                            'event_category': 'conversion'
+                        });
+                    }
+                } else {
+                    throw new Error('Payment not completed');
+                }
+                
+            } catch (error) {
+                console.error('Payment verification error:', error);
+                
+                // Afficher l'état d'erreur
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('errorState').classList.add('show');
+            }
+        }
+        
+        // ✅ Lancer la vérification au chargement
+        window.addEventListener('DOMContentLoaded', verifyPayment);
+    </script>
+</body>
+</html>
