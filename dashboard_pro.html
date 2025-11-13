@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pro — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+            --pro-purple: #7C3AED;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+            color: white;
+            padding: 24px 0;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+        }
+        
+        .logo-text strong {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .plan-badge {
+            display: inline-block;
+            background: white;
+            color: var(--pro-purple);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+        
+        .welcome-section {
+            background: white;
+            padding: 48px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .welcome-section h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .stat-card .stat-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            margin-bottom: 6px;
+        }
+        
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        
+        .section h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--pro-purple);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #6D28D9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--swiss-black);
+            border: 2px solid var(--swiss-gray);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--pro-purple);
+            color: var(--pro-purple);
+        }
+        
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .member-card {
+            background: #FAFAFA;
+            padding: 20px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .member-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .member-details p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .member-role {
+            font-size: 11px;
+            background: #E9D5FF;
+            color: #6B21A8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .api-key-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .api-key-item {
+            background: #FAFAFA;
+            padding: 16px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .api-key-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .api-key-info code {
+            font-size: 13px;
+            background: #E9D5FF;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .api-key-info p {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: start;
+            gap: 14px;
+            padding: 18px;
+            background: #FAFAFA;
+            border-radius: 6px;
+        }
+        
+        .feature-item .feature-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .feature-item h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .feature-item p {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .action-card {
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+            padding: 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--swiss-black);
+            transition: transform 0.2s;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .action-card .action-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .action-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .action-card p {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="app.html" class="logo">
+                <span class="logo-icon">🇨🇭</span>
+                <div class="logo-text">
+                    <strong>SwissCV Pro</strong>
+                </div>
+            </a>
+            <span class="plan-badge">👑 Pro</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-section">
+            <h1>👑 Dashboard Pro — Fonctionnalités avancées</h1>
+            <p>Accès complet aux outils professionnels pour optimiser vos recrutements</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="totalAnalyses">-</div>
+                <div class="stat-label">Analyses totales</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="teamMembers">-</div>
+                <div class="stat-label">Membres équipe</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value" id="avgScore">-</div>
+                <div class="stat-label">Score moyen</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🔑</div>
+                <div class="stat-value" id="apiKeys">-</div>
+                <div class="stat-label">Clés API actives</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-value" id="bulkJobs">-</div>
+                <div class="stat-label">Analyses en masse</div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="app.html?premium=true" class="action-card">
+                <div class="action-icon">🚀</div>
+                <h3>Analyser un CV</h3>
+                <p>Analyse standard avec scoring Suisse</p>
+            </a>
+            
+            <a href="bulk-upload.html" class="action-card">
+                <div class="action-icon">📊</div>
+                <h3>Analyse en masse</h3>
+                <p>Upload multiple CVs et export CSV</p>
+            </a>
+            
+            <a href="#team-section" class="action-card">
+                <div class="action-icon">👥</div>
+                <h3>Gérer l'équipe</h3>
+                <p>Inviter et gérer les membres (5 sièges)</p>
+            </a>
+            
+            <a href="#api-section" class="action-card">
+                <div class="action-icon">🔑</div>
+                <h3>Clés API</h3>
+                <p>Générer et gérer les accès API</p>
+            </a>
+        </div>
+        
+        <!-- Section Équipe -->
+        <div class="section" id="team-section">
+            <div class="section-header">
+                <h2>👥 Gestion de l'équipe</h2>
+                <button class="btn btn-primary" onclick="inviteTeamMember()">+ Inviter un membre</button>
+            </div>
+            
+            <div id="teamMembersList" class="team-members">
+                <!-- Dynamically loaded -->
+            </div>
+        </div>
+        
+        <!-- Section API Keys -->
+        <div class="section" id="api-section">
+            <div class="section-header">
+                <h2>🔑 Clés API</h2>
+                <button class="btn btn-primary" onclick="generateAPIKey()">+ Générer une clé</button>
+            </div>
+            
+            <div id="apiKeysList" class="api-key-list">
+                <!-- Dynamically loaded -->
+            </div>
+        </div>
+        
+        <!-- Section Branding -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🎨 Branding personnalisé</h2>
+                <button class="btn btn-primary" onclick="configureBranding()">⚙️ Configurer</button>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🖼️</div>
+                    <div>
+                        <h3>Logo personnalisé</h3>
+                        <p>Ajoutez votre logo dans les exports PDF</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <div>
+                        <h3>Couleurs de marque</h3>
+                        <p>Personnalisez les couleurs selon votre identité</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📝</div>
+                    <div>
+                        <h3>Texte personnalisé</h3>
+                        <p>Ajoutez un footer personnalisé dans vos documents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section Features Pro -->
+        <div class="section">
+            <h2>✨ Toutes les fonctionnalités Pro</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">♾️</div>
+                    <div>
+                        <h3>Analyses illimitées</h3>
+                        <p>Aucune limite sur le nombre d'analyses</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">👥</div>
+                    <div>
+                        <h3>5 sièges équipe</h3>
+                        <p>Collaborez avec votre équipe de recrutement</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📦</div>
+                    <div>
+                        <h3>Export en masse</h3>
+                        <p>Analysez jusqu'à 50 CVs à la fois avec export CSV</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🔌</div>
+                    <div>
+                        <h3>Accès API</h3>
+                        <p>Intégrez SwissCV dans vos outils (100 req/jour)</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <div>
+                        <h3>Branding personnalisé</h3>
+                        <p>Logo et couleurs dans tous vos exports</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📞</div>
+                    <div>
+                        <h3>Support prioritaire</h3>
+                        <p>Réponse garantie sous 4h + call onboarding</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_ENDPOINT = 'https://swisscv-api.dallyhermann-71e.workers.dev';
+        
+        // Charger les stats
+        async function loadStats() {
+            try {
+                const email = localStorage.getItem('swisscv_premium_email');
+                
+                if (!email) {
+                    console.warn('No email found');
+                    return;
+                }
+                
+                // TODO: Appeler l'API pour récupérer les stats
+                document.getElementById('totalAnalyses').textContent = '—';
+                document.getElementById('teamMembers').textContent = '—';
+                document.getElementById('avgScore').textContent = '—';
+                document.getElementById('apiKeys').textContent = '—';
+                document.getElementById('bulkJobs').textContent = '—';
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Inviter un membre
+        function inviteTeamMember() {
+            const email = prompt('Email du membre à inviter:');
+            if (email) {
+                alert('Invitation envoyée à ' + email);
+                // TODO: Appeler l'API /team/invite
+            }
+        }
+        
+        // Générer une clé API
+        function generateAPIKey() {
+            const name = prompt('Nom de la clé API:');
+            if (name) {
+                alert('Clé API générée: ' + name);
+                // TODO: Appeler l'API /api/generate-key
+            }
+        }
+        
+        // Configurer le branding
+        function configureBranding() {
+            window.location.href = 'branding-settings.html';
+        }
+        
+        window.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>
