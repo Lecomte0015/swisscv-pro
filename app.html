@@ -1426,7 +1426,7 @@
             <p>Vous avez utilisé vos <strong>3 analyses gratuites</strong> ce mois-ci. Passez à Premium pour des analyses illimitées et débloquez toutes les fonctionnalités.</p>
             
             <div class="modal-actions">
-                <a href="/tarifs" class="modal-btn modal-btn-primary">
+                <a href="/pricing" class="modal-btn modal-btn-primary">
                     ✨ Passer à Premium (9 CHF)
                 </a>
                 <button onclick="closeUpgradeModal()" class="modal-btn modal-btn-secondary">
@@ -2153,7 +2153,7 @@
             // Vérifier si Premium
             if (!isPremiumUser()) {
                 alert('⭐ Cette fonctionnalité est réservée aux membres Premium.\n\nPassez à Premium pour débloquer la génération de lettres de motivation personnalisées !');
-                window.location.href = 'pricing.html';
+                window.location.href = '/pricing';
                 return;
             }
             
