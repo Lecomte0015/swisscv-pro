@@ -1,20 +1,20 @@
-# Routes principales
-/accueil                    /landing.html                 200
-/                           /landing.html                 200
-/analyseur-cv               /app.html                   200
-/tarifs                     /pricing.html               200
-/modeles-cv                 /templates.html             200
-/paiement-reussi            /success.html               200
-/tableau-de-bord            /dashboard_premium.html     200
-/espace-pro                 /dashboard_pro.html         200
+/ /landing.html 200
+/accueil /landing.html 200
+/index.html /landing.html 200
 
-# Anciennes URLs → nouvelles URLs (redirections 301)
-/app.html                   /analyseur-cv               301!
-/pricing.html               /tarifs                     301!
-/templates.html             /modeles-cv                 301!
-/success.html               /paiement-reussi            301!
-/dashboard_premium.html     /tableau-de-bord            301!
-/dashboard_pro.html         /espace-pro                 301!
+/analyseur-cv /app.html 200
+/app /app.html 200
 
-# Catch-all
-/*                          /landing.html                 404
+/tarifs /pricing.html 200
+/pricing /pricing.html 200
+
+/success /success.html 200
+/success-premium /success_with_verification.html 200
+
+/tableau-premium /dashboard_premium.html 200
+/tableau-pro /dashboard_pro.html 200
+
+/templates /templates.html 200
+/mails /email_templates.html 200
+
+/* /landing.html 200
