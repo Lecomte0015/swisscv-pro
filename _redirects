@@ -1,0 +1,22 @@
+# URLs Françaises
+/accueil                    /index.html                 200
+/                           /index.html                 200
+/analyseur-cv               /app.html                   200
+/tarifs                     /pricing.html               200
+/modeles-cv                 /templates.html             200
+/paiement-reussi            /success.html               200
+/tableau-de-bord            /dashboard_premium.html     200
+/espace-pro                 /dashboard_pro.html         200
+
+# Redirections anciennes URLs
+/app.html                   /analyseur-cv               301!
+/pricing.html               /tarifs                     301!
+/templates.html             /modeles-cv                 301!
+/success.html               /paiement-reussi            301!
+/dashboard_premium.html     /tableau-de-bord            301!
+/dashboard_pro.html         /espace-pro                 301!
+/app                        /analyseur-cv               301!
+/pricing                    /tarifs                     301!
+/templates                  /modeles-cv                 301!
+
+/*                          /index.html                 404
