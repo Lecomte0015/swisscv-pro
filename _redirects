@@ -2,6 +2,8 @@
 /accueil /landing.html 200
 /index.html /landing.html 200
 
+/landing /landing.html 200
+
 /analyseur-cv /app.html 200
 /app /app.html 200
 
