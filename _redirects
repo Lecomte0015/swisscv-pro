@@ -1,6 +1,6 @@
 # Routes principales
-/accueil                    /index.html                 200
-/                           /index.html                 200
+/accueil                    /landing.html                 200
+/                           /landing.html                 200
 /analyseur-cv               /app.html                   200
 /tarifs                     /pricing.html               200
 /modeles-cv                 /templates.html             200
