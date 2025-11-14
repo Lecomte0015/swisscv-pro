@@ -1,4 +1,4 @@
-# URLs Françaises
+# Routes principales
 /accueil                    /index.html                 200
 /                           /index.html                 200
 /analyseur-cv               /app.html                   200
@@ -8,15 +8,13 @@
 /tableau-de-bord            /dashboard_premium.html     200
 /espace-pro                 /dashboard_pro.html         200
 
-# Redirections anciennes URLs
+# Anciennes URLs → nouvelles URLs (redirections 301)
 /app.html                   /analyseur-cv               301!
 /pricing.html               /tarifs                     301!
 /templates.html             /modeles-cv                 301!
 /success.html               /paiement-reussi            301!
 /dashboard_premium.html     /tableau-de-bord            301!
 /dashboard_pro.html         /espace-pro                 301!
-/app                        /analyseur-cv               301!
-/pricing                    /tarifs                     301!
-/templates                  /modeles-cv                 301!
 
+# Catch-all
 /*                          /index.html                 404
