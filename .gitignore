@@ -1,0 +1,17 @@
+node_modules/
+.wrangler/
+dist/
+.env
+.dev.vars
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cache/
+
+# Fichiers avec secrets - ne pas committer
+worker.js
+wrangler.toml

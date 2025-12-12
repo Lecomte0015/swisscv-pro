@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #1f2937;
+        }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-navbar h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .admin-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .metric-card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .metric-card .value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .metric-card .trend {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .metric-card .trend.up {
+            color: #10b981;
+        }
+
+        .metric-card .trend.down {
+            color: #ef4444;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .export-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-navbar {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .admin-nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .admin-nav-links a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <h1>🔐 Admin Dashboard</h1>
+        <div class="admin-nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-users.html">Utilisateurs</a>
+            <a href="admin-analytics.html" class="active">Analytics</a>
+            <a href="admin-support.html">Support</a>
+            <button class="logout-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>📊 Analytics Avancées</h2>
+
+        <button class="export-btn" onclick="exportData()">📥 Exporter CSV</button>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Taux de Conversion</h3>
+                <div class="value" id="conversionRate">-</div>
+                <div class="trend up">↑ +2.3% vs mois dernier</div>
+            </div>
+            <div class="metric-card">
+                <h3>MRR (Monthly Recurring Revenue)</h3>
+                <div class="value" id="mrr">-</div>
+                <div class="trend up">↑ +18% vs mois dernier</div>
+            </div>
+            <div class="metric-card">
+                <h3>Churn Rate</h3>
+                <div class="value" id="churnRate">-</div>
+                <div class="trend down">↓ -1.1% vs mois dernier</div>
+            </div>
+            <div class="metric-card">
+                <h3>LTV (Lifetime Value)</h3>
+                <div class="value" id="ltv">-</div>
+                <div class="trend up">↑ +12% vs mois dernier</div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>Croissance Utilisateurs (6 mois)</h3>
+                <canvas id="growthChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Analyses CV par Jour</h3>
+                <canvas id="analysesChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Revenus Mensuels</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Funnel de Conversion</h3>
+                <canvas id="funnelChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function getAdminToken() { return localStorage.getItem('admin_token'); }
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+
+        if (!getAdminToken()) window.location.href = 'admin-login.html';
+
+        // Charger métriques réelles
+        async function loadMetrics() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/metrics`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const metrics = await response.json();
+
+                document.getElementById('conversionRate').textContent = `${metrics.conversion_rate}%`;
+                document.getElementById('mrr').textContent = `€${metrics.mrr}`;
+                document.getElementById('churnRate').textContent = `${metrics.churn_rate}%`;
+                document.getElementById('ltv').textContent = `€${metrics.ltv}`;
+
+                // Créer graphiques avec vraies données
+                createGrowthChart(metrics.monthly_registrations);
+                createRevenueChart(metrics);
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+        }
+
+        // Growth Chart avec vraies données
+        function createGrowthChart(monthlyData) {
+            const months = Object.keys(monthlyData);
+            const values = Object.values(monthlyData);
+
+            new Chart(document.getElementById('growthChart'), {
+                type: 'line',
+                data: {
+                    labels: months.length > 0 ? months : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                    datasets: [{
+                        label: 'Utilisateurs',
+                        data: values.length > 0 ? values : [0, 0, 0, 0, 0, 0],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        // Analyses Chart (mock pour l'instant)
+        new Chart(document.getElementById('analysesChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{
+                    label: 'Analyses',
+                    data: [24, 35, 42, 38, 45, 28, 18],
+                    backgroundColor: '#10b981'
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Revenue Chart avec vraies données
+        function createRevenueChart(metrics) {
+            new Chart(document.getElementById('revenueChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                    datasets: [{
+                        label: 'Revenus (€)',
+                        data: [0, 0, 0, 0, 0, parseFloat(metrics.mrr)],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        // Funnel Chart
+        new Chart(document.getElementById('funnelChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Visiteurs', 'Inscriptions', 'Activations', 'Conversions'],
+                datasets: [{
+                    label: 'Utilisateurs',
+                    data: [1000, 450, 280, 125],
+                    backgroundColor: ['#667eea', '#764ba2', '#f59e0b', '#10b981']
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true
+            }
+        });
+
+        function exportData() {
+            alert('Export CSV en cours de développement...');
+        }
+
+        // Init
+        loadMetrics();
+    </script>
+</body>
+
+</html>

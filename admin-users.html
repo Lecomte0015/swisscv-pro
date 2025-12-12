@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Utilisateurs — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #1f2937;
+        }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-navbar h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .admin-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filters button {
+            padding: 10px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .users-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.free {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .badge.premium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge.pro {
+            background: #ddd6fe;
+            color: #7c3aed;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .btn-edit {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .btn-ban {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .btn-confirm {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <h1>🔐 Admin Dashboard</h1>
+        <div class="admin-nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-users.html" class="active">Utilisateurs</a>
+            <a href="admin-analytics.html">Analytics</a>
+            <a href="admin-support.html">Support</a>
+            <button class="logout-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>👥 Gestion Utilisateurs</h2>
+        </div>
+
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher par email...">
+            <select id="tierFilter">
+                <option value="">Tous les plans</option>
+                <option value="free">Free</option>
+                <option value="premium">Premium</option>
+                <option value="pro">Pro</option>
+            </select>
+            <button onclick="loadUsers()">Rechercher</button>
+        </div>
+
+        <div class="users-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Plan</th>
+                        <th>Inscrit le</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="4" style="text-align:center; padding: 40px;">Chargement...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+        let currentPage = 1;
+
+        function getAdminToken() { return localStorage.getItem('admin_token'); }
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+
+        if (!getAdminToken()) window.location.href = 'admin-login.html';
+
+        async function loadUsers(page = 1) {
+            const search = document.getElementById('searchInput').value;
+            const tier = document.getElementById('tierFilter').value;
+            currentPage = page;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/admin/users?page=${page}&search=${search}&tier=${tier}`,
+                    { headers: { 'Authorization': `Bearer ${getAdminToken()}` } }
+                );
+
+                if (!response.ok) throw new Error('Failed to load users');
+
+                const data = await response.json();
+                displayUsers(data.users);
+                displayPagination(data.pagination);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('usersTableBody').innerHTML =
+                    '<tr><td colspan="4" style="text-align:center; color: #dc2626;">Erreur de chargement</td></tr>';
+            }
+        }
+
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Aucun utilisateur trouvé</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.email}</td>
+                    <td><span class="badge ${user.tier}">${user.tier.toUpperCase()}</span></td>
+                    <td>${new Date(user.created_at).toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-sm btn-view" onclick='viewUser("${user.id}", "${user.email}")'>👁️ Voir</button>
+                            <button class="btn-sm btn-edit" onclick='editUser("${user.id}", "${user.email}", "${user.tier}")'>✏️ Modifier</button>
+                            <button class="btn-sm btn-ban" onclick='banUser("${user.id}", "${user.email}")'>🚫 Bannir</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function displayPagination(pagination) {
+            const container = document.getElementById('pagination');
+            const pages = [];
+
+            for (let i = 1; i <= pagination.pages; i++) {
+                pages.push(`<button class="${i === pagination.page ? 'active' : ''}" onclick="loadUsers(${i})">${i}</button>`);
+            }
+
+            container.innerHTML = pages.join('');
+        }
+
+        function viewUser(id, email) {
+            showModal(
+                '👁️ Détails Utilisateur',
+                `<strong>ID:</strong> ${id}<br><strong>Email:</strong> ${email}<br><br><em>Fonctionnalité complète à venir</em>`,
+                [{ text: 'Fermer', class: 'btn-cancel', action: closeModal }]
+            );
+        }
+
+        function editUser(id, email, currentTier) {
+            showModal(
+                '✏️ Modifier le Plan',
+                `
+                    <p><strong>Utilisateur:</strong> ${email}</p>
+                    <p><strong>Plan actuel:</strong> <span class="badge ${currentTier}">${currentTier.toUpperCase()}</span></p>
+                    <label style="display: block; margin-top: 16px; font-weight: 600;">Nouveau plan:</label>
+                    <select id="newTierSelect" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; margin-top: 8px;">
+                        <option value="free" ${currentTier === 'free' ? 'selected' : ''}>Free</option>
+                        <option value="premium" ${currentTier === 'premium' ? 'selected' : ''}>Premium</option>
+                        <option value="pro" ${currentTier === 'pro' ? 'selected' : ''}>Pro</option>
+                    </select>
+                `,
+                [
+                    { text: 'Annuler', class: 'btn-cancel', action: closeModal },
+                    { text: 'Confirmer', class: 'btn-confirm', action: () => confirmEditUser(id, email) }
+                ]
+            );
+        }
+
+        function confirmEditUser(id, email) {
+            const newTier = document.getElementById('newTierSelect').value;
+            closeModal();
+
+            // Appel API réel
+            fetch(`${API_BASE}/admin/users/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${getAdminToken()}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tier: newTier })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showConfetti();
+                        showModal(
+                            '✅ Plan Modifié',
+                            `Le plan de <strong>${email}</strong> a été modifié avec succès !<br><br>Nouveau plan: <span class="badge ${newTier}">${newTier.toUpperCase()}</span>`,
+                            [{ text: 'OK', class: 'btn-confirm', action: () => { closeModal(); loadUsers(currentPage); } }]
+                        );
+                    } else {
+                        showModal(
+                            '❌ Erreur',
+                            `Impossible de modifier le plan: ${data.error}`,
+                            [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                        );
+                    }
+                })
+                .catch(error => {
+                    showModal(
+                        '❌ Erreur',
+                        `Une erreur est survenue: ${error.message}`,
+                        [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                    );
+                });
+        }
+
+        function banUser(id, email) {
+            showModal(
+                '⚠️ Bannir Utilisateur',
+                `
+                    <p style="color: #dc2626; font-weight: 600;">Attention : Cette action est irréversible !</p>
+                    <p style="margin-top: 12px;">Êtes-vous sûr de vouloir bannir l'utilisateur :</p>
+                    <p style="margin-top: 8px;"><strong>${email}</strong></p>
+                `,
+                [
+                    { text: 'Annuler', class: 'btn-cancel', action: closeModal },
+                    { text: 'Bannir', class: 'btn-danger', action: () => confirmBanUser(id, email) }
+                ]
+            );
+        }
+
+        function confirmBanUser(id, email) {
+            closeModal();
+
+            // Appel API réel
+            fetch(`${API_BASE}/admin/users/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${getAdminToken()}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showConfetti();
+                        showModal(
+                            '🚫 Utilisateur Banni',
+                            `L'utilisateur <strong>${email}</strong> a été banni avec succès.`,
+                            [{ text: 'OK', class: 'btn-confirm', action: () => { closeModal(); loadUsers(currentPage); } }]
+                        );
+                    } else {
+                        showModal(
+                            '❌ Erreur',
+                            `Impossible de bannir l'utilisateur: ${data.error}`,
+                            [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                        );
+                    }
+                })
+                .catch(error => {
+                    showModal(
+                        '❌ Erreur',
+                        `Une erreur est survenue: ${error.message}`,
+                        [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                    );
+                });
+        }
+
+        function showModal(title, body, buttons) {
+            document.getElementById('modalHeader').innerHTML = title;
+            document.getElementById('modalBody').innerHTML = body;
+
+            // Stocker les actions globalement
+            window.modalActions = buttons.map(btn => btn.action);
+
+            document.getElementById('modalFooter').innerHTML = buttons.map((btn, index) =>
+                `<button class="${btn.class}" onclick="window.modalActions[${index}]()">${btn.text}</button>`
+            ).join('');
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function showConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f59e0b', '#10b981', '#ef4444'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        loadUsers();
+    </script>
+</body>
+
+</html>

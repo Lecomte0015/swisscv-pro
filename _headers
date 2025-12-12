@@ -1,0 +1,15 @@
+/templates/*.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=3600
+
+/templates/*.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=3600
+
+/templates/*.docx
+  Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  Cache-Control: public, max-age=3600
+
+/templates/*.pdf
+  Content-Type: application/pdf
+  Cache-Control: public, max-age=3600

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 32px;
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #E8F5E9;
+            border: 1px solid #4CAF50;
+            color: #2E7D32;
+        }
+
+        .error-message {
+            background: #FFE5E5;
+            border: 1px solid #FF5252;
+            color: #D50000;
+        }
+
+        .success-message.show,
+        .error-message.show {
+            display: block;
+        }
+
+        .info-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+
+        .info-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1976D2;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 58px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+        }
+    
+/* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    </style>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <!-- Menu Outils CV (Premium/Pro) -->
+            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link active">Support</a>
+            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>💬 Support Client</h1>
+            <p>Besoin d'aide ? Contactez notre équipe</p>
+        </div>
+
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="info-box">
+            <h3>⚡ Support Prioritaire Premium</h3>
+            <p>Les utilisateurs Premium et Pro bénéficient d'un support prioritaire avec un temps de réponse garanti
+                sous 24h.</p>
+        </div>
+
+        <div class="card">
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="name">Votre nom</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Votre email</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Sujet</label>
+                    <select id="subject" required>
+                        <option value="">Sélectionnez un sujet</option>
+                        <option value="technical">Problème technique</option>
+                        <option value="billing">Facturation / Abonnement</option>
+                        <option value="feature">Demande de fonctionnalité</option>
+                        <option value="bug">Signaler un bug</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Votre message</label>
+                    <textarea id="message" required placeholder="Décrivez votre demande en détail..."></textarea>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    📨 Envoyer le message
+                </button>
+            </form>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h3 style="margin-bottom: 16px;">Autres moyens de contact</h3>
+            <p style="color: #666; margin-bottom: 8px;">📧 Email : <a href="mailto:contact@swisscv-pro.ch"
+                    style="color: #D50000; text-decoration: none; font-weight: 600;">contact@swisscv-pro.ch</a></p>
+            <p style="color: #666;">⏰ Disponible du lundi au vendredi, 9h-18h (CET)</p>
+        </div>
+    </div>
+
+    <script>
+        // Pré-remplir les informations utilisateur
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getUser();
+            if (user) {
+                document.getElementById('name').value = user.full_name || user.email;
+                document.getElementById('email').value = user.email;
+            }
+        });
+
+        // Gérer la soumission du formulaire
+        document.getElementById('supportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
+
+            try {
+                const formData = {
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value
+                };
+
+                const response = await authenticatedFetch('/support/contact', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showSuccess('✅ Message envoyé avec succès ! Notre équipe vous répondra sous 24-48h.');
+                    document.getElementById('supportForm').reset();
+
+                    // Pré-remplir à nouveau après reset
+                    const user = getUser();
+                    if (user) {
+                        document.getElementById('name').value = user.full_name || user.email;
+                        document.getElementById('email').value = user.email;
+                    }
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors de l\'envoi du message');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur de connexion. Veuillez réessayer.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+            setTimeout(() => successDiv.classList.remove('show'), 5000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => errorDiv.classList.remove('show'), 5000);
+        }
+    </script>
+    <!-- Système de Notifications -->
+    <script src="notifications.js"></script>
+    <script src="favorites-badge.js"></script>
+</body>
+
+</html>

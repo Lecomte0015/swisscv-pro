@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Équipe — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .team-info h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .team-info p {
+            color: #666;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #F5F5F5;
+            color: var(--swiss-black);
+            border: 2px solid #E6E6E6;
+        }
+
+        .btn-secondary:hover {
+            background: #E6E6E6;
+            border-color: var(--swiss-black);
+        }
+
+        .btn-danger {
+            background: #FFE5E5;
+            color: #D50000;
+            border: 2px solid #D50000;
+        }
+
+        .btn-danger:hover {
+            background: #D50000;
+            color: white;
+        }
+
+        .members-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .member-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: 8px;
+            border: 2px solid #E6E6E6;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D50000, #FF5252);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .member-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .member-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.owner {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: black;
+        }
+
+        .badge.admin {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .badge.member {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #E8F5E9;
+            border: 1px solid #4CAF50;
+            color: #2E7D32;
+        }
+
+        .error-message {
+            background: #FFE5E5;
+            border: 1px solid #FF5252;
+            color: #D50000;
+        }
+
+        .success-message.show,
+        .error-message.show {
+            display: block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="modal-system.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.pro {
+            background: linear-gradient(135deg, #9C27B0 0%, #E91E63 100%);
+            color: white
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+
+            .container {
+                padding: 0 16px
+            }
+
+            .card {
+                padding: 20px
+            }
+
+            .team-header {
+                flex-direction: column;
+                align-items: flex-start
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr
+            }
+
+            .member-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px
+            }
+
+            .member-info {
+                width: 100%;
+                flex-wrap: wrap
+            }
+
+            .member-details {
+                flex: 1;
+                min-width: 0
+            }
+
+            .member-details h3,
+            .member-details p {
+                word-break: break-word;
+                overflow-wrap: break-word
+            }
+
+            .member-actions {
+                width: 100%;
+                flex-direction: column
+            }
+
+            .member-actions .btn {
+                width: 100%
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 24px
+            }
+
+            .team-info h1 {
+                font-size: 22px
+            }
+
+            .modal-content {
+                padding: 24px
+            }
+
+            .member-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px
+            }
+
+            .member-details h3 {
+                font-size: 15px
+            }
+
+            .member-details p {
+                font-size: 13px
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 12px
+            }
+
+            .card {
+                padding: 16px
+            }
+
+            .btn {
+                width: 100%;
+                padding: 14px;
+                font-size: 14px
+            }
+
+            .page-header h1 {
+                font-size: 20px
+            }
+
+            .team-info h1 {
+                font-size: 20px
+            }
+
+            .member-card {
+                padding: 12px
+            }
+
+            .member-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 14px
+            }
+
+            .member-details h3 {
+                font-size: 14px
+            }
+
+            .member-details p {
+                font-size: 12px
+            }
+
+            .badge {
+                font-size: 11px;
+                padding: 3px 10px
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    </style>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link active">Dashboard</a>
+
+            <!-- Menu Outils CV (Premium/Pro) -->
+            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link">Support</a>
+            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+    <div class="container">
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div id="loading" class="loading" style="display:none;">
+            ⏳ Chargement de votre équipe...
+        </div>
+
+        <div id="teamContent" style="display:none;">
+            <!-- EN-TÊTE ÉQUIPE -->
+            <div class="card">
+                <div class="team-header">
+                    <div class="team-info">
+                        <h1 id="teamName">Mon Équipe</h1>
+                        <p id="teamStats">0/5 membres</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-secondary" onclick="showRenameModal()" id="btnRename">✏️
+                            Renommer</button>
+                        <button class="btn btn-danger" onclick="deleteTeam()" id="btnDelete">🗑️ Supprimer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEMBRES -->
+            <div class="card">
+                <h2>👥 Membres de l'équipe</h2>
+                <div id="membersGrid" class="members-grid"></div>
+            </div>
+
+            <!-- INVITATIONS EN ATTENTE -->
+            <div class="card" id="invitationsCard" style="display:none;">
+                <h2>📧 Invitations en attente</h2>
+                <div id="invitationsGrid" class="members-grid"></div>
+            </div>
+
+            <!-- INVITER UN MEMBRE -->
+            <div class="card" id="inviteCard">
+                <h2>➕ Inviter un nouveau membre</h2>
+                <form id="inviteForm" onsubmit="inviteMember(event)">
+                    <div class="form-group">
+                        <label for="inviteEmail">Email du membre</label>
+                        <input type="email" id="inviteEmail" required placeholder="exemple@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="inviteRole">Rôle</label>
+                        <select id="inviteRole">
+                            <option value="member">Membre</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" id="btnInvite">📨 Envoyer l'invitation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RENOMMER -->
+    <div id="renameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Renommer l'équipe</h2>
+                <button class="modal-close" onclick="closeRenameModal()">&times;</button>
+            </div>
+            <form onsubmit="renameTeam(event)">
+                <div class="form-group">
+                    <label for="newTeamName">Nouveau nom</label>
+                    <input type="text" id="newTeamName" required>
+                </div>
+                <button type="submit" class="btn">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CRÉER ÉQUIPE -->
+    <div id="createTeamModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏢 Créer votre équipe</h2>
+                <button class="modal-close" onclick="closeCreateTeamModal()">&times;</button>
+            </div>
+            <form onsubmit="submitCreateTeam(event)">
+                <div class="form-group">
+                    <label for="createTeamName">Nom de l'équipe *</label>
+                    <input type="text" id="createTeamName" required placeholder="Ex: Équipe RH Suisse">
+                </div>
+                <div class="form-group">
+                    <label for="createTeamDescription">Description (optionnel)</label>
+                    <input type="text" id="createTeamDescription"
+                        placeholder="Ex: Équipe de recrutement pour la Suisse romande">
+                </div>
+                <button type="submit" class="btn" id="btnCreateTeam">➕ Créer l'équipe</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let teamData = null;
+        let userRole = null;
+
+        // Charger l'équipe au démarrage
+        (async function () {
+            const user = getUser();
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Vérifier si l'utilisateur a un token d'invitation dans l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteToken = urlParams.get('invite');
+
+            // Si l'utilisateur a un token d'invitation, essayer de l'accepter
+            if (inviteToken) {
+                await handleInvitationAcceptance(inviteToken);
+            }
+
+            // Vérifier si l'utilisateur est PRO OU membre d'une équipe
+            let canAccess = user.tier === 'pro';
+
+            if (!canAccess) {
+                // Vérifier si l'utilisateur est membre d'une équipe
+                try {
+                    const response = await authenticatedFetch('/teams/my-team');
+                    const data = await response.json();
+                    canAccess = data.success && data.team;
+                } catch (error) {
+                    console.log('Pas encore membre d\'une équipe');
+                }
+            }
+
+            if (!canAccess) {
+                alert('⚠️ Fonctionnalité réservée au plan PRO\n\nPassez au plan PRO pour créer et gérer une équipe.\n\nSi vous avez reçu une invitation, utilisez le lien fourni.');
+                window.location.href = "pricing.html";
+                return;
+            }
+
+            // Mettre à jour le badge
+            const badge = document.getElementById("userBadge");
+            if (badge) {
+                if (user.tier === 'pro') {
+                    badge.className = "navbar-badge pro";
+                    badge.textContent = "Pro";
+                } else if (user.tier === 'premium') {
+                    badge.className = "navbar-badge premium";
+                    badge.textContent = "Premium";
+                } else {
+                    badge.className = "navbar-badge free";
+                    badge.textContent = "Free";
+                }
+            }
+
+            await loadTeam();
+        })();
+
+        async function loadTeam() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('teamContent');
+
+            loading.style.display = 'block';
+            content.style.display = 'none';
+
+            try {
+                const response = await authenticatedFetch('/teams/my-team');
+                const data = await response.json();
+
+                if (data.success && data.team) {
+                    teamData = data.team;
+                    userRole = data.role;
+
+                    // Restaurer le HTML original si nécessaire
+                    if (!document.getElementById('teamName')) {
+                        content.innerHTML = `
+                            <!-- EN-TÊTE ÉQUIPE -->
+                            <div class="card">
+                                <div class="team-header">
+                                    <div class="team-info">
+                                        <h1 id="teamName">Mon Équipe</h1>
+                                        <p id="teamStats">0/5 membres</p>
+                                    </div>
+                                    <div style="display: flex; gap: 12px;">
+                                        <button class="btn btn-secondary" onclick="showRenameModal()" id="btnRename">✏️ Renommer</button>
+                                        <button class="btn btn-danger" onclick="deleteTeam()" id="btnDelete">🗑️ Supprimer</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MEMBRES -->
+                            <div class="card">
+                                <h2>👥 Membres de l'équipe</h2>
+                                <div id="membersGrid" class="members-grid"></div>
+                            </div>
+
+                            <!-- INVITATIONS EN ATTENTE -->
+                            <div class="card" id="invitationsCard" style="display:none;">
+                                <h2>📧 Invitations en attente</h2>
+                                <div id="invitationsGrid" class="members-grid"></div>
+                            </div>
+
+                            <!-- INVITER UN MEMBRE -->
+                            <div class="card" id="inviteCard">
+                                <h2>➕ Inviter un nouveau membre</h2>
+                                <form id="inviteForm" onsubmit="inviteMember(event)">
+                                    <div class="form-group">
+                                        <label for="inviteEmail">Email du membre</label>
+                                        <input type="email" id="inviteEmail" required placeholder="exemple@email.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inviteRole">Rôle</label>
+                                        <select id="inviteRole">
+                                            <option value="member">Membre</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn" id="btnInvite">📨 Envoyer l'invitation</button>
+                                </form>
+                            </div>
+                        `;
+                    }
+
+                    // Afficher l'équipe
+                    document.getElementById('teamName').textContent = teamData.name;
+                    document.getElementById('teamStats').textContent = `${data.members.length}/${teamData.max_members} membres`;
+
+                    // Afficher les membres
+                    displayMembers(data.members);
+
+                    // Charger les invitations
+                    await loadInvitations();
+
+                    // Gérer les permissions
+                    const isOwner = userRole === 'owner';
+                    const isAdmin = userRole === 'admin' || isOwner;
+
+                    document.getElementById('btnRename').style.display = isAdmin ? 'block' : 'none';
+                    document.getElementById('btnDelete').style.display = isOwner ? 'block' : 'none';
+                    document.getElementById('inviteCard').style.display = isAdmin ? 'block' : 'none';
+
+                    content.style.display = 'block';
+                } else {
+                    // Pas d'équipe, proposer d'en créer une
+                    showCreateTeamPrompt();
+                }
+            } catch (error) {
+                console.error('Erreur chargement équipe:', error);
+                showError('Erreur lors du chargement de l\'équipe');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function displayMembers(members) {
+            const grid = document.getElementById('membersGrid');
+
+            if (!members || members.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>Aucun membre</p></div>';
+                return;
+            }
+
+            grid.innerHTML = members.map(member => {
+                const initials = (member.full_name || member.email).substring(0, 2).toUpperCase();
+                const canManage = (userRole === 'owner' || (userRole === 'admin' && member.role !== 'owner'));
+
+                return `
+            <div class="member-card">
+                <div class="member-info">
+                    <div class="member-avatar">${initials}</div>
+                    <div class="member-details">
+                        <h3>${member.full_name || member.email}</h3>
+                        <p>${member.email}</p>
+                    </div>
+                    <span class="badge ${member.role}">${getRoleLabel(member.role)}</span>
+                </div>
+                <div class="member-actions">
+                    ${canManage && member.role !== 'owner' ? `
+                        ${userRole === 'owner' ? `
+                            <button class="btn btn-secondary" onclick="changeRole('${member.id}', '${member.role}')">
+                                ${member.role === 'admin' ? '↓ Membre' : '↑ Admin'}
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-danger" onclick="removeMember('${member.id}', '${member.full_name || member.email}')">
+                            Retirer
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+            }).join('');
+        }
+
+        async function loadInvitations() {
+            try {
+                const response = await authenticatedFetch('/teams/invitations');
+                const data = await response.json();
+
+                if (data.success && data.invitations && data.invitations.length > 0) {
+                    const card = document.getElementById('invitationsCard');
+                    const grid = document.getElementById('invitationsGrid');
+
+                    grid.innerHTML = data.invitations.map(inv => `
+                <div class="member-card">
+                    <div class="member-info">
+                        <div class="member-avatar">📧</div>
+                        <div class="member-details">
+                            <h3>${inv.email}</h3>
+                            <p>Invité le ${new Date(inv.created_at * 1000).toLocaleDateString('fr-CH')}</p>
+                        </div>
+                        <span class="badge ${inv.role}">${getRoleLabel(inv.role)}</span>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-secondary" onclick="copyInviteLink('${inv.token || ''}')">📋 Copier lien</button>
+                        <button class="btn btn-danger" onclick="cancelInvitation('${inv.id}')">❌ Annuler</button>
+                    </div>
+                </div>
+            `).join('');
+
+                    card.style.display = 'block';
+                } else {
+                    document.getElementById('invitationsCard').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erreur chargement invitations:', error);
+            }
+        }
+
+        async function handleInvitationAcceptance(token) {
+            try {
+                const response = await authenticatedFetch(`/teams/invitations/${token}/accept`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess('✅ Invitation acceptée ! Bienvenue dans l\'équipe !');
+                    // Nettoyer l'URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } else {
+                    showError(data.error || 'Erreur lors de l\'acceptation de l\'invitation');
+                }
+            } catch (error) {
+                console.error('Erreur acceptation invitation:', error);
+                showError('Erreur lors de l\'acceptation de l\'invitation');
+            }
+        }
+
+        async function inviteMember(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('inviteEmail').value;
+            const role = document.getElementById('inviteRole').value;
+            const btn = document.getElementById('btnInvite');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Envoi...';
+
+            try {
+                const response = await authenticatedFetch('/teams/invite', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, role })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess(`✅ Invitation envoyée à ${email}`);
+                    document.getElementById('inviteForm').reset();
+                    await loadInvitations();
+                } else {
+                    showError(data.error || 'Erreur lors de l\'invitation');
+                }
+            } catch (error) {
+                console.error('Erreur invitation:', error);
+                showError('Erreur de connexion');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📨 Envoyer l\'invitation';
+            }
+        }
+
+        async function removeMember(memberId, memberName) {
+            if (!confirm(`⚠️ Retirer ${memberName} de l'équipe ?\n\nCette action est irréversible.`)) {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch(`/teams/members/${memberId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showSuccess(`✅ ${memberName} a été retiré de l'équipe`);
+                    await loadTeam();
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors du retrait');
+                }
+            } catch (error) {
+                console.error('Erreur retrait membre:', error);
+                showError('Erreur de connexion');
+            }
+        }
+
+        async function changeRole(memberId, currentRole) {
+            const newRole = currentRole === 'admin' ? 'member' : 'admin';
+
+            try {
+                const response = await authenticatedFetch(`/teams/members/${memberId}/role`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ role: newRole })
+                });
+
+                if (response.ok) {
+                    showSuccess(`✅ Rôle modifié avec succès`);
+                    await loadTeam();
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors du changement de rôle');
+                }
+            } catch (error) {
+                console.error('Erreur changement rôle:', error);
+                showError('Erreur de connexion');
+            }
+        }
+
+        function showRenameModal() {
+            document.getElementById('newTeamName').value = teamData.name;
+            document.getElementById('renameModal').classList.add('show');
+        }
+
+        function closeRenameModal() {
+            document.getElementById('renameModal').classList.remove('show');
+        }
+
+        async function renameTeam(event) {
+            event.preventDefault();
+
+            const newName = document.getElementById('newTeamName').value;
+
+            try {
+                const response = await authenticatedFetch(`/teams/${teamData.id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ name: newName })
+                });
+
+                if (response.ok) {
+                    showSuccess('✅ Équipe renommée avec succès');
+                    closeRenameModal();
+                    await loadTeam();
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors du renommage');
+                }
+            } catch (error) {
+                console.error('Erreur renommage:', error);
+                showError('Erreur de connexion');
+            }
+        }
+
+        async function deleteTeam() {
+            if (!confirm('⚠️ SUPPRIMER L\'ÉQUIPE ?\n\nCette action est IRRÉVERSIBLE.\n\nTous les membres seront retirés et l\'équipe sera définitivement supprimée.')) {
+                return;
+            }
+
+            const confirmation = prompt('Pour confirmer, tapez "SUPPRIMER" en majuscules :');
+            if (confirmation !== 'SUPPRIMER') {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch(`/teams/${teamData.id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('✅ Équipe supprimée avec succès');
+                    window.location.href = 'profile.html';
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors de la suppression');
+                }
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                showError('Erreur de connexion');
+            }
+        }
+
+        function copyInviteLink(token) {
+            const link = `${window.location.origin}/team.html?invite=${token}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showSuccess('✅ Lien d\'invitation copié !');
+            }).catch(() => {
+                showError('Erreur lors de la copie');
+            });
+        }
+
+        async function cancelInvitation(invitationId) {
+            if (!confirm('Voulez-vous vraiment annuler cette invitation ?')) {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch(`/teams/invitations/${invitationId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess('✅ Invitation annulée');
+                    await loadInvitations();
+                } else {
+                    showError(data.error || 'Erreur lors de l\'annulation');
+                }
+            } catch (error) {
+                console.error('Erreur annulation invitation:', error);
+                showError('Erreur de connexion');
+            }
+        }
+
+        function showCreateTeamPrompt() {
+            const content = document.getElementById('teamContent');
+            content.innerHTML = `
+        <div class="card" style="text-align: center; padding: 60px 40px;">
+            <div style="font-size: 64px; margin-bottom: 24px;">🏢</div>
+            <h2 style="font-size: 28px; margin-bottom: 16px;">Créez votre équipe</h2>
+            <p style="color: #666; margin-bottom: 32px;">Invitez jusqu'à 5 membres et gérez vos analyses en équipe</p>
+            <button class="btn" onclick="createTeam()">➕ Créer mon équipe</button>
+        </div>
+    `;
+            content.style.display = 'block';
+        }
+
+        async function createTeam() {
+            // Ouvrir la modal au lieu du prompt
+            document.getElementById('createTeamModal').classList.add('show');
+        }
+
+        function closeCreateTeamModal() {
+            document.getElementById('createTeamModal').classList.remove('show');
+            document.getElementById('createTeamName').value = '';
+            document.getElementById('createTeamDescription').value = '';
+        }
+
+        async function submitCreateTeam(event) {
+            event.preventDefault();
+
+            const teamName = document.getElementById('createTeamName').value;
+            const teamDescription = document.getElementById('createTeamDescription').value;
+            const btn = document.getElementById('btnCreateTeam');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Création...';
+
+            try {
+                const response = await authenticatedFetch('/teams/create', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: teamName,
+                        description: teamDescription || null
+                    })
+                });
+
+                if (response.ok) {
+                    showSuccess('✅ Équipe créée avec succès !');
+                    closeCreateTeamModal();
+                    await loadTeam();
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Erreur lors de la création');
+                }
+            } catch (error) {
+                console.error('Erreur création équipe:', error);
+                showError('Erreur de connexion');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '➕ Créer l\'équipe';
+            }
+        }
+
+        function getRoleLabel(role) {
+            const labels = {
+                owner: 'Propriétaire',
+                admin: 'Admin',
+                member: 'Membre'
+            };
+            return labels[role] || role;
+        }
+
+        function showSuccess(message) {
+            const div = document.getElementById('successMessage');
+            div.textContent = message;
+            div.classList.add('show');
+            setTimeout(() => div.classList.remove('show'), 5000);
+        }
+
+        function showError(message) {
+            const div = document.getElementById('errorMessage');
+            div.textContent = message;
+            div.classList.add('show');
+            setTimeout(() => div.classList.remove('show'), 5000);
+        }
+
+        // Gérer les invitations via URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const inviteToken = urlParams.get('invite');
+        if (inviteToken) {
+            (async () => {
+                if (!confirm('Accepter cette invitation à rejoindre une équipe ?')) {
+                    window.location.href = 'team.html';
+                    return;
+                }
+
+                try {
+                    const response = await authenticatedFetch('/teams/accept-invitation', {
+                        method: 'POST',
+                        body: JSON.stringify({ token: inviteToken })
+                    });
+
+                    if (response.ok) {
+                        alert('✅ Invitation acceptée ! Bienvenue dans l\'équipe.');
+                        window.location.href = 'team.html';
+                    } else {
+                        const error = await response.json();
+                        alert('❌ ' + (error.error || 'Invitation invalide'));
+                        window.location.href = 'team.html';
+                    }
+                } catch (error) {
+                    alert('❌ Erreur de connexion');
+                    window.location.href = 'team.html';
+                }
+            })();
+        }
+    </script>
+    <!-- Système de Notifications -->
+    <script src="notifications.js"></script>
+    <script src="favorites-badge.js"></script>
+</body>
+
+</html>
