@@ -15,3 +15,11 @@ dist/
 # Fichiers avec secrets - ne pas committer
 worker.js
 wrangler.toml
+
+# Secrets - Ne jamais commit
+index.js
+worker.js
+*.backup
+*-backup-*.js
+worker-*.js
+
