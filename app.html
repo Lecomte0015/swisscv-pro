@@ -811,7 +811,7 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="modal-system.js"></script>
+    <script src="public/js/modal-system.js"></script>
 </head>
 
 <body>
@@ -1426,8 +1426,8 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn-action btn-primary" onclick="window.open('cover-letter.html', '_blank')">
-                    ✉️ Générer une lettre
+                <button class="btn-action btn-primary" onclick="window.location.href='cover-letter.html'">
+                    📝 Générer une lettre de motivation
                 </button>
                 <button class="btn-action btn-primary" id="optimizeForJobBtn" onclick="openOptimizeModal()"
                     style="display:none;">
@@ -2185,258 +2185,394 @@
             console.log('✅ Affichage terminé');
 
             // Afficher le bouton optimisation pour Premium/Pro
-            updateOptimizeButton();
+            // updateOptimizeButton(); // Fonction non définie, commentée
         }
 
         // ============================================================
         // ✅ EXPORT PDF AVEC jsPDF
         // ============================================================
 
-        document.getElementById('exportPdfBtn').addEventListener('click', () => {
-            if (!currentAnalysisResult) {
-                alert('❌ Aucune analyse à exporter.');
-                return;
-            }
-            if (!isPaidUser()) {
-                showUpgradeModal('L\'export PDF');
-                return;
-            }
-
-            try {
-                console.log('📄 Génération du PDF...');
-
-                // Accéder à jsPDF depuis le bundle UMD
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                // Configuration
-                let y = 20;
-                const lineHeight = 7;
-                const margin = 20;
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const maxWidth = pageWidth - 2 * margin;
-
-                // Titre
-                doc.setFontSize(24);
-                doc.setFont('helvetica', 'bold');
-                doc.text('SwissCV Pro - Analyse de CV', margin, y);
-                y += 15;
-
-                // Score
-                doc.setFontSize(20);
-                doc.setTextColor(213, 0, 0);
-                doc.text(`Score: ${currentAnalysisResult.score}/100`, margin, y);
-                y += 15;
-
-                // Points forts
-                doc.setFontSize(16);
-                doc.setFont('helvetica', 'bold');
-                doc.setTextColor(0, 0, 0);
-                doc.text('Points Forts:', margin, y);
-                y += 10;
-
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'normal');
-                if (currentAnalysisResult.strongPoints && currentAnalysisResult.strongPoints.length > 0) {
-                    currentAnalysisResult.strongPoints.forEach((point, index) => {
-                        const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
-                        lines.forEach(line => {
-                            if (y > 270) {
-                                doc.addPage();
-                                y = 20;
-                            }
-                            doc.text(line, margin, y);
-                            y += lineHeight;
-                        });
-                    });
-                } else {
-                    doc.text('Aucun point fort disponible', margin, y);
-                    y += lineHeight;
+        const suggestJobsBtn = document.getElementById('suggestJobsBtn');
+        if (suggestJobsBtn) {
+            suggestJobsBtn.addEventListener('click', async () => {
+                if (!currentAnalysisResult) {
+                    alert('❌ Aucune analyse à exporter.');
+                    return;
                 }
-
-                y += 5;
-
-                // Points à améliorer
-                doc.setFontSize(16);
-                doc.setFont('helvetica', 'bold');
-                doc.text('Points à Améliorer:', margin, y);
-                y += 10;
-
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'normal');
-                if (currentAnalysisResult.improvements && currentAnalysisResult.improvements.length > 0) {
-                    currentAnalysisResult.improvements.forEach((point, index) => {
-                        const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
-                        lines.forEach(line => {
-                            if (y > 270) {
-                                doc.addPage();
-                                y = 20;
-                            }
-                            doc.text(line, margin, y);
-                            y += lineHeight;
-                        });
-                    });
-                } else {
-                    doc.text('Aucune amélioration disponible', margin, y);
-                    y += lineHeight;
-                }
-
-                y += 5;
-
-                // Conseils marché suisse
-                doc.setFontSize(16);
-                doc.setFont('helvetica', 'bold');
-                doc.text('Conseils Marché Suisse:', margin, y);
-                y += 10;
-
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'normal');
-                if (currentAnalysisResult.swissAdvice && currentAnalysisResult.swissAdvice.length > 0) {
-                    currentAnalysisResult.swissAdvice.forEach((point, index) => {
-                        const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
-                        lines.forEach(line => {
-                            if (y > 270) {
-                                doc.addPage();
-                                y = 20;
-                            }
-                            doc.text(line, margin, y);
-                            y += lineHeight;
-                        });
-                    });
-                } else {
-                    doc.text('Aucun conseil disponible', margin, y);
-                    y += lineHeight;
-                }
-
-                // Score ATS si disponible
-                if (currentAnalysisResult.ats_score) {
-                    y += 5;
-                    doc.setFontSize(16);
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
-                }
-
-                // Télécharger
-                doc.save('swisscv-analyse.pdf');
-                console.log('✅ PDF généré et téléchargé');
-
-            } catch (error) {
-                console.error('❌ Erreur génération PDF:', error);
-                alert('❌ Erreur lors de la génération du PDF.');
-            }
-        });
-
-
-        // ============================================================
-        // NOUVELLE ANALYSE
-        // ============================================================
-
-        document.getElementById('newAnalysisBtn').addEventListener('click', () => {
-            selectedFile = null;
-            currentAnalysisResult = null;
-            fileInput.value = '';
-            fileInfo.classList.remove('show');
-            analyzeBtn.disabled = true;
-            document.getElementById('resultsSection').classList.remove('show');
-            document.getElementById('hasPhotoCheckbox').checked = true;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            updateRemainingCount();
-        });
-
-        // ============================================================
-        // COMPTEUR ANALYSES RESTANTES
-        // ============================================================
-
-        async function updateRemainingCount() {
-            if (isPaidUser()) {
-                document.getElementById('remainingAnalyses').innerHTML = '';
-                return;
-            }
-            try {
-                const { remaining } = await getRemainingAnalyses(API_BASE);
-                displayRemainingCount(remaining);
-            } catch (error) {
-                console.error('Erreur compteur:', error);
-            }
-        }
-
-        // ============================================================
-        // INITIALISATION
-        // ============================================================
-
-        window.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 SwissCV Pro chargé - Version FIXED');
-
-            try {
-                // ✅ Vérifier l'authentification AVANT tout
-                const token = getToken();
-                if (!token) {
-                    console.log('❌ Non authentifié - Redirection vers login');
-                    window.location.href = 'login.html';
+                if (!isPaidUser()) {
+                    showUpgradeModal('L\'export PDF');
                     return;
                 }
 
-                // ✅ Authentification OK - Afficher le contenu
-                console.log('✅ Authentifié - Token présent');
-
-                updateUIForUserRole();
-                setupPremiumLinks();
-
-                // ✅ Appeler updateRemainingCount
                 try {
-                    await updateRemainingCount();
+                    console.log('📄 Génération du PDF...');
+
+                    // Accéder à jsPDF depuis le bundle UMD
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    // Configuration
+                    let y = 20;
+                    const lineHeight = 7;
+                    const margin = 20;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const maxWidth = pageWidth - 2 * margin;
+
+                    // Titre
+                    doc.setFontSize(24);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('SwissCV Pro - Analyse de CV', margin, y);
+                    y += 15;
+
+                    // Score
+                    doc.setFontSize(20);
+                    doc.setTextColor(213, 0, 0);
+                    doc.text(`Score: ${currentAnalysisResult.score}/100`, margin, y);
+                    y += 15;
+
+                    // Points forts
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Points Forts:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.strongPoints && currentAnalysisResult.strongPoints.length > 0) {
+                        currentAnalysisResult.strongPoints.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun point fort disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Points à améliorer
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Points à Améliorer:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.improvements && currentAnalysisResult.improvements.length > 0) {
+                        currentAnalysisResult.improvements.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucune amélioration disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Conseils marché suisse
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Conseils Marché Suisse:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.swissAdvice && currentAnalysisResult.swissAdvice.length > 0) {
+                        currentAnalysisResult.swissAdvice.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun conseil disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    // Score ATS si disponible
+                    if (currentAnalysisResult.ats_score) {
+                        y += 5;
+                        doc.setFontSize(16);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
+                    }
+
+                    // Télécharger
+                    doc.save('swisscv-analyse.pdf');
+                    console.log('✅ PDF généré et téléchargé');
+
                 } catch (error) {
-                    console.error('Erreur initialisation compteur:', error);
+                    console.error('❌ Erreur génération PDF:', error);
+                    alert('❌ Erreur lors de la génération du PDF.');
+                }
+            });
+
+            document.getElementById('exportPdfBtn').addEventListener('click', () => {
+                if (!currentAnalysisResult) {
+                    alert('❌ Aucune analyse à exporter.');
+                    return;
+                }
+                if (!isPaidUser()) {
+                    showUpgradeModal('L\'export PDF');
+                    return;
                 }
 
-            } catch (error) {
-                console.error('❌ Erreur authentification:', error);
-                // En cas d'erreur, rediriger vers login
-                window.location.href = 'login.html';
+                try {
+                    console.log('📄 Génération du PDF...');
+
+                    // Accéder à jsPDF depuis le bundle UMD
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    // Configuration
+                    let y = 20;
+                    const lineHeight = 7;
+                    const margin = 20;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const maxWidth = pageWidth - 2 * margin;
+
+                    // Titre
+                    doc.setFontSize(24);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('SwissCV Pro - Analyse de CV', margin, y);
+                    y += 15;
+
+                    // Score
+                    doc.setFontSize(20);
+                    doc.setTextColor(213, 0, 0);
+                    doc.text(`Score: ${currentAnalysisResult.score}/100`, margin, y);
+                    y += 15;
+
+                    // Points forts
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Points Forts:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.strongPoints && currentAnalysisResult.strongPoints.length > 0) {
+                        currentAnalysisResult.strongPoints.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun point fort disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Points à améliorer
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Points à Améliorer:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.improvements && currentAnalysisResult.improvements.length > 0) {
+                        currentAnalysisResult.improvements.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucune amélioration disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Conseils marché suisse
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Conseils Marché Suisse:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.swissAdvice && currentAnalysisResult.swissAdvice.length > 0) {
+                        currentAnalysisResult.swissAdvice.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun conseil disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    // Score ATS si disponible
+                    if (currentAnalysisResult.ats_score) {
+                        y += 5;
+                        doc.setFontSize(16);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
+                    }
+
+                    // Télécharger
+                    doc.save('swisscv-analyse.pdf');
+                    console.log('✅ PDF généré et téléchargé');
+
+                } catch (error) {
+                    console.error('❌ Erreur génération PDF:', error);
+                    alert('❌ Erreur lors de la génération du PDF.');
+                }
+            });
+
+
+            // ============================================================
+            // NOUVELLE ANALYSE
+            // ============================================================
+
+            document.getElementById('newAnalysisBtn').addEventListener('click', () => {
+                selectedFile = null;
+                currentAnalysisResult = null;
+                fileInput.value = '';
+                fileInfo.classList.remove('show');
+                analyzeBtn.disabled = true;
+                document.getElementById('resultsSection').classList.remove('show');
+                document.getElementById('hasPhotoCheckbox').checked = true;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                updateRemainingCount();
+            });
+
+            // ============================================================
+            // COMPTEUR ANALYSES RESTANTES
+            // ============================================================
+
+            async function updateRemainingCount() {
+                if (isPaidUser()) {
+                    document.getElementById('remainingAnalyses').innerHTML = '';
+                    return;
+                }
+                try {
+                    const { remaining } = await getRemainingAnalyses(API_BASE);
+                    displayRemainingCount(remaining);
+                } catch (error) {
+                    console.error('Erreur compteur:', error);
+                }
             }
-        });
 
-        // ✨ Fonctions optimisation CV
+            // ============================================================
+            // INITIALISATION
+            // ============================================================
 
-        function openOptimizeModal() {
-            if (!currentCVText) {
-                alert('Veuillez d\'abord analyser un CV');
-                return;
+            window.addEventListener('DOMContentLoaded', async () => {
+                console.log('🚀 SwissCV Pro chargé - Version FIXED');
+
+                try {
+                    // ✅ Vérifier l'authentification AVANT tout
+                    const token = getToken();
+                    if (!token) {
+                        console.log('❌ Non authentifié - Redirection vers login');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    // ✅ Authentification OK - Afficher le contenu
+                    console.log('✅ Authentifié - Token présent');
+
+                    updateUIForUserRole();
+                    setupPremiumLinks();
+
+                    // ✅ Appeler updateRemainingCount
+                    try {
+                        await updateRemainingCount();
+                    } catch (error) {
+                        console.error('Erreur initialisation compteur:', error);
+                    }
+
+                } catch (error) {
+                    console.error('❌ Erreur authentification:', error);
+                    // En cas d'erreur, rediriger vers login
+                    window.location.href = 'login.html';
+                }
+            });
+
+            // ✨ Fonctions optimisation CV
+
+            function openOptimizeModal() {
+                if (!currentCVText) {
+                    alert('Veuillez d\'abord analyser un CV');
+                    return;
+                }
+                document.getElementById('optimizeModal').classList.add('show');
             }
-            document.getElementById('optimizeModal').classList.add('show');
-        }
 
-        function closeOptimizeModal() {
-            document.getElementById('optimizeModal').classList.remove('show');
-            document.getElementById('jobDescriptionInput').value = '';
-            document.getElementById('optimizationResults').style.display = 'none';
-        }
-
-        async function optimizeForJob() {
-            const jobDescription = document.getElementById('jobDescriptionInput').value.trim();
-            if (!jobDescription) {
-                alert('Veuillez coller la description de l\'offre');
-                return;
+            function closeOptimizeModal() {
+                document.getElementById('optimizeModal').classList.remove('show');
+                document.getElementById('jobDescriptionInput').value = '';
+                document.getElementById('optimizationResults').style.display = 'none';
             }
 
-            try {
-                const response = await authenticatedFetch('/ai/optimize-cv', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        cvText: currentCVText,
-                        jobDescription: jobDescription
-                    })
-                });
-
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erreur');
+            async function optimizeForJob() {
+                const jobDescription = document.getElementById('jobDescriptionInput').value.trim();
+                if (!jobDescription) {
+                    alert('Veuillez coller la description de l\'offre');
+                    return;
                 }
 
-                const analysis = data.analysis;
+                try {
+                    const response = await authenticatedFetch('/ai/optimize-cv', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            cvText: currentCVText,
+                            jobDescription: jobDescription
+                        })
+                    });
 
-                // Afficher les résultats
-                const resultsHTML = `
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erreur');
+                    }
+
+                    const analysis = data.analysis;
+
+                    // Afficher les résultats
+                    const resultsHTML = `
                     <div style="background: #E3F2FD; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                         <h4 style="margin-bottom: 10px;">📊 Score de correspondance: ${analysis.matchScore}%</h4>
                     </div>
@@ -2464,31 +2600,32 @@
                     </div>
                 `;
 
-                document.getElementById('optimizationContent').innerHTML = resultsHTML;
-                document.getElementById('optimizationResults').style.display = 'block';
+                    document.getElementById('optimizationContent').innerHTML = resultsHTML;
+                    document.getElementById('optimizationResults').style.display = 'block';
 
-            } catch (error) {
-                console.error('Erreur optimisation:', error);
-                alert('Erreur lors de l\'optimisation: ' + error.message);
+                } catch (error) {
+                    console.error('Erreur optimisation:', error);
+                    alert('Erreur lors de l\'optimisation: ' + error.message);
+                }
             }
-        }
 
-        // Afficher le bouton optimisation pour Premium/Pro
-        function updateOptimizeButton() {
-            const user = getUser();
-            const btn = document.getElementById('optimizeForJobBtn');
-            if (btn && user && (user.tier === 'premium' || user.tier === 'pro')) {
-                btn.style.display = 'inline-block';
+            // Afficher le bouton optimisation pour Premium/Pro
+            function updateOptimizeButton() {
+                const user = getUser();
+                const btn = document.getElementById('optimizeForJobBtn');
+                if (btn && user && (user.tier === 'premium' || user.tier === 'pro')) {
+                    btn.style.display = 'inline-block';
+                }
             }
-        }
 
-        // Appeler au chargement
-        updateOptimizeButton();
+            // Appeler au chargement
+            updateOptimizeButton();
+        }
 
     </script>
     <!-- Système de Notifications -->
-    <script src="notifications.js"></script>
-    <script src="favorites-badge.js"></script>
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
 </body>
 
 </html>

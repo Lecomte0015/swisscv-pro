@@ -950,13 +950,8 @@
         function getToken() { return localStorage.getItem("swisscv_token"); }
         function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
         function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
-        async function authenticatedFetch(endpoint, options = {}) {
-            const token = getToken();
-            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
-            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
-            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
-            return response;
-        }
+        // REMOVED: Duplicate authenticatedFetch - using the one from auth.js instead
+        // This was causing redirect to login before auth.js could load
     </script>
     <style>
         .navbar {
@@ -1942,7 +1937,7 @@
         </div>
     </div>
 
-    <script src="auth.js"></script>
+    <script src="/public/js/auth.js"></script>
     <script>
         let currentJobs = [];
         let currentJobDetails = null;
@@ -1972,7 +1967,7 @@
         async function loadSavedSearches() {
             try {
                 console.log('🔄 Chargement recherches sauvegardées...');
-                const response = await authenticatedFetch('/searches');
+                const response = await authenticatedFetch('/saved-searches');
                 const data = await response.json();
 
                 console.log('📥 Réponse loadSavedSearches:', data);
@@ -2146,7 +2141,7 @@
 
                 if (response.ok) {
                     showSuccessToast('✅ Recherche supprimée');
-                    await loadSavedSearches();
+                    // await loadSavedSearches(); // DÉSACTIVÉ
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
@@ -2292,7 +2287,7 @@
 
                 if (response.ok) {
                     alert('✅ Recherche supprimée');
-                    loadSavedSearches(); // Recharger la liste
+                    // loadSavedSearches(); // Désactivé temporairement // Recharger la liste
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
@@ -2330,7 +2325,7 @@
             if (!authenticated) return;
 
             // Charger les favoris, recherches sauvegardées et suggestions
-            await loadUserFavorites();
+            // await loadUserFavorites(); // DÉSACTIVÉ
             await loadSavedSearches();
             loadSuggestions();
         })();
@@ -2341,42 +2336,60 @@
         let suggestions = [];
 
         async function loadSuggestions() {
-            const loading = document.getElementById('suggestionsLoading');
-            const emptyState = document.getElementById('suggestionsEmpty');
-            const suggestionsGrid = document.getElementById('suggestionsGrid');
-            const btnRefresh = document.getElementById('btnRefreshSuggestions');
-
-            loading.style.display = 'block';
-            emptyState.style.display = 'none';
-            suggestionsGrid.style.display = 'none';
-            btnRefresh.disabled = true;
-
             try {
-                const response = await authenticatedFetch('/jobs/suggestions');
-                if (!response) return;
+                console.log('🔄 Chargement suggestions...');
+                const loading = document.getElementById('suggestionsLoading');
+                const emptyState = document.getElementById('suggestionsEmpty');
+                const suggestionsGrid = document.getElementById('suggestionsGrid');
+                const btnRefresh = document.getElementById('btnRefreshSuggestions');
 
-                const data = await response.json();
+                console.log('📋 Éléments DOM:', { loading, emptyState, suggestionsGrid, btnRefresh });
 
-                if (data.success) {
-                    suggestions = data.offers || [];
-
-                    if (suggestions.length === 0) {
-                        document.getElementById('suggestionsEmptyTitle').textContent = data.message || 'Aucune offre trouvée';
-                        document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou essayez de rafraîchir';
-                        emptyState.style.display = 'block';
-                    } else {
-                        displaySuggestions();
-                        suggestionsGrid.style.display = 'grid';
-                    }
-                } else {
-                    emptyState.style.display = 'block';
+                if (!loading || !emptyState || !suggestionsGrid) {
+                    console.error('❌ Éléments DOM manquants!');
+                    return;
                 }
-            } catch (error) {
-                console.error('Erreur chargement suggestions:', error);
-                emptyState.style.display = 'block';
-            } finally {
-                loading.style.display = 'none';
-                btnRefresh.disabled = false;
+
+                loading.style.display = 'block';
+                emptyState.style.display = 'none';
+                suggestionsGrid.style.display = 'none';
+                if (btnRefresh) btnRefresh.disabled = true;
+
+                try {
+                    const response = await authenticatedFetch('/jobs/suggestions');
+                    if (!response) {
+                        console.error('❌ Pas de réponse de l\'API');
+                        emptyState.style.display = 'block';
+                        return;
+                    }
+
+                    const data = await response.json();
+                    console.log('📥 Réponse suggestions:', data);
+
+                    if (data.success) {
+                        suggestions = data.offers || [];
+
+                        if (suggestions.length === 0) {
+                            document.getElementById('suggestionsEmptyTitle').textContent = data.message || 'Aucune offre trouvée';
+                            document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou essayez de rafraîchir';
+                            emptyState.style.display = 'block';
+                        } else {
+                            displaySuggestions();
+                            suggestionsGrid.style.display = 'grid';
+                        }
+                    } else {
+                        console.error('❌ Erreur API:', data.error);
+                        emptyState.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('❌ Erreur chargement suggestions:', error);
+                    emptyState.style.display = 'block';
+                } finally {
+                    loading.style.display = 'none';
+                    if (btnRefresh) btnRefresh.disabled = false;
+                }
+            } catch (outerError) {
+                console.error('❌ Erreur fatale loadSuggestions:', outerError);
             }
         }
 
@@ -2410,7 +2423,7 @@
                     <div class="job-footer">
                         <span class="job-tag">${escapeHtml(offer.source)}</span>
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
-                        <button class="compare-cv-btn" id="compareBtn_${offer.id}" style="display:none;" onclick="event.stopPropagation(); compareWithCV('${offer.id}', \`${escapeHtml(offer.title)}\`, \`${escapeHtml(offer.description || '')}\`)">
+                        <button class="compare-cv-btn" id="compareBtn_${offer.id}" onclick="event.stopPropagation(); compareWithCV('${offer.id}', \`${escapeHtml(offer.title)}\`, \`${escapeHtml(offer.description || '')}\`)">
                             📊 Comparer avec mon CV
                         </button>
                     </div>
@@ -2535,7 +2548,7 @@
                         console.log('✅ Retiré des favoris');
 
                         // Rafraîchir la liste des favoris
-                        await loadUserFavorites();
+                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
                     }
                 } else {
                     // Ajouter aux favoris
@@ -2554,7 +2567,7 @@
                         console.log('✅ Ajouté aux favoris');
 
                         // Rafraîchir la liste des favoris
-                        await loadUserFavorites();
+                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
                     }
                 }
             } catch (error) {
@@ -2603,6 +2616,9 @@
                 if (!response) return;
 
                 const data = await response.json();
+                console.log("🔍 API Response:", data);
+                console.log("🔍 Success:", data.success);
+                console.log("🔍 Offers count:", data.offers?.length);
 
                 if (data.success) {
                     currentJobs = data.offers;
@@ -2620,7 +2636,7 @@
                     // Reset le flag
                     isExecutingSavedSearch = false;
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.error('Erreur:', data.error);
                 }
             } catch (error) {
                 console.error('Erreur recherche:', error);
@@ -2665,7 +2681,7 @@
                         <span class="job-tag">${job.experience_level}</span>
                         <span class="job-tag">${job.source}</span>
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
-                        <button class="compare-cv-btn" id="compareBtn_${job.id}" style="display:none;" onclick="event.stopPropagation(); compareWithCV('${job.id}', \`${job.title}\`, \`${job.description || ''}\`)">
+                        <button class="compare-cv-btn" id="compareBtn_${job.id}" onclick="event.stopPropagation(); compareWithCV('${job.id}', \`${job.title}\`, \`${job.description || ''}\`)">
                             📊 Comparer avec mon CV
                         </button>
                     </div>
@@ -2685,16 +2701,28 @@
             document.getElementById('modalTitle').textContent = job.title;
             document.getElementById('modalCompany').textContent = job.company;
             document.getElementById('modalLocation').textContent = '📍 ' + job.location;
-            document.getElementById('modalDescription').textContent = job.description;
-            document.getElementById('modalRequirements').textContent = job.requirements;
+            document.getElementById('modalDescription').textContent = job.description || 'Pas de description disponible';
 
+            // Requirements - utiliser description si pas de requirements séparé
+            const requirementsEl = document.getElementById('modalRequirements');
+            if (job.requirements && job.requirements !== 'undefined') {
+                requirementsEl.textContent = job.requirements;
+            } else {
+                requirementsEl.textContent = 'Voir la description complète de l\'offre pour plus de détails.';
+            }
+
+            // Salaire - afficher seulement si disponible
+            const salaryDiv = document.getElementById('modalSalary');
             if (job.salary_min && job.salary_max) {
-                const salaryDiv = document.getElementById('modalSalary');
                 salaryDiv.style.display = 'block';
                 salaryDiv.querySelector('p').textContent =
-                    `CHF ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}`;
+                    `CHF ${Math.round(job.salary_min).toLocaleString()} - ${Math.round(job.salary_max).toLocaleString()}`;
+            } else if (job.salary) {
+                salaryDiv.style.display = 'block';
+                salaryDiv.querySelector('p').textContent = job.salary;
+            } else {
+                salaryDiv.style.display = 'none';
             }
-            document.getElementById('modalSalary').style.display = 'block';
 
             // Lien voir l'offre
             document.getElementById('btnVisitOfferLink').href = job.url || '#';
@@ -2763,7 +2791,7 @@
                 if (data.success) {
                     displayMatch(data.match);
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.error('Erreur:', data.error);
                 }
             } catch (error) {
                 console.error('Erreur matching:', error);
@@ -2836,7 +2864,7 @@
                         btn.disabled = false;
                     }, 2000);
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.error('Erreur:', data.error);
                     btn.disabled = false;
                     btn.textContent = '➕ Ajouter au tracker';
                 }
@@ -2898,7 +2926,7 @@
                         btn.disabled = false;
                     }, 2000);
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.error('Erreur:', data.error);
                     btn.disabled = false;
                     btn.textContent = '📝 Générer lettre de motivation';
                     switchTab('details');
@@ -3097,8 +3125,8 @@
         });
     </script>
     <!-- Système de Notifications -->
-    <script src="notifications.js"></script>
-    <script src="favorites-badge.js"></script>
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
 
     <script>
         // Afficher boutons compare pour Premium/Pro
@@ -3128,25 +3156,33 @@
 
                 // Construire un texte CV à partir de l'analyse
                 // (On utilise les données disponibles dans l'analyse)
+                const strongPoints = lastAnalysis.strongPoints || lastAnalysis.strong_points || [];
+                const improvements = lastAnalysis.improvements || lastAnalysis.improvement_suggestions || [];
+                const keywords = lastAnalysis.keywords ? (typeof lastAnalysis.keywords === 'string' ? JSON.parse(lastAnalysis.keywords) : lastAnalysis.keywords) : [];
+
                 const cvText = `
-Analyse CV - ${lastAnalysis.filename}
+Analyse CV - ${lastAnalysis.filename || 'CV'}
 
 POINTS FORTS:
-${lastAnalysis.strongPoints.join('\n')}
+${Array.isArray(strongPoints) ? strongPoints.join('\n') : strongPoints || 'N/A'}
 
 POINTS À AMÉLIORER:
-${lastAnalysis.improvements ? lastAnalysis.improvements.join('\n') : 'Aucun'}
+${Array.isArray(improvements) ? improvements.join('\n') : improvements || 'Aucun'}
 
 MOTS-CLÉS:
-${lastAnalysis.keywords.join(', ')}
+${Array.isArray(keywords) ? keywords.join(', ') : keywords || 'N/A'}
 
 CONSEILS SUISSES:
-${lastAnalysis.swissAdvice || 'N/A'}
+${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                 `.trim();
 
                 // Afficher modal loading
                 const modal = document.getElementById('compareModal');
                 const results = document.getElementById('compareResults');
+                if (!results) {
+                    console.error('Element compareResults not found');
+                    return;
+                }
                 results.innerHTML = '<div style="text-align:center; padding:40px;"><div class="spinner"></div><p>Analyse en cours...</p></div>';
                 modal.style.display = 'block';
 

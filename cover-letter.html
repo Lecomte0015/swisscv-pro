@@ -859,7 +859,7 @@
                 return;
             }
 
-            document.getElementById('coverLetterForm').style.display = 'none';
+            // document.getElementById('coverLetterForm').style.display = 'none'; // Gardé visible
             document.getElementById('loadingSection').classList.add('active');
             document.getElementById('resultSection').classList.remove('active');
             hideAlert();
@@ -883,6 +883,9 @@
                 }
 
                 currentLetter = data.letter;
+                console.log("📊 Données reçues:", data);
+                console.log("📝 Lettre:", data.letter);
+                console.log("📝 Longueur:", data.letter?.length);
                 document.getElementById('letterPreview').textContent = currentLetter;
 
                 document.getElementById('loadingSection').classList.remove('active');
@@ -960,8 +963,8 @@
         }
     </script>
     <!-- Système de Notifications -->
-    <script src="notifications.js"></script>
-    <script src="favorites-badge.js"></script>
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
 </body>
 
 </html>

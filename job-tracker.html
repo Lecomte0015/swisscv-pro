@@ -857,6 +857,230 @@
             <h1>📋 Job Tracker</h1>
             <p style="color: #666; margin-top: 8px;">Gérez vos candidatures par glisser-déposer</p>
 
+            <!-- Bouton Ajouter + Filtres + Toggle Vue -->
+            <div class="tracker-controls" style="margin-top: 20px;">
+                <!-- Ligne 1: Bouton Ajouter (pleine largeur sur mobile) -->
+                <button onclick="openAddApplicationModal()" class="btn-add-application">
+                    ➕ Ajouter une candidature
+                </button>
+
+                <!-- Ligne 2: Recherche + Filtre statut -->
+                <div class="filters-row">
+                    <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="search-input">
+                    <select id="filterStatus" onchange="applyFilters()" class="filter-select">
+                        <option value="">Tous les statuts</option>
+                        <option value="a_consulter">📋 À Consulter</option>
+                        <option value="interesse">⭐ Intéressé</option>
+                        <option value="postule">📧 Postulé</option>
+                        <option value="entretien">🎯 Entretien</option>
+                        <option value="offre">🎉 Offre</option>
+                        <option value="refuse">❌ Refusé</option>
+                    </select>
+                </div>
+
+                <!-- Ligne 3: Bouton Effacer + Toggle Vue -->
+                <div class="actions-row">
+                    <button onclick="clearFilters()" class="btn-clear">
+                        ❌ Effacer
+                    </button>
+                    <div class="view-toggle">
+                        <button id="viewKanban" onclick="switchView('kanban')" class="view-btn active">
+                            📋 Kanban
+                        </button>
+                        <button id="viewList" onclick="switchView('list')" class="view-btn">
+                            📊 Liste
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* Styles pour les contrôles */
+                .tracker-controls {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .btn-add-application {
+                    width: 100%;
+                    background: var(--swiss-red);
+                    color: white;
+                    padding: 14px 24px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 15px;
+                    transition: all 0.2s;
+                }
+
+                .btn-add-application:hover {
+                    background: #B80000;
+                    transform: translateY(-1px);
+                }
+
+                .filters-row {
+                    display: flex;
+                    gap: 8px;
+                }
+
+                .search-input {
+                    flex: 1;
+                    min-width: 0;
+                    padding: 12px 14px;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    font-size: 14px;
+                }
+
+                .filter-select {
+                    flex-shrink: 0;
+                    padding: 12px 14px;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    background: white;
+                }
+
+                .actions-row {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                }
+
+                .btn-clear {
+                    padding: 12px 20px;
+                    background: #E0E0E0;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 14px;
+                    white-space: nowrap;
+                }
+
+                .view-toggle {
+                    display: flex;
+                    gap: 6px;
+                    flex: 1;
+                }
+
+                .view-btn {
+                    flex: 1;
+                    padding: 12px 16px;
+                    background: #F5F5F5;
+                    color: #0D0D0D;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 14px;
+                    transition: all 0.2s;
+                }
+
+                .view-btn.active {
+                    background: var(--swiss-red);
+                    color: white;
+                    border-color: var(--swiss-red);
+                }
+
+                /* Desktop: disposition horizontale */
+                @media (min-width: 769px) {
+                    .tracker-controls {
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        align-items: center;
+                    }
+
+                    .btn-add-application {
+                        width: auto;
+                        flex-shrink: 0;
+                    }
+
+                    .filters-row {
+                        flex: 1;
+                        min-width: 300px;
+                    }
+
+                    .actions-row {
+                        flex-shrink: 0;
+                    }
+
+                    .view-toggle {
+                        flex: 0;
+                    }
+
+                    .view-btn {
+                        flex: 0;
+                        white-space: nowrap;
+                    }
+                }
+
+                /* Mobile: optimisations */
+                @media (max-width: 768px) {
+                    .btn-add-application {
+                        font-size: 14px;
+                        padding: 12px 20px;
+                    }
+
+                    .search-input,
+                    .filter-select {
+                        font-size: 13px;
+                        padding: 10px 12px;
+                    }
+
+                    .filter-select {
+                        max-width: 140px;
+                    }
+
+                    .btn-clear {
+                        font-size: 13px;
+                        padding: 10px 16px;
+                    }
+
+                    .view-btn {
+                        font-size: 13px;
+                        padding: 10px 12px;
+                    }
+                }
+
+                /* Très petit mobile */
+                @media (max-width: 480px) {
+                    .tracker-controls {
+                        gap: 10px;
+                    }
+
+                    .filters-row {
+                        gap: 6px;
+                    }
+
+                    .actions-row {
+                        gap: 6px;
+                    }
+
+                    .view-toggle {
+                        gap: 4px;
+                    }
+
+                    .filter-select {
+                        font-size: 12px;
+                        max-width: 120px;
+                    }
+
+                    .btn-clear {
+                        font-size: 12px;
+                        padding: 10px 12px;
+                    }
+
+                    .view-btn {
+                        font-size: 12px;
+                        padding: 10px 8px;
+                    }
+                }
+            </style>
+
             <!-- GRAPHIQUES DASHBOARD -->
             <div class="dashboard-charts">
                 <div class="chart-card">
@@ -954,6 +1178,71 @@
                     style="color: var(--swiss-red); font-weight: 600;">rechercher des offres</a></p>
         </div>
 
+        <!-- VUE LISTE -->
+        <div id="listView"
+            style="display: none; margin-top: 24px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F5F5F5;">
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Poste</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Entreprise</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Statut</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Date</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="listViewBody"></tbody>
+            </table>
+        </div>
+
+        <!-- MODAL AJOUTER CANDIDATURE -->
+        <div id="addApplicationModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+            <div style="background: white; border-radius: 16px; max-width: 600px; width: 90%; padding: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 style="font-size: 24px; font-weight: 700;">➕ Nouvelle Candidature</h2>
+                    <button onclick="closeAddApplicationModal()"
+                        style="background: transparent; border: none; font-size: 28px; cursor: pointer; color: #999;">×</button>
+                </div>
+                <form id="addApplicationForm" onsubmit="handleAddApplication(event); return false;">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Titre du
+                            poste *</label>
+                        <input type="text" id="jobTitle" required placeholder="Ex: Développeur Full Stack"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Entreprise
+                            *</label>
+                        <input type="text" id="company" required placeholder="Ex: Google Switzerland"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">URL de
+                            l'offre</label>
+                        <input type="url" id="jobUrl" placeholder="https://..."
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Statut
+                            initial</label>
+                        <select id="initialStatus"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px; cursor: pointer;">
+                            <option value="a_consulter">📋 À Consulter</option>
+                            <option value="interesse">⭐ Intéressé</option>
+                            <option value="postule">📧 Postulé</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" onclick="closeAddApplicationModal()"
+                            style="padding: 12px 24px; background: #E0E0E0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Annuler</button>
+                        <button type="submit"
+                            style="padding: 12px 24px; background: var(--swiss-red); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- MODALS -->
         <!-- Modal Timeline -->
         <div id="timelineModal"
@@ -1020,7 +1309,7 @@
         </div>
     </div>
 
-    <script src="auth.js"></script>
+    <script src="public/js/auth.js"></script>
     <script>
         let applications = [];
         let draggedItem = null;
@@ -1164,7 +1453,7 @@
             emptyState.style.display = 'none';
 
             try {
-                const response = await authenticatedFetch('/jobs/tracked', {
+                const response = await authenticatedFetch('/job-tracker/kanban', {
                     method: 'GET'
                 });
 
@@ -1202,7 +1491,7 @@
                         kanbanBoard.style.display = 'grid';
                     }
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
                 console.error('Erreur chargement:', error);
@@ -1370,7 +1659,7 @@
                     // Recharger le Kanban
                     await loadTrackedJobs();
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
                 console.error('Erreur update:', error);
@@ -1412,7 +1701,7 @@
                     // Recharger le tracker
                     await loadTrackedJobs();
                 } else {
-                    alert('Erreur: ' + data.error);
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
@@ -1552,10 +1841,207 @@
                 alert('Erreur sauvegarde rappel');
             }
         }
+
+        // ========================================
+        // NOUVELLES FONCTIONNALITÉS
+        // ========================================
+
+        // Variable globale pour stocker toutes les candidatures
+        let allApplications = [];
+        let currentView = 'kanban';
+
+        // Modal Ajouter Candidature
+        function openAddApplicationModal() {
+            document.getElementById('addApplicationModal').style.display = 'flex';
+        }
+
+        function closeAddApplicationModal() {
+            document.getElementById('addApplicationModal').style.display = 'none';
+            document.getElementById('addApplicationForm').reset();
+        }
+
+        async function handleAddApplication(event) {
+            event.preventDefault();
+
+            const data = {
+                job_title: document.getElementById('jobTitle').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                job_url: document.getElementById('jobUrl').value.trim() || null,
+                status: document.getElementById('initialStatus').value
+            };
+
+            try {
+                const response = await authenticatedFetch('/job-tracker/applications', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('✅ Candidature ajoutée');
+                    closeAddApplicationModal();
+                    loadKanban(); // Recharger
+                } else {
+                    alert('❌ Erreur: ' + (result.error || 'Impossible d\'ajouter'));
+                }
+            } catch (error) {
+                console.error('Erreur ajout candidature:', error);
+                alert('❌ Erreur lors de l\'ajout');
+            }
+        }
+
+        // Filtres & Recherche
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+
+            let filtered = [...allApplications];
+
+            // Filtre recherche
+            if (search) {
+                filtered = filtered.filter(app =>
+                    (app.job_title && app.job_title.toLowerCase().includes(search)) ||
+                    (app.company && app.company.toLowerCase().includes(search))
+                );
+            }
+
+            // Filtre statut
+            if (status) {
+                filtered = filtered.filter(app => app.status === status);
+            }
+
+            // Afficher selon la vue
+            if (currentView === 'kanban') {
+                displayKanban({ kanban: filtered });
+            } else {
+                displayList(filtered);
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = '';
+            applyFilters();
+        }
+
+        // Recherche en temps réel
+        if (document.getElementById('searchInput')) {
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+        }
+
+        // Toggle Vue Kanban/Liste
+        function switchView(view) {
+            currentView = view;
+
+            const kanbanBtn = document.getElementById('viewKanban');
+            const listBtn = document.getElementById('viewList');
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const listView = document.getElementById('listView');
+
+            if (view === 'kanban') {
+                kanbanBoard.style.display = 'grid';
+                listView.style.display = 'none';
+                kanbanBtn.style.background = 'var(--swiss-red)';
+                kanbanBtn.style.color = 'white';
+                kanbanBtn.style.borderColor = 'var(--swiss-red)';
+                listBtn.style.background = '#F5F5F5';
+                listBtn.style.color = '#0D0D0D';
+                listBtn.style.borderColor = '#E0E0E0';
+                applyFilters();
+            } else {
+                kanbanBoard.style.display = 'none';
+                listView.style.display = 'block';
+                listBtn.style.background = 'var(--swiss-red)';
+                listBtn.style.color = 'white';
+                listBtn.style.borderColor = 'var(--swiss-red)';
+                kanbanBtn.style.background = '#F5F5F5';
+                kanbanBtn.style.color = '#0D0D0D';
+                kanbanBtn.style.borderColor = '#E0E0E0';
+                displayList(allApplications);
+            }
+        }
+
+        // Afficher Vue Liste
+        function displayList(applications) {
+            const tbody = document.getElementById('listViewBody');
+
+            if (!applications || applications.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="padding: 40px; text-align: center; color: #999;">Aucune candidature</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = applications.map(app => {
+                const statusLabels = {
+                    'a_consulter': '📋 À Consulter',
+                    'interesse': '⭐ Intéressé',
+                    'postule': '📧 Postulé',
+                    'entretien': '🎯 Entretien',
+                    'offre': '🎉 Offre',
+                    'refuse': '❌ Refusé'
+                };
+
+                const statusColors = {
+                    'a_consulter': '#E3F2FD',
+                    'interesse': '#FFF3E0',
+                    'postule': '#F3E5F5',
+                    'entretien': '#FFF9C4',
+                    'offre': '#E8F5E9',
+                    'refuse': '#FFEBEE'
+                };
+
+                const date = app.applied_date ? new Date(app.applied_date * 1000).toLocaleDateString('fr-FR') : '-';
+
+                return `
+                    <tr style="border-bottom: 1px solid #E0E0E0;">
+                        <td style="padding: 16px; font-weight: 600;">${app.job_title || 'Sans titre'}</td>
+                        <td style="padding: 16px; color: #666;">${app.company || '-'}</td>
+                        <td style="padding: 16px;">
+                            <span style="display: inline-block; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; background: ${statusColors[app.status] || '#F5F5F5'};">
+                                ${statusLabels[app.status] || app.status}
+                            </span>
+                        </td>
+                        <td style="padding: 16px; color: #999; font-size: 13px;">${date}</td>
+                        <td style="padding: 16px;">
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="openNotes('${app.id}', event)" title="Notes"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📝</button>
+                                <button onclick="openTimeline('${app.id}', event)" title="Timeline"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📅</button>
+                                <button onclick="openReminder('${app.id}', event)" title="Rappel"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">⏰</button>
+                                <button onclick="deleteApplication('${app.id}')" title="Supprimer"
+                                    style="background: #FFEBEE; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Modifier loadKanban pour stocker les données
+        const originalLoadKanban = loadKanban;
+        async function loadKanban() {
+            try {
+                const response = await authenticatedFetch('/job-tracker/kanban');
+                const data = await response.json();
+
+                if (data.success && data.kanban) {
+                    allApplications = data.kanban;
+                    applyFilters();
+                } else {
+                    // Fallback vers la fonction originale
+                    if (typeof originalLoadKanban === 'function') {
+                        await originalLoadKanban();
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur loadKanban:', error);
+            }
+        }
     </script>
     <!-- Système de Notifications -->
-    <script src="notifications.js"></script>
-    <script src="favorites-badge.js"></script>
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
 </body>
 
 </html>

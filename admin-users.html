@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Utilisateurs — Admin SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/mobile-menu.css">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
     <style>
         * {
             margin: 0;
@@ -140,8 +143,9 @@
             text-align: left;
             font-weight: 700;
             font-size: 13px;
-            color: #6b7280;
+            color: #374151;
             text-transform: uppercase;
+            border-bottom: 2px solid #e5e7eb;
         }
 
         td {
@@ -157,7 +161,8 @@
             padding: 4px 12px;
             border-radius: 12px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .badge.free {
@@ -166,13 +171,81 @@
         }
 
         .badge.premium {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge.pro {
             background: #fef3c7;
             color: #d97706;
         }
 
-        .badge.pro {
-            background: #ddd6fe;
-            color: #7c3aed;
+        /* Role Badges */
+        .role-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            cursor: help;
+        }
+
+        .role-badge.super_admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .role-badge.admin {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .role-badge.support {
+            background: #10b981;
+            color: white;
+        }
+
+        .role-badge.viewer {
+            background: #6b7280;
+            color: white;
+        }
+
+        /* Tooltip */
+        .role-badge .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .role-badge .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1f2937;
+        }
+
+        .role-badge:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
         }
 
         .actions {
@@ -307,6 +380,7 @@
             }
         }
 
+
         @keyframes slideUp {
             from {
                 transform: translateY(20px);
@@ -317,6 +391,125 @@
                 transform: translateY(0);
                 opacity: 1;
             }
+        }
+
+        /* Modal Tabs */
+        .modal-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .modal-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .modal-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .modal-tab:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            min-height: 300px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .stat-item .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .stat-item .value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            align-items: start;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .activity-icon {
+            font-size: 20px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .data-table th {
+            background: #f9fafb;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 24px;
         }
 
         /* Confetti */
@@ -334,6 +527,93 @@
                 opacity: 0;
             }
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .filters {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .filters input,
+            .filters select,
+            .filters button {
+                width: 100%;
+            }
+
+            /* Table responsive avec scroll horizontal */
+            .users-table {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -16px;
+                padding: 0 16px;
+            }
+
+            .users-table table {
+                min-width: 600px;
+            }
+
+            /* Réduire padding des cellules */
+            th,
+            td {
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+
+            /* Cacher colonne "Inscrit le" sur mobile */
+            th:nth-child(3),
+            td:nth-child(3) {
+                display: none;
+            }
+
+            /* Actions en colonne sur très petit écran */
+            .actions {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .btn-sm {
+                width: 100%;
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            /* Pagination responsive */
+            .pagination {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .pagination button {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h2 {
+                font-size: 20px;
+            }
+
+            .users-table table {
+                min-width: 500px;
+            }
+
+            th,
+            td {
+                padding: 10px 6px;
+                font-size: 13px;
+            }
+
+            .badge {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+        }
     </style>
 </head>
 
@@ -345,6 +625,20 @@
             <a href="admin-users.html" class="active">Utilisateurs</a>
             <a href="admin-analytics.html">Analytics</a>
             <a href="admin-support.html">Support</a>
+            <a href="admin-logs.html">Logs</a>
+            <a href="admin-reports.html">📧 Rapports</a>
+            <div class="notifications-container">
+                <button class="notifications-bell">
+                    🔔
+                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
+                </button>
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notifications-header">Notifications</div>
+                    <div id="notificationsList">
+                        <div class="notifications-empty">⏳ Chargement...</div>
+                    </div>
+                </div>
+            </div>
             <button class="logout-btn" onclick="logout()">Déconnexion</button>
         </div>
     </nav>
@@ -355,12 +649,19 @@
         </div>
 
         <div class="filters">
-            <input type="text" id="searchInput" placeholder="🔍 Rechercher par email...">
-            <select id="tierFilter">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher par email..." onkeyup="handleSearch()">
+            <select id="tierFilter" onchange="handleFilter()">
                 <option value="">Tous les plans</option>
                 <option value="free">Free</option>
                 <option value="premium">Premium</option>
                 <option value="pro">Pro</option>
+            </select>
+            <select id="roleFilter" onchange="handleFilter()">
+                <option value="">Tous les rôles</option>
+                <option value="super_admin">Super Admin</option>
+                <option value="admin">Admin</option>
+                <option value="support">Support</option>
+                <option value="viewer">Viewer</option>
             </select>
             <button onclick="loadUsers()">Rechercher</button>
         </div>
@@ -371,13 +672,16 @@
                     <tr>
                         <th>Email</th>
                         <th>Plan</th>
+                        <th>Rôle</th>
                         <th>Inscrit le</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="usersTableBody">
                     <tr>
-                        <td colspan="4" style="text-align:center; padding: 40px;">Chargement...</td>
+                        <td colspan="5" style="text-align: center; padding: 40px;">
+                            Chargement...
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -398,6 +702,7 @@
     <script>
         const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
         let currentPage = 1;
+        let searchTimeout;
 
         function getAdminToken() { return localStorage.getItem('admin_token'); }
         function logout() {
@@ -408,14 +713,28 @@
 
         if (!getAdminToken()) window.location.href = 'admin-login.html';
 
-        async function loadUsers(page = 1) {
+        function handleSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentPage = 1;
+                loadUsers();
+            }, 500);
+        }
+
+        function handleFilter() {
+            currentPage = 1;
+            loadUsers();
+        }
+
+        async function loadUsers(page = currentPage) {
             const search = document.getElementById('searchInput').value;
             const tier = document.getElementById('tierFilter').value;
+            const role = document.getElementById('roleFilter')?.value || '';
             currentPage = page;
 
             try {
                 const response = await fetch(
-                    `${API_BASE}/admin/users?page=${page}&search=${search}&tier=${tier}`,
+                    `${API_BASE}/admin/users?page=${page}&search=${search}&tier=${tier}&role=${role}`,
                     { headers: { 'Authorization': `Bearer ${getAdminToken()}` } }
                 );
 
@@ -434,26 +753,49 @@
 
         function displayUsers(users) {
             const tbody = document.getElementById('usersTableBody');
-
-            if (!users || users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Aucun utilisateur trouvé</td></tr>';
+            if (!tbody) {
+                console.error('Element #usersTableBody not found');
                 return;
             }
 
-            tbody.innerHTML = users.map(user => `
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Aucun utilisateur trouvé</td></tr>';
+                return;
+            }
+
+            // Permissions par rôle pour tooltips
+            const rolePermissions = {
+                super_admin: 'Toutes les permissions',
+                admin: 'Gérer users, analytics, support, logs',
+                support: 'Voir users, gérer support',
+                viewer: 'Voir analytics et logs'
+            };
+
+            tbody.innerHTML = users.map(user => {
+                const role = user.role || 'viewer';
+                const permissions = rolePermissions[role] || 'Aucune permission';
+
+                return `
                 <tr>
                     <td>${user.email}</td>
                     <td><span class="badge ${user.tier}">${user.tier.toUpperCase()}</span></td>
+                    <td>
+                        <span class="role-badge ${role}">
+                            ${role.replace('_', ' ')}
+                            <span class="tooltip">${permissions}</span>
+                        </span>
+                    </td>
                     <td>${new Date(user.created_at).toLocaleDateString('fr-FR')}</td>
                     <td>
                         <div class="actions">
                             <button class="btn-sm btn-view" onclick='viewUser("${user.id}", "${user.email}")'>👁️ Voir</button>
-                            <button class="btn-sm btn-edit" onclick='editUser("${user.id}", "${user.email}", "${user.tier}")'>✏️ Modifier</button>
+                            <button class="btn-sm btn-edit" onclick='editUser("${user.id}", "${user.tier}")'>✏️ Modifier</button>
                             <button class="btn-sm btn-ban" onclick='banUser("${user.id}", "${user.email}")'>🚫 Bannir</button>
                         </div>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function displayPagination(pagination) {
@@ -467,71 +809,314 @@
             container.innerHTML = pages.join('');
         }
 
-        function viewUser(id, email) {
-            showModal(
-                '👁️ Détails Utilisateur',
-                `<strong>ID:</strong> ${id}<br><strong>Email:</strong> ${email}<br><br><em>Fonctionnalité complète à venir</em>`,
-                [{ text: 'Fermer', class: 'btn-cancel', action: closeModal }]
-            );
+        // ===== MODAL DÉTAILS UTILISATEUR ENRICHIE =====
+
+        async function viewUser(userId, email) {
+            try {
+                // Afficher modal avec loading
+                showModal(
+                    `👁️ Détails - ${email}`,
+                    '<div class="loading-state">⏳ Chargement...</div>',
+                    [{ text: 'Fermer', class: 'btn-cancel', action: closeModal }]
+                );
+
+                // Fetch données complètes
+                const response = await fetch(`${API_BASE}/admin/users/${userId}/details`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load user details');
+
+                const data = await response.json();
+
+                // Construire contenu modal avec tabs
+                const content = buildUserDetailsModal(data);
+
+                showModal(
+                    `👁️ Détails - ${data.user.email}`,
+                    content,
+                    [{ text: 'Fermer', class: 'btn-cancel', action: closeModal }]
+                );
+
+                // Stocker données pour changement de tabs
+                window.currentUserData = data;
+
+            } catch (error) {
+                console.error('Error loading user details:', error);
+                showModal(
+                    '❌ Erreur',
+                    'Impossible de charger les détails utilisateur',
+                    [{ text: 'Fermer', class: 'btn-cancel', action: closeModal }]
+                );
+            }
         }
 
-        function editUser(id, email, currentTier) {
+        function buildUserDetailsModal(data) {
+            return `
+                <div class="modal-tabs">
+                    <button class="modal-tab active" onclick="switchUserTab('overview')">Vue d'ensemble</button>
+                    <button class="modal-tab" onclick="switchUserTab('analyses')">Analyses CV (${data.cv_analyses.length})</button>
+                    <button class="modal-tab" onclick="switchUserTab('activity')">Activité (${data.recent_activity.length})</button>
+                    <button class="modal-tab" onclick="switchUserTab('payments')">Paiements (${data.payments.length})</button>
+                </div>
+                
+                <div class="tab-content" id="userTabContent">
+                    ${buildOverviewTab(data)}
+                </div>
+            `;
+        }
+
+        function buildOverviewTab(data) {
+            const tierBadge = `<span class="badge ${data.user.subscription_tier}">${data.user.subscription_tier.toUpperCase()}</span>`;
+            const signupDate = new Date(data.user.created_at * 1000).toLocaleDateString('fr-FR');
+            const lastLogin = data.user.last_login ? new Date(data.user.last_login * 1000).toLocaleDateString('fr-FR') : 'Jamais';
+
+            return `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Email:</strong> ${data.user.email}</p>
+                    <p><strong>Plan:</strong> ${tierBadge}</p>
+                    <p><strong>Inscrit le:</strong> ${signupDate}</p>
+                    <p><strong>Dernier login:</strong> ${lastLogin}</p>
+                </div>
+
+                <h4 style="margin-bottom: 12px;">Statistiques</h4>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="label">Total Analyses CV</div>
+                        <div class="value">${data.stats.total_analyses}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Total Candidatures</div>
+                        <div class="value">${data.stats.total_job_applications}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Inscrit depuis</div>
+                        <div class="value">${data.stats.days_since_signup} jours</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Dernier login</div>
+                        <div class="value">${data.stats.days_since_last_login !== null ? data.stats.days_since_last_login + ' jours' : 'Jamais'}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildAnalysesTab(data) {
+            if (data.cv_analyses.length === 0) {
+                return '<div class="empty-state">📄 Aucune analyse CV pour le moment</div>';
+            }
+
+            const rows = data.cv_analyses.map(analysis => {
+                const date = new Date(analysis.created_at * 1000).toLocaleDateString('fr-FR');
+                const statusBadge = analysis.status === 'completed' ?
+                    '<span class="badge premium">Complété</span>' :
+                    '<span class="badge free">En cours</span>';
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${statusBadge}</td>
+                        <td>#${analysis.id}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function buildActivityTab(data) {
+            if (data.recent_activity.length === 0) {
+                return '<div class="empty-state">🔄 Aucune activité récente</div>';
+            }
+
+            const items = data.recent_activity.map(activity => {
+                const icon = activity.type === 'login' ? '🔐' :
+                    activity.type === 'analysis' ? '📄' : '💼';
+                const time = formatTimeAgo(activity.created_at);
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon">${icon}</div>
+                        <div class="activity-content">
+                            <div>${activity.description}</div>
+                            <div class="activity-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `<div class="activity-timeline">${items}</div>`;
+        }
+
+        function buildPaymentsTab(data) {
+            if (data.payments.length === 0) {
+                return '<div class="empty-state">💳 Aucun paiement enregistré</div>';
+            }
+
+            const rows = data.payments.map(payment => {
+                const date = new Date(payment.created_at * 1000).toLocaleDateString('fr-FR');
+                const statusBadge = payment.status === 'paid' ?
+                    '<span class="badge premium">Payé</span>' :
+                    '<span class="badge free">En attente</span>';
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${payment.amount}€</td>
+                        <td><span class="badge ${payment.tier}">${payment.tier.toUpperCase()}</span></td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Montant</th>
+                            <th>Plan</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function switchUserTab(tabName) {
+            if (!window.currentUserData) return;
+
+            // Mettre à jour tabs actives
+            document.querySelectorAll('.modal-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Mettre à jour contenu
+            const content = document.getElementById('userTabContent');
+            const data = window.currentUserData;
+
+            switch (tabName) {
+                case 'overview':
+                    content.innerHTML = buildOverviewTab(data);
+                    break;
+                case 'analyses':
+                    content.innerHTML = buildAnalysesTab(data);
+                    break;
+                case 'activity':
+                    content.innerHTML = buildActivityTab(data);
+                    break;
+                case 'payments':
+                    content.innerHTML = buildPaymentsTab(data);
+                    break;
+            }
+        }
+
+        function formatTimeAgo(timestamp) {
+            const now = Math.floor(Date.now() / 1000);
+            const diff = now - timestamp;
+            if (diff < 60) return 'Il y a quelques secondes';
+            if (diff < 3600) return `Il y a ${Math.floor(diff / 60)} min`;
+            if (diff < 86400) return `Il y a ${Math.floor(diff / 3600)}h`;
+            if (diff < 604800) return `Il y a ${Math.floor(diff / 86400)}j`;
+            return new Date(timestamp * 1000).toLocaleDateString('fr-FR');
+        }
+
+        function editUser(userId, currentTier) {
+            // Récupérer le rôle actuel de l'utilisateur
+            const userRow = document.querySelector(`button[onclick*="${userId}"]`)?.closest('tr');
+            const roleBadge = userRow?.querySelector('.role-badge');
+            const currentRole = roleBadge?.className.split(' ').find(c => c !== 'role-badge') || 'viewer';
+
+            const content = `
+                <div style="display: grid; gap: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Plan actuel:</label>
+                        <select id="editTierSelect" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e0;">
+                            <option value="free" ${currentTier === 'free' ? 'selected' : ''}>Free</option>
+                            <option value="premium" ${currentTier === 'premium' ? 'selected' : ''}>Premium</option>
+                            <option value="pro" ${currentTier === 'pro' ? 'selected' : ''}>Pro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Rôle actuel:</label>
+                        <select id="editRoleSelect" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e0;">
+                            <option value="super_admin" ${currentRole === 'super_admin' ? 'selected' : ''}>Super Admin</option>
+                            <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>Admin</option>
+                            <option value="support" ${currentRole === 'support' ? 'selected' : ''}>Support</option>
+                            <option value="viewer" ${currentRole === 'viewer' ? 'selected' : ''}>Viewer</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
             showModal(
-                '✏️ Modifier le Plan',
-                `
-                    <p><strong>Utilisateur:</strong> ${email}</p>
-                    <p><strong>Plan actuel:</strong> <span class="badge ${currentTier}">${currentTier.toUpperCase()}</span></p>
-                    <label style="display: block; margin-top: 16px; font-weight: 600;">Nouveau plan:</label>
-                    <select id="newTierSelect" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; margin-top: 8px;">
-                        <option value="free" ${currentTier === 'free' ? 'selected' : ''}>Free</option>
-                        <option value="premium" ${currentTier === 'premium' ? 'selected' : ''}>Premium</option>
-                        <option value="pro" ${currentTier === 'pro' ? 'selected' : ''}>Pro</option>
-                    </select>
-                `,
+                '✏️ Modifier l\'utilisateur',
+                content,
                 [
                     { text: 'Annuler', class: 'btn-cancel', action: closeModal },
-                    { text: 'Confirmer', class: 'btn-confirm', action: () => confirmEditUser(id, email) }
+                    {
+                        text: 'Enregistrer',
+                        class: 'btn-primary',
+                        action: async () => {
+                            const newTier = document.getElementById('editTierSelect').value;
+                            const newRole = document.getElementById('editRoleSelect').value;
+
+                            try {
+                                // Mettre à jour le tier si changé
+                                if (newTier !== currentTier) {
+                                    const tierResponse = await fetch(`${API_BASE}/admin/users/${userId}`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Authorization': `Bearer ${getAdminToken()}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ tier: newTier })
+                                    });
+                                    if (!tierResponse.ok) throw new Error('Failed to update tier');
+                                }
+
+                                // Mettre à jour le rôle si changé
+                                if (newRole !== currentRole) {
+                                    const roleResponse = await fetch(`${API_BASE}/admin/users/${userId}/role`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Authorization': `Bearer ${getAdminToken()}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ role: newRole })
+                                    });
+                                    if (!roleResponse.ok) throw new Error('Failed to update role');
+                                }
+
+                                showModal('✅ Succès', 'Utilisateur modifié avec succès !', [
+                                    { text: 'OK', class: 'btn-primary', action: () => { closeModal(); loadUsers(); } }
+                                ]);
+                            } catch (error) {
+                                showModal('❌ Erreur', 'Impossible de modifier l\'utilisateur', [
+                                    { text: 'OK', class: 'btn-cancel', action: closeModal }
+                                ]);
+                            }
+                        }
+                    }
                 ]
             );
-        }
-
-        function confirmEditUser(id, email) {
-            const newTier = document.getElementById('newTierSelect').value;
-            closeModal();
-
-            // Appel API réel
-            fetch(`${API_BASE}/admin/users/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Authorization': `Bearer ${getAdminToken()}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ tier: newTier })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        showConfetti();
-                        showModal(
-                            '✅ Plan Modifié',
-                            `Le plan de <strong>${email}</strong> a été modifié avec succès !<br><br>Nouveau plan: <span class="badge ${newTier}">${newTier.toUpperCase()}</span>`,
-                            [{ text: 'OK', class: 'btn-confirm', action: () => { closeModal(); loadUsers(currentPage); } }]
-                        );
-                    } else {
-                        showModal(
-                            '❌ Erreur',
-                            `Impossible de modifier le plan: ${data.error}`,
-                            [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
-                        );
-                    }
-                })
-                .catch(error => {
-                    showModal(
-                        '❌ Erreur',
-                        `Une erreur est survenue: ${error.message}`,
-                        [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
-                    );
-                });
         }
 
         function banUser(id, email) {
@@ -617,12 +1202,29 @@
             }
         }
 
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target.id === 'modal') closeModal();
-        });
+        // Initialiser quand le DOM est prêt
+        function initPage() {
+            if (typeof initNotifications === 'function') {
+                initNotifications();
+            }
 
-        loadUsers();
+            document.getElementById('modal').addEventListener('click', (e) => {
+                if (e.target.id === 'modal') closeModal();
+            });
+
+            loadUsers(1);
+        }
+
+        // Exécuter immédiatement si DOM déjà chargé, sinon attendre
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
     </script>
+    <script src="admin/js/mobile-menu.js"></script>
+    <script src="admin/js/notifications.js"></script>
+    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,40 @@
+name = "swisscv-pro"
+main = "worker.js"
+compatibility_date = "2025-11-14"
+
+# ✅ Cloudflare D1 Database (SQL)
+[[d1_databases]]
+binding = "DB"
+database_name = "swisscv-db"
+database_id = "" # À remplir après création avec: wrangler d1 create swisscv-db
+
+# ✅ Variables d'environnement publiques
+[vars]
+ENVIRONMENT = "production"
+
+# ✅ Secrets à configurer via CLI (ne JAMAIS commiter)
+# Commandes pour configurer les secrets:
+# wrangler secret put JWT_SECRET
+# wrangler secret put SUPABASE_URL
+# wrangler secret put SUPABASE_ANON_KEY
+# wrangler secret put STRIPE_SECRET_KEY
+# wrangler secret put STRIPE_WEBHOOK_SECRET
+
+# ✅ Configuration pour le développement local
+[env.development]
+name = "swisscv-pro-api-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "swisscv-db-dev"
+database_id = "" # Base de dev séparée
+
+# ✅ Routes personnalisées (optionnel)
+# Décommenter si tu veux un domaine custom
+# routes = [
+#   { pattern = "api.swisscv-pro.ch/*", zone_name = "swisscv-pro.ch" }
+# ]
+
+# ✅ Cron Jobs pour rapports email automatiques
+[triggers]
+crons = ["0 9 * * 1"]  # Tous les lundis à 9h (rapports hebdomadaires)

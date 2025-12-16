@@ -170,7 +170,7 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="modal-system.js"></script>
+    <script src="public/js/modal-system.js"></script>
 </head>
 
 <body>
@@ -743,43 +743,17 @@
                 }
             </style>
 
-            <!-- HISTORIQUE DES ANALYSES -->
-            <div class="page-header">
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                    <div>
-                        <h1>📊 Historique de vos analyses</h1>
-                        <p>Consultez toutes vos analyses CV précédentes</p>
-                    </div>
-                    <button class="btn-refresh" onclick="deleteAllHistory()"
-                        style="background: #FF5252; padding: 10px 20px;">
-                        🗑️ Supprimer l'historique
-                    </button>
-                </div>
-            </div>
-
-            <div id="historyLoading" class="loading" style="display:none;">
-                ⏳ Chargement de l'historique...
-            </div>
-
-            <div id="historyEmpty" class="empty-state" style="display:none;">
-                <div style="font-size: 64px;">📄</div>
-                <h2>Aucune analyse pour le moment</h2>
-                <p>Analysez votre premier CV pour voir l'historique ici</p>
-                <a href="app.html" class="btn-refresh"
-                    style="display: inline-block; text-decoration: none; margin-top: 16px;">Analyser un CV</a>
-            </div>
-
-            <div id="historyGrid" class="offers-grid" style="display:none;"></div>
+            <!-- Analysis History Section Removed -->
 
             <hr style="margin: 60px 0; border: none; border-top: 2px solid #E0E0E0;">
+
 
             <!-- Section offres déplacée vers job-search.html -->
 
 
             <script>
                 (async function () {
-                    console.log("Dashboard chargé");
+                    console.log("Dashboard chargé - VERSION 2025-12-14-10:35");
                     const token = getToken();
                     if (!token) {
                         console.log("Pas de token - Redirection login");
@@ -795,6 +769,8 @@
                             console.log("Auth OK:", data.user.email);
                             localStorage.setItem("swisscv_user", JSON.stringify(data.user));
                             const badge = document.getElementById("userBadge");
+                            console.log("✅ APRÈS Auth OK - Tentative chargement historique...");
+                            // Charger historique analyses
                             if (badge && data.user) {
                                 if (data.user.tier === "premium" || data.user.tier === "pro") {
                                     badge.className = "navbar-badge premium";
@@ -814,24 +790,27 @@
                 })();
 
                 // Charger l'historique des analyses
-                async function loadAnalysisHistory() {
-                    const historyLoading = document.getElementById('historyLoading');
-                    const historyEmpty = document.getElementById('historyEmpty');
-                    const historyGrid = document.getElementById('historyGrid');
+                const historyLoading = document.getElementById('historyLoading');
+                const historyEmpty = document.getElementById('historyEmpty');
+                const historyGrid = document.getElementById('historyGrid');
 
-                    historyLoading.style.display = 'block';
-                    historyEmpty.style.display = 'none';
-                    historyGrid.style.display = 'none';
+                historyLoading.style.display = 'block';
+                historyEmpty.style.display = 'none';
+                historyGrid.style.display = 'none';
 
-                    try {
-                        const response = await authenticatedFetch('/analyses/history');
-                        const data = await response.json();
+                try {
+                    console.log("🔍 Appel API /analyses/history...");
+                    console.log("🔍 Token présent:", !!localStorage.getItem('swisscv_token'));
+                    const response = await authenticatedFetch('/analyses/history');
+                    const data = await response.json();
+                    console.log("📊 Réponse analyses/history:", data);
+                    console.log("📊 Nombre analyses:", data.analyses?.length);
 
-                        if (data.success && data.analyses && data.analyses.length > 0) {
-                            historyGrid.innerHTML = data.analyses.map(analysis => `
+                    if (data.success && data.analyses && data.analyses.length > 0) {
+                        historyGrid.innerHTML = data.analyses.map(analysis => `
                         <div class="offer-card" style="position: relative;">
                             <button onclick="event.stopPropagation(); deleteAnalysis('${analysis.id}')" 
-                                    style="position: absolute; top: 12px; right: 12px; background: #FFE5E5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #D50000; font-size: 18px; font-weight: bold; transition: all 0.2s; z-index: 10;"
+                                    style="position: absolute; top: 12px; right: 12px; background: #FFE5E5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #D50000; font-size: 18px; font-weight: bold; transition: all 0.2s;"
                                     onmouseover="this.style.background='#D50000'; this.style.color='white';"
                                     onmouseout="this.style.background='#FFE5E5'; this.style.color='#D50000';"
                                     title="Supprimer cette analyse">
@@ -858,19 +837,19 @@
                         </div>
                     `).join('');
 
-                            historyGrid.style.display = 'grid';
+                        historyGrid.style.display = 'grid';
 
-                            // Stocker les analyses pour le modal
-                            window.analysesData = data.analyses;
-                        } else {
-                            historyEmpty.style.display = 'block';
-                        }
-                    } catch (error) {
-                        console.error('Erreur chargement historique:', error);
+                        // Stocker les analyses pour le modal
+                        window.analysesData = data.analyses;
+                    } else {
                         historyEmpty.style.display = 'block';
-                    } finally {
-                        historyLoading.style.display = 'none';
                     }
+                } catch (error) {
+                    console.error('Erreur chargement historique:', error);
+                    historyEmpty.style.display = 'block';
+                } finally {
+                    historyLoading.style.display = 'none';
+                }
                 }
 
                 // Afficher les détails d'une analyse
@@ -959,7 +938,6 @@
                         const data = await response.json();
                         if (data.success) {
                             await showSuccess('Analyse supprimée avec succès');
-                            loadAnalysisHistory();
                         } else {
                             await showError(data.error || 'Impossible de supprimer l\'analyse');
                         }
@@ -985,7 +963,6 @@
 
                         if (response.ok) {
                             await showSuccess('Historique supprimé avec succès !');
-                            loadAnalysisHistory();
                         } else {
                             const error = await response.json();
                             await showError(error.error || 'Impossible de supprimer l\'historique');
@@ -997,15 +974,13 @@
 
                 // Charger l'historique au démarrage - APRÈS chargement DOM
                 document.addEventListener('DOMContentLoaded', function () {
-                    loadAnalysisHistory();
                 });
             </script>
 
             <!-- Système de Notifications -->
-            <script src="notifications.js"></script>
-            <script src="favorites-badge.js"></script>
-            <script src="dashboard-analytics.js"></script>
+            <script src="public/js/notifications.js"></script>
+            <script src="public/js/favorites-badge.js"></script>
+            <script src="public/js/dashboard-analytics.js?v=2"></script>
 </body>
 
 </html>
-```

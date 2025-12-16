@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .btn-refresh {
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-refresh:hover {
+            background: #B80000;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: white;
+            border-radius: 12px;
+            margin-top: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            margin: 16px 0;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .offer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .offer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
+        }
+
+        .offer-company {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .offer-location {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .offer-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .offer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .offer-source {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .btn-view {
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-view:hover {
+            background: #B80000;
+        }
+
+        .btn-refresh:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="public/js/modal-system.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+
+        function getToken() {
+            return localStorage.getItem("swisscv_token");
+        }
+
+        function getUser() {
+            const u = localStorage.getItem("swisscv_user");
+            return u ? JSON.parse(u) : null;
+        }
+
+        function logout() {
+            localStorage.removeItem("swisscv_token");
+            localStorage.removeItem("swisscv_user");
+            window.location.href = "index.html";
+        }
+
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+
+            if (!token) {
+                window.location.href = "login.html";
+                throw new Error("Not authenticated");
+            }
+
+            const response = await fetch(API_BASE + endpoint, {
+                ...options, headers: {
+                    "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers
+                }
+            });
+
+            if (response.status === 401) {
+                logout();
+                throw new Error("Unauthorized");
+            }
+
+            return response;
+        }
+
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link active">Dashboard</a>
+
+            <!-- Menu Outils CV (Premium/Pro) -->
+            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link">Support</a>
+            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+    <!-- MAIN CONTENT -->
+    <div style="max-width: 1400px; margin: 0 auto; padding: 120px 24px 40px;">
+        <div id="analyticsSection">
+            <!-- ANALYTICS DASHBOARD -->
+            <div class="analytics-section" style="margin-bottom: 40px;">
+                <div class="page-header">
+                    <h1>📊 Tableau de bord</h1>
+                    <p>Vue d'ensemble de votre progression</p>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="kpi-card"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Analyses</div>
+                        <div style="font-size: 36px; font-weight: 700;" id="totalAnalyses">0</div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">CV analysés</div>
+                    </div>
+
+                    <div class="kpi-card"
+                        style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Score Moyen</div>
+                        <div style="font-size: 36px; font-weight: 700;" id="avgScore">-</div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">Sur 100</div>
+                    </div>
+
+                    <div class="kpi-card"
+                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Offres Suivies</div>
+                        <div style="font-size: 36px; font-weight: 700;" id="totalFavorites">0</div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">Favoris + Tracker</div>
+                    </div>
+
+                    <div class="kpi-card"
+                        style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Progression</div>
+                        <div style="font-size: 36px; font-weight: 700;" id="improvement">-</div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">Amélioration score</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 30px;"
+                    class="charts-grid">
+                    <div
+                        style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        <h3 style="margin: 0 0 20px 0; font-size: 18px;">📈 Progression des Scores</h3>
+                        <canvas id="scoreProgressChart" style="max-height: 300px;"></canvas>
+                    </div>
+
+                    <div
+                        style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        <h3 style="margin: 0 0 20px 0; font-size: 18px;">📊 Activité Récente</h3>
+                        <canvas id="activityChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div
+                    style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 30px;">
+                    <h3 style="margin: 0 0 20px 0; font-size: 18px;">💡 Recommandations</h3>
+                    <div id="recommendationsContainer" style="display: grid; gap: 12px;">
+                        <!-- Recommendations will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* Responsive pour Analytics Dashboard */
+                @media (max-width: 768px) {
+                    .kpi-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 16px !important;
+                    }
+
+                    .charts-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 20px !important;
+                    }
+
+                    .kpi-card {
+                        padding: 20px !important;
+                    }
+
+                    canvas {
+                        max-height: 250px !important;
+                    }
+                }
+
+                @media (min-width: 769px) and (max-width: 1024px) {
+                    .kpi-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
+
+                    .charts-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                }
+            </style>
+
+            <!-- HISTORIQUE DES ANALYSES -->
+            <div class="page-header">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <h1>📊 Historique de vos analyses</h1>
+                        <p>Consultez toutes vos analyses CV précédentes</p>
+                    </div>
+                    <button class="btn-refresh" onclick="deleteAllHistory()"
+                        style="background: #FF5252; padding: 10px 20px;">
+                        🗑️ Supprimer l'historique
+                    </button>
+                </div>
+            </div>
+
+            <div id="historyLoading" class="loading" style="display:none;">
+                ⏳ Chargement de l'historique...
+            </div>
+
+            <div id="historyEmpty" class="empty-state" style="display:none;">
+                <div style="font-size: 64px;">📄</div>
+                <h2>Aucune analyse pour le moment</h2>
+                <p>Analysez votre premier CV pour voir l'historique ici</p>
+                <a href="app.html" class="btn-refresh"
+                    style="display: inline-block; text-decoration: none; margin-top: 16px;">Analyser un CV</a>
+            </div>
+
+            <div id="historyGrid" class="offers-grid" style="display:none;"></div>
+
+            <hr style="margin: 60px 0; border: none; border-top: 2px solid #E0E0E0;">
+
+            <!-- Section offres déplacée vers job-search.html -->
+
+
+            <script>
+                (async function () {
+                    console.log("Dashboard chargé - VERSION 2025-12-14-10:35");
+                    const token = getToken();
+                    if (!token) {
+                        console.log("Pas de token - Redirection login");
+                        window.location.href = "login.html";
+                        return;
+                    }
+
+                    try {
+                        const response = await authenticatedFetch("/auth/me");
+                        const data = await response.json();
+
+                        if (data.success) {
+                            console.log("Auth OK:", data.user.email);
+                            localStorage.setItem("swisscv_user", JSON.stringify(data.user));
+                            const badge = document.getElementById("userBadge");
+                            console.log("✅ APRÈS Auth OK - Tentative chargement historique...");            
+            // Charger historique analyses
+            if (typeof loadAnalysisHistory === 'function') {
+                console.log("🔄 Appel loadAnalysisHistory...");
+                loadAnalysisHistory();
+            } else {
+                console.error("❌ loadAnalysisHistory non définie!");
+            }                            if (badge && data.user) {
+                                if (data.user.tier === "premium" || data.user.tier === "pro") {
+                                    badge.className = "navbar-badge premium";
+                                    badge.textContent = data.user.tier === "pro" ? "Pro" : "Premium";
+                                } else {
+                                    badge.className = "navbar-badge free";
+                                    badge.textContent = "Free";
+                                }
+                            }
+                        } else {
+                            throw new Error("Auth failed");
+                        }
+                    } catch (error) {
+                        console.error("Erreur auth:", error);
+                        logout();
+                    }
+                })();
+
+                // Charger l'historique des analyses
+                async function loadAnalysisHistory() {
+                    const historyLoading = document.getElementById('historyLoading');
+                    const historyEmpty = document.getElementById('historyEmpty');
+                    const historyGrid = document.getElementById('historyGrid');
+
+                    historyLoading.style.display = 'block';
+                    historyEmpty.style.display = 'none';
+                    historyGrid.style.display = 'none';
+
+                    try {
+                        console.log("🔍 Appel API /analyses/history...");
+                        console.log("🔍 Token présent:", !!localStorage.getItem('swisscv_token'));                        const response = await authenticatedFetch('/analyses/history');
+                        console.log("📊 Réponse analyses/history:", data);
+                        console.log("📊 Nombre analyses:", data.analyses?.length);                        const data = await response.json();
+
+                        if (data.success && data.analyses && data.analyses.length > 0) {
+                            historyGrid.innerHTML = data.analyses.map(analysis => `
+                        <div class="offer-card" style="position: relative;">
+                            <button onclick="event.stopPropagation(); deleteAnalysis('${analysis.id}')" 
+                                    style="position: absolute; top: 12px; right: 12px; background: #FFE5E5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #D50000; font-size: 18px; font-weight: bold; transition: all 0.2s; z-index: 10;"
+                                    onmouseover="this.style.background='#D50000'; this.style.color='white';"
+                                    onmouseout="this.style.background='#FFE5E5'; this.style.color='#D50000';"
+                                    title="Supprimer cette analyse">
+                                ×
+                            </button>
+                            <div onclick="showAnalysisDetail('${analysis.id}')" style="cursor: pointer;">
+                                <div class="offer-title">${analysis.filename || 'CV analysé'}</div>
+                                <div class="offer-company">Analysé le ${analysis.createdAt ? new Date(analysis.createdAt * 1000).toLocaleDateString('fr-CH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Date inconnue'}</div>
+                                <div style="display: flex; gap: 16px; margin: 16px 0;">
+                                    <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #D50000;">${analysis.score}</div>
+                                        <div style="font-size: 12px; color: #666;">Score CV</div>
+                                    </div>
+                                    <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #10b981;">${analysis.atsScore}</div>
+                                        <div style="font-size: 12px; color: #666;">Score ATS</div>
+                                    </div>
+                                </div>
+                                <div class="offer-footer">
+                                    <span class="offer-source">${analysis.strongPoints.length} points forts</span>
+                                    <button class="btn-view" onclick="event.stopPropagation(); showAnalysisDetail('${analysis.id}')">Voir détails</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                            historyGrid.style.display = 'grid';
+
+                            // Stocker les analyses pour le modal
+                            window.analysesData = data.analyses;
+                        } else {
+                            historyEmpty.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Erreur chargement historique:', error);
+                        historyEmpty.style.display = 'block';
+                    } finally {
+                        historyLoading.style.display = 'none';
+                    }
+                }
+
+                // Afficher les détails d'une analyse
+                function showAnalysisDetail(analysisId) {
+                    const analysis = window.analysesData?.find(a => a.id === analysisId);
+                    if (!analysis) return;
+
+                    const modal = document.createElement('div');
+                    modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;';
+
+                    modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 style="font-size: 24px; font-weight: 700;">${analysis.filename}</h2>
+                        <button onclick="this.closest('div[style*=fixed]').remove()" style="background: none; border: none; font-size: 32px; cursor: pointer; color: #666;">&times;</button>
+                    </div>
+                    
+                    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div style="flex: 1; text-align: center; padding: 16px; background: #F5F5F5; border-radius: 8px;">
+                            <div style="font-size: 32px; font-weight: 700; color: #D50000;">${analysis.score}/100</div>
+                            <div style="font-size: 14px; color: #666;">Score CV</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; padding: 16px; background: #F5F5F5; border-radius: 8px;">
+                            <div style="font-size: 32px; font-weight: 700; color: #10b981;">${analysis.atsScore}/100</div>
+                            <div style="font-size: 14px; color: #666;">Score ATS</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">✅ Points forts</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            ${analysis.strongPoints.map(point => `<li style="padding: 8px 0; border-bottom: 1px solid #E0E0E0;">• ${point}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    ${analysis.improvements ? `
+                        <div style="margin-bottom: 24px;">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">💡 Points à améliorer</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${analysis.improvements.map(point => `<li style="padding: 8px 0; border-bottom: 1px solid #E0E0E0;">• ${point}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${analysis.swissAdvice ? `
+                        <div style="margin-bottom: 24px;">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">🇨🇭 Conseils marché suisse</h3>
+                            <p style="padding: 16px; background: #F5F5F5; border-radius: 8px; line-height: 1.6;">${analysis.swissAdvice}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">🔑 Mots-clés</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${analysis.keywords.map(keyword => `<span style="padding: 6px 12px; background: #E0E0E0; border-radius: 16px; font-size: 14px;">${keyword}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                    document.body.appendChild(modal);
+                    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+                }
+
+                // Charger l'historique au démarrage
+
+                // Supprimer une seule analyse
+                async function deleteAnalysis(analysisId) {
+                    const confirmed = await showConfirm(
+                        'Cette analyse sera définitivement supprimée.',
+                        'Supprimer l\'analyse',
+                        true // danger
+                    );
+
+                    if (!confirmed) return;
+
+                    try {
+                        const token = getToken();
+                        const response = await fetch(`${API_BASE}/cv-analyses/${analysisId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            await showSuccess('Analyse supprimée avec succès');
+                            loadAnalysisHistory();
+                        } else {
+                            await showError(data.error || 'Impossible de supprimer l\'analyse');
+                        }
+                    } catch (error) {
+                        await showError('Erreur de connexion');
+                    }
+                }
+
+                // Supprimer tout l'historique
+                async function deleteAllHistory() {
+                    const confirmed = await showConfirm(
+                        'Toutes vos analyses seront définitivement supprimées.\n\nCette action est irréversible.',
+                        '⚠️ Supprimer tout l\'historique',
+                        true // danger
+                    );
+
+                    if (!confirmed) return;
+
+                    try {
+                        const response = await authenticatedFetch('/analyses/history', {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            await showSuccess('Historique supprimé avec succès !');
+                            loadAnalysisHistory();
+                        } else {
+                            const error = await response.json();
+                            await showError(error.error || 'Impossible de supprimer l\'historique');
+                        }
+                    } catch (error) {
+                        await showError('Erreur de connexion');
+                    }
+                }
+
+                // Charger l'historique au démarrage - APRÈS chargement DOM
+                document.addEventListener('DOMContentLoaded', function () {
+                    loadAnalysisHistory();
+                });
+            </script>
+
+            <!-- Système de Notifications -->
+            <script src="public/js/notifications.js"></script>
+            <script src="public/js/favorites-badge.js"></script>
+            <script src="public/js/dashboard-analytics.js?v=2"></script>
+</body>
+
+</html>
+<script>
+// Force le chargement de l'historique après que tout soit chargé
+window.addEventListener('load', function() {
+    <script src="public/js/force-history-load.js?v=20251214-1037"></script>    console.log('🔄 Force chargement historique...');
+    setTimeout(() => {
+        if (typeof loadAnalysisHistory === 'function') {
+            console.log('✅ loadAnalysisHistory trouvée, appel...');
+            loadAnalysisHistory();
+        } else {
+            console.error('❌ loadAnalysisHistory non trouvée!');
+        }
+    }, 1000); // Attendre 1 seconde pour être sûr que tout est chargé
+});
+</script>

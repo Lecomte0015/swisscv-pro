@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyseur CV — SwissCV Pro</title>
+    <meta name="description"
+        content="Analysez votre CV avec l'IA spécialisée pour le marché suisse. Optimisation ATS, conseils personnalisés, génération de lettres de motivation.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- ✅ PDF.js pour extraction PDF robuste -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <!-- ✅ jsPDF pour export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-VE7PJZTF8L');
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+            --pro-purple: #7C4DFF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: var(--swiss-white);
+            border-bottom: 1px solid var(--swiss-gray);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .logo-text strong {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--swiss-black);
+        }
+
+        /* Menu de navigation */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-right: auto;
+            margin-left: 40px;
+        }
+
+        .nav-link {
+            color: var(--swiss-black);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: #F0F0F0;
+        }
+
+        .nav-link.premium-only {
+            position: relative;
+        }
+
+        .nav-link.premium-only::after {
+            content: "✨";
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .nav-link.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-link.locked:hover {
+            background: transparent;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: var(--swiss-black);
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, var(--pro-purple) 0%, #651FFF 100%);
+            color: white;
+        }
+
+        .btn-dashboard {
+            background: var(--swiss-red);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-dashboard:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--swiss-black);
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .drop-zone {
+            border: 3px dashed var(--swiss-gray);
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #FAFAFA;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--swiss-red);
+            background: #FFF8F8;
+        }
+
+        .drop-zone-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .drop-zone h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--swiss-black);
+        }
+
+        .drop-zone p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-upload {
+            display: inline-block;
+            background: var(--swiss-red);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-upload:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(213, 0, 0, 0.3);
+        }
+
+        .file-info {
+            display: none;
+            background: #E8F5E9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+            text-align: left;
+        }
+
+        .file-info.show {
+            display: block;
+        }
+
+        .file-info-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .file-info-icon {
+            font-size: 32px;
+        }
+
+        .file-info-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-info-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .photo-option {
+            margin-top: 24px;
+            padding: 20px;
+            background: #F0F8FF;
+            border: 2px solid #1976D2;
+            border-radius: 8px;
+        }
+
+        .photo-option label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .photo-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .photo-option .help-text {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            margin-left: 32px;
+            line-height: 1.5;
+        }
+
+        #remainingAnalyses {
+            margin-top: 24px;
+        }
+
+        .analyze-section {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .btn-analyze {
+            background: linear-gradient(135deg, var(--swiss-red) 0%, #B80000 100%);
+            color: white;
+            padding: 20px 60px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 24px rgba(213, 0, 0, 0.3);
+        }
+
+        .btn-analyze:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(213, 0, 0, 0.5);
+        }
+
+        .btn-analyze:disabled {
+            background: #CCC;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* ✅ NOUVELLE ANIMATION DE CHARGEMENT AMÉLIORÉE */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ✅ Spinner amélioré avec pulsation */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+            margin: 0 auto 32px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            }
+        }
+
+        .loading-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .loading-content p {
+            font-size: 16px;
+            opacity: 0.8;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* ✅ NOUVEAU : Score card avec gauge circulaire */
+        .score-card {
+            background: white;
+            padding: 60px 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--swiss-red), #FFB300, #00C853);
+        }
+
+        /* ✅ Conteneur pour la gauge circulaire */
+        .score-gauge-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 32px;
+        }
+
+        .score-gauge {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .score-value-large {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 20px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .result-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .result-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-card h3 .icon {
+            font-size: 32px;
+        }
+
+        .result-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-list li {
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            border-left: 4px solid var(--swiss-red);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .result-list.strengths li {
+            background: #F0FFF0;
+            border-left-color: #00C853;
+        }
+
+        .result-list.improvements li {
+            background: #FFF8DC;
+            border-left-color: #FFB300;
+        }
+
+        .result-list.swiss-advice li {
+            background: #EEF3FF;
+            border-left-color: #1976D2;
+        }
+
+        #atsSection {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .ats-score-display {
+            text-align: center;
+            padding: 32px;
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+
+        .ats-score-value {
+            font-size: 72px;
+            font-weight: 800;
+            color: #1976D2;
+            margin-bottom: 8px;
+        }
+
+        .ats-score-label {
+            font-size: 16px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--swiss-black);
+            border: 2px solid var(--swiss-gray);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--swiss-black);
+        }
+
+        .btn-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            padding: 48px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .btn-close {
+            background: #F5F5F5;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-close:hover {
+            background: #E0E0E0;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .cover-letter-result {
+            margin-top: 32px;
+            padding: 32px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        @media (max-width: 768px) {
+
+            .header-content,
+            .container {
+                padding: 0 20px;
+            }
+
+            .upload-section,
+            .score-card,
+            .result-card,
+            .modal-content {
+                padding: 24px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .score-gauge-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .score-value-large {
+                font-size: 48px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                width: 100%;
+            }
+        }
+
+        /* CORRECTION ESPACEMENT NAVBAR */
+        body {
+            padding-top: 150px !important;
+            margin-top: 0 !important;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="public/js/modal-system.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        .navbar-dropdown {
+            position: relative;
+        }
+
+        .navbar-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            padding: 8px 0;
+            margin-top: 4px;
+            z-index: 1000;
+        }
+
+        .navbar-dropdown:hover .navbar-dropdown-menu {
+            display: block;
+        }
+
+        .navbar-dropdown-item {
+            display: block;
+            padding: 10px 16px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .navbar-dropdown-item:hover {
+            background: #F0F0F0;
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+
+            .navbar-dropdown-menu {
+                position: static;
+                box-shadow: none;
+                background: #F5F5F5;
+                margin-top: 0;
+                padding: 0;
+            }
+
+            .navbar-dropdown-item {
+                padding: 12px 20px;
+                border-left: 3px solid #D50000;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    </style>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <!-- Menu Outils CV (Premium/Pro) -->
+            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="navbar-link active" style="display:none;" class="dropdown-item">Analyser
+                        CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link">Support</a>
+            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+
+
+
+    <!-- ✅ Script dupliqué supprimé - fonctions déjà définies au début de <body> -->
+
+
+
+
+
+
+
+
+    </div>
+
+    <div class="container">
+        <div class="upload-section">
+            <h1 class="section-title">📄 Analysez votre CV</h1>
+            <p class="section-subtitle">
+                Obtenez une analyse détaillée de votre CV optimisée pour le marché suisse.
+                Score global, recommandations personnalisées, optimisation ATS.
+            </p>
+
+            <div id="remainingAnalyses"></div>
+
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-icon">📁</div>
+                <h3>Glissez-déposez votre CV ici</h3>
+                <p>ou cliquez pour sélectionner un fichier</p>
+
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.doc,.docx,.txt">
+                    <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+                        📤 Choisir un fichier
+                    </button>
+                </div>
+
+                <p style="font-size: 13px; color: #999; margin-top: 16px;">
+                    Formats acceptés : PDF, DOC, DOCX, TXT • Max 10 MB
+                </p>
+            </div>
+
+            <div class="file-info" id="fileInfo">
+                <div class="file-info-content">
+                    <div class="file-info-icon">✅</div>
+                    <div class="file-info-details">
+                        <h4 id="fileName">Fichier sélectionné</h4>
+                        <p id="fileSize">Taille du fichier</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="photo-option">
+                <label>
+                    <input type="checkbox" id="hasPhotoCheckbox" checked>
+                    <span>📸 Mon CV contient une photo professionnelle</span>
+                </label>
+                <p class="help-text">
+                    <strong>Standard suisse :</strong> La photo est fortement recommandée en Suisse.
+                    Son absence peut réduire significativement votre score (-25 points).
+                </p>
+            </div>
+
+            <div class="analyze-section">
+                <button class="btn-analyze" id="analyzeBtn" disabled>
+                    🚀 Analyser mon CV
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <!-- ✅ NOUVEAU : Score avec gauge circulaire -->
+            <div class="score-card">
+                <div class="score-gauge-container">
+                    <canvas id="scoreCanvas" class="score-gauge" width="280" height="280"></canvas>
+                    <div class="score-value-large" id="scoreValue">—</div>
+                </div>
+                <div class="score-label">Score Global</div>
+            </div>
+
+            <div class="result-card" id="strengthsCard">
+                <h3>
+                    <span class="icon">✅</span>
+                    Points Forts
+                </h3>
+                <ul class="result-list strengths" id="strengthsList">
+                </ul>
+            </div>
+
+            <div class="result-card" id="improvementsCard">
+                <h3>
+                    <span class="icon">⚠️</span>
+                    Points à Améliorer
+                </h3>
+                <ul class="result-list improvements" id="improvementsList">
+                </ul>
+            </div>
+
+            <div class="result-card" id="swissAdviceCard">
+                <h3>
+                    <span class="icon">🇨🇭</span>
+                    Conseils Marché Suisse
+                </h3>
+                <ul class="result-list swiss-advice" id="swissAdviceList">
+                </ul>
+            </div>
+
+            <div id="atsSection" style="display: none;">
+                <h3
+                    style="font-size: 24px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span class="icon">🤖</span>
+                    Score ATS (Applicant Tracking System)
+                </h3>
+
+                <div class="ats-score-display">
+                    <div class="ats-score-value" id="atsScoreValue">—</div>
+                    <div class="ats-score-label">Compatibilité ATS</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-action btn-primary" onclick="window.open('cover-letter.html', '_blank')">
+                    ✉️ Générer une lettre
+                </button>
+                <button class="btn-action btn-primary" id="optimizeForJobBtn" onclick="openOptimizeModal()"
+                    style="display:none;">
+                    ✨ Optimiser pour une offre
+                </button>
+                <button class="btn-action btn-secondary" onclick="downloadPDF()">
+                    📥 Exporter PDF
+                </button>
+                <button class="btn-action btn-secondary" onclick="copyToClipboard()">
+                    🔄 Nouvelle analyse
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>🤖 Analyse en cours...</h3>
+            <p>L'IA analyse votre CV selon les standards suisses</p>
+        </div>
+    </div>
+
+    <!-- Modal Optimisation CV -->
+    <div class="modal" id="optimizeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✨ Optimiser votre CV pour une offre</h2>
+                <button class="btn-close" onclick="closeOptimizeModal()">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Description de l'offre d'emploi</label>
+                <textarea id="jobDescriptionInput" placeholder="Collez la description de l'offre d'emploi ici..."
+                    style="min-height: 200px;"></textarea>
+            </div>
+            <button class="btn-action btn-primary" onclick="optimizeForJob()" style="width: 100%; margin-top: 20px;">
+                ✨ Générer les suggestions
+            </button>
+            <div id="optimizationResults" style="display: none; margin-top: 30px;">
+                <h3 style="margin-bottom: 20px;">📊 Suggestions d'optimisation</h3>
+                <div id="optimizationContent"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ✅ Configuration PDF.js
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            console.log('✅ PDF.js chargé');
+        }
+
+        console.log('🚀 SwissCV Pro FIXED - Version corrigée complète');
+
+        let selectedFile = null;
+        let currentAnalysisResult = null;
+        let currentCVText = '';
+
+        // ============================================================
+        // FONCTIONS UTILITAIRES
+        // ============================================================
+
+        function generateUserId() {
+            const fp = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                new Date().getTimezoneOffset()
+            ].join('|');
+            const hash = fp.split('').reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0);
+            return `user_${Math.abs(hash)}`;
+        }
+
+        // ============================================================
+        // ✅ FONCTIONS AUTH déjà définies au début de <body>
+        // ============================================================
+
+        // getToken(), getUser(), logout() déjà définis au début
+
+        function isPaidUser() {
+            const user = getUser();
+            if (!user) return false;
+            return user.tier === 'premium' || user.tier === 'pro';
+        }
+
+        async function canAnalyze() {
+            // Simplifié : on laisse le backend gérer les limites
+            // Le backend retournera une erreur 403 si la limite est atteinte
+            const token = localStorage.getItem('swisscv_token');
+            if (!token) {
+                console.error('❌ Pas de token JWT');
+                return { allowed: false, reason: 'no_auth' };
+            }
+
+            return { allowed: true, reason: 'unknown' };
+        }
+
+        async function incrementAnalysisCount(apiEndpoint) {
+            const userId = generateUserId();
+            try {
+                await fetch(`${apiEndpoint}/increment-analysis`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+            } catch (e) {
+                console.error('Erreur incrémentation:', e);
+            }
+        }
+
+        async function updateRemainingCount() {
+            // Simplifié : on ne vérifie plus côté client
+            // Le backend gère les limites et retourne une erreur 403 si dépassé
+            return { remaining: -1 }; // -1 = inconnu
+        }
+
+        function displayRemainingCount(remaining) {
+            const container = document.getElementById('remainingAnalyses');
+            if (!container) return;
+            if (remaining === 0) {
+                container.innerHTML = `<div style="background:#FFEBEE;border:2px solid #D50000;padding:16px;border-radius:8px;text-align:center">
+                    <div style="font-size:18px;font-weight:700;color:#D50000;margin-bottom:8px">⚠️ Limite atteinte</div>
+                    <p style="font-size:14px;color:#666;margin-bottom:12px">Vous avez utilisé vos 2 analyses gratuites</p>
+                    <a href="pricing.html" style="display:inline-block;background:#D50000;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600">🚀 Passer à Premium</a>
+                </div>`;
+            } else {
+                container.innerHTML = `<div style="background:#FFF3E0;border:2px solid #FFB300;padding:12px;border-radius:6px;text-align:center">
+                    <span style="font-weight:700;color:#E65100">${remaining} analyse${remaining > 1 ? 's' : ''} gratuite${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''}</span>
+                </div>`;
+            }
+        }
+
+        function showLimitReachedModal() {
+            // Créer le modal s'il n'existe pas
+            let modal = document.getElementById('limitModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'limitModal';
+                modal.style.cssText = 'display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); overflow-y: auto;';
+                modal.innerHTML = `
+                    <div style="background: white; margin: 5% auto; padding: 0; border-radius: 12px; max-width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative;">
+                        <div style="text-align: center; padding: 32px 24px;">
+                            <div style="font-size: 56px; margin-bottom: 16px;">🔒</div>
+                            <h2 style="font-size: 24px; margin-bottom: 12px; color: #0D0D0D;">Limite gratuite atteinte</h2>
+                            <p style="color: #666; font-size: 15px; margin-bottom: 24px; line-height: 1.5;">Vous avez utilisé vos 2 analyses gratuites.<br>Passez à Premium pour continuer !</p>
+                            
+                            <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 20px; border-radius: 10px; margin-bottom: 24px;">
+                                <div style="font-size: 32px; font-weight: 700; color: #000; margin-bottom: 6px;">9.90 CHF/mois</div>
+                                <div style="color: #333; font-size: 13px; font-weight: 600;">✅ Analyses illimitées<br>✅ Lettres de motivation<br>✅ Export PDF</div>
+                            </div>
+                            
+                            <button onclick="window.location.href='pricing.html'" style="width: 100%; background: #D50000; color: white; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);" onmouseover="this.style.background='#B80000'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#D50000'; this.style.transform='translateY(0)'">
+                                🚀 Passer à Premium
+                            </button>
+                            <button onclick="document.getElementById('limitModal').style.display='none'" style="width: 100%; background: white; color: #666; padding: 14px; border: 2px solid #E6E6E6; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#D50000'; this.style.color='#D50000'" onmouseout="this.style.borderColor='#E6E6E6'; this.style.color='#666'">
+                                Fermer
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                // Fermer en cliquant sur le fond
+                modal.onclick = function (e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                };
+            }
+            modal.style.display = 'block';
+        }
+
+        function showUpgradeModal(feature) {
+            alert(`${feature} est une fonctionnalité Premium.`);
+            window.location.href = 'pricing.html';
+        }
+
+        function saveAnalysis(data) {
+            try {
+                const analyses = JSON.parse(localStorage.getItem('swisscv_analyses') || '[]');
+                analyses.unshift({
+                    id: Date.now(),
+                    date: new Date().toISOString(),
+                    ...data
+                });
+                localStorage.setItem('swisscv_analyses', JSON.stringify(analyses.slice(0, 20)));
+                console.log('✅ Analyse sauvegardée');
+            } catch (e) {
+                console.error('Erreur sauvegarde:', e);
+            }
+        }
+
+        // ============================================================
+        // ✅ NOUVELLE FONCTION : EXTRACTION PDF ROBUSTE AVEC PDF.JS
+        // ============================================================
+
+        async function extractTextFromPDF(file) {
+            console.log('📄 Extraction PDF avec PDF.js...');
+
+            return new Promise(async (resolve, reject) => {
+                try {
+                    // Lire le fichier en ArrayBuffer
+                    const arrayBuffer = await file.arrayBuffer();
+
+                    // Charger le PDF
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    console.log(`📄 PDF chargé: ${pdf.numPages} pages`);
+
+                    let fullText = '';
+
+                    // Extraire le texte de chaque page
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += pageText + '\n';
+                    }
+
+                    // Nettoyer le texte
+                    const cleanText = fullText
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .substring(0, 8000); // Limite à 8000 caractères
+
+                    console.log(`✅ Texte extrait: ${cleanText.length} caractères`);
+
+                    if (cleanText.length < 100) {
+                        reject(new Error('PDF vide ou illisible. Essayez un autre format.'));
+                        return;
+                    }
+
+                    resolve(cleanText);
+
+                } catch (error) {
+                    console.error('❌ Erreur extraction PDF:', error);
+                    reject(new Error('Impossible de lire le PDF. Vérifiez qu\'il n\'est pas protégé.'));
+                }
+            });
+        }
+
+        // ============================================================
+        // ✅ FONCTION D'EXTRACTION MULTI-FORMAT AMÉLIORÉE
+        // ============================================================
+
+        async function extractTextFromFile(file) {
+            console.log('📝 Extraction du texte:', file.type);
+
+            // Texte brut
+            if (file.type === 'text/plain') {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const text = e.target.result;
+                        if (text.length < 100) {
+                            reject(new Error('Fichier trop court (minimum 100 caractères).'));
+                            return;
+                        }
+                        resolve(text.substring(0, 8000));
+                    };
+                    reader.onerror = () => reject(new Error('Erreur lecture fichier'));
+                    reader.readAsText(file);
+                });
+            }
+
+            // PDF - Utiliser PDF.js
+            if (file.type === 'application/pdf') {
+                return await extractTextFromPDF(file);
+            }
+
+            // DOC/DOCX - Extraction basique
+            if (file.type.includes('word') || file.type.includes('document')) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            let text = e.target.result;
+                            // Nettoyer le texte des caractères binaires
+                            const cleanText = text
+                                .replace(/[^\x20-\x7E\n\r\t]/g, ' ')
+                                .replace(/\s+/g, ' ')
+                                .trim()
+                                .substring(0, 8000);
+
+                            if (cleanText.length < 100) {
+                                reject(new Error('Impossible d\'extraire suffisamment de texte. Utilisez un PDF ou TXT.'));
+                                return;
+                            }
+                            resolve(cleanText);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    reader.onerror = () => reject(new Error('Erreur lecture fichier'));
+                    reader.readAsText(file);
+                });
+            }
+
+            throw new Error('Format de fichier non supporté');
+        }
+
+        // ============================================================
+        // ✅ NOUVELLE FONCTION : ANIMATION GAUGE CIRCULAIRE
+        // ============================================================
+
+        function drawScoreGauge(score) {
+            const canvas = document.getElementById('scoreCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 120;
+            const lineWidth = 20;
+
+            // Couleur en fonction du score
+            let gaugeColor;
+            if (score >= 80) {
+                gaugeColor = '#00C853'; // Vert
+            } else if (score >= 60) {
+                gaugeColor = '#FFB300'; // Orange
+            } else {
+                gaugeColor = '#D50000'; // Rouge
+            }
+
+            // Effacer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dessiner le cercle de fond (gris)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#E0E0E0';
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+
+            // Dessiner le cercle de progression (animé)
+            const startAngle = -Math.PI / 2; // Commence en haut
+            const endAngle = startAngle + (2 * Math.PI * score / 100);
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.strokeStyle = gaugeColor;
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Ajouter une ombre/glow
+            ctx.shadowColor = gaugeColor;
+            ctx.shadowBlur = 15;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        // Animation progressive du score
+        function animateScore(targetScore) {
+            const scoreElement = document.getElementById('scoreValue');
+            const duration = 2000; // 2 secondes
+            const fps = 60;
+            const frames = duration / (1000 / fps);
+            const increment = targetScore / frames;
+            let currentScore = 0;
+            let frame = 0;
+
+            const animate = () => {
+                frame++;
+                currentScore = Math.min(currentScore + increment, targetScore);
+
+                // Mettre à jour le texte
+                scoreElement.textContent = Math.round(currentScore);
+
+                // Dessiner la gauge
+                drawScoreGauge(currentScore);
+
+                if (frame < frames) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Animation terminée
+                    scoreElement.textContent = targetScore;
+                    drawScoreGauge(targetScore);
+                }
+            };
+
+            animate();
+        }
+
+        // ============================================================
+        // UI ET INTERACTIONS
+        // ============================================================
+
+        function updateUIForUserRole() {
+            const user = getUser();
+            const role = user ? user.tier : 'free';
+            const planBadge = document.getElementById('planBadge');
+            const planIcon = document.getElementById('planIcon');
+            const planText = document.getElementById('planText');
+            const dashboardLink = document.getElementById('dashboardLink');
+
+            console.log('👤 Rôle utilisateur:', role);
+
+            if (!dashboardLink) {
+                console.error('❌ Element dashboardLink non trouvé');
+                return;
+            }
+
+            // Supprimer tous les anciens event listeners
+            const newDashboardLink = dashboardLink.cloneNode(true);
+            dashboardLink.parentNode.replaceChild(newDashboardLink, dashboardLink);
+
+            planBadge.className = 'plan-badge ' + role;
+
+            if (role === 'pro') {
+                planIcon.textContent = '💎';
+                planText.textContent = 'Pro';
+                newDashboardLink.style.display = 'inline-block';
+                newDashboardLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Déjà sur app.html, pas besoin de rediriger
+                    console.log('✅ Déjà sur le dashboard Pro');
+                });
+            } else if (role === 'premium') {
+                planIcon.textContent = '✨';
+                planText.textContent = 'Premium';
+                newDashboardLink.style.display = 'inline-block';
+                newDashboardLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Déjà sur app.html, pas besoin de rediriger
+                    console.log('✅ Déjà sur le dashboard Premium');
+                });
+            } else {
+                planIcon.textContent = '🆓';
+                planText.textContent = 'Free';
+                newDashboardLink.style.display = 'none';
+            }
+
+            console.log('✅ UI mise à jour pour rôle:', role);
+        }
+
+        // ============================================================
+        // 🔒 BLOQUER LIENS PREMIUM POUR FREE USERS
+        // ============================================================
+
+        function setupPremiumLinks() {
+            const user = getUser();
+            const isPremium = user && (user.tier === 'premium' || user.tier === 'pro');
+
+            const premiumLinks = document.querySelectorAll('.nav-link.premium-only');
+
+            if (!isPremium) {
+                premiumLinks.forEach(link => {
+                    link.classList.add('locked');
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        alert('⚠️ Cette fonctionnalité est réservée aux utilisateurs Premium.\n\nPassez à Premium pour débloquer :\n✅ Recherche d\'offres d\'emploi\n✅ Suivi des candidatures\n✅ Templates CV suisses\n\n👉 Cliquez sur "Tarifs" pour en savoir plus.');
+                        window.location.href = 'pricing.html';
+                    });
+                });
+            } else {
+                // Supprimer le "locked" si Premium
+                premiumLinks.forEach(link => {
+                    link.classList.remove('locked');
+                });
+            }
+        }
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        });
+
+        dropZone.addEventListener('click', (e) => {
+            if (e.target !== fileInput && !e.target.closest('.btn-upload')) {
+                fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            const validTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'text/plain'
+            ];
+
+            if (!validTypes.includes(file.type)) {
+                alert('❌ Format non supporté. Utilisez PDF, DOC, DOCX ou TXT.');
+                return;
+            }
+
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('❌ Fichier trop volumineux. Maximum 10 MB.');
+                return;
+            }
+
+            selectedFile = file;
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            fileInfo.classList.add('show');
+            analyzeBtn.disabled = false;
+            console.log('✅ Fichier sélectionné:', file.name);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // ============================================================
+        // ANALYSE CV
+        // ============================================================
+
+        analyzeBtn.addEventListener('click', analyzeCV);
+
+        async function analyzeCV() {
+            if (!selectedFile) {
+                alert('❌ Veuillez sélectionner un fichier.');
+                return;
+            }
+
+            try {
+                console.log('🚀 Analyse:', selectedFile.name);
+                const canAnalyzeResult = await canAnalyze();
+
+                if (!canAnalyzeResult.allowed) {
+                    // This case should ideally be handled by the backend returning 403
+                    // but keeping this for explicit client-side checks if any.
+                    if (canAnalyzeResult.reason === 'no_auth') {
+                        alert('Veuillez vous connecter pour analyser votre CV.');
+                        window.location.href = 'login.html';
+                    } else {
+                        showLimitReachedModal();
+                    }
+                    return;
+                }
+
+                // ✅ Afficher le loading avec animation
+                document.getElementById('loadingOverlay').classList.add('show');
+
+                // ✅ Extraction avec la nouvelle fonction robuste
+                let cvText;
+                try {
+                    cvText = await extractTextFromFile(selectedFile);
+                    console.log('📝 Texte extrait:', cvText.length, 'chars');
+
+                    // Sauvegarder pour optimisation
+                    currentCVText = cvText;
+                } catch (extractError) {
+                    console.error('❌ Erreur extraction:', extractError);
+                    document.getElementById('loadingOverlay').classList.remove('show');
+                    alert('❌ ' + extractError.message);
+                    return;
+                }
+
+                if (!cvText || cvText.length < 100) {
+                    throw new Error('Texte extrait trop court (minimum 100 caractères).');
+                }
+
+                const hasPhoto = document.getElementById('hasPhotoCheckbox').checked;
+                const userId = generateUserId();
+
+                console.log('📤 Envoi à l\'API...');
+
+                const token = getToken();
+                if (!token) {
+                    throw new Error('Non authentifié. Veuillez vous connecter.');
+                }
+
+                const response = await fetch(`${API_BASE}/analyze-cv-text`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        cvText,
+                        filename: selectedFile.name,
+                        hasPhoto: hasPhoto
+                    })
+                });
+
+                console.log('📥 Réponse:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`${response.status}: ${errorText}`);
+                }
+
+                const result = await response.json();
+                console.log('✅ Résultat:', result);
+
+                // ✅ Le worker retourne { success: true, analysis: {...} }
+                const analysis = result.analysis || result;
+
+                if (!analysis.score) {
+                    throw new Error('Résultat incomplet');
+                }
+
+                // Plus besoin d'incrémenter manuellement, le worker le fait
+                await updateRemainingCount();
+
+                currentAnalysisResult = analysis;
+                saveAnalysis({
+                    fileName: selectedFile.name,
+                    score: analysis.score,
+                    atsScore: analysis.atsScore || null,
+                    strongPoints: analysis.strongPoints || [],
+                    improvements: analysis.improvements || [],
+                    swissAdvice: analysis.swissAdvice || []
+                });
+
+                // ✅ Masquer le loading
+                document.getElementById('loadingOverlay').classList.remove('show');
+
+                // ✅ Afficher les résultats
+                displayResults(analysis);
+
+                // Scroll vers les résultats
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'cv_analyzed', {
+                        'event_category': 'analysis',
+                        'user_type': canAnalyzeResult.reason
+                    });
+                }
+
+            } catch (error) {
+                console.error('❌ ERREUR:', error);
+                document.getElementById('loadingOverlay').classList.remove('show');
+
+                // Vérifier si c'est une erreur de limite atteinte
+                if (error.message.includes('403') && error.message.includes('Limite gratuite atteinte')) {
+                    showLimitReachedModal();
+                } else {
+                    let errorMessage = '❌ Erreur lors de l\'analyse.\n\n';
+
+                    if (error.message.includes('401')) {
+                        errorMessage += 'Veuillez vous reconnecter.';
+                        setTimeout(() => window.location.href = 'login.html', 2000);
+                    } else if (error.message.includes('500')) {
+                        errorMessage += 'Erreur serveur. Réessayez dans quelques instants.';
+                    } else if (error.message.includes('Network')) {
+                        errorMessage += 'Problème de connexion. Vérifiez votre internet.';
+                    } else {
+                        errorMessage += error.message || 'Erreur inconnue';
+                    }
+
+                    alert(errorMessage);
+                }
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'cv_analysis_error', {
+                        'event_category': 'error'
+                    });
+                }
+            }
+        }
+
+        // ============================================================
+        // ✅ AFFICHAGE DES RÉSULTATS AVEC ANIMATION
+        // ============================================================
+
+        function displayResults(result) {
+            console.log('📊 Affichage des résultats:', result);
+
+            // Afficher la section résultats
+            document.getElementById('resultsSection').classList.add('show');
+
+            // ✅ Animer le score avec la gauge circulaire
+            const scoreValue = result.score || 0;
+            animateScore(scoreValue);
+
+            // Points forts
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = '';
+            if (result.strongPoints && result.strongPoints.length > 0) {
+                result.strongPoints.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = s;
+                    strengthsList.appendChild(li);
+                });
+            } else {
+                strengthsList.innerHTML = '<li style="color:#999;font-style:italic">Aucun point fort disponible</li>';
+            }
+
+            // Améliorations
+            const improvementsList = document.getElementById('improvementsList');
+            improvementsList.innerHTML = '';
+            if (result.improvements && result.improvements.length > 0) {
+                result.improvements.forEach(i => {
+                    const li = document.createElement('li');
+                    li.textContent = i;
+                    improvementsList.appendChild(li);
+                });
+            } else {
+                improvementsList.innerHTML = '<li style="color:#999;font-style:italic">Aucune amélioration disponible</li>';
+            }
+
+            // Conseils Suisse
+            const swissAdviceList = document.getElementById('swissAdviceList');
+            swissAdviceList.innerHTML = '';
+            if (result.swissAdvice) {
+                // Si c'est un array, afficher chaque élément
+                if (Array.isArray(result.swissAdvice)) {
+                    result.swissAdvice.forEach(a => {
+                        const li = document.createElement('li');
+                        li.textContent = a;
+                        swissAdviceList.appendChild(li);
+                    });
+                } else {
+                    // Si c'est une string, afficher directement
+                    const li = document.createElement('li');
+                    li.textContent = result.swissAdvice;
+                    swissAdviceList.appendChild(li);
+                }
+            } else {
+                swissAdviceList.innerHTML = '<li style="color:#999;font-style:italic">Aucun conseil disponible</li>';
+            }
+
+            // Score ATS
+            if (result.ats_score) {
+                const ats = document.getElementById('atsSection');
+                if (ats) {
+                    ats.style.display = 'block';
+                    document.getElementById('atsScoreValue').textContent = result.ats_score + '%';
+                }
+            }
+
+            console.log('✅ Affichage terminé');
+
+            // Afficher le bouton optimisation pour Premium/Pro
+            updateOptimizeButton();
+        }
+
+        // ============================================================
+        // ✅ EXPORT PDF AVEC jsPDF
+        // ============================================================
+
+        const suggestJobsBtn = document.getElementById('suggestJobsBtn');
+        if (suggestJobsBtn) {
+            suggestJobsBtn.addEventListener('click', async () => {
+                if (!currentAnalysisResult) {
+                    alert('❌ Aucune analyse à exporter.');
+                    return;
+                }
+                if (!isPaidUser()) {
+                    showUpgradeModal('L\'export PDF');
+                    return;
+                }
+
+                try {
+                    console.log('📄 Génération du PDF...');
+
+                    // Accéder à jsPDF depuis le bundle UMD
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    // Configuration
+                    let y = 20;
+                    const lineHeight = 7;
+                    const margin = 20;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const maxWidth = pageWidth - 2 * margin;
+
+                    // Titre
+                    doc.setFontSize(24);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('SwissCV Pro - Analyse de CV', margin, y);
+                    y += 15;
+
+                    // Score
+                    doc.setFontSize(20);
+                    doc.setTextColor(213, 0, 0);
+                    doc.text(`Score: ${currentAnalysisResult.score}/100`, margin, y);
+                    y += 15;
+
+                    // Points forts
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Points Forts:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.strongPoints && currentAnalysisResult.strongPoints.length > 0) {
+                        currentAnalysisResult.strongPoints.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun point fort disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Points à améliorer
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Points à Améliorer:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.improvements && currentAnalysisResult.improvements.length > 0) {
+                        currentAnalysisResult.improvements.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucune amélioration disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Conseils marché suisse
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Conseils Marché Suisse:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.swissAdvice && currentAnalysisResult.swissAdvice.length > 0) {
+                        currentAnalysisResult.swissAdvice.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun conseil disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    // Score ATS si disponible
+                    if (currentAnalysisResult.ats_score) {
+                        y += 5;
+                        doc.setFontSize(16);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
+                    }
+
+                    // Télécharger
+                    doc.save('swisscv-analyse.pdf');
+                    console.log('✅ PDF généré et téléchargé');
+
+                } catch (error) {
+                    console.error('❌ Erreur génération PDF:', error);
+                    alert('❌ Erreur lors de la génération du PDF.');
+                }
+            });
+
+            document.getElementById('exportPdfBtn').addEventListener('click', () => {
+                if (!currentAnalysisResult) {
+                    alert('❌ Aucune analyse à exporter.');
+                    return;
+                }
+                if (!isPaidUser()) {
+                    showUpgradeModal('L\'export PDF');
+                    return;
+                }
+
+                try {
+                    console.log('📄 Génération du PDF...');
+
+                    // Accéder à jsPDF depuis le bundle UMD
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    // Configuration
+                    let y = 20;
+                    const lineHeight = 7;
+                    const margin = 20;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const maxWidth = pageWidth - 2 * margin;
+
+                    // Titre
+                    doc.setFontSize(24);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('SwissCV Pro - Analyse de CV', margin, y);
+                    y += 15;
+
+                    // Score
+                    doc.setFontSize(20);
+                    doc.setTextColor(213, 0, 0);
+                    doc.text(`Score: ${currentAnalysisResult.score}/100`, margin, y);
+                    y += 15;
+
+                    // Points forts
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Points Forts:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.strongPoints && currentAnalysisResult.strongPoints.length > 0) {
+                        currentAnalysisResult.strongPoints.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun point fort disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Points à améliorer
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Points à Améliorer:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.improvements && currentAnalysisResult.improvements.length > 0) {
+                        currentAnalysisResult.improvements.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucune amélioration disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    y += 5;
+
+                    // Conseils marché suisse
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Conseils Marché Suisse:', margin, y);
+                    y += 10;
+
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    if (currentAnalysisResult.swissAdvice && currentAnalysisResult.swissAdvice.length > 0) {
+                        currentAnalysisResult.swissAdvice.forEach((point, index) => {
+                            const lines = doc.splitTextToSize(`${index + 1}. ${point}`, maxWidth);
+                            lines.forEach(line => {
+                                if (y > 270) {
+                                    doc.addPage();
+                                    y = 20;
+                                }
+                                doc.text(line, margin, y);
+                                y += lineHeight;
+                            });
+                        });
+                    } else {
+                        doc.text('Aucun conseil disponible', margin, y);
+                        y += lineHeight;
+                    }
+
+                    // Score ATS si disponible
+                    if (currentAnalysisResult.ats_score) {
+                        y += 5;
+                        doc.setFontSize(16);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
+                    }
+
+                    // Télécharger
+                    doc.save('swisscv-analyse.pdf');
+                    console.log('✅ PDF généré et téléchargé');
+
+                } catch (error) {
+                    console.error('❌ Erreur génération PDF:', error);
+                    alert('❌ Erreur lors de la génération du PDF.');
+                }
+            });
+
+
+            // ============================================================
+            // NOUVELLE ANALYSE
+            // ============================================================
+
+            document.getElementById('newAnalysisBtn').addEventListener('click', () => {
+                selectedFile = null;
+                currentAnalysisResult = null;
+                fileInput.value = '';
+                fileInfo.classList.remove('show');
+                analyzeBtn.disabled = true;
+                document.getElementById('resultsSection').classList.remove('show');
+                document.getElementById('hasPhotoCheckbox').checked = true;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                updateRemainingCount();
+            });
+
+            // ============================================================
+            // COMPTEUR ANALYSES RESTANTES
+            // ============================================================
+
+            async function updateRemainingCount() {
+                if (isPaidUser()) {
+                    document.getElementById('remainingAnalyses').innerHTML = '';
+                    return;
+                }
+                try {
+                    const { remaining } = await getRemainingAnalyses(API_BASE);
+                    displayRemainingCount(remaining);
+                } catch (error) {
+                    console.error('Erreur compteur:', error);
+                }
+            }
+
+            // ============================================================
+            // INITIALISATION
+            // ============================================================
+
+            window.addEventListener('DOMContentLoaded', async () => {
+                console.log('🚀 SwissCV Pro chargé - Version FIXED');
+
+                try {
+                    // ✅ Vérifier l'authentification AVANT tout
+                    const token = getToken();
+                    if (!token) {
+                        console.log('❌ Non authentifié - Redirection vers login');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    // ✅ Authentification OK - Afficher le contenu
+                    console.log('✅ Authentifié - Token présent');
+
+                    updateUIForUserRole();
+                    setupPremiumLinks();
+
+                    // ✅ Appeler updateRemainingCount
+                    try {
+                        await updateRemainingCount();
+                    } catch (error) {
+                        console.error('Erreur initialisation compteur:', error);
+                    }
+
+                } catch (error) {
+                    console.error('❌ Erreur authentification:', error);
+                    // En cas d'erreur, rediriger vers login
+                    window.location.href = 'login.html';
+                }
+            });
+
+            // ✨ Fonctions optimisation CV
+
+            function openOptimizeModal() {
+                if (!currentCVText) {
+                    alert('Veuillez d\'abord analyser un CV');
+                    return;
+                }
+                document.getElementById('optimizeModal').classList.add('show');
+            }
+
+            function closeOptimizeModal() {
+                document.getElementById('optimizeModal').classList.remove('show');
+                document.getElementById('jobDescriptionInput').value = '';
+                document.getElementById('optimizationResults').style.display = 'none';
+            }
+
+            async function optimizeForJob() {
+                const jobDescription = document.getElementById('jobDescriptionInput').value.trim();
+                if (!jobDescription) {
+                    alert('Veuillez coller la description de l\'offre');
+                    return;
+                }
+
+                try {
+                    const response = await authenticatedFetch('/ai/optimize-cv', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            cvText: currentCVText,
+                            jobDescription: jobDescription
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erreur');
+                    }
+
+                    const analysis = data.analysis;
+
+                    // Afficher les résultats
+                    const resultsHTML = `
+                    <div style="background: #E3F2FD; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">📊 Score de correspondance: ${analysis.matchScore}%</h4>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4>🔑 Mots-clés à ajouter</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                            ${analysis.keywordsToAdd.map(k => `<span style="background: #FFE082; padding: 6px 12px; border-radius: 16px; font-size: 14px;">${k}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4>📝 Sections à améliorer</h4>
+                        ${analysis.sectionsToImprove.map(s => `<div style="background: #FFF3E0; padding: 12px; margin: 8px 0; border-radius: 6px; border-left: 4px solid #FF9800;"><strong>${s.section}</strong>: ${s.suggestion}</div>`).join('')}
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4>❌ Compétences manquantes</h4>
+                        ${analysis.missingSkills.map(s => `<div style="background: #FFEBEE; padding: 10px; margin: 6px 0; border-radius: 6px;">${s}</div>`).join('')}
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4>✅ Points forts à mettre en avant</h4>
+                        ${analysis.strengthsToEmphasize.map(s => `<div style="background: #E8F5E9; padding: 10px; margin: 6px 0; border-radius: 6px;">${s}</div>`).join('')}
+                    </div>
+                    <div style="background: #F5F5F5; padding: 15px; border-radius: 8px;">
+                        <h4>💡 Conseil global</h4>
+                        <p style="line-height: 1.6; margin-top: 10px;">${analysis.overallAdvice}</p>
+                    </div>
+                `;
+
+                    document.getElementById('optimizationContent').innerHTML = resultsHTML;
+                    document.getElementById('optimizationResults').style.display = 'block';
+
+                } catch (error) {
+                    console.error('Erreur optimisation:', error);
+                    alert('Erreur lors de l\'optimisation: ' + error.message);
+                }
+            }
+
+            // Afficher le bouton optimisation pour Premium/Pro
+            function updateOptimizeButton() {
+                const user = getUser();
+                const btn = document.getElementById('optimizeForJobBtn');
+                if (btn && user && (user.tier === 'premium' || user.tier === 'pro')) {
+                    btn.style.display = 'inline-block';
+                }
+            }
+
+            // Appeler au chargement
+            updateOptimizeButton();
+
+    </script>
+    <!-- Système de Notifications -->
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
+</body>
+
+</html>

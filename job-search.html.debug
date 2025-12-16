@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche d'Offres — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- jsPDF pour export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: var(--swiss-black);
+            min-height: 100vh;
+            padding-top: 80px;
+            /* ✅ CORRIGÉ : Pour la navbar fixe */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            /* ✅ AJOUTÉ : Padding pour mobile */
+        }
+
+        .search-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-section h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            /* ✅ CORRIGÉ : Réduit de 24px à 16px */
+            color: var(--swiss-black);
+        }
+
+        .search-section p {
+            margin-bottom: 24px;
+            color: #666;
+            font-size: 18px;
+            /* ✅ AJOUTÉ : Taille de police augmentée */
+            line-height: 1.5;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 16px;
+        }
+
+        /* Filtres avancés */
+        .filters-section {
+            background: #F8F9FA;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .filters-toggle {
+            width: 100%;
+            padding: 16px 20px;
+            background: white;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .filters-toggle:hover {
+            background: #F5F5F5;
+            border-color: #D50000;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .filters-content {
+            padding: 24px 20px;
+            background: white;
+            border: 1px solid #E0E0E0;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            margin-top: -12px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .checkbox-label,
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .checkbox-label:hover,
+        .radio-label:hover {
+            background: #E8E8E8;
+        }
+
+        .checkbox-label input:checked+span,
+        .radio-label input:checked+span {
+            color: #D50000;
+            font-weight: 600;
+        }
+
+        .checkbox-label:has(input:checked),
+        .radio-label:has(input:checked) {
+            background: #FFE5E5;
+            border-color: #D50000;
+        }
+
+        .checkbox-label input[type="checkbox"],
+        .radio-label input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .compare-cv-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+
+        .compare-cv-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset,
+        .btn-apply {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset {
+            background: #F5F5F5;
+            color: #666;
+        }
+
+        .btn-reset:hover {
+            background: #E0E0E0;
+        }
+
+        .btn-apply {
+            background: #D50000;
+            color: white;
+        }
+
+        .btn-apply:hover {
+            background: #B00000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
+        }
+
+        /* ✅ CORRECTION POUR MOBILE */
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+                /* ✅ Une colonne sur mobile */
+                gap: 12px;
+            }
+
+            .search-section {
+                padding: 24px 20px;
+                /* ✅ Padding réduit sur mobile */
+            }
+
+            .search-section h1 {
+                font-size: 24px;
+                /* ✅ Taille réduite sur mobile */
+            }
+
+            .search-section p {
+                font-size: 16px;
+                /* ✅ Taille réduite sur mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                /* ✅ Padding encore plus réduit sur très petits écrans */
+            }
+
+            .search-section {
+                padding: 20px 16px;
+                margin-bottom: 20px;
+            }
+
+            .search-section h1 {
+                font-size: 22px;
+                margin-bottom: 12px;
+            }
+        }
+
+        input {
+            padding: 16px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+            width: 100%;
+            /* ✅ AJOUTÉ : Pour s'assurer qu'il prend toute la largeur */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .btn-search {
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);
+            white-space: nowrap;
+            /* ✅ AJOUTÉ : Empêche le texte de se couper */
+        }
+
+        .btn-search:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(213, 0, 0, 0.5);
+        }
+
+        .btn-search:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ✅ CORRECTION BOUTON SUR MOBILE */
+        @media (max-width: 768px) {
+            .btn-search {
+                padding: 16px 24px;
+                font-size: 16px;
+                width: 100%;
+                /* ✅ Pleine largeur sur mobile */
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--swiss-gray);
+            border-top-color: var(--swiss-red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--swiss-gray);
+        }
+
+        .results-header h2 {
+            font-size: 24px;
+            color: var(--swiss-black);
+        }
+
+        .results-count {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .job-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+
+        .favorite-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .favorite-btn.favorited {
+            opacity: 1;
+            transform: scale(1.1);
+            color: #FFD700;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            margin-bottom: 4px;
+        }
+
+        .job-company {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .job-location {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .match-badge {
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .match-badge.medium {
+            background: linear-gradient(135deg, #FFB300 0%, #FFC107 100%);
+        }
+
+        .match-badge.low {
+            background: linear-gradient(135deg, #FF5252 0%, #FF6E40 100%);
+        }
+
+        .job-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin: 12px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--swiss-gray);
+            flex-wrap: wrap;
+            /* ✅ AJOUTÉ : Pour s'adapter sur mobile */
+        }
+
+        .job-tag {
+            background: #F5F5F5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .salary-tag {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999999;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 60px auto 40px;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Tabs */
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            padding: 0 32px;
+            gap: 8px;
+        }
+
+        .modal-tab {
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+            position: relative;
+            top: 2px;
+        }
+
+        .modal-tab:hover {
+            color: var(--swiss-red);
+        }
+
+        .modal-tab.active {
+            color: var(--swiss-red);
+            border-bottom-color: var(--swiss-red);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .modal-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--swiss-red);
+            font-size: 24px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--swiss-red);
+        }
+
+        .modal-body {
+            padding: 32px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 24px 32px;
+            border-top: 2px solid var(--swiss-gray);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            /* ✅ AJOUTÉ : Pour s'adapter sur mobile */
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+
+        /* Mobile (≤ 640px) */
+        @media (max-width: 640px) {
+            .modal.show {
+                padding: 60px 0 0 0;
+                display: flex;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+
+            .modal-content {
+                width: 100%;
+                max-width: 100%;
+                height: calc(100vh - 60px);
+                max-height: calc(100vh - 60px);
+                margin: 0;
+                border-radius: 0;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .modal-header {
+                padding: 16px 20px;
+                flex-direction: column;
+                gap: 12px;
+                flex-shrink: 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .modal-header h2 {
+                font-size: 20px;
+            }
+
+            .modal-header p {
+                font-size: 14px !important;
+            }
+
+            .modal-header .btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .modal-header>div:first-child {
+                width: 100%;
+            }
+
+            .modal-header>div:last-child {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .close-btn {
+                font-size: 32px;
+                padding: 4px 12px;
+            }
+
+            .modal-tabs {
+                padding: 0 20px;
+                flex-shrink: 0;
+            }
+
+            .modal-tab {
+                font-size: 13px;
+                padding: 12px 16px;
+            }
+
+            .modal-body {
+                padding: 20px;
+                padding-bottom: 40px;
+                flex: 1 1 auto;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .modal-body h3 {
+                font-size: 18px;
+            }
+
+            .modal-footer {
+                padding: 16px 20px;
+                padding-bottom: 32px;
+                flex-direction: column;
+                gap: 12px;
+                flex-shrink: 0;
+                border-top: 1px solid #eee;
+                background: white;
+            }
+
+            .modal-footer>div {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            #coverLetterContent {
+                min-height: 300px !important;
+                width: 100% !important;
+                padding: 12px !important;
+            }
+
+            .modal-content {
+                border-radius: 12px !important;
+            }
+        }
+
+        /* Tablette (641px - 1024px) */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .modal.show {
+                padding-top: 40px;
+            }
+
+            .modal-content {
+                width: 90%;
+                max-height: 90vh;
+            }
+
+            .modal-header {
+                padding: 20px 24px;
+            }
+
+            .modal-header h2 {
+                font-size: 22px;
+            }
+
+            .modal-tabs {
+                padding: 0 24px;
+            }
+
+            .modal-body {
+                padding: 24px;
+            }
+
+            .modal-footer {
+                padding: 20px 24px;
+            }
+
+            #coverLetterContent {
+                min-height: 350px !important;
+            }
+        }
+
+        /* Desktop (> 1024px) */
+        @media (min-width: 1025px) {
+            .modal-content {
+                max-width: 900px;
+            }
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+            box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--swiss-black);
+            border: 2px solid var(--swiss-gray);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--swiss-red);
+            color: var(--swiss-red);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10001;
+            animation: slideInUp 0.3s ease-out;
+            max-width: 400px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .toast {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+            }
+        }
+
+        .match-details {
+            background: #F5F5F5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .match-score {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--swiss-red);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .match-strengths,
+        .match-gaps {
+            margin: 16px 0;
+        }
+
+        .match-strengths h4,
+        .match-gaps h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
+        }
+
+        .match-strengths ul,
+        .match-gaps ul {
+            list-style: none;
+        }
+
+        .match-strengths li,
+        .match-gaps li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .match-strengths li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00C853;
+            font-weight: 800;
+        }
+
+        .match-gaps li:before {
+            content: "⚠";
+            color: #FF5252;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            transition: background 0.3s;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                background: #F5F5F5;
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                padding: 10px 20px;
+                background: #F5F5F5;
+                margin-bottom: 8px;
+                border-radius: 6px;
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+            }
+        }
+    </style>
+
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <!-- Menu Outils CV (Premium/Pro) -->
+            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link active">Offres</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link">Support</a>
+            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+    <!-- CSS RECHERCHES SAUVEGARDÉES -->
+    <style>
+        /* Hover effects menu recherches */
+        .saved-search-item {
+            transition: all 0.2s ease;
+        }
+
+        .saved-search-item:hover {
+            background: #F5F5F5 !important;
+            border-color: #E0E0E0 !important;
+            transform: translateX(4px);
+        }
+
+        .saved-search-item:hover .delete-btn {
+            opacity: 1 !important;
+        }
+
+        .delete-btn {
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            color: #D50000 !important;
+            transform: scale(1.2);
+        }
+
+        /* Animations modal */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #saveSearchModal.show {
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        #saveSearchModal .modal-content {
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        /* Responsive Menu Recherches */
+        @media (max-width: 768px) {
+
+            /* Mobile : menu plein écran */
+            #savedSearchesMenu {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                border-radius: 0 !important;
+                z-index: 9999 !important;
+            }
+
+            .close-menu-btn {
+                display: block !important;
+            }
+
+            #savedSearchesBtn {
+                padding: 12px 16px !important;
+                font-size: 14px !important;
+            }
+
+            #savedSearchesBtn span {
+                display: none;
+                /* Cacher "Mes recherches" sur mobile */
+            }
+
+            .saved-search-item {
+                padding: 16px !important;
+            }
+
+            /* Modal sauvegarde plein écran sur mobile */
+            #saveSearchModal .modal-content {
+                max-width: 95% !important;
+                margin: 20px auto !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            /* Tablette : menu adapté */
+            #savedSearchesMenu {
+                min-width: 280px !important;
+                max-width: 350px !important;
+            }
+
+            #savedSearchesBtn {
+                padding: 12px 18px !important;
+                font-size: 15px !important;
+            }
+        }
+
+        @media (min-width: 1025px) {
+
+            /* Bureau : menu dropdown normal */
+            #savedSearchesMenu {
+                min-width: 320px !important;
+                max-width: 400px !important;
+            }
+        }
+
+        /* Bouton hover effect */
+        #savedSearchesBtn:hover {
+            background: #E8E8E8 !important;
+            border-color: #D0D0D0 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Badge animation */
+        #savedSearchesCount {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+
+
+    <div class="container">
+
+        <!-- RECHERCHE MANUELLE -->
+        <div class="search-section">
+            <h1>🔍 Trouver des offres d'emploi</h1>
+            <p>Recherchez des offres spécifiques selon vos critères</p>
+
+            <form class="search-form" id="searchForm">
+                <input type="text" id="keywords" placeholder="Ex: Développeur Full Stack, Data Scientist..." required>
+                <input type="text" id="location" placeholder="Ex: Genève, Zurich..." value="Suisse">
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                    <button type="submit" class="btn-search" id="searchBtn">
+                        🔍 Rechercher
+                    </button>
+                    <button type="button" class="btn-save-search" id="btnSaveSearch" onclick="saveCurrentSearch()"
+                        style="display: none; background: #10b981; color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                        💾 Sauvegarder cette recherche
+                    </button>
+
+                    <!-- ICÔNE RECHERCHES SAUVEGARDÉES -->
+                    <div style="position: relative;">
+                        <button type="button" id="savedSearchesBtn" onclick="toggleSavedSearchesMenu()"
+                            style="background: #F5F5F5; border: 2px solid #E0E0E0; color: #0D0D0D; padding: 14px 20px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; position: relative;">
+                            💾 Mes recherches
+                            <span id="savedSearchesCount"
+                                style="background: #D50000; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; display: none;">0</span>
+                        </button>
+
+                        <!-- MENU DÉROULANT -->
+                        <div id="savedSearchesMenu"
+                            style="display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border: 2px solid #E0E0E0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); min-width: 320px; max-width: 400px; max-height: 400px; overflow-y: auto; z-index: 1000;">
+                            <div
+                                style="padding: 16px; border-bottom: 1px solid #E0E0E0; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 700; font-size: 16px; color: #0D0D0D;">💾 Recherches
+                                        sauvegardées</div>
+                                    <div style="font-size: 12px; color: #666; margin-top: 4px;"
+                                        id="savedSearchesMenuCount">
+                                        0 recherche</div>
+                                </div>
+                                <button onclick="document.getElementById('savedSearchesMenu').style.display='none'"
+                                    class="close-menu-btn"
+                                    style="background: transparent; border: none; font-size: 24px; color: #666; cursor: pointer; padding: 4px; display: none;">×</button>
+                            </div>
+
+                            <!-- TRI -->
+                            <div style="padding: 12px 16px; border-bottom: 1px solid #E0E0E0; background: #FAFAFA;">
+                                <select id="sortSearches" onchange="sortSavedSearches()"
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid #E0E0E0; border-radius: 6px; font-size: 13px; cursor: pointer; background: white;">
+                                    <option value="recent">🕒 Plus récent</option>
+                                    <option value="oldest">📅 Plus ancien</option>
+                                    <option value="az">🔤 A → Z</option>
+                                    <option value="za">🔤 Z → A</option>
+                                </select>
+                            </div>
+                            <div id="savedSearchesList" style="padding: 8px;">
+                                <!-- Liste dynamique -->
+                            </div>
+                            <div id="savedSearchesEmpty"
+                                style="padding: 32px; text-align: center; color: #666; display: none;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">📂</div>
+                                <div style="font-size: 14px;">Aucune recherche sauvegardée</div>
+                                <div style="font-size: 12px; color: #999; margin-top: 4px;">Faites une recherche puis
+                                    cliquez sur "💾 Sauvegarder"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- FILTRES AVANCÉS -->
+            <div class="filters-section" style="margin-top: 24px;">
+                <button class="filters-toggle" id="filtersToggle" onclick="toggleFilters()" type="button">
+                    <span>⚙️ Filtres avancés</span>
+                    <span class="toggle-icon" id="toggleIcon">▼</span>
+                </button>
+
+                <div class="filters-content" id="filtersContent" style="display: none;">
+                    <!-- Salaire -->
+                    <div class="filter-group">
+                        <label class="filter-label">💰 Salaire annuel (CHF)</label>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <input type="number" id="salaryMin" placeholder="Min"
+                                style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                            <span style="color: #666;">—</span>
+                            <input type="number" id="salaryMax" placeholder="Max"
+                                style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                        </div>
+                    </div>
+
+                    <!-- Type de contrat -->
+                    <div class="filter-group">
+                        <label class="filter-label">📄 Type de contrat</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="contractType" value="CDI" checked>
+                                <span>CDI</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="contractType" value="CDD" checked>
+                                <span>CDD</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="contractType" value="Stage">
+                                <span>Stage</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="contractType" value="Freelance">
+                                <span>Freelance</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Remote -->
+                    <div class="filter-group">
+                        <label class="filter-label">🏠 Mode de travail</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="remote" value="all" checked>
+                                <span>Tous</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="remote" value="onsite">
+                                <span>Sur site</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="remote" value="hybrid">
+                                <span>Hybride</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="remote" value="remote">
+                                <span>100% remote</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Niveau d'expérience -->
+                    <div class="filter-group">
+                        <label class="filter-label">📊 Niveau d'expérience</label>
+                        <select id="experienceLevel"
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: white;">
+                            <option value="">Tous les niveaux</option>
+                            <option value="junior">Junior (0-2 ans)</option>
+                            <option value="intermediate">Confirmé (2-5 ans)</option>
+                            <option value="senior">Senior (5+ ans)</option>
+                        </select>
+                    </div>
+
+                    <!-- Boutons actions -->
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        <button type="button" class="btn-reset" onclick="resetFilters()">
+                            🔄 Réinitialiser
+                        </button>
+                        <button type="button" class="btn-apply" onclick="applyFilters()">
+                            ✓ Appliquer les filtres
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="margin: 60px 0; border: none; border-top: 2px solid #E0E0E0;">
+
+        <!-- SUGGESTIONS IA -->
+        <div id="suggestionsSection" class="page-header" style="margin-bottom: 40px;">
+            <h1>💡 Suggestions pour vous</h1>
+            <p>Notre IA sélectionne les meilleures offres pour votre profil</p>
+            <button class="btn-refresh" id="btnRefreshSuggestions" onclick="refreshSuggestions()"
+                style="padding: 12px 24px; background: #D50000; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 16px;">
+                Rafraîchir les suggestions
+            </button>
+        </div>
+
+        <div id="suggestionsLoading" class="loading" style="display:none;">
+            ⏳ Recherche des meilleures offres pour vous...
+        </div>
+
+        <div id="suggestionsEmpty" class="empty-state"
+            style="display:none; text-align: center; padding: 60px 20px; background: #F5F5F5; border-radius: 12px; margin-bottom: 40px;">
+            <div style="font-size: 64px;">🎯</div>
+            <h2 id="suggestionsEmptyTitle">Aucune suggestion pour le moment</h2>
+            <p id="suggestionsEmptyMessage">Cliquez sur "Rafraîchir" pour que l'IA recherche de nouvelles offres</p>
+        </div>
+
+        <div id="suggestionsGrid" class="offers-grid"
+            style="display:none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 60px;">
+        </div>
+
+        <hr style="margin: 60px 0; border: none; border-top: 2px solid #E0E0E0;">
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p style="font-size: 18px; color: #666;">🤖 Notre IA scrape le web pour vous...</p>
+            <p style="font-size: 14px; color: #999; margin-top: 8px;">Cela peut prendre 10-15 secondes</p>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h2>Offres trouvées</h2>
+                <span class="results-count" id="resultsCount">0 résultats</span>
+            </div>
+
+            <div id="jobsList"></div>
+        </div>
+    </div>
+
+    <!-- Modal Détails Offre -->
+    <!-- MODAL SAUVEGARDE RECHERCHE -->
+    <div class="modal" id="saveSearchModal" style="display: none;">
+        <div class="modal-content"
+            style="max-width: 500px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <div class="modal-header"
+                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px;">
+                <h2 style="margin: 0; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 32px;">💾</span>
+                    Sauvegarder la recherche
+                </h2>
+                <button class="close-btn" onclick="closeSaveModal()"
+                    style="color: white; opacity: 0.9; font-size: 32px; background: transparent; border: none; cursor: pointer; position: absolute; top: 16px; right: 16px; transition: all 0.2s;">×</button>
+            </div>
+            <div class="modal-body" style="padding: 32px 24px;">
+                <label
+                    style="display: block; margin-bottom: 12px; font-weight: 600; font-size: 15px; color: #374151;">Nom
+                    de la recherche :</label>
+                <input type="text" id="saveSearchName"
+                    style="width: 100%; padding: 14px 16px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 15px; transition: all 0.3s; box-sizing: border-box;"
+                    placeholder="Ex: Développeur à Zurich"
+                    onfocus="this.style.borderColor='#10b981'; this.style.boxShadow='0 0 0 3px rgba(16,185,129,0.1)'"
+                    onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'">
+            </div>
+            <div class="modal-footer"
+                style="display: flex; justify-content: flex-end; gap: 12px; padding: 0 24px 24px 24px;">
+                <button class="btn-secondary" onclick="closeSaveModal()"
+                    style="background: #F3F4F6; color: #6B7280; border: none; padding: 14px 28px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 15px; transition: all 0.2s;"
+                    onmouseover="this.style.background='#E5E7EB'"
+                    onmouseout="this.style.background='#F3F4F6'">Annuler</button>
+                <button class="btn-primary" onclick="confirmSaveSearch()"
+                    style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 14px 28px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 15px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: all 0.2s;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16,185,129,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.3)'">
+                    <span style="display: flex; align-items: center; gap: 8px;">
+                        💾 Sauvegarder
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="successToast"
+        style="position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; z-index: 10001; animation: slideIn 0.3s;">
+        <span id="toastMessage"></span>
+    </div>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <script>
+        let saveSearchResolve = null;
+
+        function showSaveModal(defaultName) {
+            return new Promise((resolve) => {
+                saveSearchResolve = resolve;
+                document.getElementById('saveSearchName').value = defaultName;
+                document.getElementById('saveSearchModal').style.display = 'flex';
+                document.getElementById('saveSearchName').focus();
+                document.getElementById('saveSearchName').select();
+            });
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveSearchModal').style.display = 'none';
+            if (saveSearchResolve) {
+                saveSearchResolve(null);
+                saveSearchResolve = null;
+            }
+        }
+
+        function confirmSaveSearch() {
+            const name = document.getElementById('saveSearchName').value.trim();
+            document.getElementById('saveSearchModal').style.display = 'none';
+            if (saveSearchResolve) {
+                saveSearchResolve(name);
+                saveSearchResolve = null;
+            }
+        }
+
+        function showSuccessToast(message) {
+            const toast = document.getElementById('successToast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.style.display = 'block';
+            toast.style.animation = 'slideIn 0.3s';
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 300);
+            }, 3000);
+        }
+
+        // Enter key pour confirmer
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('saveSearchName');
+            if (input) {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        confirmSaveSearch();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Modal Comparaison CV -->
+    <div class="modal" id="compareModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000; overflow-y:auto;">
+        <div class="modal-content"
+            style="background:white; max-width:800px; margin:50px auto; padding:30px; border-radius:12px; position:relative;">
+            <button onclick="document.getElementById('compareModal').style.display='none'"
+                style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
+            <h2 style="margin-bottom:20px;">📊 Comparaison CV vs Offre</h2>
+            <div id="compareResults"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="flex: 1;">
+                    <h2 id="modalTitle" style="margin: 0 0 8px 0;"></h2>
+                    <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                        <p id="modalCompany" style="margin: 0; color: #666; font-size: 16px;"></p>
+                        <p id="modalLocation" style="margin: 0; color: #999; font-size: 14px;"></p>
+                        <button class="btn btn-secondary" id="btnCalculateMatch"
+                            style="font-size: 13px; padding: 6px 12px;">🎯 Calculer compatibilité</button>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 12px;">
+                    <a id="btnVisitOfferLink" href="#" target="_blank"
+                        style="color: var(--swiss-red); text-decoration: none; font-size: 14px; white-space: nowrap;">🔗
+                        Voir l'offre →</a>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('details')">📋 Détails de l'offre</button>
+                <button class="modal-tab" id="tabLetterBtn" onclick="switchTab('letter')" style="display: none;">📝
+                    Lettre de motivation</button>
+            </div>
+
+            <!-- Tab: Détails -->
+            <div class="tab-content active" id="tabDetails">
+                <div class="modal-body">
+                    <div id="matchSection" style="display: none;">
+                        <div class="match-details">
+                            <div class="match-score" id="matchScore"></div>
+                            <div class="match-strengths" id="matchStrengths"></div>
+                            <div class="match-gaps" id="matchGaps"></div>
+                            <p id="matchRecommendation" style="margin-top: 16px; color: #666; font-style: italic;"></p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px;">Description</h3>
+                    <p id="modalDescription" style="line-height: 1.8; color: #666;"></p>
+
+                    <h3 style="margin: 24px 0 12px;">Compétences requises</h3>
+                    <p id="modalRequirements" style="line-height: 1.8; color: #666;"></p>
+
+                    <div id="modalSalary" style="display: none; margin-top: 24px;">
+                        <h3 style="margin-bottom: 12px;">Salaire</h3>
+                        <p style="font-size: 20px; font-weight: 700; color: var(--swiss-red);"></p>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-primary" id="btnGenerateLetter"
+                            style="background: var(--swiss-red); border: none;">📝 Générer lettre de motivation</button>
+                        <button class="btn btn-primary" id="btnAddToTracker">➕ Ajouter au tracker</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Lettre de motivation -->
+            <div class="tab-content" id="tabLetter">
+                <div class="modal-body">
+                    <div id="letterLoading" style="text-align: center; padding: 40px; display: none;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                        <p style="color: #666;">Génération de votre lettre personnalisée...</p>
+                    </div>
+
+                    <div id="letterContent" style="display: none;">
+                        <div
+                            style="margin-bottom: 24px; display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="copyCoverLetter()">📋 Copier</button>
+                            <button class="btn btn-secondary" onclick="downloadCoverLetter()">⬇️ Télécharger
+                                TXT</button>
+                            <button class="btn btn-primary" onclick="downloadLetterAsPDF()">📄 Télécharger PDF</button>
+                            <button class="btn btn-secondary" onclick="enableEditLetter()">✏️ Modifier</button>
+                        </div>
+                        <textarea id="coverLetterContent" readonly
+                            style="width: 100%; min-height: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Georgia', serif; line-height: 1.8; font-size: 15px; resize: vertical;">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                    <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-primary" onclick="applyWithLetter()"
+                            style="background: var(--swiss-red); border: none;">🚀 Ouvrir l'offre & copier la
+                            lettre</button>
+                        <button class="btn btn-primary" id="btnAddToTracker2">➕ Ajouter au tracker</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/js/auth.js"></script>
+    <script>
+        let currentJobs = [];
+        let currentJobDetails = null;
+        let userFavorites = new Set(); // IDs des jobs en favoris
+        let savedSearches = []; // Recherches sauvegardées
+        let isExecutingSavedSearch = false; // Flag pour tracker si on exécute une recherche sauvegardée
+
+        // Charger les favoris de l'utilisateur
+        async function loadUserFavorites() {
+            try {
+                const response = await authenticatedFetch('/jobs/favorites');
+                if (!response) return;
+
+                const data = await response.json();
+                if (data.success) {
+                    userFavorites = new Set((data.favorites || []).map(f => f.job_offer_id));
+                    console.log('✅ Favoris chargés:', userFavorites.size);
+                }
+            } catch (error) {
+                console.error('Erreur chargement favoris:', error);
+            }
+        }
+
+        // ========== RECHERCHES SAUVEGARDÉES ==========
+
+        // Charger les recherches sauvegardées
+        async function loadSavedSearches() {
+            try {
+                console.log('🔄 Chargement recherches sauvegardées...');
+                const response = await authenticatedFetch('/saved-searches');
+                const data = await response.json();
+
+                console.log('📥 Réponse loadSavedSearches:', data);
+
+                if (data.success) {
+                    savedSearches = data.searches || [];
+                    console.log('📋 Recherches reçues:', savedSearches);
+                    updateSavedSearchesMenu();
+                    console.log('✅ Recherches sauvegardées chargées:', savedSearches.length);
+                } else {
+                    console.error('❌ Erreur API:', data.error);
+                }
+            } catch (error) {
+                console.error('❌ Erreur chargement recherches:', error);
+            }
+        }
+
+        // Mettre à jour le menu déroulant
+        function updateSavedSearchesMenu() {
+            const list = document.getElementById('savedSearchesList');
+            const emptyState = document.getElementById('savedSearchesEmpty');
+            const count = document.getElementById('savedSearchesCount'); // This variable is not used in the provided snippet, but kept for context if it was used elsewhere.
+            const menuCount = document.getElementById('savedSearchesMenuCount');
+            const badge = document.getElementById('savedSearchesCount');
+
+            if (!list) {
+                console.error('❌ savedSearchesList introuvable!');
+                return;
+            }
+
+            console.log('🔄 Mise à jour menu avec', savedSearches.length, 'recherches');
+
+            // Mettre à jour le compteur
+            if (savedSearches.length > 0) {
+                badge.textContent = savedSearches.length;
+                badge.style.display = 'inline-block';
+                menuCount.textContent = `${savedSearches.length} recherche${savedSearches.length > 1 ? 's' : ''}`;
+                emptyState.style.display = 'none';
+
+                // Générer la liste
+                list.innerHTML = savedSearches.map((search, index) => `
+                    <div class="saved-search-item" data-index="${index}" style="padding: 12px; margin: 4px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent;">
+                        <div onclick="executeSearchFromMenu(${index})" style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 600; font-size: 14px; color: #0D0D0D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${search.name}</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 2px;">
+                                ${search.keywords || 'Tous'} ${search.location ? '· ' + search.location : ''}
+                            </div>
+                        </div>
+                        <button onclick="event.stopPropagation(); deleteSearchFromMenu(${index})" style="background: transparent; border: none; color: #999; cursor: pointer; padding: 8px; font-size: 18px; transition: all 0.2s; opacity: 0;" class="delete-btn">
+                            🗑️
+                        </button>
+                    </div>
+                `).join('');
+
+                console.log('✅ Menu mis à jour avec', savedSearches.length, 'recherches');
+            } else {
+                badge.style.display = 'none';
+                menuCount.textContent = '0 recherche';
+                emptyState.style.display = 'block';
+                list.innerHTML = '';
+            }
+        }
+
+        // Toggle menu
+        function toggleSavedSearchesMenu() {
+            const menu = document.getElementById('savedSearchesMenu');
+            const isVisible = menu.style.display === 'block';
+            menu.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // Trier les recherches sauvegardées
+        function sortSavedSearches() {
+            const sortValue = document.getElementById('sortSearches').value;
+
+            console.log('🔄 Tri recherches:', sortValue);
+
+            switch (sortValue) {
+                case 'recent':
+                    // Plus récent d'abord (last_used_at puis created_at)
+                    savedSearches.sort((a, b) => {
+                        const dateA = a.last_used_at || a.created_at;
+                        const dateB = b.last_used_at || b.created_at;
+                        return dateB - dateA;
+                    });
+                    break;
+
+                case 'oldest':
+                    // Plus ancien d'abord
+                    savedSearches.sort((a, b) => {
+                        const dateA = a.last_used_at || a.created_at;
+                        const dateB = b.last_used_at || b.created_at;
+                        return dateA - dateB;
+                    });
+                    break;
+
+                case 'az':
+                    // A → Z
+                    savedSearches.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+
+                case 'za':
+                    // Z → A
+                    savedSearches.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+            }
+
+            // Rafraîchir l'affichage
+            updateSavedSearchesMenu();
+            console.log('✅ Tri appliqué');
+        }
+
+        // Fermer le menu au clic extérieur
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('savedSearchesMenu');
+            const btn = document.getElementById('savedSearchesBtn');
+            if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Exécuter une recherche depuis le menu
+        async function executeSearchFromMenu(index) {
+            const search = savedSearches[index];
+            if (!search) return;
+
+            console.log('▶️ Exécution recherche:', search.name);
+
+            try {
+                const response = await authenticatedFetch(`/searches/${search.id}/execute`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Fermer le menu
+                    document.getElementById('savedSearchesMenu').style.display = 'none';
+
+                    // Remplir le formulaire
+                    document.getElementById('keywords').value = data.search.keywords || '';
+                    document.getElementById('location').value = data.search.location || '';
+
+                    // Appliquer les filtres
+                    if (data.search.filters) {
+                        applyFiltersFromObject(data.search.filters);
+                    }
+
+                    // Marquer qu'on exécute une recherche sauvegardée
+                    isExecutingSavedSearch = true;
+
+                    // Lancer la recherche
+                    document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+                }
+            } catch (error) {
+                console.error('Erreur exécution:', error);
+                alert('❌ Erreur lors de l\'exécution');
+            }
+        }
+
+        // Supprimer une recherche depuis le menu
+        async function deleteSearchFromMenu(index) {
+            const search = savedSearches[index];
+            if (!search) return;
+
+            if (!confirm(`Supprimer "${search.name}" ?`)) return;
+
+            try {
+                const response = await authenticatedFetch(`/searches/${search.id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showSuccessToast('✅ Recherche supprimée');
+                    // await // loadSavedSearches(); // DÉSACTIVÉ // DÉSACTIVÉ
+                }
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                alert('❌ Erreur lors de la suppression');
+            }
+        }
+
+        // Anciennes fonctions (à supprimer ou garder pour compatibilité)
+        function executeSavedSearch() {
+            // Deprecated - utiliser executeSearchFromMenu
+        }
+
+        function deleteSavedSearch() {
+            // Deprecated - utiliser deleteSearchFromMenu
+        }
+
+        // Sauvegarder la recherche actuelle
+        async function saveCurrentSearch() {
+            const keywords = document.getElementById('keywords').value.trim();
+            const location = document.getElementById('location').value.trim();
+
+            // Récupérer les filtres avec gestion d'erreur
+            let filters = {};
+            try {
+                filters = getFilters();
+            } catch (error) {
+                console.error('Erreur getFilters:', error);
+                // Continuer avec filtres vides si erreur
+            }
+
+            // Générer nom automatique
+            let name = '';
+            if (keywords && location) {
+                name = `${keywords} à ${location}`;
+            } else if (keywords) {
+                name = keywords;
+            } else if (location) {
+                name = `Offres à ${location}`;
+            } else {
+                name = 'Recherche personnalisée';
+            }
+
+            // Demander confirmation/modification du nom via modal
+            const customName = await showSaveModal(name);
+            if (!customName) return;
+
+            // Préparer le payload
+            const payload = {
+                name: customName,
+                keywords: keywords || '',
+                location: location || '',
+                filters: filters || {}
+            };
+
+            console.log('📤 Envoi payload:', payload);
+            console.log('📤 Payload JSON:', JSON.stringify(payload));
+
+            try {
+                const response = await authenticatedFetch('/searches/save', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                console.log('📥 Response status:', response.status);
+
+                const data = await response.json();
+                console.log('📥 Response data:', data);
+
+                if (data.success) {
+                    showSuccessToast('✅ Recherche sauvegardée !');
+                    // await // loadSavedSearches(); // DÉSACTIVÉ // DÉSACTIVÉ // Recharger la liste
+                } else if (data.upgrade_required) {
+                    if (confirm(data.error + '\n\nVoulez-vous passer à Premium ?')) {
+                        window.location.href = 'pricing.html';
+                    }
+                } else {
+                    alert('❌ ' + (data.error || 'Erreur lors de la sauvegarde'));
+                }
+            } catch (error) {
+                console.error('Erreur sauvegarde:', error);
+                alert('❌ Erreur lors de la sauvegarde');
+            }
+        }
+
+        // Exécuter une recherche sauvegardée
+        async function executeSavedSearch() {
+            const dropdown = document.getElementById('savedSearchesDropdown');
+            const index = dropdown.value;
+
+            if (!index && index !== 0) {
+                alert('Veuillez sélectionner une recherche');
+                return;
+            }
+
+            const search = savedSearches[index];
+            if (!search) return;
+
+            try {
+                const response = await authenticatedFetch(`/searches/${search.id}/execute`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Remplir le formulaire
+                    document.getElementById('keywords').value = data.search.keywords || '';
+                    document.getElementById('location').value = data.search.location || '';
+
+                    // Appliquer les filtres
+                    if (data.search.filters) {
+                        applyFiltersFromObject(data.search.filters);
+                    }
+
+                    // Lancer la recherche
+                    document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+                }
+            } catch (error) {
+                console.error('Erreur exécution:', error);
+                alert('❌ Erreur lors de l\'exécution');
+            }
+        }
+
+        // Supprimer une recherche sauvegardée
+        async function deleteSavedSearch() {
+            const dropdown = document.getElementById('savedSearchesDropdown');
+            const index = dropdown.value;
+
+            if (!index && index !== 0) {
+                alert('Veuillez sélectionner une recherche');
+                return;
+            }
+
+            const search = savedSearches[index];
+            if (!search) return;
+
+            if (!confirm(`Supprimer "${search.name}" ?`)) return;
+
+            try {
+                const response = await authenticatedFetch(`/searches/${search.id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('✅ Recherche supprimée');
+                    // // loadSavedSearches(); // DÉSACTIVÉ // Désactivé temporairement // Recharger la liste
+                }
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                alert('❌ Erreur lors de la suppression');
+            }
+        }
+
+        // Appliquer les filtres depuis un objet
+        function applyFiltersFromObject(filters) {
+            if (filters.salary_min) document.getElementById('salaryMin').value = filters.salary_min;
+            if (filters.salary_max) document.getElementById('salaryMax').value = filters.salary_max;
+
+            // Contract types
+            if (filters.contract_types && filters.contract_types.length > 0) {
+                document.querySelectorAll('input[name="contractType"]').forEach(cb => {
+                    cb.checked = filters.contract_types.includes(cb.value);
+                });
+            }
+
+            // Remote
+            if (filters.remote) {
+                const remoteRadio = document.querySelector(`input[name="remote"][value="${filters.remote}"]`);
+                if (remoteRadio) remoteRadio.checked = true;
+            }
+
+            // Experience
+            if (filters.experience) {
+                document.getElementById('experience').value = filters.experience;
+            }
+        }
+
+        // Protection de page
+        (async function () {
+            const authenticated = await requireAuth();
+            if (!authenticated) return;
+
+            // Charger les favoris, recherches sauvegardées et suggestions
+            // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
+            // await // loadSavedSearches(); // DÉSACTIVÉ // DÉSACTIVÉ
+            loadSuggestions();
+        })();
+
+        // ========================================
+        // FONCTIONS SUGGESTIONS
+        // ========================================
+        let suggestions = [];
+
+        async function loadSuggestions() {
+            const loading = document.getElementById('suggestionsLoading');
+            const emptyState = document.getElementById('suggestionsEmpty');
+            const suggestionsGrid = document.getElementById('suggestionsGrid');
+            const btnRefresh = document.getElementById('btnRefreshSuggestions');
+
+            loading.style.display = 'block';
+            emptyState.style.display = 'none';
+            suggestionsGrid.style.display = 'none';
+            btnRefresh.disabled = true;
+
+            try {
+                const response = await authenticatedFetch('/jobs/suggestions');
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    suggestions = data.offers || [];
+
+                    if (suggestions.length === 0) {
+                        document.getElementById('suggestionsEmptyTitle').textContent = data.message || 'Aucune offre trouvée';
+                        document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou essayez de rafraîchir';
+                        emptyState.style.display = 'block';
+                    } else {
+                        displaySuggestions();
+                        suggestionsGrid.style.display = 'grid';
+                    }
+                } else {
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erreur chargement suggestions:', error);
+                emptyState.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+                btnRefresh.disabled = false;
+            }
+        }
+
+        function displaySuggestions() {
+            const grid = document.getElementById('suggestionsGrid');
+            grid.innerHTML = '';
+
+            suggestions.forEach(offer => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                card.onclick = () => openJobModal(offer);
+
+                const salaryText = offer.salary_min && offer.salary_max
+                    ? `CHF ${offer.salary_min.toLocaleString()} - ${offer.salary_max.toLocaleString()}`
+                    : '';
+
+                const isFavorite = userFavorites.has(offer.id);
+
+                card.innerHTML = `
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${escapeHtml(offer.title)}</div>
+                            <div class="job-company">${escapeHtml(offer.company)}</div>
+                            <div class="job-location">📍 ${escapeHtml(offer.location)}</div>
+                        </div>
+                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-job-id="${offer.id}" onclick="event.stopPropagation(); toggleFavorite('${offer.id}', this)">
+                            ${isFavorite ? '⭐' : '☆'}
+                        </button>
+                    </div>
+                    <div class="job-description">${escapeHtml(offer.description || 'Pas de description disponible')}</div>
+                    <div class="job-footer">
+                        <span class="job-tag">${escapeHtml(offer.source)}</span>
+                        ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
+                        <button class="compare-cv-btn" id="compareBtn_${offer.id}" style="display:none;" onclick="event.stopPropagation(); compareWithCV('${offer.id}', \`${escapeHtml(offer.title)}\`, \`${escapeHtml(offer.description || '')}\`)">
+                            📊 Comparer avec mon CV
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            // Afficher boutons compare pour Premium/Pro
+            showCompareButtons();
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function refreshSuggestions() {
+            const user = getUser();
+            if (!user || user.tier === "free") {
+                alert("Fonctionnalité Premium\n\nLes suggestions IA sont disponibles avec Premium.");
+                return;
+            }
+            loadSuggestions();
+        }
+
+        // ========================================
+        // FILTRES AVANCÉS
+        // ========================================
+        function toggleFilters() {
+            const content = document.getElementById('filtersContent');
+            const icon = document.getElementById('toggleIcon');
+
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.classList.add('open');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('open');
+            }
+        }
+
+        function getFilters() {
+            // Salaire
+            const salaryMin = document.getElementById('salaryMin').value;
+            const salaryMax = document.getElementById('salaryMax').value;
+
+            // Types de contrat
+            const contractTypes = Array.from(document.querySelectorAll('input[name="contractType"]:checked'))
+                .map(cb => cb.value);
+
+            // Remote
+            const remote = document.querySelector('input[name="remote"]:checked')?.value;
+
+            // Niveau d'expérience
+            const experience = document.getElementById('experienceLevel').value;
+
+            return {
+                salary_min: salaryMin ? parseInt(salaryMin) : null,
+                salary_max: salaryMax ? parseInt(salaryMax) : null,
+                contract_types: contractTypes.length > 0 ? contractTypes : null,
+                remote: remote !== 'all' ? remote : null,
+                experience: experience || null
+            };
+        }
+
+        function resetFilters() {
+            // Reset salaire
+            document.getElementById('salaryMin').value = '';
+            document.getElementById('salaryMax').value = '';
+
+            // Reset contrats (CDI et CDD cochés par défaut)
+            document.querySelectorAll('input[name="contractType"]').forEach(cb => {
+                cb.checked = (cb.value === 'CDI' || cb.value === 'CDD');
+            });
+
+            // Reset remote (Tous)
+            document.querySelector('input[name="remote"][value="all"]').checked = true;
+
+            // Reset expérience
+            document.getElementById('experienceLevel').value = '';
+        }
+
+        function applyFilters() {
+            // Déclencher la recherche avec les filtres
+            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+        }
+
+        // ========================================
+        // FAVORIS
+        // ========================================
+        async function toggleFavorite(jobId, button) {
+            try {
+                const isFavorite = userFavorites.has(jobId);
+
+                // Trouver le job complet dans currentJobs ou suggestions
+                let job = currentJobs.find(j => j.id === jobId);
+                if (!job) {
+                    job = suggestions.find(j => j.id === jobId);
+                }
+
+                if (!job) {
+                    console.error('Job non trouvé:', jobId);
+                    return;
+                }
+
+                if (isFavorite) {
+                    // Retirer des favoris
+                    const response = await authenticatedFetch(`/jobs/${jobId}/favorite`, {
+                        method: 'DELETE'
+                    });
+
+                    if (!response) return;
+
+                    const data = await response.json();
+                    if (data.success) {
+                        userFavorites.delete(jobId);
+                        button.textContent = '☆';
+                        button.classList.remove('favorited');
+                        console.log('✅ Retiré des favoris');
+
+                        // Rafraîchir la liste des favoris
+                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
+                    }
+                } else {
+                    // Ajouter aux favoris
+                    const response = await authenticatedFetch(`/jobs/${jobId}/favorite`, {
+                        method: 'POST',
+                        body: JSON.stringify({ job })
+                    });
+
+                    if (!response) return;
+
+                    const data = await response.json();
+                    if (data.success) {
+                        userFavorites.add(jobId);
+                        button.textContent = '⭐';
+                        button.classList.add('favorited');
+                        console.log('✅ Ajouté aux favoris');
+
+                        // Rafraîchir la liste des favoris
+                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur toggle favori:', error);
+                alert('Erreur lors de la mise à jour des favoris');
+            }
+        }
+
+        // ========================================
+        // RECHERCHE MANUELLE D'OFFRES
+        // ========================================
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Cacher les suggestions quand recherche manuelle
+            document.getElementById('suggestionsSection').style.display = 'none';
+            document.getElementById('suggestionsGrid').style.display = 'none';
+            document.getElementById('suggestionsEmpty').style.display = 'none';
+            document.getElementById('suggestionsLoading').style.display = 'none';
+
+            const keywords = document.getElementById('keywords').value;
+            const location = document.getElementById('location').value;
+            const searchBtn = document.getElementById('searchBtn');
+            const loading = document.getElementById('loading');
+            const resultsSection = document.getElementById('resultsSection');
+
+            // Reset
+            resultsSection.classList.remove('show');
+            loading.classList.add('show');
+            searchBtn.disabled = true;
+            searchBtn.textContent = '⏳ Recherche en cours...';
+
+            try {
+                // Récupérer les filtres
+                const filters = getFilters();
+
+                const response = await authenticatedFetch('/jobs/search', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        keywords,
+                        location,
+                        ...filters
+                    })
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentJobs = data.offers;
+                    displayJobs(currentJobs);
+
+                    // Afficher les résultats
+                    loading.classList.remove('show');
+                    resultsSection.classList.add('show');
+                    document.getElementById('resultsCount').textContent = `${data.count} résultat${data.count > 1 ? 's' : ''}`;
+
+                    // Afficher le bouton sauvegarder (sauf si c'est une recherche sauvegardée)
+                    if (!isExecutingSavedSearch) {
+                        document.getElementById('btnSaveSearch').style.display = 'inline-block';
+                    }
+                    // Reset le flag
+                    isExecutingSavedSearch = false;
+                } else {
+                    console.error('Erreur:', data.error);
+                }
+            } catch (error) {
+                console.error('Erreur recherche:', error);
+                alert('Erreur de recherche');
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.textContent = '🔍 Rechercher';
+                loading.classList.remove('show');
+            }
+        });
+
+        // Afficher les offres
+        function displayJobs(jobs) {
+            const jobsList = document.getElementById('jobsList');
+            jobsList.innerHTML = '';
+
+            jobs.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                card.onclick = () => openJobModal(job);
+
+                const salaryText = job.salary_min && job.salary_max
+                    ? `CHF ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}`
+                    : '';
+
+                const isFavorite = userFavorites.has(job.id);
+
+                card.innerHTML = `
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-company">${job.company}</div>
+                            <div class="job-location">📍 ${job.location}</div>
+                        </div>
+                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-job-id="${job.id}" onclick="event.stopPropagation(); toggleFavorite('${job.id}', this)">
+                            ${isFavorite ? '⭐' : '☆'}
+                        </button>
+                    </div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-footer">
+                        <span class="job-tag">${job.job_type}</span>
+                        <span class="job-tag">${job.experience_level}</span>
+                        <span class="job-tag">${job.source}</span>
+                        ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
+                        <button class="compare-cv-btn" id="compareBtn_${job.id}" style="display:none;" onclick="event.stopPropagation(); compareWithCV('${job.id}', \`${job.title}\`, \`${job.description || ''}\`)">
+                            📊 Comparer avec mon CV
+                        </button>
+                    </div>
+                `;
+
+                jobsList.appendChild(card);
+            });
+
+            // Afficher boutons compare pour Premium/Pro
+            showCompareButtons();
+        }
+
+        // Ouvrir modal offre
+        async function openJobModal(job) {
+            currentJobDetails = job;
+
+            document.getElementById('modalTitle').textContent = job.title;
+            document.getElementById('modalCompany').textContent = job.company;
+            document.getElementById('modalLocation').textContent = '📍 ' + job.location;
+            document.getElementById('modalDescription').textContent = job.description;
+            document.getElementById('modalRequirements').textContent = job.requirements;
+
+            if (job.salary_min && job.salary_max) {
+                const salaryDiv = document.getElementById('modalSalary');
+                salaryDiv.style.display = 'block';
+                salaryDiv.querySelector('p').textContent =
+                    `CHF ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}`;
+            }
+            document.getElementById('modalSalary').style.display = 'block';
+
+            // Lien voir l'offre
+            document.getElementById('btnVisitOfferLink').href = job.url || '#';
+
+            // Bouton ajouter au tracker
+            document.getElementById('btnAddToTracker').onclick = () => addToTracker(job);
+            document.getElementById('btnAddToTracker2').onclick = () => addToTracker(job);
+
+            // Bouton générer lettre de motivation
+            document.getElementById('btnGenerateLetter').onclick = () => generateCoverLetter(job);
+
+            // Bouton calculer match
+            document.getElementById('btnCalculateMatch').onclick = () => calculateMatch(job);
+
+            // Afficher modal
+            document.getElementById('jobModal').classList.add('show');
+        }
+
+        // Fermer modal
+        function closeModal() {
+            document.getElementById('jobModal').classList.remove('show');
+            // Réinitialiser les onglets
+            switchTab('details');
+            document.getElementById('tabLetterBtn').style.display = 'none';
+            document.getElementById('letterLoading').style.display = 'none';
+            document.getElementById('letterContent').style.display = 'none';
+        }
+
+        // Gestion des onglets
+        function switchTab(tabName) {
+            // Cacher tous les onglets
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.modal-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Afficher l'onglet sélectionné
+            if (tabName === 'details') {
+                document.getElementById('tabDetails').classList.add('active');
+                document.querySelector('.modal-tab:first-child').classList.add('active');
+            } else if (tabName === 'letter') {
+                document.getElementById('tabLetter').classList.add('active');
+                document.getElementById('tabLetterBtn').classList.add('active');
+            }
+        }
+        document.getElementById('matchSection').style.display = 'none';
+
+        // Calculer compatibilité
+        async function calculateMatch(job) {
+            const btn = document.getElementById('btnCalculateMatch');
+            btn.disabled = true;
+            btn.textContent = '⏳ Calcul en cours...';
+
+            try {
+                const response = await authenticatedFetch('/jobs/match', {
+                    method: 'POST',
+                    body: JSON.stringify({ jobOfferId: job.id })
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayMatch(data.match);
+                } else {
+                    console.error('Erreur:', data.error);
+                }
+            } catch (error) {
+                console.error('Erreur matching:', error);
+                alert('Erreur de calcul');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🎯 Recalculer';
+            }
+        }
+
+        // Afficher résultat matching
+        function displayMatch(match) {
+            document.getElementById('matchScore').textContent = match.score + '%';
+
+            const strengthsHtml = `
+                <h4>✅ Points forts</h4>
+                <ul>${match.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+            `;
+            document.getElementById('matchStrengths').innerHTML = strengthsHtml;
+
+            const gapsHtml = `
+                <h4>⚠️ Points à améliorer</h4>
+                <ul>${match.gaps.map(g => `<li>${g}</li>`).join('')}</ul>
+            `;
+            document.getElementById('matchGaps').innerHTML = gapsHtml;
+
+            document.getElementById('matchRecommendation').textContent = match.recommendation;
+
+            document.getElementById('matchSection').style.display = 'block';
+        }
+
+        // Ajouter au tracker
+        async function addToTracker(job) {
+            const btn = document.getElementById('btnAddToTracker');
+            btn.disabled = true;
+            btn.textContent = '⏳ Ajout...';
+
+            try {
+                const response = await authenticatedFetch('/jobs/track', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        jobOfferId: job.id,
+                        status: 'a_consulter',
+                        jobData: {
+                            title: job.title,
+                            company: job.company,
+                            location: job.location,
+                            description: job.description,
+                            requirements: job.requirements,
+                            job_type: job.job_type,
+                            experience_level: job.experience_level,
+                            salary_min: job.salary_min,
+                            salary_max: job.salary_max,
+                            source: job.source,
+                            url: job.url,
+                            posted_date: job.posted_date
+                        }
+                    })
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Offre ajoutée au tracker !');
+                    btn.textContent = '✓ Ajouté';
+                    setTimeout(() => {
+                        btn.textContent = '➕ Ajouter au tracker';
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    console.error('Erreur:', data.error);
+                    btn.disabled = false;
+                    btn.textContent = '➕ Ajouter au tracker';
+                }
+            } catch (error) {
+                console.error('Erreur ajout tracker:', error);
+                alert('Erreur d\'ajout');
+                btn.disabled = false;
+                btn.textContent = '➕ Ajouter au tracker';
+            }
+        }
+
+        // Générer lettre de motivation
+        let currentCoverLetter = '';
+        let currentJob = null;
+
+        async function generateCoverLetter(job) {
+            const btn = document.getElementById('btnGenerateLetter');
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération...';
+
+            currentJob = job;
+
+            // Afficher l'onglet lettre et le loader
+            document.getElementById('tabLetterBtn').style.display = 'block';
+            switchTab('letter');
+            document.getElementById('letterLoading').style.display = 'block';
+            document.getElementById('letterContent').style.display = 'none';
+
+            try {
+                const response = await authenticatedFetch('/generate-cover-letter', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        jobTitle: job.title,
+                        company: job.company,
+                        location: job.location,
+                        description: job.description,
+                        requirements: job.requirements
+                    })
+                });
+
+                if (!response) {
+                    btn.disabled = false;
+                    btn.textContent = '📝 Générer lettre de motivation';
+                    switchTab('details');
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentCoverLetter = data.letter;
+                    document.getElementById('coverLetterContent').value = data.letter;
+                    document.getElementById('letterLoading').style.display = 'none';
+                    document.getElementById('letterContent').style.display = 'block';
+
+                    btn.textContent = '✓ Lettre générée';
+                    setTimeout(() => {
+                        btn.textContent = '📝 Générer lettre de motivation';
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    console.error('Erreur:', data.error);
+                    btn.disabled = false;
+                    btn.textContent = '📝 Générer lettre de motivation';
+                    switchTab('details');
+                }
+            } catch (error) {
+                console.error('Erreur génération lettre:', error);
+                alert('Erreur lors de la génération de la lettre');
+                btn.disabled = false;
+                btn.textContent = '📝 Générer lettre de motivation';
+                switchTab('details');
+            }
+        }
+
+        // Activer l'édition de la lettre
+        function enableEditLetter() {
+            const textarea = document.getElementById('coverLetterContent');
+            if (textarea.readOnly) {
+                textarea.readOnly = false;
+                textarea.style.borderColor = 'var(--swiss-red)';
+                textarea.focus();
+                event.target.textContent = '💾 Sauvegarder';
+            } else {
+                textarea.readOnly = true;
+                textarea.style.borderColor = '#ddd';
+                currentCoverLetter = textarea.value;
+                event.target.textContent = '✏️ Modifier';
+                showToast('✅ Modifications sauvegardées !', 'success');
+            }
+        }
+
+        // Postuler avec la lettre
+        function applyWithLetter() {
+            if (!currentCoverLetter || !currentJob) {
+                showToast('Aucune lettre générée', 'error');
+                return;
+            }
+
+            // Copier automatiquement la lettre
+            navigator.clipboard.writeText(currentCoverLetter).then(() => {
+                showToast('✅ Lettre copiée ! L\'offre s\'ouvre dans un nouvel onglet', 'success');
+
+                // Ouvrir l'offre dans un nouvel onglet après un court délai
+                setTimeout(() => {
+                    window.open(currentJob.url, '_blank');
+                }, 500);
+            }).catch(err => {
+                console.error('Erreur copie:', err);
+                showToast('Erreur lors de la copie de la lettre', 'error');
+            });
+        }
+
+        // Afficher une notification toast
+        function showToast(message, type = 'success') {
+            // Supprimer les toasts existants
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(toast => toast.remove());
+
+            // Créer le toast
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icon = type === 'success' ? '✅' : '❌';
+
+            toast.innerHTML = `
+            <div class="toast-icon">${icon}</div>
+            <div class="toast-message">${message}</div>
+        `;
+
+            document.body.appendChild(toast);
+
+            // Supprimer après 4 secondes
+            setTimeout(() => {
+                toast.style.animation = 'slideInUp 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Copier la lettre dans le presse-papier
+        function copyCoverLetter() {
+            if (!currentCoverLetter) return;
+
+            navigator.clipboard.writeText(currentCoverLetter).then(() => {
+                showToast('✅ Lettre copiée dans le presse-papier !', 'success');
+            }).catch(err => {
+                console.error('Erreur copie:', err);
+                showToast('Erreur lors de la copie', 'error');
+            });
+        }
+
+        // Télécharger la lettre en fichier texte
+        function downloadCoverLetter() {
+            if (!currentCoverLetter) return;
+
+            const blob = new Blob([currentCoverLetter], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'lettre_motivation.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Télécharger la lettre en PDF
+        function downloadLetterAsPDF() {
+            if (!currentCoverLetter) return;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Récupérer les infos utilisateur
+                const user = getUser();
+                const userName = user?.full_name || 'Votre nom';
+                const userEmail = user?.email || '';
+
+                // Récupérer le titre du job
+                const jobTitle = currentJobForLetter?.title || 'Poste';
+                const company = currentJobForLetter?.company || '';
+
+                // Configuration
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = 20;
+                const maxWidth = pageWidth - (margin * 2);
+                let yPosition = margin;
+
+                // En-tête
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'normal');
+                doc.text(userName, margin, yPosition);
+                yPosition += 6;
+
+                if (userEmail) {
+                    doc.text(userEmail, margin, yPosition);
+                    yPosition += 6;
+                }
+
+                // Date
+                const today = new Date().toLocaleDateString('fr-CH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                doc.text(today, margin, yPosition);
+                yPosition += 15;
+
+                // Titre
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                const title = `Lettre de motivation - ${jobTitle}`;
+                doc.text(title, margin, yPosition);
+                yPosition += 10;
+
+                if (company) {
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'italic');
+                    doc.text(company, margin, yPosition);
+                    yPosition += 12;
+                }
+
+                // Contenu de la lettre
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'normal');
+
+                // Diviser le texte en lignes pour respecter les marges
+                const lines = doc.splitTextToSize(currentCoverLetter, maxWidth);
+
+                // Ajouter les lignes avec gestion des pages
+                for (let i = 0; i < lines.length; i++) {
+                    if (yPosition > pageHeight - margin) {
+                        doc.addPage();
+                        yPosition = margin;
+                    }
+                    doc.text(lines[i], margin, yPosition);
+                    yPosition += 6;
+                }
+
+                // Télécharger
+                const filename = `lettre-motivation-${jobTitle.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+                doc.save(filename);
+
+                showToast('PDF téléchargé avec succès !', 'success');
+            } catch (error) {
+                console.error('Erreur génération PDF:', error);
+                showToast('Erreur lors de la génération du PDF', 'error');
+            }
+        }
+
+        // Fermer modal avec Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+    <!-- Système de Notifications -->
+    <script src="public/js/notifications.js"></script>
+    <script src="public/js/favorites-badge.js"></script>
+
+    <script>
+        // Afficher boutons compare pour Premium/Pro
+        function showCompareButtons() {
+            const user = getUser();
+            if (user && (user.tier === 'premium' || user.tier === 'pro')) {
+                document.querySelectorAll('.compare-cv-btn').forEach(btn => {
+                    btn.style.display = 'inline-block';
+                });
+            }
+        }
+
+        // Fonction comparaison CV
+        async function compareWithCV(jobId, jobTitle, jobDescription) {
+            try {
+                // Récupérer le dernier CV analysé depuis l'API
+                const response = await authenticatedFetch('/analyses/history');
+                const data = await response.json();
+
+                if (!data.success || !data.analyses || data.analyses.length === 0) {
+                    alert('Veuillez d\'abord analyser votre CV dans la section "Analyser CV"');
+                    return;
+                }
+
+                // Prendre le CV le plus récent
+                const lastAnalysis = data.analyses[0];
+
+                // Construire un texte CV à partir de l'analyse
+                // (On utilise les données disponibles dans l'analyse)
+                const cvText = `
+Analyse CV - ${lastAnalysis.filename}
+
+POINTS FORTS:
+${lastAnalysis.strongPoints.join('\n')}
+
+POINTS À AMÉLIORER:
+${lastAnalysis.improvements ? lastAnalysis.improvements.join('\n') : 'Aucun'}
+
+MOTS-CLÉS:
+${lastAnalysis.keywords.join(', ')}
+
+CONSEILS SUISSES:
+${lastAnalysis.swissAdvice || 'N/A'}
+                `.trim();
+
+                // Afficher modal loading
+                const modal = document.getElementById('compareModal');
+                const results = document.getElementById('compareResults');
+                results.innerHTML = '<div style="text-align:center; padding:40px;"><div class="spinner"></div><p>Analyse en cours...</p></div>';
+                modal.style.display = 'block';
+
+                const compareResponse = await authenticatedFetch('/ai/compare-cv', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        cvText: cvText,
+                        jobDescription: `${jobTitle}\n\n${jobDescription}`
+                    })
+                });
+
+                const compareData = await compareResponse.json();
+
+                if (!compareResponse.ok || !compareData.success) {
+                    throw new Error(compareData.error || 'Erreur');
+                }
+
+                const analysis = compareData.analysis;
+
+                // Afficher résultats
+                results.innerHTML = `
+                    <div style="background:#E3F2FD; padding:20px; border-radius:8px; margin-bottom:20px; text-align:center;">
+                        <h3 style="font-size:48px; margin:0; color:#1976D2;">${analysis.matchScore}%</h3>
+                        <p style="margin:5px 0 0 0; color:#666;">Score de correspondance</p>
+                    </div>
+
+                    <div style="margin-bottom:20px;">
+                        <h4>✅ Points forts</h4>
+                        ${analysis.strengths.map(s => `
+                            <div style="background:#E8F5E9; padding:12px; margin:8px 0; border-radius:6px; border-left:4px solid #4CAF50;">
+                                <strong>${s.title}</strong>: ${s.description}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="margin-bottom:20px;">
+                        <h4>⚠️ Points à améliorer</h4>
+                        ${analysis.gaps.map(g => `
+                            <div style="background:#FFF3E0; padding:12px; margin:8px 0; border-radius:6px; border-left:4px solid ${g.severity === 'high' ? '#F44336' : g.severity === 'medium' ? '#FF9800' : '#FFC107'};">
+                                <strong>${g.title}</strong>: ${g.description}
+                                <span style="float:right; font-size:12px; color:#666;">${g.severity === 'high' ? '🔴 Critique' : g.severity === 'medium' ? '🟠 Moyen' : '🟡 Faible'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="margin-bottom:20px;">
+                        <h4>💡 Recommandations</h4>
+                        ${analysis.recommendations.map(r => `
+                            <div style="background:#F5F5F5; padding:10px; margin:6px 0; border-radius:6px;">• ${r}</div>
+                        `).join('')}
+                    </div>
+
+                    <div style="background:#E1F5FE; padding:15px; border-radius:8px;">
+                        <h4 style="margin-top:0;">📋 Verdict</h4>
+                        <p style="line-height:1.6; margin:0;">${analysis.verdict}</p>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Erreur comparaison:', error);
+                results.innerHTML = `
+                    <div style="background:#FFEBEE; padding:20px; border-radius:8px; text-align:center;">
+                        <p style="color:#D32F2F; margin:0;">❌ Erreur: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Fonction déjà appelée dans displayJobs()
+    </script>
+
+</body>
+
+</html>

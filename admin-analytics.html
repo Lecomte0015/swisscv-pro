@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics — Admin SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/mobile-menu.css">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="admin/js/mobile-menu.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -192,6 +196,20 @@
             <a href="admin-users.html">Utilisateurs</a>
             <a href="admin-analytics.html" class="active">Analytics</a>
             <a href="admin-support.html">Support</a>
+            <a href="admin-logs.html">Logs</a>
+            <a href="admin-reports.html">📧 Rapports</a>
+            <div class="notifications-container">
+                <button class="notifications-bell">
+                    🔔
+                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
+                </button>
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notifications-header">Notifications</div>
+                    <div id="notificationsList">
+                        <div class="notifications-empty">⏳ Chargement...</div>
+                    </div>
+                </div>
+            </div>
             <button class="logout-btn" onclick="logout()">Déconnexion</button>
         </div>
     </nav>
@@ -262,16 +280,24 @@
                 const response = await fetch(`${API_BASE}/admin/metrics`, {
                     headers: { 'Authorization': `Bearer ${getAdminToken()}` }
                 });
-                const metrics = await response.json();
+                const data = await response.json();
 
-                document.getElementById('conversionRate').textContent = `${metrics.conversion_rate}%`;
-                document.getElementById('mrr').textContent = `€${metrics.mrr}`;
-                document.getElementById('churnRate').textContent = `${metrics.churn_rate}%`;
-                document.getElementById('ltv').textContent = `€${metrics.ltv}`;
+                // Update metrics with null checks
+                const elements = {
+                    conversionRate: document.getElementById('conversionRate'),
+                    mrr: document.getElementById('mrr'), // Corrected ID to 'mrr'
+                    churnRate: document.getElementById('churnRate'),
+                    ltv: document.getElementById('ltv')
+                };
+
+                if (elements.conversionRate) elements.conversionRate.textContent = `${data.conversion_rate || 0}%`;
+                if (elements.mrr) elements.mrr.textContent = `€${data.mrr || 0}`;
+                if (elements.churnRate) elements.churnRate.textContent = `${data.churn_rate || 0}%`;
+                if (elements.ltv) elements.ltv.textContent = `€${data.ltv || 0}`;
 
                 // Créer graphiques avec vraies données
-                createGrowthChart(metrics.monthly_registrations);
-                createRevenueChart(metrics);
+                createGrowthChart(data.monthly_registrations);
+                createRevenueChart(data);
             } catch (error) {
                 console.error('Error loading metrics:', error);
             }
@@ -298,19 +324,78 @@
             });
         }
 
-        // Analyses Chart (mock pour l'instant)
-        new Chart(document.getElementById('analysesChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                datasets: [{
-                    label: 'Analyses',
-                    data: [24, 35, 42, 38, 45, 28, 18],
-                    backgroundColor: '#10b981'
-                }]
-            },
-            options: { responsive: true }
-        });
+        // Analyses Chart avec vraies données
+        async function createAnalysesChart() {
+            try {
+                const canvas = document.getElementById('analysesChart');
+                if (!canvas) {
+                    console.error('Canvas element #analysesChart not found');
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE}/admin/analytics/analyses-daily`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await response.json();
+
+                // Handle both array and object formats
+                let chartData;
+                if (Array.isArray(data)) {
+                    // Data is already an array
+                    chartData = data;
+                } else if (data.dates && data.counts) {
+                    // Data is an object with dates and counts arrays
+                    chartData = data.dates.map((date, i) => ({
+                        date: date,
+                        count: data.counts[i] || 0
+                    }));
+                } else {
+                    // Fallback to empty data
+                    console.warn('Unexpected data format:', data);
+                    chartData = [];
+                }
+
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.length > 0
+                            ? chartData.map(d => d.date || d)
+                            : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                        datasets: [{
+                            label: 'Analyses CV',
+                            data: chartData.length > 0
+                                ? chartData.map(d => d.count || 0)
+                                : [0, 0, 0, 0, 0, 0, 0],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading analyses chart:', error);
+                // Fallback en cas d'erreur
+                new Chart(document.getElementById('analysesChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                        datasets: [{
+                            label: 'Analyses CV',
+                            data: [0, 0, 0, 0, 0, 0, 0],
+                            backgroundColor: '#10b981'
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+        }
+
 
         // Revenue Chart avec vraies données
         function createRevenueChart(metrics) {
@@ -330,30 +415,95 @@
             });
         }
 
-        // Funnel Chart
-        new Chart(document.getElementById('funnelChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Visiteurs', 'Inscriptions', 'Activations', 'Conversions'],
-                datasets: [{
-                    label: 'Utilisateurs',
-                    data: [1000, 450, 280, 125],
-                    backgroundColor: ['#667eea', '#764ba2', '#f59e0b', '#10b981']
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true
-            }
-        });
+        // Funnel Chart avec vraies données
+        async function createFunnelChart() {
+            try {
+                const canvas = document.getElementById('funnelChart');
+                if (!canvas) {
+                    console.error('Canvas element #funnelChart not found');
+                    return;
+                }
 
-        function exportData() {
-            alert('Export CSV en cours de développement...');
+                const response = await fetch(`${API_BASE}/admin/analytics/funnel`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await response.json();
+
+                new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Visiteurs', 'Inscriptions', 'Analyses', 'Premium'],
+                        datasets: [{
+                            label: 'Utilisateurs',
+                            data: [
+                                data.visitors || 0,
+                                data.signups || 0,
+                                data.analyses || 0,
+                                data.premium || 0
+                            ],
+                            backgroundColor: ['#667eea', '#764ba2', '#f59e0b', '#10b981']
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading funnel chart:', error);
+            }
         }
 
-        // Init
-        loadMetrics();
+
+        async function exportData() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/analytics/export`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Export failed');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `analytics-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Erreur lors de l\'export CSV');
+            }
+        }
+
+        // Initialiser quand le DOM est prêt
+        function initPage() {
+            if (typeof initNotifications === 'function') {
+                initNotifications();
+            }
+            // Init - Charger tous les graphiques
+            loadMetrics();
+            createAnalysesChart();
+            createFunnelChart();
+        }
+
+        // Exécuter immédiatement si DOM déjà chargé, sinon attendre
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
     </script>
+    <script src="admin/js/mobile-menu.js"></script>
+    <script src="admin/js/notifications.js"></script>
+    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>
