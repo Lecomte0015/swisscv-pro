@@ -1267,6 +1267,7 @@
         </div>
         <div class="navbar-menu" id="navbarMenu">
             <a href="dashboard.html" class="navbar-link">Dashboard</a>
+            <a href="app.html" class="navbar-link">📊 Analyse CV</a>
 
             <!-- Menu Outils CV (Premium/Pro) -->
             <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
@@ -1295,6 +1296,8 @@
             </div>
 
             <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
             <a href="support.html" class="navbar-link">Support</a>
             <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
 
@@ -2027,6 +2030,7 @@
                 badge.style.display = 'none';
                 menuCount.textContent = '0 recherche';
                 emptyState.style.display = 'block';
+                console.log('✅ emptyState affiché:', emptyState.style.display);
                 list.innerHTML = '';
             }
         }
@@ -2135,13 +2139,13 @@
             if (!confirm(`Supprimer "${search.name}" ?`)) return;
 
             try {
-                const response = await authenticatedFetch(`/searches/${search.id}`, {
+                const response = await authenticatedFetch(`/saved-searches/${search.id}`, {
                     method: 'DELETE'
                 });
 
                 if (response.ok) {
                     showSuccessToast('✅ Recherche supprimée');
-                    // await loadSavedSearches(); // DÉSACTIVÉ
+                    await loadSavedSearches(); // Recharger la liste
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
@@ -2201,7 +2205,7 @@
 
             try {
                 const response = await authenticatedFetch('/searches/save', {
-                    method: 'POST',
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -2360,6 +2364,7 @@
                     if (!response) {
                         console.error('❌ Pas de réponse de l\'API');
                         emptyState.style.display = 'block';
+                        console.log('✅ emptyState affiché:', emptyState.style.display);
                         return;
                     }
 
@@ -2367,12 +2372,13 @@
                     console.log('📥 Réponse suggestions:', data);
 
                     if (data.success) {
-                        suggestions = data.offers || [];
+                        suggestions = data.suggestions || [];
 
                         if (suggestions.length === 0) {
                             document.getElementById('suggestionsEmptyTitle').textContent = data.message || 'Aucune offre trouvée';
                             document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou essayez de rafraîchir';
                             emptyState.style.display = 'block';
+                            console.log('✅ emptyState affiché:', emptyState.style.display);
                         } else {
                             displaySuggestions();
                             suggestionsGrid.style.display = 'grid';
@@ -2380,10 +2386,12 @@
                     } else {
                         console.error('❌ Erreur API:', data.error);
                         emptyState.style.display = 'block';
+                        console.log('✅ emptyState affiché:', emptyState.style.display);
                     }
                 } catch (error) {
                     console.error('❌ Erreur chargement suggestions:', error);
                     emptyState.style.display = 'block';
+                    console.log('✅ emptyState affiché:', emptyState.style.display);
                 } finally {
                     loading.style.display = 'none';
                     if (btnRefresh) btnRefresh.disabled = false;
@@ -2421,8 +2429,9 @@
                     </div>
                     <div class="job-description">${escapeHtml(offer.description || 'Pas de description disponible')}</div>
                     <div class="job-footer">
-                        <span class="job-tag">${escapeHtml(offer.source)}</span>
+                        ${offer.contract_type ? `<span class="job-tag">${escapeHtml(offer.contract_type)}</span>` : ''}
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
+                        <span class="job-tag">${escapeHtml(offer.source || 'Adzuna')}</span>
                         <button class="compare-cv-btn" id="compareBtn_${offer.id}" onclick="event.stopPropagation(); compareWithCV('${offer.id}', \`${escapeHtml(offer.title)}\`, \`${escapeHtml(offer.description || '')}\`)">
                             📊 Comparer avec mon CV
                         </button>
@@ -2534,8 +2543,10 @@
 
                 if (isFavorite) {
                     // Retirer des favoris
-                    const response = await authenticatedFetch(`/jobs/${jobId}/favorite`, {
-                        method: 'DELETE'
+                    const response = await authenticatedFetch(`/api/favorites/remove`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ jobId: jobId })
                     });
 
                     if (!response) return;
@@ -2546,28 +2557,28 @@
                         button.textContent = '☆';
                         button.classList.remove('favorited');
                         console.log('✅ Retiré des favoris');
-
-                        // Rafraîchir la liste des favoris
-                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
+                    } else {
+                        console.error('Erreur retrait favori:', data.error);
                     }
                 } else {
                     // Ajouter aux favoris
-                    const response = await authenticatedFetch(`/jobs/${jobId}/favorite`, {
+                    const response = await authenticatedFetch(`/api/favorites/add`, {
                         method: 'POST',
-                        body: JSON.stringify({ job })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ jobId: jobId, job: job })
                     });
 
                     if (!response) return;
 
                     const data = await response.json();
+                    console.log('📥 Response data:', data);
                     if (data.success) {
                         userFavorites.add(jobId);
                         button.textContent = '⭐';
                         button.classList.add('favorited');
                         console.log('✅ Ajouté aux favoris');
-
-                        // Rafraîchir la liste des favoris
-                        // await // loadUserFavorites(); // DÉSACTIVÉ // DÉSACTIVÉ
+                    } else {
+                        console.error('❌ Erreur ajout favori:', data);
                     }
                 }
             } catch (error) {
@@ -2605,7 +2616,7 @@
                 const filters = getFilters();
 
                 const response = await authenticatedFetch('/jobs/search', {
-                    method: 'POST',
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         keywords,
                         location,
@@ -2677,9 +2688,9 @@
                     </div>
                     <div class="job-description">${job.description}</div>
                     <div class="job-footer">
-                        <span class="job-tag">${job.job_type}</span>
-                        <span class="job-tag">${job.experience_level}</span>
-                        <span class="job-tag">${job.source}</span>
+                        <span class="job-tag">${job.job_type || 'CDI'}</span>
+                        <span class="job-tag">${job.experience_level || 'Tous niveaux'}</span>
+                        <span class="job-tag">${job.source || 'Adzuna'}</span>
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
                         <button class="compare-cv-btn" id="compareBtn_${job.id}" onclick="event.stopPropagation(); compareWithCV('${job.id}', \`${job.title}\`, \`${job.description || ''}\`)">
                             📊 Comparer avec mon CV
@@ -2780,8 +2791,8 @@
 
             try {
                 const response = await authenticatedFetch('/jobs/match', {
-                    method: 'POST',
-                    body: JSON.stringify({ jobOfferId: job.id })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobOfferId: job.id, job: job })
                 });
 
                 if (!response) return;
@@ -2831,24 +2842,12 @@
 
             try {
                 const response = await authenticatedFetch('/jobs/track', {
-                    method: 'POST',
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        jobOfferId: job.id,
-                        status: 'a_consulter',
-                        jobData: {
-                            title: job.title,
-                            company: job.company,
-                            location: job.location,
-                            description: job.description,
-                            requirements: job.requirements,
-                            job_type: job.job_type,
-                            experience_level: job.experience_level,
-                            salary_min: job.salary_min,
-                            salary_max: job.salary_max,
-                            source: job.source,
-                            url: job.url,
-                            posted_date: job.posted_date
-                        }
+                        job_title: job.title,
+                        company: job.company,
+                        job_url: job.url,
+                        status: 'a_consulter'
                     })
                 });
 
@@ -2895,7 +2894,7 @@
 
             try {
                 const response = await authenticatedFetch('/generate-cover-letter', {
-                    method: 'POST',
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         jobTitle: job.title,
                         company: job.company,
@@ -3187,7 +3186,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                 modal.style.display = 'block';
 
                 const compareResponse = await authenticatedFetch('/ai/compare-cv', {
-                    method: 'POST',
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         cvText: cvText,
                         jobDescription: `${jobTitle}\n\n${jobDescription}`

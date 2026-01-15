@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistance Entretien — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="public/js/notifications.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .section-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .sector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .sector-btn {
+            background: #F5F5F5;
+            border: 2px solid #E0E0E0;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .sector-btn:hover {
+            background: #FFF5F5;
+            border-color: var(--swiss-red);
+            transform: translateY(-2px);
+        }
+
+        .sector-btn.active {
+            background: var(--swiss-red);
+            color: white;
+            border-color: var(--swiss-red);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .btn-generate {
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-generate:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn-generate:disabled {
+            background: #CCC;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .questions-container {
+            display: none;
+        }
+
+        .questions-container.active {
+            display: block;
+        }
+
+        .question-item {
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--swiss-red);
+        }
+
+        .question-item h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tip-badge {
+            display: inline-block;
+            background: #FFE6E6;
+            color: var(--swiss-red);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0;
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white;
+        }
+
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white;
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .navbar-burger {
+                display: flex;
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999;
+                padding: 0 20px;
+            }
+
+            .navbar-menu.active {
+                max-height: 600px;
+                padding: 20px;
+            }
+
+            .navbar-link,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 12px;
+                display: block;
+            }
+
+            .plan-badge {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 12px;
+                display: block;
+                padding: 12px;
+            }
+
+            .sector-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .section-card {
+                padding: 20px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+            <a href="app.html" class="navbar-link">📊 Analyse CV</a>
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="job-tracker.html" class="navbar-link">Tracker</a>
+            <a href="interview-prep.html" class="navbar-link active">🎯 Entretien</a>
+            <a href="profile.html" class="navbar-link">Profil</a>
+            <a href="support.html" class="navbar-link">Support</a>
+            <button onclick="openNotifications()" class="navbar-link"
+                style="border:none; cursor:pointer; position:relative;">🔔<span id="notificationBadge"
+                    style="display:none; position:absolute; top:-5px; right:-5px; background:#D50000; color:white; border-radius:50%; width:18px; height:18px; font-size:11px; font-weight:700;">0</span></button>
+            <span class="plan-badge free" id="planBadge">Free</span>
+            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🎯 Assistance à l'Entretien</h1>
+            <p>Préparez-vous avec des questions fréquentes et des conseils personnalisés par secteur</p>
+        </div>
+
+        <div class="section-card">
+            <h2>1. Choisissez votre secteur</h2>
+            <div class="sector-grid">
+                <button class="sector-btn" data-sector="it" onclick="selectSector('it')">🖥️ IT & Tech</button>
+                <button class="sector-btn" data-sector="finance" onclick="selectSector('finance')">💼 Finance &
+                    Banque</button>
+                <button class="sector-btn" data-sector="sante" onclick="selectSector('sante')">🏥 Santé</button>
+                <button class="sector-btn" data-sector="ingenierie" onclick="selectSector('ingenierie')">🏗️
+                    Ingénierie</button>
+                <button class="sector-btn" data-sector="marketing" onclick="selectSector('marketing')">📊 Marketing &
+                    Communication</button>
+                <button class="sector-btn" data-sector="education" onclick="selectSector('education')">��
+                    Éducation</button>
+                <button class="sector-btn" data-sector="retail" onclick="selectSector('retail')">🏪 Retail &
+                    Commerce</button>
+                <button class="sector-btn" data-sector="hotellerie" onclick="selectSector('hotellerie')">🍽️ Hôtellerie
+                    & Restauration</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>2. Précisez le poste visé</h2>
+            <div class="input-group">
+                <label for="position">Intitulé du poste</label>
+                <input type="text" id="position" placeholder="Ex: Développeur Full-Stack, Comptable, Infirmier...">
+            </div>
+            <button class="btn-generate" id="generateBtn" onclick="generateQuestions()" disabled>Générer les questions
+                d'entretien</button>
+        </div>
+
+        <div class="loading" id="loadingState">
+            <p>⏳ Génération en cours...</p>
+        </div>
+
+        <div class="questions-container" id="questionsContainer">
+            <div class="section-card">
+                <h2>📋 Questions Fréquentes</h2>
+                <div id="questionsList"></div>
+            </div>
+            <div class="section-card">
+                <h2>💡 Conseils Personnalisés</h2>
+                <div id="tipsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+
+        const QUESTIONS_BY_SECTOR = {
+            'it': {
+                questions: [
+                    { question: "Parlez-moi de votre expérience en développement logiciel", tip: "Mentionnez vos projets concrets, les technologies utilisées et les résultats obtenus" },
+                    { question: "Comment gérez-vous le travail en équipe agile ?", tip: "Donnez des exemples de sprints, stand-ups et collaboration avec d'autres développeurs" },
+                    { question: "Quelle est votre approche pour résoudre un bug complexe ?", tip: "Décrivez votre méthodologie de débogage et donnez un exemple concret" },
+                    { question: "Comment vous tenez-vous à jour avec les nouvelles technologies ?", tip: "Parlez de formations, conférences, projets personnels et veille technologique" },
+                    { question: "Décrivez un projet technique dont vous êtes fier", tip: "Expliquez le contexte, votre rôle, les défis et l'impact du projet" },
+                    { question: "Comment assurez-vous la qualité de votre code ?", tip: "Mentionnez tests unitaires, code reviews, bonnes pratiques et outils utilisés" },
+                    { question: "Quelle est votre expérience avec les bases de données ?", tip: "Parlez de SQL/NoSQL, optimisation de requêtes et modélisation de données" },
+                    { question: "Comment gérez-vous les délais serrés ?", tip: "Donnez des exemples de priorisation, communication et gestion du stress" },
+                    { question: "Avez-vous de l'expérience en sécurité informatique ?", tip: "Mentionnez les bonnes pratiques de sécurité que vous appliquez dans vos projets" },
+                    { question: "Pourquoi voulez-vous travailler dans notre entreprise ?", tip: "Renseignez-vous sur l'entreprise, ses projets et montrez votre motivation" }
+                ],
+                tips: [
+                    "Préparez des exemples concrets de vos réalisations techniques",
+                    "Soyez prêt à discuter de code et à résoudre des problèmes techniques",
+                    "Montrez votre passion pour la technologie et l'apprentissage continu"
+                ]
+            },
+            'finance': {
+                questions: [
+                    { question: "Quelle est votre expérience en analyse financière ?", tip: "Détaillez les types d'analyses que vous avez réalisées et les outils utilisés" },
+                    { question: "Comment gérez-vous la pression et les délais de clôture ?", tip: "Donnez des exemples de situations stressantes et comment vous les avez gérées" },
+                    { question: "Parlez-moi de votre connaissance des normes comptables suisses", tip: "Mentionnez Swiss GAAP, IFRS ou autres normes pertinentes" },
+                    { question: "Comment assurez-vous la conformité réglementaire ?", tip: "Expliquez votre approche pour rester à jour avec les réglementations" },
+                    { question: "Décrivez votre expérience avec les outils financiers", tip: "Parlez d'Excel, SAP, Oracle ou autres logiciels que vous maîtrisez" },
+                    { question: "Comment gérez-vous les relations avec les auditeurs ?", tip: "Donnez des exemples de collaboration et de préparation d'audits" },
+                    { question: "Quelle est votre approche pour détecter les erreurs ?", tip: "Expliquez vos méthodes de contrôle et de vérification" },
+                    { question: "Avez-vous de l'expérience en gestion de budget ?", tip: "Parlez de budgets que vous avez gérés et des résultats obtenus" },
+                    { question: "Comment communiquez-vous des informations financières complexes ?", tip: "Donnez des exemples de présentations ou rapports que vous avez créés" },
+                    { question: "Pourquoi la finance vous passionne-t-elle ?", tip: "Montrez votre intérêt pour les chiffres et l'impact stratégique de la finance" }
+                ],
+                tips: [
+                    "Préparez des exemples chiffrés de vos réalisations",
+                    "Montrez votre rigueur et votre attention aux détails",
+                    "Démontrez votre connaissance du secteur financier suisse"
+                ]
+            },
+            'sante': {
+                questions: [
+                    { question: "Pourquoi avez-vous choisi le secteur de la santé ?", tip: "Parlez de votre vocation et de ce qui vous motive à aider les autres" },
+                    { question: "Comment gérez-vous les situations d'urgence ?", tip: "Donnez des exemples concrets de situations stressantes et votre réaction" },
+                    { question: "Quelle est votre expérience avec les patients difficiles ?", tip: "Montrez votre empathie et vos compétences en communication" },
+                    { question: "Comment travaillez-vous en équipe médicale ?", tip: "Expliquez votre rôle dans l'équipe et comment vous collaborez" },
+                    { question: "Parlez-moi de votre formation continue", tip: "Mentionnez les formations, certifications et mises à jour de compétences" },
+                    { question: "Comment assurez-vous la sécurité des patients ?", tip: "Décrivez les protocoles que vous suivez et votre vigilance" },
+                    { question: "Quelle est votre expérience avec les dossiers médicaux électroniques ?", tip: "Parlez des systèmes que vous avez utilisés et votre aisance informatique" },
+                    { question: "Comment gérez-vous la charge émotionnelle du métier ?", tip: "Expliquez vos stratégies de gestion du stress et de l'épuisement" },
+                    { question: "Avez-vous de l'expérience avec des populations spécifiques ?", tip: "Mentionnez votre travail avec enfants, personnes âgées ou autres groupes" },
+                    { question: "Pourquoi notre établissement vous intéresse-t-il ?", tip: "Renseignez-vous sur l'établissement et ses valeurs" }
+                ],
+                tips: [
+                    "Montrez votre empathie et votre humanité",
+                    "Préparez des exemples de situations où vous avez fait la différence",
+                    "Démontrez votre engagement envers la qualité des soins"
+                ]
+            },
+            'ingenierie': {
+                questions: [
+                    { question: "Décrivez un projet d'ingénierie complexe que vous avez mené", tip: "Expliquez le contexte, les défis techniques et les solutions apportées" },
+                    { question: "Comment gérez-vous les contraintes de budget et de délai ?", tip: "Donnez des exemples de projets livrés dans les temps et le budget" },
+                    { question: "Quelle est votre expérience avec les logiciels CAO/DAO ?", tip: "Mentionnez AutoCAD, SolidWorks ou autres outils que vous maîtrisez" },
+                    { question: "Comment assurez-vous la qualité et la sécurité ?", tip: "Parlez des normes que vous suivez et des contrôles qualité" },
+                    { question: "Parlez-moi de votre expérience en gestion de projet", tip: "Décrivez votre rôle, les équipes gérées et les résultats" },
+                    { question: "Comment gérez-vous les changements en cours de projet ?", tip: "Expliquez votre flexibilité et votre gestion du changement" },
+                    { question: "Quelle est votre approche pour l'innovation ?", tip: "Donnez des exemples d'innovations ou d'améliorations que vous avez proposées" },
+                    { question: "Comment travaillez-vous avec des équipes multidisciplinaires ?", tip: "Parlez de votre communication avec architectes, clients, sous-traitants" },
+                    { question: "Avez-vous de l'expérience avec les normes suisses ?", tip: "Mentionnez SIA, VSS ou autres normes pertinentes" },
+                    { question: "Pourquoi l'ingénierie vous passionne-t-elle ?", tip: "Montrez votre intérêt pour la résolution de problèmes techniques" }
+                ],
+                tips: [
+                    "Préparez des exemples de projets avec résultats mesurables",
+                    "Montrez votre capacité à gérer la complexité technique",
+                    "Démontrez votre connaissance des normes suisses"
+                ]
+            },
+            'marketing': {
+                questions: [
+                    { question: "Décrivez une campagne marketing réussie que vous avez menée", tip: "Parlez des objectifs, stratégie, exécution et résultats mesurables" },
+                    { question: "Comment mesurez-vous le ROI de vos actions marketing ?", tip: "Mentionnez les KPIs que vous suivez et les outils d'analyse" },
+                    { question: "Quelle est votre expérience avec le marketing digital ?", tip: "Parlez de SEO, SEM, réseaux sociaux, email marketing" },
+                    { question: "Comment identifiez-vous votre audience cible ?", tip: "Expliquez votre approche de segmentation et de personas" },
+                    { question: "Parlez-moi de votre expérience avec les outils marketing", tip: "Mentionnez Google Analytics, HubSpot, Mailchimp ou autres" },
+                    { question: "Comment gérez-vous un budget marketing limité ?", tip: "Donnez des exemples de créativité et d'optimisation des ressources" },
+                    { question: "Quelle est votre approche pour le content marketing ?", tip: "Parlez de création de contenu, storytelling et engagement" },
+                    { question: "Comment travaillez-vous avec les équipes commerciales ?", tip: "Expliquez votre collaboration pour aligner marketing et ventes" },
+                    { question: "Avez-vous de l'expérience en marketing B2B ou B2C ?", tip: "Détaillez votre expérience dans le secteur pertinent" },
+                    { question: "Comment restez-vous à jour avec les tendances marketing ?", tip: "Parlez de veille, formations, conférences et expérimentations" }
+                ],
+                tips: [
+                    "Préparez des exemples avec des résultats chiffrés",
+                    "Montrez votre créativité et votre sens analytique",
+                    "Démontrez votre connaissance du marché suisse"
+                ]
+            },
+            'education': {
+                questions: [
+                    { question: "Pourquoi avez-vous choisi l'enseignement ?", tip: "Parlez de votre passion pour la transmission du savoir" },
+                    { question: "Comment gérez-vous une classe difficile ?", tip: "Donnez des exemples de gestion de classe et de résolution de conflits" },
+                    { question: "Quelle est votre approche pédagogique ?", tip: "Expliquez vos méthodes d'enseignement et votre philosophie" },
+                    { question: "Comment différenciez-vous votre enseignement ?", tip: "Parlez de votre adaptation aux différents niveaux et besoins" },
+                    { question: "Parlez-moi de votre expérience avec les technologies éducatives", tip: "Mentionnez les outils numériques que vous utilisez" },
+                    { question: "Comment évaluez-vous les progrès des élèves ?", tip: "Expliquez vos méthodes d'évaluation formative et sommative" },
+                    { question: "Comment communiquez-vous avec les parents ?", tip: "Donnez des exemples de collaboration avec les familles" },
+                    { question: "Quelle est votre expérience avec l'inclusion ?", tip: "Parlez de votre travail avec des élèves à besoins spécifiques" },
+                    { question: "Comment gérez-vous votre développement professionnel ?", tip: "Mentionnez formations continues et réflexion sur vos pratiques" },
+                    { question: "Pourquoi notre établissement vous intéresse-t-il ?", tip: "Renseignez-vous sur le projet pédagogique de l'école" }
+                ],
+                tips: [
+                    "Montrez votre passion pour l'enseignement",
+                    "Préparez des exemples de réussites d'élèves",
+                    "Démontrez votre connaissance du système éducatif suisse"
+                ]
+            },
+            'retail': {
+                questions: [
+                    { question: "Quelle est votre expérience en service client ?", tip: "Donnez des exemples de situations où vous avez satisfait des clients" },
+                    { question: "Comment gérez-vous les clients mécontents ?", tip: "Expliquez votre approche pour désamorcer les conflits" },
+                    { question: "Parlez-moi de votre expérience en vente", tip: "Mentionnez vos techniques de vente et vos résultats" },
+                    { question: "Comment travaillez-vous en équipe dans un magasin ?", tip: "Donnez des exemples de collaboration et d'entraide" },
+                    { question: "Quelle est votre expérience avec les caisses et systèmes de paiement ?", tip: "Parlez de votre aisance avec les outils informatiques" },
+                    { question: "Comment gérez-vous les périodes de forte affluence ?", tip: "Expliquez votre gestion du stress et votre efficacité" },
+                    { question: "Avez-vous de l'expérience en merchandising ?", tip: "Parlez de mise en rayon, présentation produits et attractivité" },
+                    { question: "Comment assurez-vous la sécurité du magasin ?", tip: "Mentionnez votre vigilance et le respect des procédures" },
+                    { question: "Quelle est votre disponibilité horaire ?", tip: "Soyez honnête sur vos disponibilités et votre flexibilité" },
+                    { question: "Pourquoi voulez-vous travailler dans le retail ?", tip: "Montrez votre intérêt pour le contact client et le commerce" }
+                ],
+                tips: [
+                    "Montrez votre sourire et votre attitude positive",
+                    "Préparez des exemples de service client excellent",
+                    "Démontrez votre flexibilité et votre fiabilité"
+                ]
+            },
+            'hotellerie': {
+                questions: [
+                    { question: "Pourquoi avez-vous choisi l'hôtellerie-restauration ?", tip: "Parlez de votre passion pour le service et l'accueil" },
+                    { question: "Comment gérez-vous les clients exigeants ?", tip: "Donnez des exemples de situations difficiles résolues avec tact" },
+                    { question: "Quelle est votre expérience en service en salle ?", tip: "Décrivez votre maîtrise des techniques de service" },
+                    { question: "Comment travaillez-vous sous pression ?", tip: "Expliquez votre gestion du stress pendant les services chargés" },
+                    { question: "Parlez-moi de votre connaissance des vins et boissons", tip: "Mentionnez vos connaissances et formations en sommellerie" },
+                    { question: "Comment assurez-vous l'hygiène et la sécurité ?", tip: "Parlez des normes HACCP et de votre rigueur" },
+                    { question: "Quelle est votre expérience avec les systèmes de réservation ?", tip: "Mentionnez les logiciels que vous maîtrisez" },
+                    { question: "Comment gérez-vous le travail en horaires décalés ?", tip: "Montrez votre flexibilité et votre adaptation" },
+                    { question: "Avez-vous de l'expérience en cuisine ou bar ?", tip: "Parlez de vos compétences polyvalentes" },
+                    { question: "Pourquoi notre établissement vous intéresse-t-il ?", tip: "Renseignez-vous sur le restaurant/hôtel et son concept" }
+                ],
+                tips: [
+                    "Montrez votre sens du service et votre sourire",
+                    "Préparez des exemples de satisfaction client",
+                    "Démontrez votre connaissance du secteur hôtelier suisse"
+                ]
+            }
+        };
+
+        const INTERVIEW_API = "https://swisscv-pro.dallyhermann-71e.workers.dev/generate-cover-letter";
+
+        let selectedSector = null;
+
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        function toggleMobileMenu() { document.getElementById('navbarMenu').classList.toggle('active'); }
+        function openNotifications() { alert('Système de notifications en cours de développement.'); }
+        async function authenticatedFetch(url, options = {}) {
+            const token = getToken();
+            if (!token) {
+                throw new Error('Non authentifié');
+            }
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            const response = await fetch(`${API_BASE}${url}`, {
+                ...options,
+                headers
+            });
+
+            return response;
+        }
+
+
+        function selectSector(sector) {
+            selectedSector = sector;
+            document.querySelectorAll('.sector-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-sector="${sector}"]`).classList.add('active');
+            checkFormComplete();
+        }
+
+        document.getElementById('position').addEventListener('input', checkFormComplete);
+
+        function checkFormComplete() {
+            const position = document.getElementById('position').value.trim();
+            document.getElementById('generateBtn').disabled = !(selectedSector && position);
+        }
+
+        async function generateQuestions() {
+            const position = document.getElementById('position').value.trim();
+            if (!selectedSector || !position) { alert('Veuillez sélectionner un secteur et préciser le poste'); return; }
+
+            document.getElementById('loadingState').classList.add('active');
+            document.getElementById('questionsContainer').classList.remove('active');
+            document.getElementById('generateBtn').disabled = true;
+
+            try {
+                console.log('🎯 Génération questions:', selectedSector, position);
+
+                // Utiliser la base de données locale
+                const sectorData = QUESTIONS_BY_SECTOR[selectedSector];
+                if (!sectorData) {
+                    throw new Error('Secteur non trouvé');
+                }
+
+                // Simuler un délai pour l'effet de chargement
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                displayQuestions(sectorData.questions, sectorData.tips);
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Erreur lors de la génération. Veuillez réessayer.');
+            } finally {
+                document.getElementById('loadingState').classList.remove('active');
+                document.getElementById('generateBtn').disabled = false;
+            }
+        }
+
+        function displayQuestions(questions, tips) {
+            console.log('📝 displayQuestions called with:', { questions, tips });
+
+            // Si c'est une lettre, extraire le JSON
+            if (!questions && typeof tips === 'object' && tips.letter) {
+                const letter = tips.letter;
+                console.log('📝 Parsing letter for JSON...');
+                try {
+                    const jsonMatch = letter.match(/\{[\s\S]*"questions"[\s\S]*\}/);
+                    if (jsonMatch) {
+                        const parsed = JSON.parse(jsonMatch[0]);
+                        questions = parsed.questions || [];
+                        tips = parsed.tips || [];
+                        console.log('✅ JSON extracted:', questions.length, 'questions');
+                    } else {
+                        console.warn('⚠️ No JSON found in letter, using fallback');
+                        questions = [];
+                        tips = [];
+                    }
+                } catch (e) {
+                    console.error('❌ JSON extraction failed:', e);
+                    questions = [];
+                    tips = [];
+                }
+            }
+
+            // S'assurer que questions et tips sont des arrays
+            if (!Array.isArray(questions)) {
+                console.warn('⚠️ questions is not array:', questions);
+                questions = [];
+            }
+            if (!Array.isArray(tips)) {
+                console.warn('⚠️ tips is not array:', tips);
+                tips = [];
+            }
+
+            const questionsList = document.getElementById('questionsList');
+            const tipsList = document.getElementById('tipsList');
+
+            if (questions.length === 0) {
+                questionsList.innerHTML = '<div class="question-item"><p>Aucune question générée. Veuillez réessayer.</p></div>';
+            } else {
+                questionsList.innerHTML = questions.map((q, i) => `
+                    <div class="question-item">
+                        <h4>Question ${i + 1}: ${q.question}</h4>
+                        <p>${q.tip}</p>
+                    </div>
+                `).join('');
+            }
+
+            if (tips.length === 0) {
+                tipsList.innerHTML = '<div class="question-item"><p>Aucun conseil disponible.</p></div>';
+            } else {
+                tipsList.innerHTML = tips.map(tip => `
+                    <div class="question-item">
+                        <span class="tip-badge">💡 Conseil</span>
+                        <p>${tip}</p>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('questionsContainer').classList.add('active');
+            document.getElementById('questionsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Auth check
+        (async function () {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; return; }
+
+            const u = getUser();
+            if (u) {
+                const tier = u.tier || 'free';
+                const badge = document.getElementById("planBadge");
+                if (badge) {
+                    badge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    badge.className = `plan-badge ${tier}`;
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
