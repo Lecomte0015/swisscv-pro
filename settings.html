@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--swiss-black);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--swiss-black);
+        }
+
+        .tier-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tier-free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .tier-premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tier-pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: #F5F5F5;
+            color: var(--swiss-black);
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #E0E0E0;
+            border-color: #CCC;
+        }
+
+        .btn-danger {
+            padding: 12px 24px;
+            background: white;
+            color: var(--swiss-red);
+            border: 2px solid var(--swiss-red);
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover {
+            background: var(--swiss-red);
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: var(--swiss-black);
+        }
+
+        .toggle-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: var(--swiss-red);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 32px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--swiss-black);
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            text-decoration: none;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            color: var(--swiss-black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0;
+        }
+
+        .navbar-link.active {
+            background: var(--swiss-red);
+            color: white;
+        }
+
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            transition: background 0.3s;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .navbar-burger {
+                display: flex;
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999;
+                padding: 0 20px;
+            }
+
+            .navbar-menu.active {
+                max-height: 600px;
+                padding: 20px;
+            }
+
+            .navbar-link {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 12px;
+                display: block;
+            }
+
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                background: #F5F5F5;
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                padding: 10px 20px;
+                background: #F5F5F5;
+                margin-bottom: 8px;
+                border-radius: 6px;
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions button,
+            .actions a {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="public/css/credits.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <!-- Menu Outils CV (Tous les plans) -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <!-- Menu Utilisateur Dropdown -->
+            
+            <!-- Credit Balance Display -->
+            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+                <span class="credits-icon">💳</span>
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+<div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item active">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>⚙️ Paramètres</h1>
+            <p>Gérez votre abonnement, sécurité et préférences</p>
+        </div>
+
+        <!-- Section 1: Abonnement & Facturation -->
+        <div class="card">
+            <h2>📊 Abonnement & Facturation</h2>
+
+            <div class="info-row">
+                <span class="info-label">Statut</span>
+                <span class="info-value">
+                    <span id="tierBadge" class="tier-badge tier-free">Free</span>
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Analyses restantes</span>
+                <span class="info-value" id="analysesRemaining">2</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Membre depuis</span>
+                <span class="info-value" id="memberSince">--</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Dernière connexion</span>
+                <span class="info-value" id="lastLogin">--</span>
+            </div>
+
+            <div class="actions">
+                <a href="pricing.html" class="btn" id="upgradeBtn">
+                    🚀 Améliorer mon abonnement
+                </a>
+                <button class="btn-danger" style="display: none;" id="unsubscribeBtn" onclick="unsubscribe()">
+                    ❌ Se désabonner
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 2: Sécurité & Compte -->
+        <div class="card">
+            <h2>🔒 Sécurité & Compte</h2>
+
+            <div class="actions">
+                <button class="btn-secondary" onclick="openChangePasswordModal()">
+                    🔑 Changer le mot de passe
+                </button>
+                <button class="btn-danger" onclick="deleteAccount()">
+                    🗑️ Supprimer mon compte
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 3: Préférences -->
+        <div class="card">
+            <h2>🎨 Préférences</h2>
+
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Notifications par email</div>
+                    <div class="toggle-description">Recevoir des emails de notification</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="emailNotifications" checked onchange="savePreferences()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Alertes nouvelles offres</div>
+                    <div class="toggle-description">Être notifié des nouvelles offres d'emploi</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="jobAlerts" checked onchange="savePreferences()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Conseils hebdomadaires</div>
+                    <div class="toggle-description">Recevoir des conseils carrière chaque semaine</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="weeklyTips" checked onchange="savePreferences()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group" style="margin-top: 24px;">
+                <label for="language">Langue de l'interface</label>
+                <select id="language" onchange="savePreferences()">
+                    <option value="fr" selected>Français</option>
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+
+            <div class="toggle-row" style="margin-top: 24px;">
+                <div>
+                    <div class="toggle-label">Mode sombre</div>
+                    <div class="toggle-description">Interface en mode sombre (bientôt disponible)</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkMode" onchange="savePreferences()" disabled>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="actions">
+                <button class="btn-secondary" onclick="exportData()">
+                    📥 Exporter mes données
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Changement de mot de passe -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔑 Changer le mot de passe</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="currentPassword">Mot de passe actuel</label>
+                    <input type="password" id="currentPassword" placeholder="Entrez votre mot de passe actuel">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Nouveau mot de passe</label>
+                    <input type="password" id="newPassword" placeholder="Entrez votre nouveau mot de passe">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirmez votre nouveau mot de passe">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeChangePasswordModal()">Annuler</button>
+                <button class="btn" onclick="changePassword()">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+
+        document.querySelectorAll('.navbar-link, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        async function authenticatedFetch(url, options = {}) {
+            const token = getToken();
+            if (!token) {
+                throw new Error('Non authentifié');
+            }
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            const response = await fetch(`${API_BASE}${url}`, {
+                ...options,
+                headers
+            });
+
+            return response;
+        }
+
+        // Load settings on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = getToken();
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            await loadSettings();
+        });
+
+        async function loadSettings() {
+            try {
+                const user = getUser();
+
+                // Update user menu
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+                const planBadge = document.getElementById('planBadge');
+
+                if (userNameEl && user.name) {
+                    userNameEl.textContent = user.name;
+                }
+
+                if (userEmailEl && user.email) {
+                    userEmailEl.textContent = user.email;
+                }
+
+                if (userAvatarCircle) {
+                    const initial = user.name ? user.name.charAt(0).toUpperCase() :
+                        user.email ? user.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
+                // Update subscription info
+                const tier = user?.tier || 'free';
+                const tierBadge = document.getElementById('tierBadge');
+                tierBadge.className = `tier-badge tier-${tier}`;
+                tierBadge.textContent = tier === 'pro' ? 'Pro' : tier === 'premium' ? 'Premium' : 'Free';
+
+                if (planBadge) {
+                    planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    planBadge.className = `user-menu-badge`;
+                }
+
+                // Show/hide buttons based on plan
+                const upgradeBtn = document.getElementById('upgradeBtn');
+                const unsubscribeBtn = document.getElementById('unsubscribeBtn');
+                if (tier === 'premium' || tier === 'pro') {
+                    upgradeBtn.style.display = 'none';
+                    unsubscribeBtn.style.display = 'inline-block';
+                } else {
+                    upgradeBtn.style.display = 'inline-block';
+                    unsubscribeBtn.style.display = 'none';
+                }
+
+                // Fetch profile data for additional info
+                const response = await authenticatedFetch('/profile');
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Update analyses remaining
+                    const analysesEl = document.getElementById('analysesRemaining');
+                    if (tier === 'premium' || tier === 'pro') {
+                        analysesEl.textContent = '∞ Illimité';
+                        analysesEl.style.color = '#10b981';
+                        analysesEl.style.fontWeight = '700';
+                    } else if (data.remaining_analyses !== undefined) {
+                        analysesEl.textContent = data.remaining_analyses;
+                        analysesEl.style.color = data.remaining_analyses === 0 ? '#D50000' : '#666';
+                    }
+
+                    // Update member since
+                    if (data.profile?.created_at) {
+                        // Handle both timestamp (seconds) and ISO string formats
+                        let date;
+                        if (typeof data.profile.created_at === 'number') {
+                            // If it's a timestamp in seconds, convert to milliseconds
+                            date = new Date(data.profile.created_at * 1000);
+                        } else {
+                            // If it's an ISO string
+                            date = new Date(data.profile.created_at);
+                        }
+                        document.getElementById('memberSince').textContent = date.toLocaleDateString('fr-FR');
+                    }
+
+                    // Update last login
+                    if (data.profile?.last_login) {
+                        const date = new Date(data.profile.last_login);
+                        document.getElementById('lastLogin').textContent = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    }
+
+                    // Load preferences from API or localStorage
+                    let prefs = data.profile?.preferences;
+
+                    // If no preferences in database, try localStorage
+                    if (!prefs) {
+                        const savedPrefs = localStorage.getItem('user_preferences');
+                        if (savedPrefs) {
+                            try {
+                                prefs = JSON.parse(savedPrefs);
+                            } catch (e) {
+                                console.error('Error parsing saved preferences:', e);
+                            }
+                        }
+                    }
+
+                    // Apply preferences or use defaults
+                    if (prefs) {
+                        document.getElementById('emailNotifications').checked = prefs.emailNotifications !== false;
+                        document.getElementById('jobAlerts').checked = prefs.jobAlerts !== false;
+                        document.getElementById('weeklyTips').checked = prefs.weeklyTips !== false;
+                        document.getElementById('language').value = prefs.language || 'fr';
+                        if (prefs.darkMode !== undefined) {
+                            document.getElementById('darkMode').checked = prefs.darkMode;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('show');
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.remove('show');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('⚠️ Veuillez remplir tous les champs');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('⚠️ Les mots de passe ne correspondent pas');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                alert('⚠️ Le mot de passe doit contenir au moins 8 caractères');
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/change-password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                if (response.ok) {
+                    alert('✅ Mot de passe modifié avec succès');
+                    closeChangePasswordModal();
+                } else {
+                    const data = await response.json();
+                    alert('❌ ' + (data.error || 'Erreur lors du changement de mot de passe'));
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('❌ Erreur lors du changement de mot de passe');
+            }
+        }
+
+        async function unsubscribe() {
+            if (!confirm('⚠️ Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/unsubscribe', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('✅ Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
+                    location.reload();
+                } else {
+                    const data = await response.json();
+                    alert('❌ ' + (data.error || 'Erreur lors du désabonnement'));
+                }
+            } catch (error) {
+                console.error('Error unsubscribing:', error);
+                alert('❌ Erreur lors du désabonnement');
+            }
+        }
+
+        async function deleteAccount() {
+            if (!confirm('⚠️ ATTENTION : Cette action est IRRÉVERSIBLE!\n\nÊtes-vous absolument sûr de vouloir supprimer votre compte?\n\nToutes vos données seront définitivement supprimées:\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Favoris\n• Historique\n\nTapez "SUPPRIMER" pour confirmer.')) {
+                return;
+            }
+
+            const confirmation = prompt('Tapez "SUPPRIMER" pour confirmer la suppression de votre compte:');
+            if (confirmation !== 'SUPPRIMER') {
+                alert('❌ Suppression annulée');
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/delete-account', {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('✅ Votre compte a été supprimé. Nous sommes désolés de vous voir partir.');
+                    logout();
+                } else {
+                    const data = await response.json();
+                    alert('❌ ' + (data.error || 'Erreur lors de la suppression du compte'));
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                alert('❌ Erreur lors de la suppression du compte');
+            }
+        }
+
+        async function savePreferences() {
+            const preferences = {
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                jobAlerts: document.getElementById('jobAlerts').checked,
+                weeklyTips: document.getElementById('weeklyTips').checked,
+                language: document.getElementById('language').value,
+                darkMode: document.getElementById('darkMode').checked
+            };
+
+            // Save to localStorage immediately for instant persistence
+            localStorage.setItem('user_preferences', JSON.stringify(preferences));
+
+            try {
+                const response = await authenticatedFetch('/save-preferences', {
+                    method: 'POST',
+                    body: JSON.stringify({ preferences })
+                });
+
+                if (response.ok) {
+                    console.log('✅ Préférences sauvegardées');
+                    // Show feedback for language change
+                    if (preferences.language !== 'fr') {
+                        alert('ℹ️ Changement de langue enregistré.\n\nNote: L\'interface multilingue sera disponible dans une prochaine mise à jour.');
+                    }
+                } else {
+                    console.error('❌ Erreur lors de la sauvegarde des préférences sur le serveur');
+                    // But localStorage save still worked
+                }
+            } catch (error) {
+                console.error('Error saving preferences to server:', error);
+                // But localStorage save still worked
+            }
+        }
+
+        async function exportData() {
+            try {
+                const response = await authenticatedFetch('/export-data');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const dataStr = JSON.stringify(data, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `swisscv-data-${new Date().toISOString().split('T')[0]}.json`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    alert('✅ Vos données ont été exportées');
+                } else {
+                    alert('❌ Erreur lors de l\'export des données');
+                }
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                alert('❌ Erreur lors de l\'export des données');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('changePasswordModal');
+            if (event.target == modal) {
+                closeChangePasswordModal();
+            }
+        }
+    </script>
+    <script src="public/js/credits.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tracker — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: var(--swiss-black);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        .tracker- .tracker-header h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--swiss-red);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .kanban-column {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 500px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .column- .column-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .column-count {
+            background: var(--swiss-gray);
+            color: var(--swiss-black);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .kanban-column.a_consulter .column-count {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .kanban-column.interesse .column-count {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .kanban-column.postule .column-count {
+            background: #F3E5F5;
+            color: #7B1FA2;
+        }
+
+        .kanban-column.entretien .column-count {
+            background: #FFF9C4;
+            color: #F57F17;
+        }
+
+        .kanban-column.offre .column-count {
+            background: #E8F5E9;
+            color: #388E3C;
+        }
+
+        .kanban-column.refuse .column-count {
+            background: #FFEBEE;
+            color: #D32F2F;
+        }
+
+        .job-item {
+            background: white;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .job-item:hover {
+            border-color: var(--swiss-red);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .job-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .job-item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            margin-bottom: 6px;
+        }
+
+        .job-item-company {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .job-item-match {
+            display: inline-block;
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .job-item-match.medium {
+            background: linear-gradient(135deg, #FFB300 0%, #FFC107 100%);
+        }
+
+        .job-item-match.low {
+            background: linear-gradient(135deg, #FF5252 0%, #FF6E40 100%);
+        }
+
+        .job-item-date {
+            font-size: 11px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .job-item-delete {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.2s;
+            padding: 4px;
+        }
+
+        .job-item-delete:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            filter: drop-shadow(0 2px 4px rgba(213, 0, 0, 0.3));
+        }
+
+        .job-item {
+            position: relative;
+        }
+
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed var(--swiss-gray);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--swiss-red);
+            background: rgba(213, 0, 0, 0.05);
+            color: var(--swiss-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--swiss-gray);
+            border-top-color: var(--swiss-red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .kanban-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Graphiques dashboard responsive - FORCE 1 COLONNE */
+            .dashboard-charts {
+                grid-template-columns: 1fr !important;
+                gap: 16px;
+            }
+
+            .chart-card {
+                padding: 16px;
+                width: 100%;
+            }
+
+            .chart-card h3 {
+                font-size: 14px;
+            }
+
+            .chart-card canvas {
+                max-height: 200px !important;
+                width: 100% !important;
+            }
+
+            body {
+                padding: 10px !important;
+                padding-top: 150px !important;
+            }
+
+            .tracker-header h1 {
+                font-size: 24px !important;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .kanban-column {
+                padding: 12px;
+                min-height: 300px;
+            }
+
+            .column-title {
+                font-size: 12px !important;
+            }
+
+            .job-item {
+                padding: 12px;
+            }
+
+            .job-item-title {
+                font-size: 14px;
+            }
+
+            .job-item-company {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .tracker-header h1 {
+                font-size: 20px !important;
+            }
+
+            body {
+                padding: 8px !important;
+                padding-top: 150px !important;
+            }
+        }
+
+        /* Dashboard Graphiques Grid */
+        .dashboard-charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #0D0D0D;
+        }
+
+        .chart-card canvas {
+            max-height: 250px;
+        }
+
+        /* CORRECTION ESPACEMENT NAVBAR */
+        body {
+            padding-top: 150px !important;
+            margin-top: 0 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <link rel="stylesheet" href="public/css/credits.css">
+</head>
+
+<body>
+    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    </style>
+        <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+            <!-- Menu Outils CV (Tous les plans) -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item active">Tracker</a>
+                </div>
+            </div>
+
+            <!-- Menu Utilisateur Dropdown -->
+            
+            <!-- Credit Balance Display -->
+            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+                <span class="credits-icon">💳</span>
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+<div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+        });
+
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+                // Mettre à jour le nom et l'email de l'utilisateur dans le menu
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                // Mettre à jour l'avatar avec l'initiale du nom ou email
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
+                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+
+
+    <div class="container">
+
+
+        <div class="tracker-header">
+            <h1>📋 Job Tracker</h1>
+            <p style="color: #666; margin-top: 8px;">Gérez vos candidatures par glisser-déposer</p>
+
+            <!-- Bouton Ajouter + Filtres + Toggle Vue -->
+            <div class="tracker-controls" style="margin-top: 20px;">
+                <!-- Ligne 1: Bouton Ajouter (pleine largeur sur mobile) -->
+                <button onclick="openAddApplicationModal()" class="btn-add-application">
+                    ➕ Ajouter une candidature
+                </button>
+
+                <!-- Ligne 2: Recherche + Filtre statut -->
+                <div class="filters-row">
+                    <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="search-input">
+                    <select id="filterStatus" onchange="applyFilters()" class="filter-select">
+                        <option value="">Tous les statuts</option>
+                        <option value="a_consulter">📋 À Consulter</option>
+                        <option value="interesse">⭐ Intéressé</option>
+                        <option value="postule">📧 Postulé</option>
+                        <option value="entretien">🎯 Entretien</option>
+                        <option value="offre">🎉 Offre</option>
+                        <option value="refuse">❌ Refusé</option>
+                    </select>
+                </div>
+
+                <!-- Ligne 3: Bouton Effacer + Toggle Vue -->
+                <div class="actions-row">
+                    <button onclick="clearFilters()" class="btn-clear">
+                        ❌ Effacer
+                    </button>
+                    <div class="view-toggle">
+                        <button id="viewKanban" onclick="switchView('kanban')" class="view-btn active">
+                            📋 Kanban
+                        </button>
+                        <button id="viewList" onclick="switchView('list')" class="view-btn">
+                            📊 Liste
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* Styles pour les contrôles */
+                .tracker-controls {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .btn-add-application {
+                    width: 100%;
+                    background: var(--swiss-red);
+                    color: white;
+                    padding: 14px 24px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 15px;
+                    transition: all 0.2s;
+                }
+
+                .btn-add-application:hover {
+                    background: #B80000;
+                    transform: translateY(-1px);
+                }
+
+                .filters-row {
+                    display: flex;
+                    gap: 8px;
+                }
+
+                .search-input {
+                    flex: 1;
+                    min-width: 0;
+                    padding: 12px 14px;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    font-size: 14px;
+                }
+
+                .filter-select {
+                    flex-shrink: 0;
+                    padding: 12px 14px;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    background: white;
+                }
+
+                .actions-row {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                }
+
+                .btn-clear {
+                    padding: 12px 20px;
+                    background: #E0E0E0;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 14px;
+                    white-space: nowrap;
+                }
+
+                .view-toggle {
+                    display: flex;
+                    gap: 6px;
+                    flex: 1;
+                }
+
+                .view-btn {
+                    flex: 1;
+                    padding: 12px 16px;
+                    background: #F5F5F5;
+                    color: #0D0D0D;
+                    border: 2px solid #E0E0E0;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 14px;
+                    transition: all 0.2s;
+                }
+
+                .view-btn.active {
+                    background: var(--swiss-red);
+                    color: white;
+                    border-color: var(--swiss-red);
+                }
+
+                /* Desktop: disposition horizontale */
+                @media (min-width: 769px) {
+                    .tracker-controls {
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        align-items: center;
+                    }
+
+                    .btn-add-application {
+                        width: auto;
+                        flex-shrink: 0;
+                    }
+
+                    .filters-row {
+                        flex: 1;
+                        min-width: 300px;
+                    }
+
+                    .actions-row {
+                        flex-shrink: 0;
+                    }
+
+                    .view-toggle {
+                        flex: 0;
+                    }
+
+                    .view-btn {
+                        flex: 0;
+                        white-space: nowrap;
+                    }
+                }
+
+                /* Mobile: optimisations */
+                @media (max-width: 768px) {
+                    .btn-add-application {
+                        font-size: 14px;
+                        padding: 12px 20px;
+                    }
+
+                    .search-input,
+                    .filter-select {
+                        font-size: 13px;
+                        padding: 10px 12px;
+                    }
+
+                    .filter-select {
+                        max-width: 140px;
+                    }
+
+                    .btn-clear {
+                        font-size: 13px;
+                        padding: 10px 16px;
+                    }
+
+                    .view-btn {
+                        font-size: 13px;
+                        padding: 10px 12px;
+                    }
+                }
+
+                /* Très petit mobile */
+                @media (max-width: 480px) {
+                    .tracker-controls {
+                        gap: 10px;
+                    }
+
+                    .filters-row {
+                        gap: 6px;
+                    }
+
+                    .actions-row {
+                        gap: 6px;
+                    }
+
+                    .view-toggle {
+                        gap: 4px;
+                    }
+
+                    .filter-select {
+                        font-size: 12px;
+                        max-width: 120px;
+                    }
+
+                    .btn-clear {
+                        font-size: 12px;
+                        padding: 10px 12px;
+                    }
+
+                    .view-btn {
+                        font-size: 12px;
+                        padding: 10px 8px;
+                    }
+                }
+            </style>
+
+            <!-- GRAPHIQUES DASHBOARD -->
+            <div class="dashboard-charts">
+                <div class="chart-card">
+                    <h3>📊 Répartition par statut</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>📈 Tendance 7 jours</h3>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Total candidatures</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statPostule">0</div>
+                    <div class="stat-label">Postulées</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statEntretien">0</div>
+                    <div class="stat-label">Entretiens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statOffre">0</div>
+                    <div class="stat-label">Offres reçues</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p style="font-size: 18px; color: #666;">Chargement de vos candidatures...</p>
+        </div>
+
+        <div class="kanban-board" id="kanbanBoard" style="display: none;">
+            <div class="kanban-column a_consulter" data-status="a_consulter">
+                <div class="column-header">
+                    <span class="column-title">📋 À Consulter</span>
+                    <span class="column-count" id="count-a_consulter">0</span>
+                </div>
+                <div class="column-content" id="column-a_consulter"></div>
+            </div>
+
+            <div class="kanban-column interesse" data-status="interesse">
+                <div class="column-header">
+                    <span class="column-title">⭐ Intéressé</span>
+                    <span class="column-count" id="count-interesse">0</span>
+                </div>
+                <div class="column-content" id="column-interesse"></div>
+            </div>
+
+            <div class="kanban-column postule" data-status="postule">
+                <div class="column-header">
+                    <span class="column-title">📧 Postulé</span>
+                    <span class="column-count" id="count-postule">0</span>
+                </div>
+                <!-- The following lines are likely part of a JavaScript template for job cards,
+                     inserted here to reflect the requested change in context. -->
+                <!-- Example job card structure (dynamic content) -->
+                <!--
+                        <span class="job-tag">${job.job_type || 'CDI'}</span>
+                        <span class="job-tag">${job.experience_level || 'Tous niveaux'}</span>
+                        <span class="job-tag">${job.source || 'Adzuna'}</span>
+                        ${job.reminder_date ? `<span class="job-tag" style="background: #ff9800; color: white;">⏰ Rappel</span>` : ''}
+                -->
+                <div class="column-content" id="column-postule"></div>
+            </div>
+
+            <div class="kanban-column entretien" data-status="entretien">
+                <div class="column-header">
+                    <span class="column-title">🎯 Entretien</span>
+                    <span class="column-count" id="count-entretien">0</span>
+                </div>
+                <div class="column-content" id="column-entretien"></div>
+            </div>
+
+            <div class="kanban-column offre" data-status="offre">
+                <div class="column-header">
+                    <span class="column-title">🎉 Offre</span>
+                    <span class="column-count" id="count-offre">0</span>
+                </div>
+                <div class="column-content" id="column-offre"></div>
+            </div>
+
+            <div class="kanban-column refuse" data-status="refuse">
+                <div class="column-header">
+                    <span class="column-title">❌ Refusé</span>
+                    <span class="column-count" id="count-refuse">0</span>
+                </div>
+                <div class="column-content" id="column-refuse"></div>
+            </div>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3>Aucune candidature pour le moment</h3>
+            <p style="margin-top: 12px;">Commencez par <a href="job-search.html"
+                    style="color: var(--swiss-red); font-weight: 600;">rechercher des offres</a></p>
+        </div>
+
+        <!-- VUE LISTE -->
+        <div id="listView"
+            style="display: none; margin-top: 24px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F5F5F5;">
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Poste</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Entreprise</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Statut</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Date</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; font-size: 14px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="listViewBody"></tbody>
+            </table>
+        </div>
+
+        <!-- MODAL AJOUTER CANDIDATURE -->
+        <div id="addApplicationModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+            <div style="background: white; border-radius: 16px; max-width: 600px; width: 90%; padding: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 style="font-size: 24px; font-weight: 700;">➕ Nouvelle Candidature</h2>
+                    <button onclick="closeAddApplicationModal()"
+                        style="background: transparent; border: none; font-size: 28px; cursor: pointer; color: #999;">×</button>
+                </div>
+                <form id="addApplicationForm" onsubmit="handleAddApplication(event); return false;">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Titre du
+                            poste *</label>
+                        <input type="text" id="jobTitle" required placeholder="Ex: Développeur Full Stack"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Entreprise
+                            *</label>
+                        <input type="text" id="company" required placeholder="Ex: Google Switzerland"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">URL de
+                            l'offre</label>
+                        <input type="url" id="jobUrl" placeholder="https://..."
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Statut
+                            initial</label>
+                        <select id="initialStatus"
+                            style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px; cursor: pointer;">
+                            <option value="a_consulter">📋 À Consulter</option>
+                            <option value="interesse">⭐ Intéressé</option>
+                            <option value="postule">📧 Postulé</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" onclick="closeAddApplicationModal()"
+                            style="padding: 12px 24px; background: #E0E0E0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Annuler</button>
+                        <button type="submit"
+                            style="padding: 12px 24px; background: var(--swiss-red); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODALS -->
+        <!-- Modal Timeline -->
+        <div id="timelineModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+            <div
+                style="background: white; border-radius: 16px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 700;">📅 Timeline</h2>
+                    <button onclick="closeTimelineModal()"
+                        style="background: transparent; border: none; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <div id="timelineContent"></div>
+            </div>
+        </div>
+
+        <!-- Modal Notes -->
+        <div id="notesModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+            <div style="background: white; border-radius: 16px; max-width: 600px; width: 90%; padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 700;">📝 Ajouter une note</h2>
+                    <button onclick="closeNotesModal()"
+                        style="background: transparent; border: none; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <textarea id="noteText" placeholder="Votre note..."
+                    style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; font-family: Inter; font-size: 14px; resize: vertical;"></textarea>
+                <input type="text" id="noteTags" placeholder="Tags (séparés par des virgules)"
+                    style="width: 100%; margin-top: 12px; padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; font-size: 14px;">
+                <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end;">
+                    <button onclick="closeNotesModal()"
+                        style="padding: 12px 24px; background: #E0E0E0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Annuler</button>
+                    <button onclick="saveNote()"
+                        style="padding: 12px 24px; background: #D50000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Rappels -->
+        <div id="reminderModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+            <div style="background: white; border-radius: 16px; max-width: 500px; width: 90%; padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 700;">⏰ Définir un rappel</h2>
+                    <button onclick="closeReminderModal()"
+                        style="background: transparent; border: none; font-size: 24px; cursor: pointer;">×</button>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Date limite (deadline)</label>
+                    <input type="date" id="deadlineDate"
+                        style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Date de rappel</label>
+                    <input type="date" id="reminderDate"
+                        style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; font-size: 14px;">
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button onclick="closeReminderModal()"
+                        style="padding: 12px 24px; background: #E0E0E0; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Annuler</button>
+                    <button onclick="saveReminder()"
+                        style="padding: 12px 24px; background: #D50000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/js/auth.js"></script>
+    <script>
+        let applications = [];
+        let draggedItem = null;
+        let statusChart = null;
+        let trendChart = null;
+
+        // Protection de page
+        (async function () {
+            const authenticated = await requireAuth();
+            if (!authenticated) return;
+
+            // Charger les stats et candidatures
+            await loadStats();
+            await loadTrackedJobs();
+        })();
+
+        // Charger les statistiques
+        async function loadStats() {
+            try {
+                const response = await authenticatedFetch('/job-tracker/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    renderStatusChart(data.stats.by_status);
+                    renderTrendChart(data.stats.weekly_trend);
+                }
+            } catch (error) {
+                console.error('Erreur chargement stats:', error);
+            }
+        }
+
+        // Graphique donut statuts
+        function renderStatusChart(byStatus) {
+            const ctx = document.getElementById('statusChart');
+            if (!ctx) return;
+
+            const statusLabels = {
+                'a_consulter': 'À consulter',
+                'interesse': 'Intéressé',
+                'postule': 'Postulé',
+                'entretien': 'Entretien',
+                'offre': 'Offre',
+                'refuse': 'Refusé'
+            };
+
+            const statusColors = {
+                'a_consulter': '#1976D2',
+                'interesse': '#F57C00',
+                'postule': '#7B1FA2',
+                'entretien': '#F57F17',
+                'offre': '#388E3C',
+                'refuse': '#D32F2F'
+            };
+
+            const labels = [];
+            const data = [];
+            const colors = [];
+
+            byStatus.forEach(item => {
+                labels.push(statusLabels[item.status] || item.status);
+                data.push(item.count);
+                colors.push(statusColors[item.status] || '#999');
+            });
+
+            if (statusChart) statusChart.destroy();
+
+            statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12, family: 'Inter' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Graphique ligne tendance
+        function renderTrendChart(weeklyTrend) {
+            const ctx = document.getElementById('trendChart');
+            if (!ctx) return;
+
+            const labels = weeklyTrend.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' });
+            });
+            const data = weeklyTrend.map(d => d.count);
+
+            if (trendChart) trendChart.destroy();
+
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Candidatures',
+                        data: data,
+                        borderColor: '#D50000',
+                        backgroundColor: 'rgba(213, 0, 0, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Charger les jobs trackés
+        async function loadTrackedJobs() {
+            const loading = document.getElementById('loading');
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const emptyState = document.getElementById('emptyState');
+
+            loading.style.display = 'block';
+            kanbanBoard.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const response = await authenticatedFetch('/job-tracker/kanban', {
+                    method: 'GET'
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    applications = data.jobs || [];
+
+                    if (applications.length === 0) {
+                        loading.style.display = 'none';
+                        emptyState.style.display = 'block';
+                    } else {
+                        // Organiser les jobs par statut
+                        const kanban = {
+                            a_consulter: [],
+                            interesse: [],
+                            postule: [],
+                            entretien: [],
+                            offre: [],
+                            refuse: []
+                        };
+
+                        applications.forEach(job => {
+                            const status = job.status || 'a_consulter';
+                            if (kanban[status]) {
+                                kanban[status].push(job);
+                            }
+                        });
+
+                        displayKanban(kanban);
+                        updateStats(kanban);
+                        loading.style.display = 'none';
+                        kanbanBoard.style.display = 'grid';
+                    }
+                } else {
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                console.error('Erreur chargement:', error);
+                alert('Erreur de chargement');
+            }
+        }
+
+        // Afficher le Kanban
+        function displayKanban(kanbanData) {
+            const statuses = ['a_consulter', 'interesse', 'postule', 'entretien', 'offre', 'refuse'];
+
+            statuses.forEach(status => {
+                const contentDiv = document.getElementById(`column-${status}`);
+                const jobs = kanbanData[status] || [];
+
+                contentDiv.innerHTML = '';
+
+                if (jobs.length === 0) {
+                    const dropZone = document.createElement('div');
+                    dropZone.className = 'drop-zone';
+                    dropZone.textContent = 'Glissez une offre ici';
+                    contentDiv.appendChild(dropZone);
+                } else {
+                    jobs.forEach(job => {
+                        const item = createJobItem(job);
+                        contentDiv.appendChild(item);
+                    });
+                }
+
+                // Mettre à jour le compteur
+                document.getElementById(`count-${status}`).textContent = jobs.length;
+
+                // Activer le drop sur TOUTE LA COLONNE (pas juste le content)
+                const kanbanColumn = contentDiv.closest('.kanban-column');
+                setupDropZone(kanbanColumn, status);
+            });
+        }
+
+        // Créer un item de job
+        function createJobItem(job) {
+            const item = document.createElement('div');
+            item.className = 'job-item';
+            item.draggable = true;
+            item.dataset.id = job.id;
+
+            const matchClass = job.match_score >= 70 ? '' :
+                job.match_score >= 50 ? 'medium' : 'low';
+
+            const matchBadge = job.match_score ?
+                `<div class="job-item-match ${matchClass}">${job.match_score}% match</div>` : '';
+
+            // Gérer les deux formats de date : timestamp unix OU string ISO
+            let date = 'Date inconnue';
+            const timestamp = job.applied_date || job.created_at;
+            if (timestamp) {
+                // Si c'est un nombre (timestamp unix) ou un nombre en string
+                if (typeof timestamp === 'number' || /^\d+$/.test(timestamp)) {
+                    // Timestamp unix (en secondes)
+                    date = new Date(Number(timestamp) * 1000).toLocaleDateString('fr-CH');
+                } else {
+                    // Si c'est une string de date ISO ou autre format
+                    const parsed = new Date(timestamp);
+                    if (!isNaN(parsed.getTime())) {
+                        date = parsed.toLocaleDateString('fr-CH');
+                    }
+                }
+            }
+
+            // Gérer les cas où l'offre n'existe plus dans job_offers
+            const title = job.title || 'Offre non disponible';
+            const company = job.company || 'Entreprise inconnue';
+
+            item.innerHTML = `
+                <div class="job-item-title">${title}</div>
+                <div class="job-item-company">${company}</div>
+                ${matchBadge}
+                <div class="job-item-date">📅 ${date}</div>
+                <div style="display: flex; gap: 8px; margin-top: 12px; font-size: 11px;">
+                    <button onclick="openTimeline('${job.id}', event)" style="flex: 1; padding: 6px; background: #E3F2FD; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Timeline">📅</button>
+                    <button onclick="openNotes('${job.id}', event)" style="flex: 1; padding: 6px; background: #FFF3E0; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Notes">📝</button>
+                    <button onclick="openReminder('${job.id}', event)" style="flex: 1; padding: 6px; background: #F3E5F5; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Rappel">⏰</button>
+                </div>
+                <button class="job-item-delete" onclick="deleteJob('${job.id}', event)" title="Supprimer">🗑️</button>
+            `;
+
+            // Events drag
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragend', handleDragEnd);
+
+            return item;
+        }
+
+        // Drag start
+        function handleDragStart(e) {
+            draggedItem = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', e.target.innerHTML);
+        }
+
+        // Drag end
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        // Setup drop zone
+        function setupDropZone(column, status) {
+            // Permettre le drop sur toute la colonne
+            column.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.dataTransfer.dropEffect = 'move';
+
+                // Ajouter un effet visuel
+                column.style.backgroundColor = 'rgba(213, 0, 0, 0.05)';
+            });
+
+            column.addEventListener('dragleave', (e) => {
+                // Vérifier qu'on quitte vraiment la colonne
+                if (e.target === column) {
+                    column.style.backgroundColor = '';
+                }
+            });
+
+            column.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Retirer l'effet visuel
+                column.style.backgroundColor = '';
+
+                console.log('🎯 Drop event triggered!', { draggedItem, status });
+
+                if (!draggedItem) {
+                    console.error('❌ No draggedItem!');
+                    return;
+                }
+
+                // Mettre à jour le statut
+                const applicationId = draggedItem.dataset.id;
+                const newStatus = status;
+
+                console.log('📝 Updating status:', { applicationId, newStatus });
+
+                await updateJobStatus(applicationId, newStatus);
+            });
+        }
+
+        // Mettre à jour le statut
+        async function updateJobStatus(applicationId, newStatus) {
+            try {
+                const response = await authenticatedFetch('/jobs/update-status', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        jobId: applicationId,
+                        status: newStatus
+                    })
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Recharger le Kanban
+                    await loadTrackedJobs();
+                } else {
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                console.error('Erreur update:', error);
+                alert('Erreur de mise à jour');
+            }
+        }
+
+        // Mettre à jour les stats
+        function updateStats(kanbanData) {
+            const total = applications.length;
+            const postule = (kanbanData.postule || []).length;
+            const entretien = (kanbanData.entretien || []).length;
+            const offre = (kanbanData.offre || []).length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPostule').textContent = postule;
+            document.getElementById('statEntretien').textContent = entretien;
+            document.getElementById('statOffre').textContent = offre;
+        }
+
+        // Supprimer une candidature
+        async function deleteJob(jobId, event) {
+            event.stopPropagation();
+
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette candidature ?')) {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch(`/applications/${jobId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response) return;
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Recharger le tracker
+                    await loadTrackedJobs();
+                } else {
+                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // MODALS FUNCTIONS
+        let currentAppId = null;
+
+        // Timeline
+        async function openTimeline(appId, event) {
+            event.stopPropagation();
+            currentAppId = appId;
+
+            try {
+                const response = await authenticatedFetch(`/applications/${appId}/timeline`);
+                const data = await response.json();
+                if (data.success && data.timeline) {
+                    const content = document.getElementById('timelineContent');
+                    let html = '<div style="padding: 20px;">';
+
+                    if (data.timeline.length > 0) {
+                        data.timeline.forEach(event => {
+                            const date = new Date(event.date * 1000).toLocaleDateString('fr-FR', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                            });
+                            html += `<div style="padding: 12px; background: #F5F5F5; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid #1976D2;">
+                                <div style="font-weight: 600; color: #1976D2;">${event.event}</div>
+                                <div style="font-size: 12px; color: #666; margin-top: 4px;">${date}</div>
+                            </div>`;
+                        });
+                    } else {
+                        html += '<p style="text-align: center; color: #999; padding: 20px;">Aucun événement pour le moment</p>';
+                    }
+
+                    html += '</div>';
+                    content.innerHTML = html;
+                    document.getElementById('timelineModal').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Erreur timeline:', error);
+                alert('Erreur chargement timeline');
+            }
+        }
+
+        function closeTimelineModal() {
+            document.getElementById('timelineModal').style.display = 'none';
+        }
+
+        // Notes
+        async function openNotes(appId, event) {
+            event.stopPropagation();
+            currentAppId = appId;
+
+            // Load existing note
+            try {
+                const response = await authenticatedFetch(`/applications/${appId}/note`);
+                const data = await response.json();
+                if (data.success && data.note) {
+                    document.getElementById('noteText').value = data.note;
+                } else {
+                    document.getElementById('noteText').value = '';
+                }
+            } catch (error) {
+                console.error('Error loading note:', error);
+                document.getElementById('noteText').value = '';
+            }
+
+            document.getElementById('noteTags').value = '';
+            document.getElementById('notesModal').style.display = 'flex';
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notesModal').style.display = 'none';
+        }
+
+        async function saveNote() {
+            const text = document.getElementById('noteText').value.trim();
+            if (!text) {
+                alert('Veuillez entrer une note');
+                return;
+            }
+
+            const tagsInput = document.getElementById('noteTags').value.trim();
+            const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [];
+
+            try {
+                const response = await authenticatedFetch(`/applications/${currentAppId}/note`, {
+                    method: 'POST',
+                    body: JSON.stringify({ note_text: text, tags })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ Note ajoutée');
+                    closeNotesModal();
+                }
+            } catch (error) {
+                console.error('Erreur sauvegarde note:', error);
+                alert('Erreur sauvegarde note');
+            }
+        }
+
+        // Rappels
+        function openReminder(appId, event) {
+            event.stopPropagation();
+            currentAppId = appId;
+            document.getElementById('deadlineDate').value = '';
+            document.getElementById('reminderDate').value = '';
+            document.getElementById('reminderModal').style.display = 'flex';
+        }
+
+        function closeReminderModal() {
+            document.getElementById('reminderModal').style.display = 'none';
+        }
+
+        async function saveReminder() {
+            const deadlineInput = document.getElementById('deadlineDate').value;
+            const reminderInput = document.getElementById('reminderDate').value;
+
+            const deadline = deadlineInput ? Math.floor(new Date(deadlineInput).getTime() / 1000) : null;
+            const reminder_date = reminderInput ? Math.floor(new Date(reminderInput).getTime() / 1000) : null;
+
+            try {
+                const response = await authenticatedFetch(`/applications/${currentAppId}/reminder`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ deadline, reminder_date })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ Rappel défini');
+                    closeReminderModal();
+                }
+            } catch (error) {
+                console.error('Erreur sauvegarde rappel:', error);
+                alert('Erreur sauvegarde rappel');
+            }
+        }
+
+        // ========================================
+        // NOUVELLES FONCTIONNALITÉS
+        // ========================================
+
+        // Variable globale pour stocker toutes les candidatures
+        let allApplications = [];
+        let currentView = 'kanban';
+
+        // Modal Ajouter Candidature
+        function openAddApplicationModal() {
+            document.getElementById('addApplicationModal').style.display = 'flex';
+        }
+
+        function closeAddApplicationModal() {
+            document.getElementById('addApplicationModal').style.display = 'none';
+            document.getElementById('addApplicationForm').reset();
+        }
+
+        async function handleAddApplication(event) {
+            event.preventDefault();
+
+            const data = {
+                job_title: document.getElementById('jobTitle').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                job_url: document.getElementById('jobUrl').value.trim() || null,
+                status: document.getElementById('initialStatus').value
+            };
+
+            try {
+                const response = await authenticatedFetch('/job-tracker/applications', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('✅ Candidature ajoutée');
+                    closeAddApplicationModal();
+                    loadKanban(); // Recharger
+                } else {
+                    alert('❌ Erreur: ' + (result.error || 'Impossible d\'ajouter'));
+                }
+            } catch (error) {
+                console.error('Erreur ajout candidature:', error);
+                alert('❌ Erreur lors de l\'ajout');
+            }
+        }
+
+        // Filtres & Recherche
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+
+            console.log('�� applyFilters - search:', search, 'status:', status);
+            console.log('🔍 allApplications avant filtre:', allApplications.length, allApplications);
+
+            let filtered = [...allApplications];
+
+            // Filtre recherche
+            if (search) {
+                filtered = filtered.filter(app =>
+                    (app.title && app.title.toLowerCase().includes(search)) ||
+                    (app.company && app.company.toLowerCase().includes(search))
+                );
+            }
+
+            // Filtre statut
+            if (status) {
+                filtered = filtered.filter(app => app.status === status);
+            }
+
+            console.log('🔍 filtered après filtrage:', filtered.length, filtered);
+
+            // Afficher selon la vue
+            if (currentView === 'kanban') {
+                // Regrouper par statut pour le Kanban
+                const groupedByStatus = {
+                    a_consulter: [],
+                    interesse: [],
+                    postule: [],
+                    entretien: [],
+                    offre_recue: [],
+                    refuse: []
+                };
+                
+                filtered.forEach(app => {
+                    if (groupedByStatus[app.status]) {
+                        groupedByStatus[app.status].push(app);
+                    }
+                });
+                
+                console.log('🔍 groupedByStatus:', groupedByStatus);
+                displayKanban(groupedByStatus);
+            } else {
+                displayList(filtered);
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = '';
+            // Recharger les données au lieu de juste appliquer les filtres
+            loadKanban();
+        }
+
+        // Recherche en temps réel
+        if (document.getElementById('searchInput')) {
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+        }
+
+        // Toggle Vue Kanban/Liste
+        function switchView(view) {
+            console.log("🔵 switchView appelée, view:", view, "allApplications:", allApplications);
+            currentView = view;
+
+            const kanbanBtn = document.getElementById('viewKanban');
+            const listBtn = document.getElementById('viewList');
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const listView = document.getElementById('listView');
+
+            if (view === 'kanban') {
+                kanbanBoard.style.display = 'grid';
+                listView.style.display = 'none';
+                kanbanBtn.style.background = 'var(--swiss-red)';
+                kanbanBtn.style.color = 'white';
+                kanbanBtn.style.borderColor = 'var(--swiss-red)';
+                listBtn.style.background = '#F5F5F5';
+                listBtn.style.color = '#0D0D0D';
+                listBtn.style.borderColor = '#E0E0E0';
+                applyFilters();
+            } else {
+                kanbanBoard.style.display = 'none';
+                listView.style.display = 'block';
+                listBtn.style.background = 'var(--swiss-red)';
+                listBtn.style.color = 'white';
+                listBtn.style.borderColor = 'var(--swiss-red)';
+                kanbanBtn.style.background = '#F5F5F5';
+                kanbanBtn.style.color = '#0D0D0D';
+                kanbanBtn.style.borderColor = '#E0E0E0';
+                displayList(allApplications);
+            }
+        }
+
+        // Afficher Vue Liste
+        function displayList(applications) {
+            console.log("🔵 displayList appelée, applications:", applications);
+            const tbody = document.getElementById('listViewBody');
+
+            if (!applications || applications.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="padding: 40px; text-align: center; color: #999;">Aucune candidature</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = applications.map(app => {
+                const statusLabels = {
+                    'a_consulter': '📋 À Consulter',
+                    'interesse': '⭐ Intéressé',
+                    'postule': '📧 Postulé',
+                    'entretien': '🎯 Entretien',
+                    'offre': '🎉 Offre',
+                    'refuse': '❌ Refusé'
+                };
+
+                const statusColors = {
+                    'a_consulter': '#E3F2FD',
+                    'interesse': '#FFF3E0',
+                    'postule': '#F3E5F5',
+                    'entretien': '#FFF9C4',
+                    'offre': '#E8F5E9',
+                    'refuse': '#FFEBEE'
+                };
+
+                const date = app.applied_date ? new Date(app.applied_date * 1000).toLocaleDateString('fr-FR') : '-';
+
+                return `
+                    <tr style="border-bottom: 1px solid #E0E0E0;">
+                        <td style="padding: 16px; font-weight: 600;">${app.title || 'Sans titre'}</td>
+                        <td style="padding: 16px; color: #666;">${app.company || '-'}</td>
+                        <td style="padding: 16px;">
+                            <span style="display: inline-block; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; background: ${statusColors[app.status] || '#F5F5F5'};">
+                                ${statusLabels[app.status] || app.status}
+                            </span>
+                        </td>
+                        <td style="padding: 16px; color: #999; font-size: 13px;">${date}</td>
+                        <td style="padding: 16px;">
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="openNotes('${app.id}', event)" title="Notes"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📝</button>
+                                <button onclick="openTimeline('${app.id}', event)" title="Timeline"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📅</button>
+                                <button onclick="openReminder('${app.id}', event)" title="Rappel"
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">⏰</button>
+                                <button onclick="deleteApplication('${app.id}')" title="Supprimer"
+                                    style="background: #FFEBEE; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Charger les données du Kanban
+        let kanbanData = null;
+        async function loadKanban() {
+            console.log("🔵 loadKanban APPELÉE");
+            try {
+                console.log("🔵 Appel API /job-tracker/kanban");
+                const response = await authenticatedFetch('/job-tracker/kanban');
+                const data = await response.json();
+                console.log("🔵 Réponse API:", data);
+
+                if (data.success && data.jobs) {
+                    console.log("🔵 data.jobs:", data.jobs);
+                    // Stocker les données originales pour le Kanban
+                    kanbanData = data.jobs;
+                    // Aplatir pour la liste
+                    allApplications = Object.values(data.jobs).flat();
+                    console.log("✅ allApplications rempli:", allApplications.length, "éléments");
+            console.log("🔵 Premier élément:", allApplications[0]);
+                    // Afficher selon la vue actuelle
+                    if (currentView === 'kanban') {
+                        displayKanban(data);
+                    } else {
+                        displayList(allApplications);
+                    }
+                } else {
+                    console.error("❌ data.success ou data.kanban manquant");
+                }
+            } catch (error) {
+                console.error('❌ Erreur loadKanban:', error);
+            }
+        }
+    
+        // Exposer les fonctions globalement pour les onclick HTML
+        console.log("✅ FONCTIONS EXPOSÉES - Version:", new Date().toISOString());
+        window.switchView = switchView;
+        window.clearFilters = clearFilters;
+        window.openAddApplicationModal = openAddApplicationModal;
+        window.closeAddApplicationModal = closeAddApplicationModal;
+        window.closeTimelineModal = closeTimelineModal;
+        window.closeNotesModal = closeNotesModal;
+        window.saveNote = saveNote;
+        window.closeReminderModal = closeReminderModal;
+        window.saveReminder = saveReminder;
+        window.openTimeline = openTimeline;
+        window.openNotes = openNotes;
+        window.openReminder = openReminder;
+        window.deleteJob = deleteJob;
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.toggleDropdown = toggleDropdown;
+        window.logout = logout;
+
+        // Charger les données au chargement de la page
+        document.addEventListener("DOMContentLoaded", function() {
+            loadKanban();
+        });
+
+
+    </script>
+    <!-- Système de Notifications -->
+    <script src="public/js/notifications.js?v=1766451961"></script>
+    <script src="public/js/favorites-badge.js"></script>
+    <script src="public/js/credits.js"></script>
+</body>
+
+</html>

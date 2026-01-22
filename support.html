@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Profil — SwissCV Pro</title>
+    <title>Support — SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
@@ -17,7 +17,6 @@
         :root {
             --swiss-red: #D50000;
             --swiss-black: #0D0D0D;
-            --swiss-white: #FFFFFF;
             --swiss-gray: #E6E6E6;
         }
 
@@ -25,30 +24,37 @@
             font-family: 'Inter', -apple-system, sans-serif;
             background: #F8F9FA;
             color: var(--swiss-black);
-            line-height: 1.6;
-
+            padding-top: 80px;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            /* ✅ CORRIGÉ : Retiré margin-top qui causait le problème */
-            padding: 40px;
-            /* ✅ AJOUTÉ : Padding interne pour l'espacement */
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
         }
 
         .card {
             background: white;
             padding: 32px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             margin-bottom: 24px;
-        }
-
-        .card h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
         }
 
         .form-group {
@@ -63,7 +69,9 @@
             color: var(--swiss-black);
         }
 
-        input {
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 12px 16px;
             font-size: 15px;
@@ -73,23 +81,26 @@
             font-family: 'Inter', sans-serif;
         }
 
-        input:focus {
+        input:focus,
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: var(--swiss-red);
         }
 
-        input:disabled {
-            background: #F5F5F5;
-            color: #999;
+        textarea {
+            min-height: 200px;
+            resize: vertical;
         }
 
         .btn {
-            padding: 12px 32px;
+            width: 100%;
+            padding: 14px 32px;
             background: var(--swiss-red);
             color: white;
             border: none;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -106,161 +117,52 @@
             transform: none;
         }
 
-        .btn-secondary {
-            background: #F5F5F5;
-            color: var(--swiss-black);
-            border: 2px solid #E6E6E6;
-        }
-
-        .btn-secondary:hover {
-            background: #E6E6E6;
-            border-color: var(--swiss-black);
-        }
-
-        .btn-danger {
-            background: #FFE5E5;
-            color: #D50000;
-            border: 2px solid #D50000;
-        }
-
-        .btn-danger:hover {
-            background: #D50000;
-            color: white;
-        }
-
+        .success-message,
         .error-message {
-            background: #FFE5E5;
-            border: 1px solid #FF5252;
-            color: #D50000;
-            padding: 12px;
-            border-radius: 6px;
+            padding: 16px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            font-size: 14px;
             display: none;
-        }
-
-        .error-message.show {
-            display: block;
         }
 
         .success-message {
             background: #E8F5E9;
             border: 1px solid #4CAF50;
             color: #2E7D32;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
         }
 
-        .success-message.show {
+        .error-message {
+            background: #FFE5E5;
+            border: 1px solid #FF5252;
+            color: #D50000;
+        }
+
+        .success-message.show,
+        .error-message.show {
             display: block;
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--swiss-gray);
+        .info-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
         }
 
-        .info-row:last-child {
-            border-bottom: none;
+        .info-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1976D2;
         }
 
-        .info-label {
+        .info-box p {
             font-size: 14px;
             color: #666;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--swiss-black);
-        }
-
-        .tier-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tier-free {
-            background: #E0E0E0;
-            color: #666;
-        }
-
-        .tier-premium {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: var(--swiss-black);
-        }
-
-        .tier-pro {
-            background: linear-gradient(135deg, #7C4DFF 0%, #651FFF 100%);
-            color: white;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-left: 8px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .profile-header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .profile-header p {
-            color: #666;
-            font-size: 16px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--swiss-gray);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #666;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            line-height: 1.6;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="public/js/modal-system.js"></script>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
 </head>
@@ -288,8 +190,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000
         }
 
@@ -438,8 +342,8 @@
                 padding: 12px
             }
         }
-
-        /* Menus déroulants */
+    
+/* Menus déroulants */
         .navbar-dropdown {
             position: relative;
             display: inline-block;
@@ -607,7 +511,7 @@
         }
     </style>
     </style>
-    <nav class="navbar">
+        <nav class="navbar">
         <a href="index.html" class="navbar-brand">SwissCV Pro</a>
         <div class="navbar-burger" onclick="toggleMobileMenu()">
             <span></span>
@@ -664,12 +568,12 @@
 
                     <div class="user-menu-divider"></div>
 
-                    <a href="profile.html" class="user-menu-item active">
+                    <a href="profile.html" class="user-menu-item">
                         <span class="menu-icon">👤</span>
                         <span>Mon Profil</span>
                     </a>
 
-                    <a href="support.html" class="user-menu-item">
+                    <a href="support.html" class="user-menu-item active">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
                     </a>
@@ -732,15 +636,15 @@
                 }
             });
 
-            // Close user menu when clicking on menu items
-            document.querySelectorAll('.user-menu-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const dropdown = document.getElementById('userMenuDropdown');
-                    if (dropdown) {
-                        dropdown.classList.remove('show');
-                    }
-                });
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
             });
+        });
         });
 
         function toggleMobileMenu() {
@@ -805,8 +709,8 @@
 
                 // Mettre à jour l'avatar avec l'initiale du nom ou email
                 if (userAvatarCircle) {
-                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
-                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
+                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
                     userAvatarCircle.textContent = initial;
                 }
 
@@ -816,12 +720,6 @@
                     cvToolsMenu.style.display = 'inline-block';
                 }
 
-                const analyseLink = document.getElementById("analyseLink");
-
-                // Menu Outils CV visible pour tous les plans
-                if (cvToolsMenu) cvToolsMenu.style.display = 'inline-block';
-                if (analyseLink) analyseLink.style.display = 'none';
-
                 // Afficher lien Équipe pour Pro
                 if (tier === 'pro' && teamLink) {
                     teamLink.style.display = 'inline-block';
@@ -830,254 +728,122 @@
         })();
     </script>
 
-    <!-- ✅ CONTENU PRINCIPAL CORRIGÉ -->
-    <main class="container">
-        <div class="profile-header">
-            <div class="profile-avatar">👤</div>
-            <h1>Mon Profil</h1>
-            <p>Gérez vos informations personnelles et votre abonnement</p>
+    <div class="container">
+        <div class="page-header">
+            <h1>💬 Support Client</h1>
+            <p>Besoin d'aide ? Contactez notre équipe</p>
         </div>
 
-        <div class="error-message" id="errorMessage"></div>
         <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="info-box">
+            <h3>⚡ Support Prioritaire Premium</h3>
+            <p>Les utilisateurs Premium et Pro bénéficient d'un support prioritaire avec un temps de réponse garanti
+                sous 24h.</p>
+        </div>
 
         <div class="card">
-            <h2>Informations personnelles</h2>
-            <form id="profileForm">
+            <form id="supportForm">
                 <div class="form-group">
-                    <label for="fullName">Nom complet</label>
-                    <input type="text" id="fullName" placeholder="Votre nom complet">
+                    <label for="name">Votre nom</label>
+                    <input type="text" id="name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Adresse email</label>
-                    <input type="email" id="email" disabled>
+                    <label for="email">Votre email</label>
+                    <input type="email" id="email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="bio">Bio / Présentation professionnelle</label>
-                    <input type="text" id="bio" placeholder="Décrivez votre expérience et compétences">
+                    <label for="subject">Sujet</label>
+                    <select id="subject" required>
+                        <option value="">Sélectionnez un sujet</option>
+                        <option value="technical">Problème technique</option>
+                        <option value="billing">Facturation / Abonnement</option>
+                        <option value="feature">Demande de fonctionnalité</option>
+                        <option value="bug">Signaler un bug</option>
+                        <option value="other">Autre</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Localisation</label>
-                    <input type="text" id="location" placeholder="Ex: Genève, Suisse">
+                    <label for="message">Votre message</label>
+                    <textarea id="message" required placeholder="Décrivez votre demande en détail..."></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="phone">Téléphone (optionnel)</label>
-                    <input type="tel" id="phone" placeholder="+41 XX XXX XX XX">
-                </div>
-
-                <div class="actions">
-                    <button type="submit" class="btn" id="saveBtn">
-                        💾 Enregistrer les modifications
-                    </button>
-                    <button type="button" class="btn-secondary" onclick="resetForm()">
-                        🔄 Réinitialiser
-                    </button>
-                </div>
+                <button type="submit" class="btn" id="submitBtn">
+                    📨 Envoyer le message
+                </button>
             </form>
         </div>
-    </main>
 
+        <div class="card" style="text-align: center;">
+            <h3 style="margin-bottom: 16px;">Autres moyens de contact</h3>
+            <p style="color: #666; margin-bottom: 8px;">📧 Email : <a href="mailto:contact@swisscv-pro.ch"
+                    style="color: #D50000; text-decoration: none; font-weight: 600;">contact@swisscv-pro.ch</a></p>
+            <p style="color: #666;">⏰ Disponible du lundi au vendredi, 9h-18h (CET)</p>
+        </div>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadProfile();
+        // Pré-remplir les informations utilisateur
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getUser();
+            if (user) {
+                document.getElementById('name').value = user.full_name || user.email;
+                document.getElementById('email').value = user.email;
+            }
         });
 
-        async function loadProfile() {
-            try {
-                const response = await authenticatedFetch('/profile');
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const profile = data.profile || {};
-                    const user = getUser();
-
-                    // Remplir le formulaire
-                    document.getElementById('fullName').value = profile.full_name || user?.full_name || '';
-                    document.getElementById('email').value = user?.email || profile.email || '';
-                    document.getElementById('bio').value = profile.bio || '';
-                    document.getElementById('location').value = profile.location || '';
-                    document.getElementById('phone').value = profile.phone || '';
-
-                } else {
-                    showError('Erreur lors du chargement du profil');
-                }
-            } catch (error) {
-                console.error('Erreur chargement profil:', error);
-                showError('Impossible de charger le profil');
-            }
-        }
-
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        // Gérer la soumission du formulaire
+        document.getElementById('supportForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const saveBtn = document.getElementById('saveBtn');
-            const originalText = saveBtn.textContent;
-            saveBtn.disabled = true;
-            saveBtn.textContent = '⏳ Enregistrement...';
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
 
             try {
-                const profileData = {
-                    full_name: document.getElementById('fullName').value.trim(),
-                    bio: document.getElementById('bio').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    phone: document.getElementById('phone').value.trim()
+                const formData = {
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value
                 };
 
-                const response = await authenticatedFetch('/profile/update', {
+                const response = await authenticatedFetch('/support/contact', {
                     method: 'POST',
-                    body: JSON.stringify(profileData)
+                    body: JSON.stringify(formData)
                 });
 
                 if (response.ok) {
-                    showSuccess('Profil mis à jour avec succès!');
+                    showSuccess('✅ Message envoyé avec succès ! Notre équipe vous répondra sous 24-48h.');
+                    document.getElementById('supportForm').reset();
 
-                    // Mettre à jour les données locales
+                    // Pré-remplir à nouveau après reset
                     const user = getUser();
                     if (user) {
-                        user.full_name = profileData.full_name;
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
+                        document.getElementById('name').value = user.full_name || user.email;
+                        document.getElementById('email').value = user.email;
                     }
                 } else {
                     const error = await response.json();
-                    showError(error.error || 'Erreur lors de la mise à jour');
+                    showError(error.error || 'Erreur lors de l\'envoi du message');
                 }
             } catch (error) {
-                console.error('Erreur mise à jour:', error);
-                showError('Erreur de connexion');
+                console.error('Erreur:', error);
+                showError('Erreur de connexion. Veuillez réessayer.');
             } finally {
-                saveBtn.disabled = false;
-                saveBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
 
-        function resetForm() {
-            document.getElementById('profileForm').reset();
-            loadProfile(); // Recharger les valeurs d'origine
-        }
-
-        async function unsubscribe() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/subscription/cancel', {
-                    method: 'POST'
-                });
-
-                if (response.ok) {
-                    showSuccess('✅ Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
-
-                    // Mettre à jour les données locales
-                    const user = getUser();
-                    if (user) {
-                        user.tier = 'free';
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
-                    }
-
-                    // Recharger le profil pour mettre à jour l'affichage
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du désabonnement');
-                }
-            } catch (error) {
-                console.error('Erreur désabonnement:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function changePassword() {
-            const newPassword = prompt('🔑 Entrez votre nouveau mot de passe :\n(Minimum 6 caractères)');
-
-            if (!newPassword) return;
-
-            if (newPassword.length < 6) {
-                showError('Le mot de passe doit contenir au moins 6 caractères.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/auth/change-password', {
-                    method: 'POST',
-                    body: JSON.stringify({ new_password: newPassword })
-                });
-
-                if (response.ok) {
-                    showSuccess('✅ Mot de passe changé avec succès !');
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du changement de mot de passe');
-                }
-            } catch (error) {
-                console.error('Erreur changement mot de passe:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function exportData() {
-            try {
-                const response = await authenticatedFetch('/profile/export');
-
-                if (response.ok) {
-                    const data = await response.json();
-
-                    // Créer un fichier JSON à télécharger
-                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `swisscv-data-${new Date().toISOString().split('T')[0]}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-
-                    showSuccess('✅ Données exportées avec succès !');
-                } else {
-                    showError('Erreur lors de l\'export des données');
-                }
-            } catch (error) {
-                console.error('Erreur export:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function deleteAccount() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer votre compte ?\n\nCette action est IRRÉVERSIBLE.\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Jobs trackés')) {
-                return;
-            }
-
-            const confirmation = prompt('Pour confirmer, tapez "SUPPRIMER" en majuscules :');
-
-            if (confirmation !== 'SUPPRIMER') {
-                showError('Suppression annulée.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/account/delete', {
-                    method: 'POST'
-                });
-
-                if (response.ok) {
-                    alert('✅ Votre compte a été supprimé.\n\nVous allez être déconnecté.');
-                    logout();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la suppression du compte');
-                }
-            } catch (error) {
-                console.error('Erreur suppression compte:', error);
-                showError('Erreur de connexion');
-            }
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+            setTimeout(() => successDiv.classList.remove('show'), 5000);
         }
 
         function showError(message) {
@@ -1085,13 +851,6 @@
             errorDiv.textContent = message;
             errorDiv.classList.add('show');
             setTimeout(() => errorDiv.classList.remove('show'), 5000);
-        }
-
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.classList.add('show');
-            setTimeout(() => successDiv.classList.remove('show'), 5000);
         }
     </script>
     <!-- Système de Notifications -->

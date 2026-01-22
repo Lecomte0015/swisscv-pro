@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Profil — SwissCV Pro</title>
+    <title>Lettre de Motivation — SwissCV Pro</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -22,250 +26,246 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #F8F9FA;
             color: var(--swiss-black);
             line-height: 1.6;
-
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            /* ✅ CORRIGÉ : Retiré margin-top qui causait le problème */
-            padding: 40px;
-            /* ✅ AJOUTÉ : Padding interne pour l'espacement */
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--swiss-black);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #666;
         }
 
         .card {
             background: white;
-            padding: 32px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            margin-bottom: 24px;
-        }
-
-        .card h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 30px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            font-size: 14px;
-            font-weight: 600;
             margin-bottom: 8px;
+            font-weight: 600;
             color: var(--swiss-black);
         }
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 2px solid var(--swiss-gray);
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+        .form-group label .required {
+            color: var(--swiss-red);
         }
 
-        input:focus {
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--swiss-red);
         }
 
-        input:disabled {
-            background: #F5F5F5;
-            color: #999;
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-helper {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
         }
 
         .btn {
-            padding: 12px 32px;
-            background: var(--swiss-red);
-            color: white;
+            padding: 14px 30px;
             border: none;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn:hover {
-            background: #B80000;
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #B50000;
             transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
         }
 
         .btn-secondary {
             background: #F5F5F5;
             color: var(--swiss-black);
-            border: 2px solid #E6E6E6;
         }
 
         .btn-secondary:hover {
-            background: #E6E6E6;
-            border-color: var(--swiss-black);
-        }
-
-        .btn-danger {
-            background: #FFE5E5;
-            color: #D50000;
-            border: 2px solid #D50000;
-        }
-
-        .btn-danger:hover {
-            background: #D50000;
-            color: white;
-        }
-
-        .error-message {
-            background: #FFE5E5;
-            border: 1px solid #FF5252;
-            color: #D50000;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .success-message {
-            background: #E8F5E9;
-            border: 1px solid #4CAF50;
-            color: #2E7D32;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--swiss-gray);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-size: 14px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--swiss-black);
-        }
-
-        .tier-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tier-free {
             background: #E0E0E0;
-            color: #666;
         }
 
-        .tier-premium {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: var(--swiss-black);
+        .btn:disabled {
+            background: #CCCCCC;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .tier-pro {
-            background: linear-gradient(135deg, #7C4DFF 0%, #651FFF 100%);
-            color: white;
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #F5F5F5;
+            border-top: 4px solid var(--swiss-red);
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-left: 8px;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
-            to {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
                 transform: rotate(360deg);
             }
         }
 
-        .profile-header {
-            text-align: center;
-            margin-bottom: 40px;
+        .result-section {
+            display: none;
         }
 
-        .profile-header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
+        .result-section.active {
+            display: block;
         }
 
-        .profile-header p {
-            color: #666;
-            font-size: 16px;
+        .letter-preview {
+            background: white;
+            padding: 40px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1rem;
         }
 
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--swiss-gray);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #666;
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        .alert.active {
+            display: block;
+        }
+
+        .alert-error {
+            background: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #F44336;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .info-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* CORRECTION ESPACEMENT NAVBAR */
+        body {
+            padding-top: 150px !important;
+            margin-top: 0 !important;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="public/js/modal-system.js"></script>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
 </head>
 
 <body>
+
     <!-- NAVBAR RESPONSIVE UNIFIÉE -->
     <script>
         const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
@@ -288,9 +288,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 1000
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
         }
 
         .navbar-brand {
@@ -400,7 +403,7 @@
 
             .navbar-menu {
                 position: fixed;
-                top: 58px;
+                top: 62px;
                 left: 0;
                 right: 0;
                 background: white;
@@ -411,7 +414,8 @@
                 overflow: hidden;
                 transition: max-height 0.3s ease;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                border-bottom: 2px solid #E0E0E0
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
             }
 
             .navbar-menu.active {
@@ -438,8 +442,8 @@
                 padding: 12px
             }
         }
-
-        /* Menus déroulants */
+    
+/* Menus déroulants */
         .navbar-dropdown {
             position: relative;
             display: inline-block;
@@ -607,7 +611,7 @@
         }
     </style>
     </style>
-    <nav class="navbar">
+        <nav class="navbar">
         <a href="index.html" class="navbar-brand">SwissCV Pro</a>
         <div class="navbar-burger" onclick="toggleMobileMenu()">
             <span></span>
@@ -624,7 +628,7 @@
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
                     <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
-                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                    <a href="cover-letter.html" class="dropdown-item active">Lettre</a>
                 </div>
             </div>
 
@@ -664,7 +668,7 @@
 
                     <div class="user-menu-divider"></div>
 
-                    <a href="profile.html" class="user-menu-item active">
+                    <a href="profile.html" class="user-menu-item">
                         <span class="menu-icon">👤</span>
                         <span>Mon Profil</span>
                     </a>
@@ -732,15 +736,15 @@
                 }
             });
 
-            // Close user menu when clicking on menu items
-            document.querySelectorAll('.user-menu-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const dropdown = document.getElementById('userMenuDropdown');
-                    if (dropdown) {
-                        dropdown.classList.remove('show');
-                    }
-                });
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
             });
+        });
         });
 
         function toggleMobileMenu() {
@@ -805,8 +809,8 @@
 
                 // Mettre à jour l'avatar avec l'initiale du nom ou email
                 if (userAvatarCircle) {
-                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
-                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
+                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
                     userAvatarCircle.textContent = initial;
                 }
 
@@ -816,12 +820,6 @@
                     cvToolsMenu.style.display = 'inline-block';
                 }
 
-                const analyseLink = document.getElementById("analyseLink");
-
-                // Menu Outils CV visible pour tous les plans
-                if (cvToolsMenu) cvToolsMenu.style.display = 'inline-block';
-                if (analyseLink) analyseLink.style.display = 'none';
-
                 // Afficher lien Équipe pour Pro
                 if (tier === 'pro' && teamLink) {
                     teamLink.style.display = 'inline-block';
@@ -830,272 +828,265 @@
         })();
     </script>
 
-    <!-- ✅ CONTENU PRINCIPAL CORRIGÉ -->
-    <main class="container">
-        <div class="profile-header">
-            <div class="profile-avatar">👤</div>
-            <h1>Mon Profil</h1>
-            <p>Gérez vos informations personnelles et votre abonnement</p>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>✉️ Générateur de Lettre de Motivation</h1>
+            <p>Créez une lettre professionnelle adaptée au marché suisse</p>
         </div>
 
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
+        <div id="alertBox" class="alert"></div>
+
+        <div class="info-box">
+            <p><strong>💡 Conseils pour une lettre efficace :</strong></p>
+            <p>• Personnalisez votre lettre pour chaque offre d'emploi</p>
+            <p>• Mettez en avant vos compétences pertinentes pour le poste</p>
+            <p>• Soyez concis : une page maximum</p>
+            <p>• Utilisez un ton professionnel adapté à la culture suisse</p>
+        </div>
 
         <div class="card">
-            <h2>Informations personnelles</h2>
-            <form id="profileForm">
+            <h2 style="margin-bottom: 30px;">📝 Informations de l'offre</h2>
+
+            <form id="coverLetterForm">
                 <div class="form-group">
-                    <label for="fullName">Nom complet</label>
-                    <input type="text" id="fullName" placeholder="Votre nom complet">
+                    <label for="jobTitle">Titre du poste <span class="required">*</span></label>
+                    <input type="text" id="jobTitle" placeholder="Ex: Développeur Full Stack" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Adresse email</label>
-                    <input type="email" id="email" disabled>
+                    <label for="company">Nom de l'entreprise <span class="required">*</span></label>
+                    <input type="text" id="company" placeholder="Ex: UBS, Nestlé, Novartis..." required>
                 </div>
 
                 <div class="form-group">
-                    <label for="bio">Bio / Présentation professionnelle</label>
-                    <input type="text" id="bio" placeholder="Décrivez votre expérience et compétences">
+                    <label for="jobDescription">Description du poste</label>
+                    <textarea id="jobDescription"
+                        placeholder="Collez la description de l'offre d'emploi ici (optionnel mais recommandé pour une lettre plus personnalisée)"></textarea>
+                    <div class="form-helper">Plus vous fournissez d'informations, plus la lettre sera personnalisée
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Localisation</label>
-                    <input type="text" id="location" placeholder="Ex: Genève, Suisse">
+                    <label for="candidateName">Votre nom complet <span class="required">*</span></label>
+                    <input type="text" id="candidateName" placeholder="Ex: Jean Dupont" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Téléphone (optionnel)</label>
-                    <input type="tel" id="phone" placeholder="+41 XX XXX XX XX">
+                    <label for="experience">Votre expérience principale</label>
+                    <textarea id="experience"
+                        placeholder="Ex: 5 ans d'expérience en développement web, spécialisé en React et Node.js..."></textarea>
+                    <div class="form-helper">Résumez votre expérience pertinente pour ce poste</div>
                 </div>
 
-                <div class="actions">
-                    <button type="submit" class="btn" id="saveBtn">
-                        💾 Enregistrer les modifications
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">
+                        ✨ Générer la lettre
                     </button>
-                    <button type="button" class="btn-secondary" onclick="resetForm()">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
                         🔄 Réinitialiser
                     </button>
                 </div>
             </form>
         </div>
-    </main>
 
+        <div id="loadingSection" class="loading card">
+            <div class="spinner"></div>
+            <p>Génération de votre lettre de motivation...</p>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">Cela peut prendre quelques secondes</p>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">📄 Votre lettre de motivation</h2>
+
+                <div class="letter-preview" id="letterPreview"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="copyToClipboard()">
+                        📋 Copier
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadAsTxt()">
+                        💾 Télécharger TXT
+                    </button>
+                    <button class="btn btn-secondary" onclick="generateNew()">
+                        ✨ Nouvelle lettre
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        let currentLetter = '';
+        let userProfile = null;
+
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadProfile();
+            await checkAuth();
+            await loadUserProfile();
         });
 
-        async function loadProfile() {
+        async function checkAuth() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/auth/me');
+                if (!response.ok) {
+                    throw new Error('Session expirée');
+                }
+            } catch (error) {
+                console.error('Erreur auth:', error);
+                logout();
+            }
+        }
+
+        async function loadUserProfile() {
             try {
                 const response = await authenticatedFetch('/profile');
 
                 if (response.ok) {
                     const data = await response.json();
-                    const profile = data.profile || {};
-                    const user = getUser();
+                    userProfile = data.profile;
 
-                    // Remplir le formulaire
-                    document.getElementById('fullName').value = profile.full_name || user?.full_name || '';
-                    document.getElementById('email').value = user?.email || profile.email || '';
-                    document.getElementById('bio').value = profile.bio || '';
-                    document.getElementById('location').value = profile.location || '';
-                    document.getElementById('phone').value = profile.phone || '';
+                    if (userProfile && userProfile.full_name) {
+                        document.getElementById('candidateName').value = userProfile.full_name;
+                    }
 
-                } else {
-                    showError('Erreur lors du chargement du profil');
+                    if (userProfile && userProfile.bio) {
+                        document.getElementById('experience').value = userProfile.bio;
+                    }
                 }
             } catch (error) {
                 console.error('Erreur chargement profil:', error);
-                showError('Impossible de charger le profil');
             }
         }
 
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        document.getElementById('coverLetterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const saveBtn = document.getElementById('saveBtn');
-            const originalText = saveBtn.textContent;
-            saveBtn.disabled = true;
-            saveBtn.textContent = '⏳ Enregistrement...';
-
-            try {
-                const profileData = {
-                    full_name: document.getElementById('fullName').value.trim(),
-                    bio: document.getElementById('bio').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    phone: document.getElementById('phone').value.trim()
-                };
-
-                const response = await authenticatedFetch('/profile/update', {
-                    method: 'POST',
-                    body: JSON.stringify(profileData)
-                });
-
-                if (response.ok) {
-                    showSuccess('Profil mis à jour avec succès!');
-
-                    // Mettre à jour les données locales
-                    const user = getUser();
-                    if (user) {
-                        user.full_name = profileData.full_name;
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
-                    }
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la mise à jour');
-                }
-            } catch (error) {
-                console.error('Erreur mise à jour:', error);
-                showError('Erreur de connexion');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.textContent = originalText;
-            }
+            await generateCoverLetter();
         });
 
-        function resetForm() {
-            document.getElementById('profileForm').reset();
-            loadProfile(); // Recharger les valeurs d'origine
-        }
+        async function generateCoverLetter() {
+            const jobTitle = document.getElementById('jobTitle').value.trim();
+            const company = document.getElementById('company').value.trim();
+            const jobDescription = document.getElementById('jobDescription').value.trim();
+            const candidateName = document.getElementById('candidateName').value.trim();
+            const experience = document.getElementById('experience').value.trim();
 
-        async function unsubscribe() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
+            if (!jobTitle || !company || !candidateName) {
+                showAlert('Veuillez remplir tous les champs obligatoires', 'error');
                 return;
             }
 
-            try {
-                const response = await authenticatedFetch('/subscription/cancel', {
-                    method: 'POST'
-                });
-
-                if (response.ok) {
-                    showSuccess('✅ Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
-
-                    // Mettre à jour les données locales
-                    const user = getUser();
-                    if (user) {
-                        user.tier = 'free';
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
-                    }
-
-                    // Recharger le profil pour mettre à jour l'affichage
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du désabonnement');
-                }
-            } catch (error) {
-                console.error('Erreur désabonnement:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function changePassword() {
-            const newPassword = prompt('🔑 Entrez votre nouveau mot de passe :\n(Minimum 6 caractères)');
-
-            if (!newPassword) return;
-
-            if (newPassword.length < 6) {
-                showError('Le mot de passe doit contenir au moins 6 caractères.');
-                return;
-            }
+            // document.getElementById('coverLetterForm').style.display = 'none'; // Gardé visible
+            document.getElementById('loadingSection').classList.add('active');
+            document.getElementById('resultSection').classList.remove('active');
+            hideAlert();
 
             try {
-                const response = await authenticatedFetch('/auth/change-password', {
+                const response = await authenticatedFetch('/generate-cover-letter', {
                     method: 'POST',
-                    body: JSON.stringify({ new_password: newPassword })
+                    body: JSON.stringify({
+                        jobTitle,
+                        company,
+                        jobDescription,
+                        candidateName,
+                        experience
+                    })
                 });
 
-                if (response.ok) {
-                    showSuccess('✅ Mot de passe changé avec succès !');
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du changement de mot de passe');
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erreur lors de la génération');
                 }
-            } catch (error) {
-                console.error('Erreur changement mot de passe:', error);
-                showError('Erreur de connexion');
-            }
-        }
 
-        async function exportData() {
-            try {
-                const response = await authenticatedFetch('/profile/export');
+                currentLetter = data.letter;
+                console.log("📊 Données reçues:", data);
+                console.log("📝 Lettre:", data.letter);
+                console.log("📝 Longueur:", data.letter?.length);
+                document.getElementById('letterPreview').textContent = currentLetter;
 
-                if (response.ok) {
-                    const data = await response.json();
+                document.getElementById('loadingSection').classList.remove('active');
+                document.getElementById('resultSection').classList.add('active');
 
-                    // Créer un fichier JSON à télécharger
-                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `swisscv-data-${new Date().toISOString().split('T')[0]}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                showAlert('Lettre générée avec succès !', 'success');
 
-                    showSuccess('✅ Données exportées avec succès !');
-                } else {
-                    showError('Erreur lors de l\'export des données');
-                }
-            } catch (error) {
-                console.error('Erreur export:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function deleteAccount() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer votre compte ?\n\nCette action est IRRÉVERSIBLE.\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Jobs trackés')) {
-                return;
-            }
-
-            const confirmation = prompt('Pour confirmer, tapez "SUPPRIMER" en majuscules :');
-
-            if (confirmation !== 'SUPPRIMER') {
-                showError('Suppression annulée.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/account/delete', {
-                    method: 'POST'
+                document.getElementById('resultSection').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
 
-                if (response.ok) {
-                    alert('✅ Votre compte a été supprimé.\n\nVous allez être déconnecté.');
-                    logout();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la suppression du compte');
-                }
             } catch (error) {
-                console.error('Erreur suppression compte:', error);
-                showError('Erreur de connexion');
+                console.error('Erreur génération:', error);
+                document.getElementById('loadingSection').classList.remove('active');
+                document.getElementById('coverLetterForm').style.display = 'block';
+                showAlert(error.message || 'Erreur lors de la génération de la lettre', 'error');
             }
         }
 
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('show');
-            setTimeout(() => errorDiv.classList.remove('show'), 5000);
+        async function copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(currentLetter);
+                showAlert('Lettre copiée dans le presse-papiers !', 'success');
+            } catch (error) {
+                console.error('Erreur copie:', error);
+                showAlert('Erreur lors de la copie', 'error');
+            }
         }
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.classList.add('show');
-            setTimeout(() => successDiv.classList.remove('show'), 5000);
+        function downloadAsTxt() {
+            const blob = new Blob([currentLetter], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lettre_motivation_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showAlert('Lettre téléchargée avec succès !', 'success');
+        }
+
+        function generateNew() {
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('coverLetterForm').style.display = 'block';
+            hideAlert();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('coverLetterForm').reset();
+
+            if (userProfile && userProfile.full_name) {
+                document.getElementById('candidateName').value = userProfile.full_name;
+            }
+
+            hideAlert();
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} active`;
+
+            if (type === 'success') {
+                setTimeout(() => hideAlert(), 5000);
+            }
+        }
+
+        function hideAlert() {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.classList.remove('active');
         }
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js"></script>
+    <script src="public/js/notifications.js?v=1766451961"></script>
     <script src="public/js/favorites-badge.js"></script>
     <script src="public/js/credits.js"></script>
 </body>

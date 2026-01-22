@@ -1,0 +1,68 @@
+# Backup files
+*.backup
+*-backup-*
+*.close*
+*.fix*
+*.debug*
+*.cache*
+*.restore*
+*.broken*
+*.manual*
+*.line*
+*.final*
+*.datafix*
+*.tokenfix*
+*.formfix*
+*.searchfix*
+*.comparefix*
+*.disableall*
+*.disablefav*
+*.disableload*
+*.enable*
+*.fixalerts*
+*.fixdelete*
+*.fixerror*
+*.removealert*
+
+# Python scripts
+*.py
+
+# JavaScript backup files
+*-backup-*.js
+worker-*.js
+
+# SQL files
+*.sql
+
+# Markdown documentation
+RELANCE_PROJET.md
+INTEGRATION_SUPPORT.md
+NOUVEAUX_ENDPOINTS.js
+README.md
+undefined_fix.md
+
+# Test files
+test-*.html
+test-*.js
+test-*.sh
+
+# Deployment logs
+deploy-output.txt
+deployment_status.txt
+test_status.txt
+
+# Git
+.git/
+.gitignore
+
+# Node
+node_modules/
+package.json
+
+# Wrangler
+wrangler.toml
+wrangler.toml.*
+wrangler-*.toml
+
+# Directories not needed for Pages
+migrations/

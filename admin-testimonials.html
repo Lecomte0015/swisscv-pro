@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Témoignages — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/mobile-menu.css">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #1f2937;
+        }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-navbar h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .admin-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filters select {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filters button {
+            padding: 10px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .testimonials-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            color: #374151;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge.approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .testimonial-text {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-approve {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .btn-approve:hover {
+            background: #a7f3d0;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-reject:hover {
+            background: #fecaca;
+        }
+
+        .btn-view {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .btn-view:hover {
+            background: #c7d2fe;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .modal-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .modal-info-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .btn-confirm-approve {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-confirm-reject {
+            background: #dc2626;
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filters select,
+            .filters button {
+                width: 100%;
+            }
+
+            .testimonials-table {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <h1>🔐 Admin Dashboard</h1>
+        <div class="admin-nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-users.html">Utilisateurs</a>
+            <a href="admin-testimonials.html" class="active">💬 Témoignages</a>
+            <a href="admin-analytics.html">Analytics</a>
+            <a href="admin-support.html">Support</a>
+            <a href="admin-logs.html">Logs</a>
+            <a href="admin-reports.html">📧 Rapports</a>
+            <div class="notifications-container">
+                <button class="notifications-bell">
+                    🔔
+                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
+                </button>
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notifications-header">Notifications</div>
+                    <div id="notificationsList">
+                        <div class="notifications-empty">⏳ Chargement...</div>
+                    </div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Déconnexion</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>💬 Gestion des Témoignages</h2>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="label">Total</div>
+                <div class="value" id="totalCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">En attente</div>
+                <div class="value" id="pendingCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Approuvés</div>
+                <div class="value" id="approvedCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Rejetés</div>
+                <div class="value" id="rejectedCount">-</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <select id="statusFilter" onchange="loadTestimonials()">
+                <option value="all">Tous les statuts</option>
+                <option value="pending">En attente</option>
+                <option value="approved">Approuvés</option>
+                <option value="rejected">Rejetés</option>
+            </select>
+            <button onclick="loadTestimonials()">Actualiser</button>
+        </div>
+
+        <!-- Testimonials Table -->
+        <div class="testimonials-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Auteur</th>
+                        <th>Poste</th>
+                        <th>Témoignage</th>
+                        <th>Note</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="testimonialsTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">
+                            Chargement...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function getAdminToken() {
+            return localStorage.getItem('admin_token');
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+
+        if (!getAdminToken()) {
+            window.location.href = 'admin-login.html';
+        }
+
+        async function loadTestimonials() {
+            const status = document.getElementById('statusFilter').value;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/admin/testimonials?status=${status}&limit=100`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${getAdminToken()}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to load testimonials');
+
+                const data = await response.json();
+                displayTestimonials(data.testimonials);
+                updateStats(data.testimonials);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('testimonialsTableBody').innerHTML =
+                    '<tr><td colspan="7" style="text-align:center; color: #dc2626;">Erreur de chargement</td></tr>';
+            }
+        }
+
+        function updateStats(testimonials) {
+            const total = testimonials.length;
+            const pending = testimonials.filter(t => t.status === 'pending').length;
+            const approved = testimonials.filter(t => t.status === 'approved').length;
+            const rejected = testimonials.filter(t => t.status === 'rejected').length;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+        }
+
+        function displayTestimonials(testimonials) {
+            const tbody = document.getElementById('testimonialsTableBody');
+
+            if (!testimonials || testimonials.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Aucun témoignage trouvé</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = testimonials.map(t => `
+                <tr>
+                    <td><strong>${t.firstName} ${t.lastName}</strong><br><small>${t.city}</small></td>
+                    <td>${t.jobTitle}</td>
+                    <td><div class="testimonial-text" title="${t.text}">${t.text}</div></td>
+                    <td>${'⭐'.repeat(t.rating || 5)}</td>
+                    <td><span class="badge ${t.status}">${t.status === 'pending' ? 'En attente' : t.status === 'approved' ? 'Approuvé' : 'Rejeté'}</span></td>
+                    <td>${new Date(t.createdAt).toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-sm btn-view" onclick='viewTestimonial(${JSON.stringify(t)})'>👁️</button>
+                            ${t.status !== 'approved' ? `<button class="btn-sm btn-approve" onclick='approveTestimonial(${t.id})'>✓ Approuver</button>` : ''}
+                            ${t.status !== 'rejected' ? `<button class="btn-sm btn-reject" onclick='rejectTestimonial(${t.id})'>✗ Rejeter</button>` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewTestimonial(testimonial) {
+            const modal = document.getElementById('modal');
+            document.getElementById('modalHeader').textContent = 'Détails du témoignage';
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-info">
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Auteur:</span>
+                        <span>${testimonial.firstName} ${testimonial.lastName}</span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Poste:</span>
+                        <span>${testimonial.jobTitle}</span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Ville:</span>
+                        <span>${testimonial.city}</span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Note:</span>
+                        <span>${'⭐'.repeat(testimonial.rating || 5)}</span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Statut:</span>
+                        <span class="badge ${testimonial.status}">${testimonial.status}</span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-label">Date:</span>
+                        <span>${new Date(testimonial.createdAt).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                </div>
+                <div style="margin-top: 16px;">
+                    <strong>Témoignage:</strong>
+                    <p style="margin-top: 8px; line-height: 1.8;">${testimonial.text}</p>
+                </div>
+            `;
+            document.getElementById('modalFooter').innerHTML = `
+                <button class="btn-cancel" onclick="closeModal()">Fermer</button>
+            `;
+            modal.classList.add('active');
+        }
+
+        async function approveTestimonial(id) {
+            if (!confirm('Approuver ce témoignage ?')) return;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/admin/testimonials/${id}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${getAdminToken()}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'approved' })
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to approve');
+
+                const data = await response.json();
+                alert(data.message);
+                loadTestimonials();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur lors de l\'approbation');
+            }
+        }
+
+        async function rejectTestimonial(id) {
+            if (!confirm('Rejeter ce témoignage ?')) return;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/admin/testimonials/${id}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${getAdminToken()}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'rejected' })
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to reject');
+
+                const data = await response.json();
+                alert(data.message);
+                loadTestimonials();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur lors du rejet');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+
+        // Initialiser quand le DOM est prêt
+        function initPage() {
+            if (typeof initNotifications === 'function') {
+                initNotifications();
+            }
+
+            document.getElementById('modal').addEventListener('click', (e) => {
+                if (e.target.id === 'modal') closeModal();
+            });
+
+            loadTestimonials();
+        }
+
+        // Exécuter immédiatement si DOM déjà chargé, sinon attendre
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+    <script src="admin/js/mobile-menu.js"></script>
+    <script src="admin/js/notifications.js"></script>
+    <script src="admin/js/dark-mode.js"></script>
+</body>
+
+</html>

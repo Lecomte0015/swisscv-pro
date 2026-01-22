@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimisation CV — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            padding: 20px;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #D50000;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #B50000;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #D50000;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #F5F5F5;
+            border-radius: 8px;
+        }
+
+        .section h3 {
+            margin-bottom: 15px;
+            color: #0D0D0D;
+        }
+
+        .list-item {
+            padding: 10px;
+            background: white;
+            margin: 8px 0;
+            border-radius: 6px;
+            border-left: 4px solid #D50000;
+        }
+
+        .keyword {
+            display: inline-block;
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 6px 12px;
+            border-radius: 16px;
+            margin: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🎯 Optimisation CV</h1>
+            <p style="color: #666; margin-bottom: 30px;">Optimisez votre CV pour une offre spécifique</p>
+
+            <div id="form">
+                <label style="font-weight: 600; display: block; margin-bottom: 8px;">Votre CV (texte)</label>
+                <textarea id="cvText" placeholder="Collez le contenu de votre CV ici..."></textarea>
+
+                <label style="font-weight: 600; display: block; margin-bottom: 8px;">Description de l'offre</label>
+                <textarea id="jobDesc" placeholder="Collez la description de l'offre d'emploi..."></textarea>
+
+                <button class="btn" onclick="optimizeCV()">✨ Optimiser mon CV</button>
+            </div>
+
+            <div id="loading" style="display: none; text-align: center; padding: 40px;">
+                <div
+                    style="border: 4px solid #F5F5F5; border-top: 4px solid #D50000; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;">
+                </div>
+                <p>Analyse en cours...</p>
+            </div>
+
+            <div id="result" class="result">
+                <h2 style="margin-bottom: 20px;">📊 Résultats de l'analyse</h2>
+
+                <div class="score" id="matchScore">0%</div>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Score de correspondance</p>
+
+                <div class="section">
+                    <h3>🔑 Mots-clés à ajouter</h3>
+                    <div id="keywords"></div>
+                </div>
+
+                <div class="section">
+                    <h3>📝 Sections à améliorer</h3>
+                    <div id="sections"></div>
+                </div>
+
+                <div class="section">
+                    <h3>❌ Compétences manquantes</h3>
+                    <div id="missing"></div>
+                </div>
+
+                <div class="section">
+                    <h3>✅ Points forts à mettre en avant</h3>
+                    <div id="strengths"></div>
+                </div>
+
+                <div class="section">
+                    <h3>💡 Conseil global</h3>
+                    <div id="advice" style="line-height: 1.8;"></div>
+                </div>
+
+                <button class="btn" onclick="newAnalysis()" style="background: #666; margin-top: 20px;">🔄 Nouvelle
+                    analyse</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { window.location.href = "login.html"; throw new Error("Unauthorized"); }
+            return response;
+        }
+
+        async function optimizeCV() {
+            const cvText = document.getElementById('cvText').value.trim();
+            const jobDescription = document.getElementById('jobDesc').value.trim();
+
+            if (!cvText || !jobDescription) {
+                alert('Veuillez remplir les deux champs');
+                return;
+            }
+
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').classList.remove('active');
+
+            try {
+                const response = await authenticatedFetch('/ai/optimize-cv', {
+                    method: 'POST',
+                    body: JSON.stringify({ cvText, jobDescription })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erreur');
+                }
+
+                const analysis = data.analysis;
+
+                // Afficher les résultats
+                document.getElementById('matchScore').textContent = analysis.matchScore + '%';
+
+                document.getElementById('keywords').innerHTML = analysis.keywordsToAdd.map(k =>
+                    `<span class="keyword">${k}</span>`
+                ).join('');
+
+                document.getElementById('sections').innerHTML = analysis.sectionsToImprove.map(s =>
+                    `<div class="list-item"><strong>${s.section}</strong>: ${s.suggestion}</div>`
+                ).join('');
+
+                document.getElementById('missing').innerHTML = analysis.missingSkills.map(s =>
+                    `<div class="list-item">${s}</div>`
+                ).join('');
+
+                document.getElementById('strengths').innerHTML = analysis.strengthsToEmphasize.map(s =>
+                    `<div class="list-item">${s}</div>`
+                ).join('');
+
+                document.getElementById('advice').textContent = analysis.overallAdvice;
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result').classList.add('active');
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert(error.message || 'Erreur lors de l\'analyse');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('form').style.display = 'block';
+            }
+        }
+
+        function newAnalysis() {
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('form').style.display = 'block';
+            document.getElementById('cvText').value = '';
+            document.getElementById('jobDesc').value = '';
+        }
+    </script>
+    <style>
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</body>
+
+</html>

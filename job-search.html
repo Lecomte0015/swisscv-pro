@@ -941,6 +941,8 @@
             color: #FF5252;
         }
     </style>
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <link rel="stylesheet" href="public/css/credits.css">
 </head>
 
 <body>
@@ -1267,10 +1269,8 @@
         </div>
         <div class="navbar-menu" id="navbarMenu">
             <a href="dashboard.html" class="navbar-link">Dashboard</a>
-            <a href="app.html" class="navbar-link">📊 Analyse CV</a>
-
-            <!-- Menu Outils CV (Premium/Pro) -->
-            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+            <!-- Menu Outils CV (Tous les plans) -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
                     🎯 Outils CV <span class="arrow">▼</span>
                 </button>
@@ -1282,6 +1282,8 @@
             </div>
 
             <a href="job-search.html" class="navbar-link active">Offres</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
 
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
@@ -1295,17 +1297,105 @@
                 </div>
             </div>
 
-            <a href="profile.html" class="navbar-link">Profil</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <!-- Menu Utilisateur Dropdown -->
+            
+            <!-- Credit Balance Display -->
+            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+                <span class="credits-icon">💳</span>
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+<div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
 
-            <a href="support.html" class="navbar-link">Support</a>
-            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
 
-            <span class="plan-badge free" id="planBadge">Free</span>
-            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </nav>
     <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            });
+
+            // Close user menu when clicking on menu items
+            document.querySelectorAll('.user-menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const dropdown = document.getElementById('userMenuDropdown');
+                    if (dropdown) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+
         function toggleMobileMenu() {
             const m = document.getElementById('navbarMenu');
             const b = document.querySelector('.navbar-burger');
@@ -1333,6 +1423,16 @@
             })
         });
 
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+
         (function () {
             const u = getUser();
             const planBadge = document.getElementById("planBadge");
@@ -1343,11 +1443,37 @@
                 const tier = u.tier || 'free';
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
+                // Mettre à jour le nom et l'email de l'utilisateur dans le menu
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                // Mettre à jour l'avatar avec l'initiale du nom ou email
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
+                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
 
                 // Afficher menu Outils CV pour Premium/Pro
                 if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
                     cvToolsMenu.style.display = 'inline-block';
                 }
+
+                const analyseLink = document.getElementById("analyseLink");
+
+                // Menu Outils CV visible pour tous les plans
+                if (cvToolsMenu) cvToolsMenu.style.display = 'inline-block';
+                if (analyseLink) analyseLink.style.display = 'none';
 
                 // Afficher lien Équipe pour Pro
                 if (tier === 'pro' && teamLink) {
@@ -2341,13 +2467,11 @@
 
         async function loadSuggestions() {
             try {
-                console.log('🔄 Chargement suggestions...');
+                console.log('🔄 Chargement suggestions basées sur profil et CV...');
                 const loading = document.getElementById('suggestionsLoading');
                 const emptyState = document.getElementById('suggestionsEmpty');
                 const suggestionsGrid = document.getElementById('suggestionsGrid');
                 const btnRefresh = document.getElementById('btnRefreshSuggestions');
-
-                console.log('📋 Éléments DOM:', { loading, emptyState, suggestionsGrid, btnRefresh });
 
                 if (!loading || !emptyState || !suggestionsGrid) {
                     console.error('❌ Éléments DOM manquants!');
@@ -2360,38 +2484,134 @@
                 if (btnRefresh) btnRefresh.disabled = true;
 
                 try {
-                    const response = await authenticatedFetch('/jobs/suggestions');
-                    if (!response) {
-                        console.error('❌ Pas de réponse de l\'API');
-                        emptyState.style.display = 'block';
-                        console.log('✅ emptyState affiché:', emptyState.style.display);
-                        return;
+                    // Récupérer les données utilisateur
+                    const user = getUser();
+                    let searchKeywords = [];
+                    let location = 'Suisse';
+
+                    // Liste de mots à ignorer (articles, prépositions, etc.)
+                    const stopWords = ['dans', 'avec', 'pour', 'sans', 'sous', 'vers', 'chez', 'entre', 'depuis', 'pendant', 'avant', 'après', 'très', 'plus', 'moins', 'aussi', 'comme', 'donc', 'mais', 'alors', 'ainsi', 'cette', 'celui', 'celle', 'ceux', 'celles', 'leur', 'leurs', 'notre', 'votre', 'sont', 'était', 'étaient', 'sera', 'seront', 'avoir', 'être'];
+
+                    // Fonction pour nettoyer et extraire des mots-clés pertinents
+                    function extractKeywords(text, maxWords = 5) {
+                        if (!text) return [];
+                        return text
+                            .toLowerCase()
+                            .replace(/[^a-zàâäçéèêëïîôùûüÿæœ\s]/gi, ' ') // Garder seulement lettres et espaces
+                            .split(/\s+/)
+                            .filter(word =>
+                                word.length > 4 && // Mots de plus de 4 caractères
+                                !stopWords.includes(word) && // Pas dans la liste des mots courants
+                                !/^\d+$/.test(word) // Pas un nombre
+                            )
+                            .slice(0, maxWords);
                     }
 
-                    const data = await response.json();
-                    console.log('📥 Réponse suggestions:', data);
+                    // 1. Récupérer les données du profil
+                    try {
+                        const profileResponse = await authenticatedFetch('/profile');
+                        if (profileResponse && profileResponse.ok) {
+                            const profileData = await profileResponse.json();
+                            if (profileData.profile) {
+                                location = profileData.profile.location || 'Suisse';
+                                console.log('📍 Localisation:', location);
 
-                    if (data.success) {
-                        suggestions = data.suggestions || [];
+                                // Extraire des mots-clés de la bio
+                                if (profileData.profile.bio) {
+                                    const bioKeywords = extractKeywords(profileData.profile.bio, 5);
+                                    console.log('📝 Mots-clés bio:', bioKeywords);
+                                    searchKeywords.push(...bioKeywords);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log('ℹ️ Profil non disponible, utilisation des données de base');
+                    }
 
-                        if (suggestions.length === 0) {
-                            document.getElementById('suggestionsEmptyTitle').textContent = data.message || 'Aucune offre trouvée';
-                            document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou essayez de rafraîchir';
-                            emptyState.style.display = 'block';
-                            console.log('✅ emptyState affiché:', emptyState.style.display);
-                        } else {
+                    // 2. Récupérer les données de l'analyse CV
+                    try {
+                        const cvResponse = await authenticatedFetch('/cv-analyses');
+                        if (cvResponse && cvResponse.ok) {
+                            const cvData = await cvResponse.json();
+                            if (cvData.analyses && cvData.analyses.length > 0) {
+                                const lastAnalysis = cvData.analyses[0];
+                                console.log('📄 Analyse CV trouvée');
+
+                                // Extraire les mots-clés de l'analyse
+                                if (lastAnalysis.keywords) {
+                                    let keywords = typeof lastAnalysis.keywords === 'string'
+                                        ? JSON.parse(lastAnalysis.keywords)
+                                        : lastAnalysis.keywords;
+
+                                    // Si keywords est un array, l'utiliser directement
+                                    if (Array.isArray(keywords)) {
+                                        console.log('🔑 Keywords CV:', keywords.slice(0, 5));
+                                        searchKeywords.push(...keywords.slice(0, 5));
+                                    }
+                                }
+
+                                // Extraire des compétences des points forts
+                                const strongPoints = lastAnalysis.strongPoints || lastAnalysis.strong_points || [];
+                                if (Array.isArray(strongPoints) && strongPoints.length > 0) {
+                                    console.log('💪 Points forts:', strongPoints.slice(0, 3));
+                                    strongPoints.slice(0, 3).forEach(point => {
+                                        const pointKeywords = extractKeywords(point, 3);
+                                        searchKeywords.push(...pointKeywords);
+                                    });
+                                }
+
+                                // Extraire du titre de poste si disponible
+                                if (lastAnalysis.suggestedTitle || lastAnalysis.suggested_title) {
+                                    const title = lastAnalysis.suggestedTitle || lastAnalysis.suggested_title;
+                                    const titleKeywords = extractKeywords(title, 2);
+                                    console.log('💼 Titre suggéré:', titleKeywords);
+                                    searchKeywords.push(...titleKeywords);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log('ℹ️ Analyse CV non disponible');
+                    }
+
+                    // 3. Nettoyer et dédupliquer les mots-clés
+                    searchKeywords = [...new Set(searchKeywords)] // Supprimer les doublons
+                        .filter(kw => kw && kw.length > 2); // Garder seulement les mots valides
+
+                    // 4. Si pas de mots-clés, utiliser des valeurs par défaut
+                    if (searchKeywords.length === 0) {
+                        console.log('⚠️ Aucun mot-clé trouvé, utilisation des valeurs par défaut');
+                        searchKeywords = ['développeur', 'manager', 'ingénieur'];
+                    }
+
+                    // 5. Rechercher des offres basées sur les mots-clés (max 5 mots-clés)
+                    const finalKeywords = searchKeywords.slice(0, 5);
+                    console.log('🔍 Recherche avec mots-clés:', finalKeywords);
+                    const searchQuery = finalKeywords.join(' ');
+
+                    const jobsResponse = await authenticatedFetch(`/jobs/search?what=${encodeURIComponent(searchQuery)}&where=${encodeURIComponent(location)}&results_per_page=6`);
+
+                    if (jobsResponse && jobsResponse.ok) {
+                        const jobsData = await jobsResponse.json();
+
+                        if (jobsData.success && jobsData.results && jobsData.results.length > 0) {
+                            suggestions = jobsData.results;
+                            console.log(`✅ ${suggestions.length} suggestions trouvées`);
                             displaySuggestions();
                             suggestionsGrid.style.display = 'grid';
+                        } else {
+                            document.getElementById('suggestionsEmptyTitle').textContent = 'Aucune suggestion pour le moment';
+                            document.getElementById('suggestionsEmptyMessage').textContent = 'Complétez votre profil ou votre CV pour obtenir des suggestions personnalisées';
+                            emptyState.style.display = 'block';
                         }
                     } else {
-                        console.error('❌ Erreur API:', data.error);
-                        emptyState.style.display = 'block';
-                        console.log('✅ emptyState affiché:', emptyState.style.display);
+                        throw new Error('Erreur lors de la recherche d\'offres');
                     }
+
                 } catch (error) {
                     console.error('❌ Erreur chargement suggestions:', error);
+                    document.getElementById('suggestionsEmptyTitle').textContent = 'Impossible de charger les suggestions';
+                    document.getElementById('suggestionsEmptyMessage').textContent = 'Veuillez réessayer plus tard ou compléter votre profil';
                     emptyState.style.display = 'block';
-                    console.log('✅ emptyState affiché:', emptyState.style.display);
                 } finally {
                     loading.style.display = 'none';
                     if (btnRefresh) btnRefresh.disabled = false;
@@ -3253,6 +3473,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
         // Fonction déjà appelée dans displayJobs()
     </script>
 
+    <script src="public/js/credits.js"></script>
 </body>
 
 </html>

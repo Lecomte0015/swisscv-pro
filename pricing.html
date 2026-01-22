@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #E5E5E5;
+            --gray-600: #666666;
+            --gray-900: #1A1A1A;
+            --green-check: #4CAF50;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #333;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--swiss-black);
+            padding: 18px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .navbar-link {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .navbar-link:hover {
+            color: var(--swiss-red);
+        }
+
+        .navbar-btn {
+            background: var(--swiss-red);
+            color: white;
+            padding: 11px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-btn:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--swiss-black);
+            color: white;
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .highlight {
+            color: var(--swiss-red);
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: #B0B0B0;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Pricing Cards */
+        .pricing-container {
+            max-width: 1200px;
+            margin: -60px auto 100px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 20px;
+            padding: 40px 36px;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--swiss-red);
+            box-shadow: 0 8px 24px rgba(213, 0, 0, 0.12);
+        }
+
+        .pricing-card.popular:hover {
+            box-shadow: 0 16px 40px rgba(213, 0, 0, 0.18);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--swiss-red);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .plan-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .plan-price {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--swiss-black);
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .plan-price small {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .plan-period {
+            font-size: 14px;
+            color: #888;
+            margin-top: 12px;
+            font-weight: 400;
+        }
+
+        .plan-features {
+            margin-bottom: 32px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .feature-icon {
+            color: var(--green-check);
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature.disabled {
+            color: #999;
+        }
+
+        .feature.disabled .feature-icon {
+            color: #DDD;
+        }
+
+        .features-more {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-100);
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .plan-button.primary {
+            background: var(--swiss-red);
+            color: white;
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.2);
+        }
+
+        .plan-button.primary:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(213, 0, 0, 0.3);
+        }
+
+        .plan-button.secondary {
+            background: var(--gray-50);
+            color: var(--swiss-black);
+            border: 2px solid var(--gray-200);
+        }
+
+        .plan-button.secondary:hover {
+            background: white;
+            border-color: var(--swiss-black);
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 24px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 18px;
+            margin-bottom: 56px;
+            font-weight: 400;
+        }
+
+        .comparison-table {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-category-header {
+            background: var(--gray-50);
+            padding: 16px 28px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--swiss-black);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            background: var(--swiss-black);
+            color: white;
+            padding: 20px 28px;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 15px;
+            transition: background 0.15s ease;
+        }
+
+        .table-row:hover {
+            background: var(--gray-50);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-cell:first-child {
+            justify-content: flex-start;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .check {
+            color: var(--green-check);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .cross {
+            color: #DDD;
+            font-size: 20px;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            max-width: 900px;
+            margin: 100px auto;
+            padding: 0 24px;
+        }
+
+        .faq-item {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--gray-600);
+        }
+
+        .faq-question {
+            padding: 24px 28px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--swiss-black);
+            user-select: none;
+        }
+
+        .faq-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-600);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-icon {
+            background: var(--swiss-red);
+            color: white;
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-answer-content {
+            padding: 0 28px 28px;
+            color: var(--gray-600);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--swiss-black);
+            color: white;
+            text-align: center;
+            padding: 80px 24px;
+            margin-top: 100px;
+        }
+
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            font-size: 19px;
+            color: #B0B0B0;
+            margin-bottom: 36px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--swiss-red);
+            color: white;
+            padding: 18px 52px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(213, 0, 0, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--swiss-black);
+            color: white;
+            padding: 64px 24px 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 56px;
+            margin-bottom: 48px;
+        }
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #B0B0B0;
+            text-decoration: none;
+            margin-bottom: 14px;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 36px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #B0B0B0;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pricing-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .navbar-menu {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                font-size: 13px;
+                padding: 16px 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-menu">
+            <a href="index.html" class="navbar-link">Accueil</a>
+            <a href="pricing.html" class="navbar-link">Tarifs</a>
+            <a href="#" class="navbar-link">À propos</a>
+            <a href="#" class="navbar-link">Contact</a>
+            <button class="navbar-btn" onclick="window.location.href='login.html'">Connexion</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Choisissez le plan <span class="highlight">parfait</span> pour vous</h1>
+        <p>Des outils IA puissants pour accélérer votre recherche d'emploi en Suisse</p>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="pricing-container">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+            <div class="plan-header">
+                <div class="plan-name">Gratuit</div>
+                <div class="plan-price">CHF 0</div>
+                <div class="plan-period">Pour toujours</div>
+            </div>
+            <div class="plan-features">
+                <div class="feature"><span class="feature-icon">✓</span> <span>2 analyses CV / mois</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>1 lettre IA / semaine</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Templates CV basiques</span></div>
+                <div class="feature disabled"><span class="feature-icon">✗</span> <span>Accès job search</span></div>
+                <div class="feature disabled"><span class="feature-icon">✗</span> <span>Job tracker</span></div>
+                <div class="features-more">+ 3 fonctionnalités de base</div>
+            </div>
+            <button class="plan-button secondary" onclick="window.location.href='login.html'">Commencer
+                gratuitement</button>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="pricing-card popular">
+            <div class="popular-badge">Recommandé</div>
+            <div class="plan-header">
+                <div class="plan-name">Premium</div>
+                <div class="plan-price">CHF 9<small> / mois</small></div>
+                <div class="plan-period">Facturé mensuellement</div>
+            </div>
+            <div class="plan-features">
+                <div class="feature"><span class="feature-icon">✓</span> <span>Analyses CV illimitées</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>4 lettres IA / semaine</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Accès job search</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>15 candidatures trackées</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Assistance entretien</span></div>
+                <div class="features-more">+ 5 fonctionnalités premium</div>
+            </div>
+            <button class="plan-button primary" onclick="window.location.href='login.html'">Commencer
+                maintenant</button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card">
+            <div class="plan-header">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">CHF 29<small> / mois</small></div>
+                <div class="plan-period">Facturé mensuellement</div>
+            </div>
+            <div class="plan-features">
+                <div class="feature"><span class="feature-icon">✓</span> <span>Tout Premium +</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimité</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Gestion d'équipe</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Analytics avancés</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Support prioritaire 24/7</span></div>
+                <div class="features-more">+ 8 fonctionnalités entreprise</div>
+            </div>
+            <button class="plan-button secondary" onclick="window.location.href='login.html'">Passer au Pro</button>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="comparison-section">
+        <h2 class="section-title">Comparaison détaillée des plans</h2>
+        <p class="section-subtitle">Tous les détails en un coup d'œil</p>
+
+        <div class="comparison-table">
+            <div class="table-header">
+                <div>Fonctionnalité</div>
+                <div>Free</div>
+                <div>Premium</div>
+                <div>Pro</div>
+            </div>
+
+            <!-- Catégorie: Fonctionnalités de base -->
+            <div class="table-category-header">Fonctionnalités de base</div>
+
+            <div class="table-row">
+                <div class="table-cell">Analyses CV par mois</div>
+                <div class="table-cell">2</div>
+                <div class="table-cell">Illimité</div>
+                <div class="table-cell">Illimité</div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Lettres IA par semaine</div>
+                <div class="table-cell">1</div>
+                <div class="table-cell">4</div>
+                <div class="table-cell">4</div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Templates CV</div>
+                <div class="table-cell">Basiques</div>
+                <div class="table-cell">Premium</div>
+                <div class="table-cell">Premium</div>
+            </div>
+
+            <!-- Catégorie: Fonctionnalités avancées -->
+            <div class="table-category-header">Fonctionnalités avancées</div>
+
+            <div class="table-row">
+                <div class="table-cell">Assistance entretien</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Accès job search</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Candidatures trackées</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell">15</div>
+                <div class="table-cell">Illimité</div>
+            </div>
+
+            <!-- Catégorie: Équipe & entreprise -->
+            <div class="table-category-header">Équipe & entreprise</div>
+
+            <div class="table-row">
+                <div class="table-cell">Gestion d'équipe</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Analytics avancés</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">API access</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <!-- Catégorie: Support -->
+            <div class="table-category-header">Support</div>
+
+            <div class="table-row">
+                <div class="table-cell">Support</div>
+                <div class="table-cell">Communauté</div>
+                <div class="table-cell">Email</div>
+                <div class="table-cell">24/7</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2 class="section-title">Questions fréquentes</h2>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Quelle est la différence entre Premium et Pro ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Le plan Premium est idéal pour les chercheurs d'emploi actifs avec 15 candidatures trackées et
+                    toutes les fonctionnalités IA. Le plan Pro ajoute le tracking illimité, la gestion d'équipe, les
+                    analytics avancés et un support prioritaire 24/7 - parfait pour les professionnels et les équipes.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Puis-je changer de plan à tout moment ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Oui, absolument ! Vous pouvez upgrader ou downgrader votre plan à tout moment depuis votre profil.
+                    Les changements prennent effet immédiatement et nous calculons le prorata pour les paiements.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Comment fonctionne la limite de lettres IA ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Les limites se réinitialisent chaque semaine. Plan Free : 1 lettre par semaine, Premium et Pro : 4
+                    lettres par semaine. Si vous avez besoin de plus, contactez notre support pour des options
+                    personnalisées.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Y a-t-il un engagement minimum ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Non, aucun engagement ! Tous nos plans sont sans engagement et vous pouvez annuler à tout moment.
+                    Vous gardez l'accès jusqu'à la fin de votre période de facturation.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Les paiements sont-ils sécurisés ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Oui, tous les paiements sont traités de manière sécurisée via Stripe, leader mondial du paiement en
+                    ligne. Nous ne stockons jamais vos informations de carte bancaire sur nos serveurs.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Puis-je obtenir un remboursement ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Nous offrons une garantie satisfait ou remboursé de 14 jours. Si vous n'êtes pas satisfait de
+                    SwissCV Pro, contactez notre support pour un remboursement complet, sans questions posées.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Prêt à booster votre carrière ?</h2>
+        <p>Rejoignez des milliers de professionnels qui ont trouvé leur emploi idéal avec SwissCV Pro</p>
+        <a href="login.html" class="cta-button">Commencer gratuitement →</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>À Propos</h3>
+                <a href="#">Notre mission</a>
+                <a href="#">L'équipe</a>
+                <a href="#">Carrières</a>
+                <a href="#">Blog</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Produit</h3>
+                <a href="#">Fonctionnalités</a>
+                <a href="pricing.html">Tarifs</a>
+                <a href="#">Sécurité</a>
+                <a href="#">Changelog</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="support.html">Centre d'aide</a>
+                <a href="#">Documentation</a>
+                <a href="#">Contact</a>
+                <a href="#">Status</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Légal</h3>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Cookies</a>
+                <a href="#">RGPD</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2024 SwissCV Pro. Tous droits réservés. Fait avec ❤️ en Suisse.
+        </div>
+    </footer>
+
+    <script>
+        // Toggle FAQ
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+
+            // Close all FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Open clicked FAQ if it wasn't active
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
+</body>
+
+</html>

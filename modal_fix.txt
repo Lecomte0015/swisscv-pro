@@ -1,0 +1,13 @@
+        function buildUserDetailsModal(data) {
+            return `
+                <div class="modal-tabs">
+                    <button class="modal-tab active" onclick="switchUserTab('overview')">Vue d'ensemble</button>
+                    <button class="modal-tab" onclick="switchUserTab('analyses')">Analyses CV (${data.cv_analyses?.length || 0})</button>
+                    <button class="modal-tab" onclick="switchUserTab('applications')">Candidatures (${data.recent_applications?.length || 0})</button>
+                </div>
+                
+                <div class="tab-content" id="userTabContent">
+                    ${buildOverviewTab(data)}
+                </div>
+            `;
+        }

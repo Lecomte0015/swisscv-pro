@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Profil — SwissCV Pro</title>
+    <title>Templates CV — SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
@@ -17,256 +17,339 @@
         :root {
             --swiss-red: #D50000;
             --swiss-black: #0D0D0D;
-            --swiss-white: #FFFFFF;
-            --swiss-gray: #E6E6E6;
         }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: #F8F9FA;
             color: var(--swiss-black);
-            line-height: 1.6;
-
+            padding-top: 150px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
-            /* ✅ CORRIGÉ : Retiré margin-top qui causait le problème */
-            padding: 40px;
-            /* ✅ AJOUTÉ : Padding interne pour l'espacement */
+            padding: 40px 24px;
         }
 
-        .card {
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #D50000 0%, #FF6B6B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
             background: white;
-            padding: 32px;
+            border: 2px solid #E0E0E0;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            margin-bottom: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--swiss-black);
         }
 
-        .card h2 {
+        .filter-btn:hover {
+            border-color: var(--swiss-red);
+            color: var(--swiss-red);
+        }
+
+        .filter-btn.active {
+            background: var(--swiss-red);
+            border-color: var(--swiss-red);
+            color: white;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            background: #F5F5F5;
+        }
+
+        .template-info {
+            padding: 24px;
+        }
+
+        .template-title {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
             margin-bottom: 8px;
             color: var(--swiss-black);
         }
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 2px solid var(--swiss-gray);
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+        .template-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--swiss-red);
+        .template-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
         }
 
-        input:disabled {
+        .template-tag {
+            padding: 6px 12px;
             background: #F5F5F5;
-            color: #999;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
         }
 
-        .btn {
-            padding: 12px 32px;
+        .template-tag.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black;
+        }
+
+        .btn-preview {
+            width: 100%;
+            padding: 12px;
             background: var(--swiss-red);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
-        .btn:hover {
+        .btn-preview:hover {
             background: #B80000;
-            transform: translateY(-2px);
+            transform: scale(1.02);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: #F5F5F5;
-            color: var(--swiss-black);
-            border: 2px solid #E6E6E6;
-        }
-
-        .btn-secondary:hover {
-            background: #E6E6E6;
-            border-color: var(--swiss-black);
-        }
-
-        .btn-danger {
-            background: #FFE5E5;
-            color: #D50000;
-            border: 2px solid #D50000;
-        }
-
-        .btn-danger:hover {
-            background: #D50000;
-            color: white;
-        }
-
-        .error-message {
-            background: #FFE5E5;
-            border: 1px solid #FF5252;
-            color: #D50000;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
+        /* Modal */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        .error-message.show {
-            display: block;
-        }
-
-        .success-message {
-            background: #E8F5E9;
-            border: 1px solid #4CAF50;
-            color: #2E7D32;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--swiss-gray);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-size: 14px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--swiss-black);
-        }
-
-        .tier-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tier-free {
-            background: #E0E0E0;
-            color: #666;
-        }
-
-        .tier-premium {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: var(--swiss-black);
-        }
-
-        .tier-pro {
-            background: linear-gradient(135deg, #7C4DFF 0%, #651FFF 100%);
-            color: white;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-left: 8px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .profile-header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .profile-header p {
-            color: #666;
-            font-size: 16px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--swiss-gray);
-            margin: 0 auto 20px;
+        .modal.active {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 2px solid #E0E0E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .modal-preview-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            margin-bottom: 24px;
+            border-radius: 8px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .btn-download {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-download.word {
+            background: #2B579A;
+            color: white;
+        }
+
+        .btn-download.word:hover {
+            background: #1e3f6f;
+        }
+
+        .btn-download.pdf {
+            background: #E53935;
+            color: white;
+        }
+
+        .btn-download.pdf:hover {
+            background: #c62828;
+        }
+
+        .upgrade-message {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .upgrade-message h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: black;
+        }
+
+        .upgrade-message p {
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .btn-upgrade {
+            background: black;
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .templates-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 18px;
             color: #666;
         }
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--swiss-red);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="public/js/modal-system.js"></script>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
 </head>
 
 <body>
-    <!-- NAVBAR RESPONSIVE UNIFIÉE -->
+    <!-- NAVBAR (copier depuis dashboard.html) -->
     <script>
         const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
         function getToken() { return localStorage.getItem("swisscv_token"); }
@@ -288,9 +371,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 1000
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
         }
 
         .navbar-brand {
@@ -400,7 +486,7 @@
 
             .navbar-menu {
                 position: fixed;
-                top: 58px;
+                top: 62px;
                 left: 0;
                 right: 0;
                 background: white;
@@ -411,7 +497,8 @@
                 overflow: hidden;
                 transition: max-height 0.3s ease;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                border-bottom: 2px solid #E0E0E0
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
             }
 
             .navbar-menu.active {
@@ -438,8 +525,8 @@
                 padding: 12px
             }
         }
-
-        /* Menus déroulants */
+    
+/* Menus déroulants */
         .navbar-dropdown {
             position: relative;
             display: inline-block;
@@ -607,7 +694,7 @@
         }
     </style>
     </style>
-    <nav class="navbar">
+        <nav class="navbar">
         <a href="index.html" class="navbar-brand">SwissCV Pro</a>
         <div class="navbar-burger" onclick="toggleMobileMenu()">
             <span></span>
@@ -616,6 +703,7 @@
         </div>
         <div class="navbar-menu" id="navbarMenu">
             <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
             <!-- Menu Outils CV (Tous les plans) -->
             <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
@@ -623,7 +711,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item active">📄 Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
@@ -664,7 +752,7 @@
 
                     <div class="user-menu-divider"></div>
 
-                    <a href="profile.html" class="user-menu-item active">
+                    <a href="profile.html" class="user-menu-item">
                         <span class="menu-icon">👤</span>
                         <span>Mon Profil</span>
                     </a>
@@ -732,15 +820,15 @@
                 }
             });
 
-            // Close user menu when clicking on menu items
-            document.querySelectorAll('.user-menu-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const dropdown = document.getElementById('userMenuDropdown');
-                    if (dropdown) {
-                        dropdown.classList.remove('show');
-                    }
-                });
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
             });
+        });
         });
 
         function toggleMobileMenu() {
@@ -805,8 +893,8 @@
 
                 // Mettre à jour l'avatar avec l'initiale du nom ou email
                 if (userAvatarCircle) {
-                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
-                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
+                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
                     userAvatarCircle.textContent = initial;
                 }
 
@@ -816,12 +904,6 @@
                     cvToolsMenu.style.display = 'inline-block';
                 }
 
-                const analyseLink = document.getElementById("analyseLink");
-
-                // Menu Outils CV visible pour tous les plans
-                if (cvToolsMenu) cvToolsMenu.style.display = 'inline-block';
-                if (analyseLink) analyseLink.style.display = 'none';
-
                 // Afficher lien Équipe pour Pro
                 if (tier === 'pro' && teamLink) {
                     teamLink.style.display = 'inline-block';
@@ -830,270 +912,275 @@
         })();
     </script>
 
-    <!-- ✅ CONTENU PRINCIPAL CORRIGÉ -->
-    <main class="container">
-        <div class="profile-header">
-            <div class="profile-avatar">👤</div>
-            <h1>Mon Profil</h1>
-            <p>Gérez vos informations personnelles et votre abonnement</p>
+    <div class="container">
+        <div class="page-header">
+            <h1>📄 Templates CV Professionnels</h1>
+            <p>Téléchargez des modèles de CV professionnels adaptés au marché suisse. Formats Word et PDF disponibles.
+            </p>
         </div>
 
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
-
-        <div class="card">
-            <h2>Informations personnelles</h2>
-            <form id="profileForm">
-                <div class="form-group">
-                    <label for="fullName">Nom complet</label>
-                    <input type="text" id="fullName" placeholder="Votre nom complet">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Adresse email</label>
-                    <input type="email" id="email" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="bio">Bio / Présentation professionnelle</label>
-                    <input type="text" id="bio" placeholder="Décrivez votre expérience et compétences">
-                </div>
-
-                <div class="form-group">
-                    <label for="location">Localisation</label>
-                    <input type="text" id="location" placeholder="Ex: Genève, Suisse">
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Téléphone (optionnel)</label>
-                    <input type="tel" id="phone" placeholder="+41 XX XXX XX XX">
-                </div>
-
-                <div class="actions">
-                    <button type="submit" class="btn" id="saveBtn">
-                        💾 Enregistrer les modifications
-                    </button>
-                    <button type="button" class="btn-secondary" onclick="resetForm()">
-                        🔄 Réinitialiser
-                    </button>
-                </div>
-            </form>
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">Tous les templates</button>
+            <button class="filter-btn" data-category="classique">Classique</button>
+            <button class="filter-btn" data-category="moderne">Moderne</button>
+            <button class="filter-btn" data-category="creatif">Créatif</button>
         </div>
-    </main>
 
+        <div id="templatesGrid" class="templates-grid"></div>
+    </div>
+
+    <!-- Modal Preview -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Template CV</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="modal-preview-image" src="" alt="Preview">
+                <p id="modalDescription"></p>
+                <div id="modalTags" class="template-tags"></div>
+                <div id="downloadSection"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadProfile();
+        // Templates data
+        const templates = [
+            {
+                id: 'classique-1',
+                category: 'classique',
+                title: 'CV Traditionnel Suisse',
+                description: 'Format classique et sobre, idéal pour les secteurs traditionnels (banque, administration, juridique).',
+                image: 'template-classique-1.jpg',
+                tags: ['Classique', '2 pages', 'ATS-friendly'],
+                wordFile: 'template-classique-1.docx',
+                pdfFile: 'template-classique-1.pdf'
+            },
+            {
+                id: 'classique-2',
+                category: 'classique',
+                title: 'CV Élégant Corporate',
+                description: 'Design élégant et professionnel pour cadres et managers.',
+                image: 'template-classique-2.jpg',
+                tags: ['Classique', '2 pages', 'Executive'],
+                wordFile: 'template-classique-2.docx',
+                pdfFile: 'template-classique-2.pdf'
+            },
+            {
+                id: 'classique-3',
+                category: 'classique',
+                title: 'CV Business Standard',
+                description: 'Template polyvalent pour tous secteurs d\'activité.',
+                image: 'template-classique-3.jpg',
+                tags: ['Classique', '1-2 pages', 'Polyvalent'],
+                wordFile: 'template-classique-3.docx',
+                pdfFile: 'template-classique-3.pdf'
+            },
+            {
+                id: 'moderne-1',
+                category: 'moderne',
+                title: 'CV Tech Moderne',
+                description: 'Design moderne et épuré pour professionnels de la tech et IT.',
+                image: 'template-moderne-1.jpg',
+                tags: ['Moderne', '2 pages', 'Tech'],
+                wordFile: 'template-moderne-1.docx',
+                pdfFile: 'template-moderne-1.pdf'
+            },
+            {
+                id: 'moderne-2',
+                category: 'moderne',
+                title: 'CV Startup Dynamique',
+                description: 'Template dynamique pour startups et scale-ups.',
+                image: 'template-moderne-2.jpg',
+                tags: ['Moderne', '1 page', 'Startup'],
+                wordFile: 'template-moderne-2.docx',
+                pdfFile: 'template-moderne-2.pdf'
+            },
+            {
+                id: 'moderne-3',
+                category: 'moderne',
+                title: 'CV Minimaliste Pro',
+                description: 'Design minimaliste et impactant.',
+                image: 'template-moderne-3.jpg',
+                tags: ['Moderne', '1 page', 'Minimaliste'],
+                wordFile: 'template-moderne-3.docx',
+                pdfFile: 'template-moderne-3.pdf'
+            },
+            {
+                id: 'creatif-1',
+                category: 'creatif',
+                title: 'CV Design Créatif',
+                description: 'Pour designers, créatifs et métiers artistiques.',
+                image: 'template-creatif-1.jpg',
+                tags: ['Créatif', '2 pages', 'Design'],
+                wordFile: 'template-creatif-1.docx',
+                pdfFile: 'template-creatif-1.pdf'
+            },
+            {
+                id: 'creatif-2',
+                category: 'creatif',
+                title: 'CV Coloré Original',
+                description: 'Template coloré et original pour se démarquer.',
+                image: 'template-creatif-2.jpg',
+                tags: ['Créatif', '1-2 pages', 'Coloré'],
+                wordFile: 'template-creatif-2.docx',
+                pdfFile: 'template-creatif-2.pdf'
+            },
+            {
+                id: 'creatif-3',
+                category: 'creatif',
+                title: 'CV Portfolio Visuel',
+                description: 'Avec section portfolio intégrée.',
+                image: 'template-creatif-3.jpg',
+                tags: ['Créatif', '2 pages', 'Portfolio'],
+                wordFile: 'template-creatif-3.docx',
+                pdfFile: 'template-creatif-3.pdf'
+            }
+        ];
+
+        let currentCategory = 'all';
+        let currentTemplate = null;
+
+        // Render templates
+        function renderTemplates() {
+            const grid = document.getElementById('templatesGrid');
+            const filtered = currentCategory === 'all'
+                ? templates
+                : templates.filter(t => t.category === currentCategory);
+
+            grid.innerHTML = filtered.map(template => `
+                <div class="template-card" onclick="openPreview('${template.id}')">
+                    <img class="template-preview" src="/templates/${template.image}" alt="${template.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22566%22%3E%3Crect fill=%22%23f5f5f5%22 width=%22400%22 height=%22566%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2224%22%3E${template.title}%3C/text%3E%3C/svg%3E'">
+                    <div class="template-info">
+                        <div class="template-title">${template.title}</div>
+                        <div class="template-description">${template.description}</div>
+                        <div class="template-tags">
+                            <span class="template-tag premium">Premium</span>
+                            ${template.tags.map(tag => `<span class="template-tag">${tag}</span>`).join('')}
+                        </div>
+                        <button class="btn-preview" onclick="event.stopPropagation(); openPreview('${template.id}')">
+                            👁️ Aperçu et téléchargement
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter templates
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                renderTemplates();
+            });
         });
 
-        async function loadProfile() {
-            try {
-                const response = await authenticatedFetch('/profile');
+        // Open preview modal
+        function openPreview(templateId) {
+            currentTemplate = templates.find(t => t.id === templateId);
+            if (!currentTemplate) return;
 
-                if (response.ok) {
-                    const data = await response.json();
-                    const profile = data.profile || {};
-                    const user = getUser();
+            const modal = document.getElementById('previewModal');
+            document.getElementById('modalTitle').textContent = currentTemplate.title;
+            document.getElementById('modalImage').src = `/templates/${currentTemplate.image}`;
+            document.getElementById('modalImage').onerror = function () {
+                this.src = `data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%221131%22%3E%3Crect fill=%22%23f5f5f5%22 width=%22800%22 height=%221131%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22 font-size=%2232%22%3E${currentTemplate.title}%3C/text%3E%3C/svg%3E`;
+            };
+            document.getElementById('modalDescription').textContent = currentTemplate.description;
+            document.getElementById('modalTags').innerHTML = currentTemplate.tags.map(tag =>
+                `<span class="template-tag">${tag}</span>`
+            ).join('');
 
-                    // Remplir le formulaire
-                    document.getElementById('fullName').value = profile.full_name || user?.full_name || '';
-                    document.getElementById('email').value = user?.email || profile.email || '';
-                    document.getElementById('bio').value = profile.bio || '';
-                    document.getElementById('location').value = profile.location || '';
-                    document.getElementById('phone').value = profile.phone || '';
+            const user = getUser();
+            const isPremium = user && (user.tier === 'premium' || user.tier === 'pro');
 
-                } else {
-                    showError('Erreur lors du chargement du profil');
-                }
-            } catch (error) {
-                console.error('Erreur chargement profil:', error);
-                showError('Impossible de charger le profil');
+            if (isPremium) {
+                document.getElementById('downloadSection').innerHTML = `
+                    <div class="download-buttons">
+                        <button class="btn-download word" onclick="downloadTemplate('word')" style="width: 100%;">
+                            📄 Télécharger Template Word
+                        </button>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 13px; color: #666; text-align: center;">
+                        Template professionnel modifiable dans Word, Google Docs ou LibreOffice
+                    </p>
+                `;
+            } else {
+                document.getElementById('downloadSection').innerHTML = `
+                    <div class="upgrade-message">
+                        <h3>🔒 Fonctionnalité Premium</h3>
+                        <p>Passez à Premium ou Pro pour télécharger ce template</p>
+                        <a href="pricing.html" class="btn-upgrade">Voir les offres</a>
+                    </div>
+                `;
             }
+
+            modal.classList.add('active');
         }
 
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Close modal
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+        }
 
-            const saveBtn = document.getElementById('saveBtn');
-            const originalText = saveBtn.textContent;
-            saveBtn.disabled = true;
-            saveBtn.textContent = '⏳ Enregistrement...';
+        // Download template
+        function downloadTemplate(format) {
+            if (!currentTemplate) return;
 
-            try {
-                const profileData = {
-                    full_name: document.getElementById('fullName').value.trim(),
-                    bio: document.getElementById('bio').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    phone: document.getElementById('phone').value.trim()
-                };
+            const filename = format === 'word' ? currentTemplate.wordFile : currentTemplate.pdfFile;
+            const link = document.createElement('a');
+            link.href = `/templates/${filename}`;
+            link.download = filename;
+            link.click();
+        }
 
-                const response = await authenticatedFetch('/profile/update', {
-                    method: 'POST',
-                    body: JSON.stringify(profileData)
-                });
-
-                if (response.ok) {
-                    showSuccess('Profil mis à jour avec succès!');
-
-                    // Mettre à jour les données locales
-                    const user = getUser();
-                    if (user) {
-                        user.full_name = profileData.full_name;
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
-                    }
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la mise à jour');
-                }
-            } catch (error) {
-                console.error('Erreur mise à jour:', error);
-                showError('Erreur de connexion');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.textContent = originalText;
+        // Close modal on outside click
+        document.getElementById('previewModal').addEventListener('click', (e) => {
+            if (e.target.id === 'previewModal') {
+                closeModal();
             }
         });
 
-        function resetForm() {
-            document.getElementById('profileForm').reset();
-            loadProfile(); // Recharger les valeurs d'origine
-        }
-
-        async function unsubscribe() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
+        // Auth check
+        (async function () {
+            const token = getToken();
+            if (!token) {
+                window.location.href = "login.html";
                 return;
             }
 
             try {
-                const response = await authenticatedFetch('/subscription/cancel', {
-                    method: 'POST'
-                });
+                const response = await authenticatedFetch("/auth/me");
+                const data = await response.json();
 
-                if (response.ok) {
-                    showSuccess('✅ Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
-
-                    // Mettre à jour les données locales
-                    const user = getUser();
-                    if (user) {
-                        user.tier = 'free';
-                        localStorage.setItem('swisscv_user', JSON.stringify(user));
+                if (data.success) {
+                    localStorage.setItem("swisscv_user", JSON.stringify(data.user));
+                    const badge = document.getElementById("userBadge");
+                    if (badge && data.user) {
+                        if (data.user.tier === "premium" || data.user.tier === "pro") {
+                            badge.className = "navbar-badge premium";
+                            badge.textContent = data.user.tier === "pro" ? "Pro" : "Premium";
+                        } else {
+                            badge.className = "navbar-badge free";
+                            badge.textContent = "Free";
+                        }
                     }
-
-                    // Recharger le profil pour mettre à jour l'affichage
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
                 } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du désabonnement');
+                    throw new Error("Auth failed");
                 }
             } catch (error) {
-                console.error('Erreur désabonnement:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function changePassword() {
-            const newPassword = prompt('🔑 Entrez votre nouveau mot de passe :\n(Minimum 6 caractères)');
-
-            if (!newPassword) return;
-
-            if (newPassword.length < 6) {
-                showError('Le mot de passe doit contenir au moins 6 caractères.');
-                return;
+                console.error("Erreur auth:", error);
+                logout();
             }
 
-            try {
-                const response = await authenticatedFetch('/auth/change-password', {
-                    method: 'POST',
-                    body: JSON.stringify({ new_password: newPassword })
-                });
-
-                if (response.ok) {
-                    showSuccess('✅ Mot de passe changé avec succès !');
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du changement de mot de passe');
-                }
-            } catch (error) {
-                console.error('Erreur changement mot de passe:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function exportData() {
-            try {
-                const response = await authenticatedFetch('/profile/export');
-
-                if (response.ok) {
-                    const data = await response.json();
-
-                    // Créer un fichier JSON à télécharger
-                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `swisscv-data-${new Date().toISOString().split('T')[0]}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-
-                    showSuccess('✅ Données exportées avec succès !');
-                } else {
-                    showError('Erreur lors de l\'export des données');
-                }
-            } catch (error) {
-                console.error('Erreur export:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function deleteAccount() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer votre compte ?\n\nCette action est IRRÉVERSIBLE.\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Jobs trackés')) {
-                return;
-            }
-
-            const confirmation = prompt('Pour confirmer, tapez "SUPPRIMER" en majuscules :');
-
-            if (confirmation !== 'SUPPRIMER') {
-                showError('Suppression annulée.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/account/delete', {
-                    method: 'POST'
-                });
-
-                if (response.ok) {
-                    alert('✅ Votre compte a été supprimé.\n\nVous allez être déconnecté.');
-                    logout();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la suppression du compte');
-                }
-            } catch (error) {
-                console.error('Erreur suppression compte:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('show');
-            setTimeout(() => errorDiv.classList.remove('show'), 5000);
-        }
-
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.classList.add('show');
-            setTimeout(() => successDiv.classList.remove('show'), 5000);
-        }
+            // Render templates
+            renderTemplates();
+        })();
     </script>
+
     <!-- Système de Notifications -->
     <script src="public/js/notifications.js"></script>
     <script src="public/js/favorites-badge.js"></script>

@@ -812,6 +812,8 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="public/js/modal-system.js"></script>
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <link rel="stylesheet" href="public/css/credits.css">
 </head>
 
 <body>
@@ -874,7 +876,8 @@
         }
 
         .navbar-link.active {
-            background: #D50000;
+            background: #FFD700;
+            color: #0D0D0D;
             color: white
         }
 
@@ -909,7 +912,8 @@
         }
 
         .navbar-btn:hover {
-            background: #D50000;
+            background: #FFD700;
+            color: #0D0D0D;
             color: white
         }
 
@@ -1218,16 +1222,13 @@
         </div>
         <div class="navbar-menu" id="navbarMenu">
             <a href="dashboard.html" class="navbar-link">Dashboard</a>
-            <a href="app.html" class="navbar-link active">📊 Analyse CV</a>
-
-            <!-- Menu Outils CV (Premium/Pro) -->
-            <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
+            <!-- Menu Outils CV (Tous les plans) -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
                     🎯 Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="app.html" class="navbar-link active" style="display:none;" class="dropdown-item">Analyser
-                        CV</a>
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
                     <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
@@ -1249,12 +1250,49 @@
                 </div>
             </div>
 
-            <a href="profile.html" class="navbar-link">Profil</a>
-            <a href="support.html" class="navbar-link">Support</a>
-            <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
+            <!-- Menu Utilisateur Dropdown -->
 
-            <span class="plan-badge free" id="planBadge">Free</span>
-            <button class="navbar-btn" onclick="logout()">Déconnexion</button>
+            <!-- Credit Balance Display -->
+            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+                <span class="credits-icon">💳</span>
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+            <div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </nav>
     <script>
@@ -1274,6 +1312,22 @@
             }
         }
 
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
             l.addEventListener('click', () => {
                 if (window.innerWidth <= 1024) {
@@ -1283,6 +1337,16 @@
                     b.classList.remove('active');
                 }
             })
+        });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
         });
 
         (function () {
@@ -1296,10 +1360,36 @@
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
 
+                // Mettre à jour le nom et l'email de l'utilisateur dans le menu
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                // Mettre à jour l'avatar avec l'initiale du nom ou email
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
+                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
                 // Afficher menu Outils CV pour Premium/Pro
                 if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
                     cvToolsMenu.style.display = 'inline-block';
                 }
+
+                const analyseLink = document.getElementById("analyseLink");
+
+                // Menu Outils CV visible pour tous les plans
+                if (cvToolsMenu) cvToolsMenu.style.display = 'inline-block';
+                if (analyseLink) analyseLink.style.display = 'none';
 
                 // Afficher lien Équipe pour Pro
                 if (tier === 'pro' && teamLink) {
@@ -1583,7 +1673,7 @@
                                 <div style="color: #333; font-size: 13px; font-weight: 600;">✅ Analyses illimitées<br>✅ Lettres de motivation<br>✅ Export PDF</div>
                             </div>
                             
-                            <button onclick="window.location.href='pricing.html'" style="width: 100%; background: #D50000; color: white; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);" onmouseover="this.style.background='#B80000'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#D50000'; this.style.transform='translateY(0)'">
+                            <button onclick="window.location.href='pricing.html'" style="width: 100%; background: #FFD700; color: #0D0D0D; color: white; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);" onmouseover="this.style.background='#B80000'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#D50000'; this.style.transform='translateY(0)'">
                                 🚀 Passer à Premium
                             </button>
                             <button onclick="document.getElementById('limitModal').style.display='none'" style="width: 100%; background: white; color: #666; padding: 14px; border: 2px solid #E6E6E6; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#D50000'; this.style.color='#D50000'" onmouseout="this.style.borderColor='#E6E6E6'; this.style.color='#666'">
@@ -1978,6 +2068,19 @@
 
             try {
                 console.log('🚀 Analyse:', selectedFile.name);
+
+                // ✅ CREDIT VALIDATION - Check before analysis
+                const creditValidation = await validateCredits('cv_analysis');
+
+                if (!creditValidation.has_enough_credits) {
+                    showInsufficientCreditsModal(
+                        creditValidation.required_credits,
+                        creditValidation.current_balance,
+                        'l\'analyse de CV'
+                    );
+                    return;
+                }
+
                 const canAnalyzeResult = await canAnalyze();
 
                 if (!canAnalyzeResult.allowed) {
@@ -2056,6 +2159,12 @@
 
                 // Plus besoin d'incrémenter manuellement, le worker le fait
                 await updateRemainingCount();
+
+                // ✅ CONSUME CREDITS - After successful analysis
+                await consumeCredits('cv_analysis', {
+                    fileName: selectedFile.name,
+                    analysisId: result.analysisId || analysis.id
+                });
 
                 currentAnalysisResult = analysis;
                 saveAnalysis({
@@ -2629,6 +2738,9 @@
     <!-- Système de Notifications -->
     <script src="public/js/notifications.js?v=1766451961"></script>
     <script src="public/js/favorites-badge.js"></script>
+    <script src="public/js/user-menu.js"></script>
+    <script src="public/js/credits.js"></script>
 </body>
+
 
 </html>

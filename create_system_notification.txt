@@ -1,0 +1,23 @@
+
+// Helper: Create system notification (wrapper for createNotification)
+async function createSystemNotification(env, userId, options) {
+  const { type, tier } = options;
+  
+  let title = '';
+  let message = '';
+  let link = null;
+  
+  if (type === 'welcome') {
+    title = tier === 'free' ? 'Bienvenue sur SwissCV Pro !' : `Bienvenue sur SwissCV Pro ${tier.toUpperCase()} !`;
+    message = tier === 'free' 
+      ? 'Commencez par analyser votre CV pour obtenir des recommandations personnalisées.'
+      : `Profitez de toutes les fonctionnalités ${tier.toUpperCase()} pour booster votre recherche d'emploi.`;
+    link = '/app/app.html';
+  } else if (type === 'upgrade') {
+    title = `Passage à ${tier.toUpperCase()} réussi !`;
+    message = `Vous avez maintenant accès à toutes les fonctionnalités ${tier.toUpperCase()}.`;
+    link = '/app/dashboard.html';
+  }
+  
+  return await createNotification(env, userId, type, title, message, link);
+}

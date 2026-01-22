@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates CV Suisses — SwissCV Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-white: #FFFFFF;
+            --swiss-gray: #E6E6E6;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--swiss-white);
+            border-bottom: 1px solid var(--swiss-gray);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+        }
+        
+        .logo-text strong {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--swiss-black);
+        }
+        
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: var(--swiss-black);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .template-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        }
+        
+        .template-preview {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .template-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .template-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--swiss-red);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .template-content {
+            padding: 32px;
+        }
+        
+        .template-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--swiss-black);
+        }
+        
+        .template-description {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .template-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+        
+        .template-features li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .template-features li::before {
+            content: "✓";
+            color: var(--swiss-red);
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+        
+        .locked-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .locked-overlay.show {
+            display: flex;
+        }
+        
+        .locked-modal {
+            background: white;
+            padding: 48px;
+            border-radius: 8px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .locked-modal h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .locked-modal p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <span class="logo-icon">🇨🇭</span>
+                <div class="logo-text">
+                    <strong>SwissCV Pro</strong>
+                </div>
+            </a>
+            <span class="premium-badge" id="userStatusBadge">⭐ Premium</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📄 Templates CV Suisses Professionnels</h1>
+            <p>3 modèles optimisés pour le marché suisse romand • Format DOCX modifiable</p>
+        </div>
+
+        <div class="templates-grid">
+            <!-- Template 1 : Classique Suisse -->
+            <div class="template-card">
+                <div class="template-preview">
+                    <span style="font-size: 80px;">📄</span>
+                    <div class="template-badge">Classique</div>
+                </div>
+                <div class="template-content">
+                    <h2 class="template-title">CV Classique Suisse</h2>
+                    <p class="template-description">
+                        Le format traditionnel apprécié par les recruteurs suisses. Sobre, professionnel et structuré.
+                    </p>
+                    <ul class="template-features">
+                        <li>Photo professionnelle intégrée</li>
+                        <li>Mise en page épurée</li>
+                        <li>Sections clairement définies</li>
+                        <li>Adapté à tous les secteurs</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="downloadTemplate('classique')">
+                        📥 Télécharger le template
+                    </button>
+                </div>
+            </div>
+
+            <!-- Template 2 : Moderne -->
+            <div class="template-card">
+                <div class="template-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <span style="font-size: 80px; color: white;">🎨</span>
+                    <div class="template-badge">Moderne</div>
+                </div>
+                <div class="template-content">
+                    <h2 class="template-title">CV Moderne Suisse</h2>
+                    <p class="template-description">
+                        Design contemporain avec touches de couleur. Idéal pour les secteurs créatifs et tech.
+                    </p>
+                    <ul class="template-features">
+                        <li>Design moderne et dynamique</li>
+                        <li>Sections colorées</li>
+                        <li>Graphiques de compétences</li>
+                        <li>Format ATS-friendly</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="downloadTemplate('moderne')">
+                        📥 Télécharger le template
+                    </button>
+                </div>
+            </div>
+
+            <!-- Template 3 : Executive -->
+            <div class="template-card">
+                <div class="template-preview" style="background: linear-gradient(135deg, #0D0D0D 0%, #434343 100%);">
+                    <span style="font-size: 80px; color: white;">👔</span>
+                    <div class="template-badge">Executive</div>
+                </div>
+                <div class="template-content">
+                    <h2 class="template-title">CV Executive Suisse</h2>
+                    <p class="template-description">
+                        Format premium pour cadres et dirigeants. Élégant, sobre et impactant.
+                    </p>
+                    <ul class="template-features">
+                        <li>Design haut de gamme</li>
+                        <li>Mise en avant des résultats</li>
+                        <li>Section réalisations</li>
+                        <li>Format 2 pages optimisé</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="downloadTemplate('executive')">
+                        📥 Télécharger le template
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div style="background: white; padding: 40px; border-radius: 8px; margin-top: 40px;">
+            <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">
+                📖 Comment utiliser ces templates
+            </h2>
+            <ol style="padding-left: 20px; color: #666; line-height: 2;">
+                <li><strong>Téléchargez</strong> le template de votre choix au format DOCX</li>
+                <li><strong>Ouvrez-le</strong> avec Microsoft Word, Google Docs ou LibreOffice</li>
+                <li><strong>Remplacez</strong> les informations de démonstration par les vôtres</li>
+                <li><strong>Personnalisez</strong> les couleurs et la mise en page selon vos préférences</li>
+                <li><strong>Exportez</strong> en PDF pour l'envoyer aux recruteurs</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Modal Premium requis -->
+    <div id="lockedOverlay" class="locked-overlay">
+        <div class="locked-modal">
+            <div style="font-size: 64px; margin-bottom: 24px;">🔒</div>
+            <h2>Fonctionnalité Premium</h2>
+            <p>
+                Les templates CV professionnels sont réservés aux abonnés <strong>Premium</strong>.
+            </p>
+            <button onclick="window.location.href='/pricing'" 
+                    style="background: var(--swiss-red); color: white; border: none; 
+                           padding: 16px 48px; border-radius: 6px; font-size: 15px; 
+                           font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 16px;">
+                🚀 Passer à Premium (9 CHF)
+            </button>
+            <button onclick="closeLockedModal()" 
+                    style="background: transparent; border: none; color: #999; 
+                           cursor: pointer; font-size: 14px; text-decoration: underline;">
+                Fermer
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est Premium
+        function isPremiumUser() {
+            return localStorage.getItem('swisscv_premium') === 'true';
+        }
+
+        // Afficher le badge approprié
+        function updateUserBadge() {
+            const badge = document.getElementById('userStatusBadge');
+            if (isPremiumUser()) {
+                badge.innerHTML = '⭐ Premium';
+                badge.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+            } else {
+                badge.innerHTML = '🆓 Gratuit';
+                badge.style.background = '#E6E6E6';
+                badge.style.color = '#666';
+            }
+        }
+
+        // Fermer le modal
+        function closeLockedModal() {
+            document.getElementById('lockedOverlay').classList.remove('show');
+        }
+
+        // Télécharger un template
+        function downloadTemplate(templateName) {
+            // Vérifier si Premium
+            if (!isPremiumUser()) {
+                document.getElementById('lockedOverlay').classList.add('show');
+                return;
+            }
+
+            // URLs des templates (à remplacer par vos vrais fichiers)
+            const templates = {
+                'classique': 'https://swisscv-pro.ch/templates/CV_Classique_Suisse.docx',
+                'moderne': 'https://swisscv-pro.ch/templates/CV_Moderne_Suisse.docx',
+                'executive': 'https://swisscv-pro.ch/templates/CV_Executive_Suisse.docx'
+            };
+
+            // Créer un lien de téléchargement
+            const link = document.createElement('a');
+            link.href = templates[templateName];
+            link.download = `SwissCV_Template_${templateName}.docx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Notification de succès
+            alert(`✅ Template "${templateName}" téléchargé avec succès !`);
+
+            // Track dans Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'template_download', {
+                    'template_name': templateName
+                });
+            }
+        }
+
+        // Initialisation
+        window.addEventListener('DOMContentLoaded', () => {
+            updateUserBadge();
+        });
+    </script>
+</body>
+</html>
