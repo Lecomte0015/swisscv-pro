@@ -629,15 +629,18 @@
                 </div>
             </div>
 
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
             <!-- Menu Utilisateur Dropdown -->
-            
+
             <!-- Credit Balance Display -->
-            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+            <div class="credits-display" title="Voir mes crédits">
                 <span class="credits-icon">💳</span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
             </div>
-<div class="user-avatar-btn" id="userAvatarBtn">
+            <div class="user-avatar-btn" id="userAvatarBtn">
                 <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
 
                 <div class="user-menu-dropdown" id="userMenuDropdown">
@@ -657,6 +660,11 @@
                     <a href="support.html" class="user-menu-item">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item active">
@@ -946,7 +954,7 @@
 
                 if (planBadge) {
                     planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
-                    planBadge.className = `user-menu-badge`;
+                    planBadge.className = `plan-badge ${tier}`;
                 }
 
                 // Show/hide buttons based on plan
@@ -1198,7 +1206,11 @@
             }
         }
     </script>
+    <!-- Système de Notifications -->
+    <script src="public/js/notifications.js?v=1766451961"></script>
+    <script src="public/js/user-menu.js"></script>
     <script src="public/js/credits.js"></script>
+
 </body>
 
 </html>

@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Crédits — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="public/css/credits.css">
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f9fafb;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            transition: background 0.3s;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                background: #F5F5F5;
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                padding: 10px 20px;
+                background: #F5F5F5;
+                margin-bottom: 8px;
+                border-radius: 6px;
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 24px 40px;
+            /* Added top padding for fixed navbar */
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .credit-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .credit-card h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .credit-value {
+            font-size: 48px;
+            font-weight: 900;
+            color: #667eea;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .credit-label {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .history-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .history-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .transaction-item:hover {
+            background: #f3f4f6;
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .transaction-details h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .transaction-details p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .transaction-credits {
+            font-size: 18px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        .upgrade-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .upgrade-cta h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .upgrade-cta p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .upgrade-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section Recharge */
+        .recharge-section, .subscription-section, .payment-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .recharge-section h2, .subscription-section h2, .payment-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* Credit Packs */
+        .credit-packs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .credit-pack {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .credit-pack:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .credit-pack.popular {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+        }
+
+        .credit-pack.best-value {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .pack-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .credit-pack.best-value .pack-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .pack-credits {
+            font-size: 48px;
+            font-weight: 900;
+            color: #667eea;
+            line-height: 1;
+        }
+
+        .credit-pack.best-value .pack-credits {
+            color: #10b981;
+        }
+
+        .pack-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .pack-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .pack-per-credit {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+
+        .pack-btn {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pack-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+
+        .credit-pack.best-value .pack-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .credit-pack.best-value .pack-btn:hover {
+            background: linear-gradient(135deg, #0d9668 0%, #047857 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Plans Grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .plan-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-card.recommended {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .plan-card.current-plan {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .plan-price span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            color: #666;
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .plan-btn {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-btn.current {
+            background: #e5e7eb;
+            color: #666;
+            border: none;
+        }
+
+        .plan-btn.upgrade {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .plan-btn.upgrade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+
+        /* Payment Section */
+        .payment-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .no-payment-method {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-payment-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .no-payment-method p {
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .add-card-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .saved-payment-method {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .card-brand {
+            font-size: 32px;
+        }
+
+        .card-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-number {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .card-expiry {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .update-card-btn, .remove-card-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .update-card-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+        }
+
+        .remove-card-btn {
+            background: white;
+            color: #dc2626;
+            border: 2px solid #dc2626;
+        }
+
+        .remove-card-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .credit-packs, .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .saved-payment-method {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .card-actions {
+                width: 100%;
+            }
+
+            .update-card-btn, .remove-card-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <!-- Menu Outils CV -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris</a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
+            <!-- Credit Balance Display -->
+            <div class="credits-display" title="Voir mes crédits">
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+
+            <!-- User Menu -->
+            <div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+
+    </script>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Mes Crédits</h1>
+            <p>Gérez votre solde de crédits et consultez votre historique d'utilisation</p>
+        </div>
+
+        <div class="credits-grid">
+            <div class="credit-card">
+                <h2>Solde Actuel</h2>
+                <div class="credit-value" id="currentBalance">--</div>
+                <div class="credit-label">crédits disponibles</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="credit-card">
+                <h2>Limite Mensuelle</h2>
+                <div class="credit-value" id="monthlyLimit">--</div>
+                <div class="credit-label">crédits par mois</div>
+            </div>
+
+            <div class="credit-card">
+                <h2>Utilisés ce mois</h2>
+                <div class="credit-value" id="usedThisMonth">--</div>
+                <div class="credit-label">crédits consommés</div>
+            </div>
+        </div>
+
+        <!-- Section Recharge de Crédits -->
+        <div class="recharge-section" id="rechargeSection">
+            <h2>💳 Recharger mes crédits</h2>
+            <p class="section-description">Achetez des crédits supplémentaires pour continuer à utiliser nos services</p>
+
+            <div class="credit-packs">
+                <div class="credit-pack" data-pack="5">
+                    <div class="pack-credits">5</div>
+                    <div class="pack-label">crédits</div>
+                    <div class="pack-price">2 CHF</div>
+                    <div class="pack-per-credit">0.40 CHF/crédit</div>
+                    <button class="pack-btn" onclick="buyCredits(5, 200)">Acheter</button>
+                </div>
+
+                <div class="credit-pack popular" data-pack="15">
+                    <div class="pack-badge">Populaire</div>
+                    <div class="pack-credits">15</div>
+                    <div class="pack-label">crédits</div>
+                    <div class="pack-price">5 CHF</div>
+                    <div class="pack-per-credit">0.33 CHF/crédit</div>
+                    <button class="pack-btn" onclick="buyCredits(15, 500)">Acheter</button>
+                </div>
+
+                <div class="credit-pack best-value" data-pack="30">
+                    <div class="pack-badge">Meilleur prix</div>
+                    <div class="pack-credits">30</div>
+                    <div class="pack-label">crédits</div>
+                    <div class="pack-price">8 CHF</div>
+                    <div class="pack-per-credit">0.27 CHF/crédit</div>
+                    <button class="pack-btn" onclick="buyCredits(30, 800)">Acheter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Plans d'abonnement -->
+        <div class="subscription-section">
+            <h2>🚀 Passer à un plan supérieur</h2>
+            <p class="section-description">Débloquez plus de fonctionnalités avec un abonnement</p>
+
+            <div class="plans-grid">
+                <div class="plan-card" id="freePlan">
+                    <div class="plan-name">Gratuit</div>
+                    <div class="plan-price">0 CHF<span>/mois</span></div>
+                    <ul class="plan-features">
+                        <li>5 crédits/mois</li>
+                        <li>2 analyses CV/mois</li>
+                        <li>1 lettre IA/semaine</li>
+                        <li>Templates CV basiques</li>
+                    </ul>
+                    <button class="plan-btn current" disabled>Plan actuel</button>
+                </div>
+
+                <div class="plan-card recommended" id="premiumPlan">
+                    <div class="plan-badge">Recommandé</div>
+                    <div class="plan-name">Premium</div>
+                    <div class="plan-price">9 CHF<span>/mois</span></div>
+                    <ul class="plan-features">
+                        <li>100 crédits/mois</li>
+                        <li>Analyses CV illimitées</li>
+                        <li>4 lettres IA/semaine</li>
+                        <li>Accès job search</li>
+                        <li>15 candidatures trackées</li>
+                        <li>Assistance entretien</li>
+                    </ul>
+                    <button class="plan-btn upgrade" onclick="upgradePlan('premium')">Passer à Premium</button>
+                </div>
+
+                <div class="plan-card" id="proPlan">
+                    <div class="plan-name">Pro</div>
+                    <div class="plan-price">29 CHF<span>/mois</span></div>
+                    <ul class="plan-features">
+                        <li>200 crédits/mois</li>
+                        <li>Tout Premium +</li>
+                        <li>Job tracker illimité</li>
+                        <li>Gestion d'équipe</li>
+                        <li>Analytics avancés</li>
+                        <li>Support prioritaire 24/7</li>
+                    </ul>
+                    <button class="plan-btn upgrade" onclick="upgradePlan('pro')">Passer à Pro</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Méthode de paiement -->
+        <div class="payment-section">
+            <h2>💰 Méthode de paiement</h2>
+            <div class="payment-card" id="paymentMethodCard">
+                <div class="no-payment-method" id="noPaymentMethod">
+                    <div class="no-payment-icon">💳</div>
+                    <p>Aucune carte enregistrée</p>
+                    <button class="add-card-btn" onclick="addPaymentMethod()">Ajouter une carte</button>
+                </div>
+                <div class="saved-payment-method" id="savedPaymentMethod" style="display: none;">
+                    <div class="card-info">
+                        <div class="card-brand" id="cardBrand">💳</div>
+                        <div class="card-details">
+                            <span class="card-number" id="cardNumber">•••• •••• •••• 4242</span>
+                            <span class="card-expiry" id="cardExpiry">Expire 12/25</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="update-card-btn" onclick="addPaymentMethod()">Modifier</button>
+                        <button class="remove-card-btn" onclick="removePaymentMethod()">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h2>📊 Historique d'utilisation</h2>
+            <div class="transaction-list" id="transactionList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>Aucune transaction</h3>
+                    <p>Votre historique d'utilisation apparaîtra ici</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load auth.js first to provide authenticatedFetch -->
+    <script src="public/js/auth.js"></script>
+    <!-- Load notifications.js for notification bell -->
+    <script src="public/js/notifications.js?v=1766451961"></script>
+    <script src="public/js/credits.js"></script>
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        // Check authentication on page load
+        (function () {
+            const token = getToken();
+            if (!token) {
+                console.log('No token found, redirecting to login');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update user info in navbar
+            const u = getUser();
+            if (u) {
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+                const planBadge = document.getElementById('planBadge');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
+                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
+                if (planBadge) {
+                    const tier = u.subscription_tier || u.tier || 'free';
+                    planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    planBadge.className = `plan-badge ${tier}`;
+                }
+            }
+        })();
+
+        // Load credit data
+        async function loadCreditData() {
+            try {
+                // Load balance
+                const balanceResponse = await authenticatedFetch('/credits/balance');
+                if (balanceResponse && balanceResponse.ok) {
+                    const data = await balanceResponse.json();
+                    if (data.success) {
+                        displayBalance(data);
+                    }
+                }
+
+                // Load history
+                const historyResponse = await authenticatedFetch('/credits/history');
+                if (historyResponse && historyResponse.ok) {
+                    const data = await historyResponse.json();
+                    if (data.success) {
+                        displayHistory(data.transactions);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading credit data:', error);
+            }
+        }
+
+        function displayBalance(data) {
+            document.getElementById('currentBalance').textContent = data.balance;
+            document.getElementById('monthlyLimit').textContent = data.monthly_limit;
+
+            const used = data.monthly_limit - data.balance;
+            document.getElementById('usedThisMonth').textContent = used;
+
+            // Update progress bar
+            const percentage = (used / data.monthly_limit) * 100;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+
+            // Show upgrade CTA if low on credits
+            if (data.balance <= data.monthly_limit * 0.2) {
+                document.getElementById('upgradeCta').style.display = 'block';
+            }
+        }
+
+        function displayHistory(transactions) {
+            const list = document.getElementById('transactionList');
+
+            if (!transactions || transactions.length === 0) {
+                return; // Keep empty state
+            }
+
+            const actionIcons = {
+                'cv_analysis': '📄',
+                'cover_letter': '✉️',
+                'interview_prep': '🎯',
+                'cv_compare': '📊',
+                'monthly_reset': '🔄',
+                'credit_purchase': '💰'
+            };
+
+            const actionNames = {
+                'cv_analysis': 'Analyse CV',
+                'cover_letter': 'Lettre de motivation',
+                'interview_prep': 'Préparation entretien',
+                'cv_compare': 'Comparaison CV/Offre',
+                'monthly_reset': 'Reset mensuel',
+                'credit_purchase': 'Achat de crédits'
+            };
+
+            list.innerHTML = transactions.map(t => {
+                const date = new Date(t.created_at * 1000).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const isCredit = t.credits_used < 0; // Negative means credits added
+                const displayCredits = isCredit ? `+${Math.abs(t.credits_used)}` : `-${t.credits_used}`;
+                const creditColor = isCredit ? '#10b981' : '#dc2626';
+
+                return `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">${actionIcons[t.action_type] || '💳'}</div>
+                            <div class="transaction-details">
+                                <h3>${actionNames[t.action_type] || t.action_type}</h3>
+                                <p>${date}</p>
+                            </div>
+                        </div>
+                        <div class="transaction-credits" style="color: ${creditColor}">${displayCredits}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadCreditData);
+
+        // Update plan cards based on current subscription
+        function updatePlanCards() {
+            const user = getUser();
+            const currentTier = user?.subscription_tier || user?.tier || 'free';
+
+            // Reset all cards
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('current-plan');
+            });
+            document.querySelectorAll('.plan-btn').forEach(btn => {
+                btn.classList.remove('current');
+                btn.classList.add('upgrade');
+                btn.disabled = false;
+                btn.textContent = btn.closest('.plan-card').id === 'freePlan' ? 'Plan actuel' :
+                    btn.closest('.plan-card').id === 'premiumPlan' ? 'Passer à Premium' : 'Passer à Pro';
+            });
+
+            // Mark current plan
+            const currentPlanId = currentTier + 'Plan';
+            const currentCard = document.getElementById(currentPlanId);
+            if (currentCard) {
+                currentCard.classList.add('current-plan');
+                const btn = currentCard.querySelector('.plan-btn');
+                btn.classList.remove('upgrade');
+                btn.classList.add('current');
+                btn.disabled = true;
+                btn.textContent = 'Plan actuel';
+            }
+
+            // Disable downgrade options
+            const tierOrder = ['free', 'premium', 'pro'];
+            const currentIndex = tierOrder.indexOf(currentTier);
+            tierOrder.slice(0, currentIndex).forEach(tier => {
+                const card = document.getElementById(tier + 'Plan');
+                if (card) {
+                    const btn = card.querySelector('.plan-btn');
+                    btn.textContent = 'Inclus dans votre plan';
+                    btn.disabled = true;
+                    btn.classList.remove('upgrade');
+                    btn.classList.add('current');
+                }
+            });
+        }
+
+        // Buy credit pack
+        async function buyCredits(credits, priceInCents) {
+            showLoading();
+            try {
+                const response = await authenticatedFetch('/stripe/create-credit-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credits, amount: priceInCents })
+                });
+
+                if (!response || !response.ok) {
+                    const error = await response?.json();
+                    throw new Error(error?.error || 'Erreur lors de la création du paiement');
+                }
+
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('URL de paiement non reçue');
+                }
+            } catch (error) {
+                console.error('Error buying credits:', error);
+                alert('Erreur: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Upgrade subscription plan
+        async function upgradePlan(plan) {
+            showLoading();
+            try {
+                const response = await authenticatedFetch('/stripe/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan })
+                });
+
+                if (!response || !response.ok) {
+                    const error = await response?.json();
+                    throw new Error(error?.error || 'Erreur lors de la création du paiement');
+                }
+
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('URL de paiement non reçue');
+                }
+            } catch (error) {
+                console.error('Error upgrading plan:', error);
+                alert('Erreur: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Add payment method
+        async function addPaymentMethod() {
+            showLoading();
+            try {
+                const response = await authenticatedFetch('/stripe/create-setup-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response || !response.ok) {
+                    const error = await response?.json();
+                    throw new Error(error?.error || 'Erreur lors de la configuration');
+                }
+
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('URL de configuration non reçue');
+                }
+            } catch (error) {
+                console.error('Error adding payment method:', error);
+                alert('Erreur: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Remove payment method
+        async function removePaymentMethod() {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette carte ?')) return;
+
+            showLoading();
+            try {
+                const response = await authenticatedFetch('/stripe/remove-payment-method', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response || !response.ok) {
+                    const error = await response?.json();
+                    throw new Error(error?.error || 'Erreur lors de la suppression');
+                }
+
+                // Update UI
+                document.getElementById('noPaymentMethod').style.display = 'block';
+                document.getElementById('savedPaymentMethod').style.display = 'none';
+                alert('Carte supprimée avec succès');
+            } catch (error) {
+                console.error('Error removing payment method:', error);
+                alert('Erreur: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load payment method info
+        async function loadPaymentMethod() {
+            try {
+                const response = await authenticatedFetch('/stripe/payment-method');
+                if (!response || !response.ok) return;
+
+                const data = await response.json();
+                if (data.success && data.paymentMethod) {
+                    document.getElementById('noPaymentMethod').style.display = 'none';
+                    document.getElementById('savedPaymentMethod').style.display = 'flex';
+
+                    const brandIcons = {
+                        'visa': '💳 Visa',
+                        'mastercard': '💳 Mastercard',
+                        'amex': '💳 Amex'
+                    };
+                    document.getElementById('cardBrand').textContent = brandIcons[data.paymentMethod.brand] || '💳';
+                    document.getElementById('cardNumber').textContent = '•••• •••• •••• ' + data.paymentMethod.last4;
+                    document.getElementById('cardExpiry').textContent = 'Expire ' + data.paymentMethod.exp_month + '/' + data.paymentMethod.exp_year;
+                }
+            } catch (error) {
+                console.error('Error loading payment method:', error);
+            }
+        }
+
+        // Show/hide loading
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        // Handle URL parameters (success/cancel from Stripe)
+        function handleUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get('success') === 'true') {
+                const credits = params.get('credits');
+                showNotification(`🎉 Achat réussi ! ${credits} crédits ont été ajoutés à votre compte.`, 'success');
+                // Reload credit data
+                loadCreditData();
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            if (params.get('canceled') === 'true') {
+                showNotification('❌ Achat annulé.', 'warning');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            if (params.get('card_added') === 'true') {
+                showNotification('✅ Carte ajoutée avec succès !', 'success');
+                loadPaymentMethod();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            if (params.get('card_canceled') === 'true') {
+                showNotification('❌ Ajout de carte annulé.', 'warning');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // Show notification toast
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            document.querySelectorAll('.notification-toast').forEach(n => n.remove());
+
+            const toast = document.createElement('div');
+            toast.className = `notification-toast ${type}`;
+            toast.innerHTML = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 24px;
+                padding: 16px 24px;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#667eea'};
+                color: white;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10002;
+                animation: slideIn 0.3s ease;
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleUrlParams();
+            updatePlanCards();
+            loadPaymentMethod();
+        });
+    </script>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+
+</html>

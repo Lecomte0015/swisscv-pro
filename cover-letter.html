@@ -129,6 +129,16 @@
             box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
         }
 
+        .btn .credit-cost {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
         .btn-secondary {
             background: #F5F5F5;
             color: var(--swiss-black);
@@ -442,8 +452,8 @@
                 padding: 12px
             }
         }
-    
-/* Menus déroulants */
+
+        /* Menus déroulants */
         .navbar-dropdown {
             position: relative;
             display: inline-block;
@@ -611,7 +621,7 @@
         }
     </style>
     </style>
-        <nav class="navbar">
+    <nav class="navbar">
         <a href="index.html" class="navbar-brand">SwissCV Pro</a>
         <div class="navbar-burger" onclick="toggleMobileMenu()">
             <span></span>
@@ -648,15 +658,18 @@
                 </div>
             </div>
 
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
             <!-- Menu Utilisateur Dropdown -->
-            
+
             <!-- Credit Balance Display -->
-            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+            <div class="credits-display" title="Voir mes crédits">
                 <span class="credits-icon">💳</span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
             </div>
-<div class="user-avatar-btn" id="userAvatarBtn">
+            <div class="user-avatar-btn" id="userAvatarBtn">
                 <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
 
                 <div class="user-menu-dropdown" id="userMenuDropdown">
@@ -676,6 +689,11 @@
                     <a href="support.html" class="user-menu-item">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
@@ -736,15 +754,15 @@
                 }
             });
 
-        // Close user menu when clicking on menu items
-        document.querySelectorAll('.user-menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const dropdown = document.getElementById('userMenuDropdown');
-                if (dropdown) {
-                    dropdown.classList.remove('show');
-                }
+            // Close user menu when clicking on menu items
+            document.querySelectorAll('.user-menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const dropdown = document.getElementById('userMenuDropdown');
+                    if (dropdown) {
+                        dropdown.classList.remove('show');
+                    }
+                });
             });
-        });
         });
 
         function toggleMobileMenu() {
@@ -791,7 +809,7 @@
             const teamLink = document.getElementById("teamLink");
 
             if (u && planBadge) {
-                const tier = u.tier || 'free';
+                const tier = u.subscription_tier || u.tier || 'free';
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
                 // Mettre à jour le nom et l'email de l'utilisateur dans le menu
@@ -809,8 +827,8 @@
 
                 // Mettre à jour l'avatar avec l'initiale du nom ou email
                 if (userAvatarCircle) {
-                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
-                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
+                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
                     userAvatarCircle.textContent = initial;
                 }
 
@@ -881,7 +899,7 @@
 
                 <div class="btn-group">
                     <button type="submit" class="btn btn-primary">
-                        ✨ Générer la lettre
+                        ✨ Générer la lettre <span class="credit-cost">(2 crédits)</span>
                     </button>
                     <button type="button" class="btn btn-secondary" onclick="resetForm()">
                         🔄 Réinitialiser
@@ -1002,7 +1020,25 @@
                 const data = await response.json();
 
                 if (!response.ok) {
+                    // Gérer le cas des crédits insuffisants (402)
+                    if (response.status === 402) {
+                        document.getElementById('loadingSection').classList.remove('active');
+                        showInsufficientCreditsModal(
+                            data.credits_required || 2,
+                            data.credits_balance || 0,
+                            'la génération de lettre'
+                        );
+                        return;
+                    }
                     throw new Error(data.error || 'Erreur lors de la génération');
+                }
+
+                // Mettre à jour l'affichage des crédits
+                if (data.credits_remaining !== undefined) {
+                    const user = getUser();
+                    if (user) {
+                        updateCreditDisplay(data.credits_remaining, user.credits_monthly_limit || 5);
+                    }
                 }
 
                 currentLetter = data.letter;
@@ -1089,6 +1125,7 @@
     <script src="public/js/notifications.js?v=1766451961"></script>
     <script src="public/js/favorites-badge.js"></script>
     <script src="public/js/credits.js"></script>
+
 </body>
 
 </html>

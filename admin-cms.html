@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - SwissCV Pro Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/mobile-menu.css">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #F8F9FA; color: #1f2937; }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .admin-navbar h1 { color: white; font-size: 24px; font-weight: 800; }
+        .admin-nav-links { display: flex; gap: 24px; align-items: center; }
+        .admin-nav-links a {
+            color: white; text-decoration: none; font-weight: 600; font-size: 15px;
+            padding: 8px 16px; border-radius: 6px; transition: all 0.2s;
+        }
+        .admin-nav-links a:hover { background: rgba(255, 255, 255, 0.2); }
+        .admin-nav-links a.active { background: rgba(255, 255, 255, 0.3); }
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2); border: 2px solid white; color: white;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .logout-btn:hover { background: white; color: #667eea; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
+        .page-title { font-size: 28px; font-weight: 800; margin-bottom: 32px; color: #1f2937; }
+
+        .cms-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .cms-sidebar {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+        }
+        .sidebar-title {
+            padding: 20px 20px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+        }
+        .sidebar-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-item:hover { background: #f9fafb; }
+        .sidebar-item.active { background: #f0f0ff; border-left-color: #667eea; font-weight: 700; }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: #e5e7eb; flex-shrink: 0;
+        }
+        .status-dot.active { background: #10b981; }
+        .status-dot.inactive { background: #ef4444; }
+
+        .cms-editor {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+        }
+        .editor-section-title {
+            font-size: 24px; font-weight: 800; margin-bottom: 8px; color: #1f2937;
+        }
+        .editor-section-desc {
+            font-size: 14px; color: #6b7280; margin-bottom: 24px;
+        }
+        .editor-empty {
+            text-align: center; padding: 80px 40px; color: #9ca3af;
+        }
+        .editor-empty p { font-size: 16px; }
+
+        .editor-panel {
+            margin-bottom: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .panel-header {
+            padding: 14px 20px;
+            background: #f9fafb;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .panel-header:hover { background: #f3f4f6; }
+        .panel-chevron { transition: transform 0.2s; font-size: 12px; }
+        .panel-header.collapsed .panel-chevron { transform: rotate(-90deg); }
+        .panel-body { padding: 20px; }
+        .panel-body.hidden { display: none; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="url"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 6px;
+            font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s;
+            background: white; color: #1f2937;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #667eea; outline: none;
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .form-separator {
+            border: none; border-top: 1px dashed #e5e7eb; margin: 20px 0;
+        }
+        .form-sub-title {
+            font-size: 13px; font-weight: 700; color: #667eea; margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+
+        .color-picker-group {
+            display: flex; gap: 8px; align-items: center;
+        }
+        .color-picker-group input[type="color"] {
+            width: 42px; height: 42px; border: 2px solid #e5e7eb; border-radius: 6px;
+            cursor: pointer; padding: 2px; background: white;
+        }
+        .color-picker-group input[type="text"] { width: 120px; }
+
+        .link-repeater-item {
+            display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px;
+            margin-bottom: 8px; align-items: center;
+        }
+        .link-repeater-item input {
+            padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 6px;
+            font-size: 13px; font-family: 'Inter', sans-serif;
+        }
+        .link-repeater-item input:focus { border-color: #667eea; outline: none; }
+        .btn-remove-link {
+            background: #fee2e2; color: #dc2626; border: none;
+            width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 16px;
+        }
+        .btn-remove-link:hover { background: #fecaca; }
+        .btn-add-link {
+            background: #f0f0ff; color: #667eea; border: 1px dashed #667eea;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer;
+            font-weight: 600; font-size: 13px; margin-top: 4px;
+        }
+        .btn-add-link:hover { background: #e8e8ff; }
+
+        .toggle-group {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+        }
+        .toggle-switch {
+            position: relative; width: 48px; height: 26px; cursor: pointer;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #d1d5db; border-radius: 26px; transition: 0.3s;
+        }
+        .toggle-slider:before {
+            content: ""; position: absolute; height: 20px; width: 20px;
+            left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s;
+        }
+        .toggle-switch input:checked + .toggle-slider { background: #10b981; }
+        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
+        .toggle-label { font-size: 14px; font-weight: 600; color: #374151; }
+
+        .action-buttons {
+            display: flex; gap: 12px; margin-top: 24px; padding-top: 24px;
+            border-top: 1px solid #e5e7eb; flex-wrap: wrap;
+        }
+        .btn-save {
+            background: #667eea; color: white; padding: 12px 32px; border: none;
+            border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
+            font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-save:hover { background: #5a6fd6; transform: translateY(-1px); }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-reset {
+            background: white; color: #ef4444; border: 2px solid #ef4444;
+            padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
+            font-size: 14px; font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-reset:hover { background: #fef2f2; }
+        .btn-preview {
+            background: #f3f4f6; color: #374151; border: 2px solid #e5e7eb;
+            padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
+            font-size: 14px; font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-preview:hover { background: #e5e7eb; }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; padding: 16px 24px;
+            border-radius: 8px; color: white; font-weight: 600; font-size: 14px;
+            z-index: 9999; transform: translateY(100px); opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+
+        .media-preview {
+            margin-top: 8px; max-width: 200px; max-height: 120px;
+            border-radius: 6px; border: 1px solid #e5e7eb; object-fit: cover;
+        }
+
+        @media (max-width: 1024px) {
+            .admin-navbar { padding: 12px 16px; }
+            .admin-nav-links { display: none; }
+            .container { padding: 16px; }
+            .cms-layout { grid-template-columns: 1fr; }
+            .cms-sidebar { position: static; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <h1>SwissCV Pro Admin</h1>
+        <div class="admin-nav-links">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="admin-users.html">Utilisateurs</a>
+            <a href="admin-testimonials.html">Temoignages</a>
+            <a href="admin-analytics.html">Analytics</a>
+            <a href="admin-support.html">Support</a>
+            <a href="admin-logs.html">Logs</a>
+            <a href="admin-reports.html">Rapports</a>
+            <a href="admin-cms.html" class="active">CMS</a>
+            <div class="notifications-container">
+                <button class="notifications-bell">
+                    <span>&#128276;</span>
+                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
+                </button>
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notifications-header">Notifications</div>
+                    <div id="notificationsList"></div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Deconnexion</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="page-title">CMS - Gestion du contenu</h2>
+
+        <div class="cms-layout">
+            <div class="cms-sidebar">
+                <div class="sidebar-title">Sections</div>
+                <div id="sidebarList"></div>
+            </div>
+
+            <div class="cms-editor" id="editorPanel">
+                <div class="editor-empty">
+                    <p>Selectionnez une section pour commencer l'edition</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="admin/js/mobile-menu.js"></script>
+    <script src="admin/js/notifications.js"></script>
+    <script src="admin/js/dark-mode.js"></script>
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function getAdminToken() { return localStorage.getItem('admin_token'); }
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+        if (!getAdminToken()) { window.location.href = 'admin-login.html'; }
+
+        let allSections = [];
+        let currentSectionId = null;
+
+        // Field definitions per section type
+        const SECTION_FIELDS = {
+            hero: {
+                content: [
+                    { key: 'title', label: 'Titre (partie normale)', type: 'text' },
+                    { key: 'title_highlight', label: 'Titre (partie coloree)', type: 'text' },
+                    { key: 'description', label: 'Description', type: 'textarea' },
+                    { key: 'primary_cta_text', label: 'Bouton primaire (texte)', type: 'text' },
+                    { key: 'primary_cta_link', label: 'Bouton primaire (lien)', type: 'text' },
+                    { key: 'secondary_cta_text', label: 'Bouton secondaire (texte)', type: 'text' },
+                    { key: 'secondary_cta_link', label: 'Bouton secondaire (lien)', type: 'text' },
+                    { key: 'hero_note', label: 'Note sous les boutons', type: 'text' }
+                ]
+            },
+            trust_bar: {
+                content: [
+                    { key: 'items.0.text', label: 'Item 1', type: 'text' },
+                    { key: 'items.1.text', label: 'Item 2', type: 'text' },
+                    { key: 'items.2.text', label: 'Item 3', type: 'text' },
+                    { key: 'items.3.text', label: 'Item 4', type: 'text' }
+                ]
+            },
+            steps: {
+                content: [
+                    { key: 'section_title', label: 'Titre de section', type: 'text' },
+                    { key: 'section_subtitle', label: 'Sous-titre', type: 'text' },
+                    { key: '_sep1', type: 'separator' },
+                    { key: '_sub1', label: 'Etape 1', type: 'subtitle' },
+                    { key: 'steps.0.title', label: 'Titre', type: 'text' },
+                    { key: 'steps.0.description', label: 'Description', type: 'textarea' },
+                    { key: '_sub2', label: 'Etape 2', type: 'subtitle' },
+                    { key: 'steps.1.title', label: 'Titre', type: 'text' },
+                    { key: 'steps.1.description', label: 'Description', type: 'textarea' },
+                    { key: '_sub3', label: 'Etape 3', type: 'subtitle' },
+                    { key: 'steps.2.title', label: 'Titre', type: 'text' },
+                    { key: 'steps.2.description', label: 'Description', type: 'textarea' }
+                ]
+            },
+            features: {
+                content: [
+                    { key: 'section_title', label: 'Titre de section', type: 'text' },
+                    { key: 'section_subtitle', label: 'Sous-titre', type: 'text' },
+                    { key: '_sep1', type: 'separator' },
+                    { key: '_sub1', label: 'Feature 1', type: 'subtitle' },
+                    { key: 'features.0.title', label: 'Titre', type: 'text' },
+                    { key: 'features.0.description', label: 'Description', type: 'textarea' },
+                    { key: 'features.0.badge', label: 'Badge (vide = pas de badge)', type: 'text' },
+                    { key: '_sub2', label: 'Feature 2', type: 'subtitle' },
+                    { key: 'features.1.title', label: 'Titre', type: 'text' },
+                    { key: 'features.1.description', label: 'Description', type: 'textarea' },
+                    { key: 'features.1.badge', label: 'Badge', type: 'text' },
+                    { key: '_sub3', label: 'Feature 3', type: 'subtitle' },
+                    { key: 'features.2.title', label: 'Titre', type: 'text' },
+                    { key: 'features.2.description', label: 'Description', type: 'textarea' },
+                    { key: 'features.2.badge', label: 'Badge', type: 'text' },
+                    { key: '_sub4', label: 'Feature 4', type: 'subtitle' },
+                    { key: 'features.3.title', label: 'Titre', type: 'text' },
+                    { key: 'features.3.description', label: 'Description', type: 'textarea' },
+                    { key: 'features.3.badge', label: 'Badge', type: 'text' }
+                ]
+            },
+            testimonials: {
+                content: [
+                    { key: 'section_title', label: 'Titre de section', type: 'text' },
+                    { key: 'section_subtitle', label: 'Sous-titre', type: 'text' }
+                ]
+            },
+            cta_final: {
+                content: [
+                    { key: 'title', label: 'Titre', type: 'text' },
+                    { key: 'description', label: 'Description', type: 'text' },
+                    { key: 'cta_text', label: 'Bouton (texte)', type: 'text' },
+                    { key: 'cta_link', label: 'Bouton (lien)', type: 'text' }
+                ]
+            },
+            footer: {
+                content: [
+                    { key: 'about_title', label: 'Titre "A propos"', type: 'text' },
+                    { key: 'about_text', label: 'Texte "A propos"', type: 'textarea' },
+                    { key: 'email', label: 'Email de contact', type: 'text' },
+                    { key: 'hosting_note', label: 'Note hebergement', type: 'text' },
+                    { key: 'copyright', label: 'Copyright', type: 'text' },
+                    { key: '_sep1', type: 'separator' },
+                    { key: 'columns', label: 'Colonnes de liens', type: 'footer_columns' }
+                ]
+            }
+        };
+
+        // Style fields common to all sections
+        const STYLE_FIELDS = [
+            { key: 'background_color', label: 'Couleur de fond', type: 'color', default: '' },
+            { key: 'title_color', label: 'Couleur du titre', type: 'color', default: '' },
+            { key: 'text_color', label: 'Couleur du texte', type: 'color', default: '' },
+            { key: 'accent_color', label: 'Couleur accent', type: 'color', default: '' },
+            { key: 'button_bg_color', label: 'Couleur bouton principal (fond)', type: 'color', default: '' },
+            { key: 'button_text_color', label: 'Couleur bouton principal (texte)', type: 'color', default: '' },
+            { key: 'secondary_button_bg_color', label: 'Couleur bouton secondaire (fond)', type: 'color', default: '' },
+            { key: 'secondary_button_text_color', label: 'Couleur bouton secondaire (texte)', type: 'color', default: '' },
+            { key: 'font_family', label: 'Police', type: 'select', options: ['','Inter','Roboto','Poppins','Lato','Montserrat','Open Sans'], default: '' },
+            { key: 'title_font_size', label: 'Taille titre', type: 'select', options: ['','28px','32px','36px','40px','44px','48px','52px'], default: '' },
+            { key: 'title_font_weight', label: 'Poids titre', type: 'select', options: ['','400','500','600','700','800'], default: '' },
+            { key: 'text_font_size', label: 'Taille texte', type: 'select', options: ['','14px','15px','16px','17px','18px','20px'], default: '' },
+            { key: 'text_alignment', label: 'Alignement texte/boutons', type: 'select', options: ['','left','center','right'], default: '' }
+        ];
+
+        const MEDIA_FIELDS = [
+            { key: 'background_image', label: 'Image de fond (URL)', type: 'url' },
+            { key: 'background_video', label: 'Video de fond (URL)', type: 'url' },
+            { key: 'section_image', label: 'Image de section (URL)', type: 'url' },
+            { key: 'section_video', label: 'Video de section (URL)', type: 'url' },
+            { key: 'image_position', label: 'Position image/video', type: 'select', options: ['', 'top', 'bottom', 'left', 'right'] },
+            { key: 'image_size', label: 'Taille image/video (%)', type: 'select', options: ['', '25', '33', '50', '66', '75', '100'] },
+            { key: 'video_size', label: 'Taille video section (%)', type: 'select', options: ['', '25', '33', '50', '66', '75', '100'] },
+            { key: 'image_border_radius', label: 'Arrondi image (px)', type: 'select', options: ['', '0', '4', '8', '12', '16', '24', '50'] }
+        ];
+
+        // Helper: get nested value from object
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((acc, part) => {
+                if (acc === null || acc === undefined) return '';
+                return acc[part];
+            }, obj) || '';
+        }
+
+        // Helper: set nested value in object
+        function setNestedValue(obj, path, value) {
+            const parts = path.split('.');
+            let current = obj;
+            for (let i = 0; i < parts.length - 1; i++) {
+                const part = parts[i];
+                const nextPart = parts[i + 1];
+                if (current[part] === undefined) {
+                    current[part] = isNaN(nextPart) ? {} : [];
+                }
+                current = current[part];
+            }
+            current[parts[parts.length - 1]] = value;
+        }
+
+        async function loadSections() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/cms/sections`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    allSections = data.sections;
+                    renderSidebar();
+                    if (currentSectionId) {
+                        selectSection(currentSectionId);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading sections:', error);
+                showToast('Erreur lors du chargement des sections', 'error');
+            }
+        }
+
+        function renderSidebar() {
+            const list = document.getElementById('sidebarList');
+            list.innerHTML = '';
+            allSections.forEach(section => {
+                const item = document.createElement('div');
+                item.className = `sidebar-item ${currentSectionId === section.id ? 'active' : ''}`;
+                item.dataset.sectionId = section.id;
+                item.innerHTML = `
+                    <span class="status-dot ${section.is_active ? 'active' : 'inactive'}"></span>
+                    <span>${section.section_label}</span>
+                `;
+                item.addEventListener('click', () => selectSection(section.id));
+                list.appendChild(item);
+            });
+        }
+
+        function selectSection(sectionId) {
+            currentSectionId = sectionId;
+            const section = allSections.find(s => s.id === sectionId);
+            if (!section) return;
+
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.toggle('active', parseInt(item.dataset.sectionId) === sectionId);
+            });
+
+            renderEditor(section);
+        }
+
+        function renderEditor(section) {
+            const panel = document.getElementById('editorPanel');
+            const fields = SECTION_FIELDS[section.section_key];
+            if (!fields) {
+                panel.innerHTML = '<div class="editor-empty"><p>Type de section non supporte</p></div>';
+                return;
+            }
+
+            let html = `
+                <div class="editor-section-title">${section.section_label}</div>
+                <div class="editor-section-desc">Modifiez le contenu, les styles et les medias de cette section</div>
+
+                <div class="toggle-group">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggleActive" ${section.is_active ? 'checked' : ''}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">Section active</span>
+                </div>
+            `;
+
+            // Content panel
+            html += `
+                <div class="editor-panel">
+                    <div class="panel-header" onclick="togglePanel(this)">
+                        Contenu <span class="panel-chevron">&#9660;</span>
+                    </div>
+                    <div class="panel-body" id="contentPanel">
+                        ${renderContentFields(fields.content, section.content)}
+                    </div>
+                </div>
+            `;
+
+            // Styles panel
+            html += `
+                <div class="editor-panel">
+                    <div class="panel-header" onclick="togglePanel(this)">
+                        Styles <span class="panel-chevron">&#9660;</span>
+                    </div>
+                    <div class="panel-body" id="stylesPanel">
+                        ${renderStyleFields(section.styles)}
+                    </div>
+                </div>
+            `;
+
+            // Media panel
+            html += `
+                <div class="editor-panel">
+                    <div class="panel-header" onclick="togglePanel(this)">
+                        Media <span class="panel-chevron">&#9660;</span>
+                    </div>
+                    <div class="panel-body" id="mediaPanel">
+                        ${renderMediaFields(section.media)}
+                    </div>
+                </div>
+            `;
+
+            // Action buttons
+            html += `
+                <div class="action-buttons">
+                    <button class="btn-save" onclick="saveSection()" id="btnSave">Enregistrer</button>
+                    <button class="btn-reset" onclick="resetSection()">Reinitialiser</button>
+                    <button class="btn-preview" onclick="window.open('index.html','_blank')">Apercu</button>
+                </div>
+            `;
+
+            panel.innerHTML = html;
+        }
+
+        function renderContentFields(fields, content) {
+            let html = '';
+            for (const field of fields) {
+                if (field.type === 'separator') {
+                    html += '<hr class="form-separator">';
+                    continue;
+                }
+                if (field.type === 'subtitle') {
+                    html += `<div class="form-sub-title">${field.label}</div>`;
+                    continue;
+                }
+                if (field.type === 'footer_columns') {
+                    html += renderFooterColumns(content.columns || []);
+                    continue;
+                }
+                const value = getNestedValue(content, field.key);
+                const escaped = String(value).replace(/"/g, '&quot;');
+                if (field.type === 'textarea') {
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <textarea data-content-key="${field.key}">${value}</textarea>
+                        </div>`;
+                } else {
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <input type="text" data-content-key="${field.key}" value="${escaped}">
+                        </div>`;
+                }
+            }
+            return html;
+        }
+
+        function renderFooterColumns(columns) {
+            let html = '<div class="form-sub-title">Colonnes de liens</div>';
+            columns.forEach((col, colIdx) => {
+                html += `
+                    <div class="form-group">
+                        <label>Colonne ${colIdx + 1} - Titre</label>
+                        <input type="text" data-column-title="${colIdx}" value="${(col.title || '').replace(/"/g, '&quot;')}">
+                    </div>
+                    <div id="column-links-${colIdx}">
+                `;
+                (col.links || []).forEach((link, linkIdx) => {
+                    html += `
+                        <div class="link-repeater-item" data-col="${colIdx}" data-link="${linkIdx}">
+                            <input type="text" placeholder="Label" value="${(link.label || '').replace(/"/g, '&quot;')}" data-link-label="${colIdx}-${linkIdx}">
+                            <input type="text" placeholder="URL" value="${(link.url || '').replace(/"/g, '&quot;')}" data-link-url="${colIdx}-${linkIdx}">
+                            <button class="btn-remove-link" onclick="removeLink(${colIdx}, ${linkIdx})">x</button>
+                        </div>`;
+                });
+                html += `
+                    </div>
+                    <button class="btn-add-link" onclick="addLink(${colIdx})">+ Ajouter un lien</button>
+                    <hr class="form-separator">
+                `;
+            });
+            return html;
+        }
+
+        function addLink(colIdx) {
+            const container = document.getElementById(`column-links-${colIdx}`);
+            const linkIdx = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'link-repeater-item';
+            div.dataset.col = colIdx;
+            div.dataset.link = linkIdx;
+            div.innerHTML = `
+                <input type="text" placeholder="Label" data-link-label="${colIdx}-${linkIdx}">
+                <input type="text" placeholder="URL" data-link-url="${colIdx}-${linkIdx}">
+                <button class="btn-remove-link" onclick="removeLink(${colIdx}, ${linkIdx})">x</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeLink(colIdx, linkIdx) {
+            const container = document.getElementById(`column-links-${colIdx}`);
+            const items = container.querySelectorAll('.link-repeater-item');
+            if (items[linkIdx]) items[linkIdx].remove();
+        }
+
+        function renderStyleFields(styles) {
+            let html = '';
+            for (const field of STYLE_FIELDS) {
+                const value = styles[field.key] || field.default;
+                if (field.type === 'color') {
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <div class="color-picker-group">
+                                <input type="color" data-style-key="${field.key}" value="${value || '#000000'}"
+                                    oninput="this.nextElementSibling.value=this.value">
+                                <input type="text" data-style-text-key="${field.key}" value="${value}"
+                                    placeholder="Ex: #D50000 ou vide"
+                                    oninput="if(this.value.match(/^#[0-9a-fA-F]{6}$/))this.previousElementSibling.value=this.value">
+                            </div>
+                        </div>`;
+                } else if (field.type === 'select') {
+                    let options = field.options.map(opt =>
+                        `<option value="${opt}" ${opt === value ? 'selected' : ''}>${opt || '-- Defaut --'}</option>`
+                    ).join('');
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <select data-style-key="${field.key}">${options}</select>
+                        </div>`;
+                }
+            }
+            return html;
+        }
+
+        function renderMediaFields(media) {
+            let html = '';
+            for (const field of MEDIA_FIELDS) {
+                const value = media[field.key] || '';
+                if (field.type === 'select') {
+                    let options = field.options.map(opt =>
+                        `<option value="${opt}" ${opt === value ? 'selected' : ''}>${opt || '-- Defaut --'}</option>`
+                    ).join('');
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <select data-media-key="${field.key}">${options}</select>
+                        </div>`;
+                } else {
+                    const isVideo = field.key.includes('video');
+                    html += `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <input type="url" data-media-key="${field.key}" value="${String(value).replace(/"/g, '&quot;')}"
+                                placeholder="https://..." oninput="updateMediaPreview(this, '${field.key}')">
+                            ${value && !isVideo ? `<img src="${value}" class="media-preview" onerror="this.style.display='none'">` : ''}
+                        </div>`;
+                }
+            }
+            return html;
+        }
+
+        function updateMediaPreview(input, key) {
+            let preview = input.nextElementSibling;
+            if (key.includes('video')) return;
+            if (!preview || !preview.classList.contains('media-preview')) {
+                if (input.value) {
+                    preview = document.createElement('img');
+                    preview.className = 'media-preview';
+                    preview.onerror = function() { this.style.display = 'none'; };
+                    input.after(preview);
+                }
+            }
+            if (preview && preview.classList.contains('media-preview')) {
+                if (input.value) {
+                    preview.src = input.value;
+                    preview.style.display = '';
+                } else {
+                    preview.style.display = 'none';
+                }
+            }
+        }
+
+        function togglePanel(header) {
+            header.classList.toggle('collapsed');
+            const body = header.nextElementSibling;
+            body.classList.toggle('hidden');
+        }
+
+        function collectFormData() {
+            const section = allSections.find(s => s.id === currentSectionId);
+            if (!section) return null;
+
+            // Collect content
+            const content = JSON.parse(JSON.stringify(section.content)); // Deep clone
+            const sectionKey = section.section_key;
+
+            // Regular content fields
+            document.querySelectorAll('[data-content-key]').forEach(el => {
+                const key = el.dataset.contentKey;
+                const value = el.tagName === 'TEXTAREA' ? el.value : el.value;
+                setNestedValue(content, key, value);
+            });
+
+            // Footer columns
+            if (sectionKey === 'footer') {
+                const columns = content.columns || [];
+                document.querySelectorAll('[data-column-title]').forEach(el => {
+                    const colIdx = parseInt(el.dataset.columnTitle);
+                    if (columns[colIdx]) columns[colIdx].title = el.value;
+                });
+                // Rebuild links from DOM
+                columns.forEach((col, colIdx) => {
+                    const container = document.getElementById(`column-links-${colIdx}`);
+                    if (!container) return;
+                    const links = [];
+                    container.querySelectorAll('.link-repeater-item').forEach(item => {
+                        const labelInput = item.querySelector('input[placeholder="Label"]');
+                        const urlInput = item.querySelector('input[placeholder="URL"]');
+                        if (labelInput && urlInput && (labelInput.value || urlInput.value)) {
+                            links.push({ label: labelInput.value, url: urlInput.value });
+                        }
+                    });
+                    col.links = links;
+                });
+                content.columns = columns;
+            }
+
+            // Collect styles (only non-empty values)
+            const styles = {};
+            document.querySelectorAll('[data-style-text-key]').forEach(el => {
+                const key = el.dataset.styleTextKey;
+                if (el.value) styles[key] = el.value;
+            });
+            document.querySelectorAll('select[data-style-key]').forEach(el => {
+                const key = el.dataset.styleKey;
+                if (el.value) styles[key] = el.value;
+            });
+
+            // Collect media (only non-empty values)
+            const media = {};
+            document.querySelectorAll('[data-media-key]').forEach(el => {
+                const key = el.dataset.mediaKey;
+                if (el.value) media[key] = el.value;
+            });
+
+            // Active toggle
+            const isActive = document.getElementById('toggleActive').checked ? 1 : 0;
+
+            return { content, styles, media, is_active: isActive };
+        }
+
+        async function saveSection() {
+            const formData = collectFormData();
+            if (!formData) return;
+
+            const btn = document.getElementById('btnSave');
+            btn.disabled = true;
+            btn.textContent = 'Enregistrement...';
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/cms/sections/${currentSectionId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${getAdminToken()}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast('Section enregistree avec succes', 'success');
+                    await loadSections();
+                } else {
+                    showToast('Erreur: ' + (data.error || 'Inconnue'), 'error');
+                }
+            } catch (error) {
+                showToast('Erreur de connexion', 'error');
+                console.error('Save error:', error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Enregistrer';
+            }
+        }
+
+        async function resetSection() {
+            if (!currentSectionId) return;
+            if (!confirm('Reinitialiser cette section aux valeurs par defaut ? Les modifications seront perdues.')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/cms/sections/reset/${currentSectionId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast('Section reinitialisee', 'success');
+                    await loadSections();
+                } else {
+                    showToast('Erreur: ' + (data.error || 'Inconnue'), 'error');
+                }
+            } catch (error) {
+                showToast('Erreur de connexion', 'error');
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
+
+        // Init
+        loadSections();
+    </script>
+</body>
+</html>

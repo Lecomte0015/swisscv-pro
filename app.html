@@ -370,6 +370,16 @@
             box-shadow: none;
         }
 
+        .btn-analyze .credit-cost {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
         /* ✅ NOUVELLE ANIMATION DE CHARGEMENT AMÉLIORÉE */
         .loading-overlay {
             display: none;
@@ -1250,10 +1260,13 @@
                 </div>
             </div>
 
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
             <!-- Menu Utilisateur Dropdown -->
 
             <!-- Credit Balance Display -->
-            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+            <div class="credits-display" title="Voir mes crédits">
                 <span class="credits-icon">💳</span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
@@ -1278,6 +1291,11 @@
                     <a href="support.html" class="user-menu-item">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
@@ -1356,7 +1374,7 @@
             const teamLink = document.getElementById("teamLink");
 
             if (u && planBadge) {
-                const tier = u.tier || 'free';
+                const tier = u.subscription_tier || u.tier || 'free';
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
 
@@ -1463,7 +1481,7 @@
 
             <div class="analyze-section">
                 <button class="btn-analyze" id="analyzeBtn" disabled>
-                    🚀 Analyser mon CV
+                    🚀 Analyser mon CV <span class="credit-cost">(1 crédit)</span>
                 </button>
             </div>
         </div>
@@ -2081,20 +2099,6 @@
                     return;
                 }
 
-                const canAnalyzeResult = await canAnalyze();
-
-                if (!canAnalyzeResult.allowed) {
-                    // This case should ideally be handled by the backend returning 403
-                    // but keeping this for explicit client-side checks if any.
-                    if (canAnalyzeResult.reason === 'no_auth') {
-                        alert('Veuillez vous connecter pour analyser votre CV.');
-                        window.location.href = 'login.html';
-                    } else {
-                        showLimitReachedModal();
-                    }
-                    return;
-                }
-
                 // ✅ Afficher le loading avec animation
                 document.getElementById('loadingOverlay').classList.add('show');
 
@@ -2143,8 +2147,20 @@
                 console.log('📥 Réponse:', response.status);
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`${response.status}: ${errorText}`);
+                    const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }));
+
+                    // Gérer le cas des crédits insuffisants (402)
+                    if (response.status === 402) {
+                        document.getElementById('loadingOverlay').classList.remove('show');
+                        showInsufficientCreditsModal(
+                            errorData.credits_required || 1,
+                            errorData.credits_balance || 0,
+                            'l\'analyse de CV'
+                        );
+                        return;
+                    }
+
+                    throw new Error(errorData.error || `Erreur ${response.status}`);
                 }
 
                 const result = await response.json();
@@ -2157,14 +2173,13 @@
                     throw new Error('Résultat incomplet');
                 }
 
-                // Plus besoin d'incrémenter manuellement, le worker le fait
-                await updateRemainingCount();
-
-                // ✅ CONSUME CREDITS - After successful analysis
-                await consumeCredits('cv_analysis', {
-                    fileName: selectedFile.name,
-                    analysisId: result.analysisId || analysis.id
-                });
+                // Le backend a déjà consommé les crédits, on met à jour l'affichage
+                if (result.credits_remaining !== undefined) {
+                    const user = getUser();
+                    if (user) {
+                        updateCreditDisplay(result.credits_remaining, user.credits_monthly_limit || 5);
+                    }
+                }
 
                 currentAnalysisResult = analysis;
                 saveAnalysis({
@@ -2186,9 +2201,10 @@
                 document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
 
                 if (typeof gtag !== 'undefined') {
+                    const user = getUser();
                     gtag('event', 'cv_analyzed', {
                         'event_category': 'analysis',
-                        'user_type': canAnalyzeResult.reason
+                        'user_type': user?.tier || 'free'
                     });
                 }
 
@@ -2740,6 +2756,7 @@
     <script src="public/js/favorites-badge.js"></script>
     <script src="public/js/user-menu.js"></script>
     <script src="public/js/credits.js"></script>
+
 </body>
 
 

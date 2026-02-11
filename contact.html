@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; color: #333; line-height: 1.7; }
+
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        .navbar-brand { font-size: 20px; font-weight: 800; color: #0D0D0D; text-decoration: none; }
+        .navbar-link { padding: 8px 16px; background: #D50000; color: white; border-radius: 6px; text-decoration: none; font-weight: 600; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 120px 24px 60px; }
+
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; color: #0D0D0D; text-align: center; }
+        .subtitle { color: #666; margin-bottom: 40px; text-align: center; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .contact-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #0D0D0D;
+        }
+        .contact-card p {
+            color: #666;
+            margin-bottom: 16px;
+        }
+        .contact-card a {
+            color: #D50000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .form-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: #0D0D0D;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #D50000;
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        .btn-submit {
+            background: #D50000;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            background: #B71C1C;
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            display: none;
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background: white;
+            border-top: 2px solid #E0E0E0;
+            padding: 60px 40px 40px;
+            margin-top: 60px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        .footer-about h3 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .footer-about p { color: #666; line-height: 1.7; margin-bottom: 12px; }
+        .footer-email { margin-top: 16px; font-size: 15px; }
+        .footer-email a { color: #D50000; text-decoration: none; font-weight: 500; }
+        .footer-email a:hover { text-decoration: underline; }
+        .footer-hosting { font-size: 12px; color: #999; margin-top: 8px; }
+        .footer-links h4 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+        .footer-links ul { list-style: none; }
+        .footer-links a { color: #666; text-decoration: none; display: block; margin-bottom: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: #D50000; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #E0E0E0;
+            color: #666;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <a href="index.html" class="navbar-link">Retour</a>
+    </nav>
+
+    <div class="container">
+        <h1>Contactez-nous</h1>
+        <p class="subtitle">Notre equipe est la pour vous aider</p>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h3>Email</h3>
+                <p>Pour toute question generale</p>
+                <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">💬</div>
+                <h3>Support</h3>
+                <p>Besoin d'aide technique ?</p>
+                <a href="support.html">Centre d'aide</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">🔒</div>
+                <h3>Donnees personnelles</h3>
+                <p>Questions RGPD / confidentialite</p>
+                <a href="mailto:privacy@swisscv.ch">privacy@swisscv.ch</a>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h2>Envoyez-nous un message</h2>
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nom complet</label>
+                        <input type="text" id="name" name="name" required placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="votre@email.ch">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Sujet</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Selectionnez un sujet</option>
+                        <option value="general">Question generale</option>
+                        <option value="support">Support technique</option>
+                        <option value="billing">Facturation</option>
+                        <option value="partnership">Partenariat</option>
+                        <option value="press">Presse / Media</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required placeholder="Decrivez votre demande..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Envoyer le message</button>
+                <div class="success-message" id="successMessage">
+                    Merci pour votre message ! Nous vous repondrons dans les plus brefs delais.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée avec IA.</p>
+                <p class="footer-email">contact@swisscv-pro.ch</p>
+                <p class="footer-hosting">Hébergé en Suisse - Données traitées selon standards suisses</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Entreprises</h4>
+                <ul>
+                    <li><a href="pricing.html#pro">SwissCV Pro</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Team Management</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="terms.html">Conditions d'utilisation</a></li>
+                    <li><a href="privacy.html">Confidentialité</a></li>
+                    <li><a href="cookies.html">Cookies</a></li>
+                    <li><a href="rgpd.html">RGPD</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate form submission
+            document.getElementById('successMessage').style.display = 'block';
+            this.reset();
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

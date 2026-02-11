@@ -137,6 +137,16 @@
             transform: none;
         }
 
+        .btn-generate .credit-cost-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
         .questions-container {
             display: none;
         }
@@ -521,10 +531,13 @@
                 </div>
             </div>
 
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
             <!-- Menu Utilisateur Dropdown -->
             
             <!-- Credit Balance Display -->
-            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+            <div class="credits-display" title="Voir mes crédits">
                 <span class="credits-icon">💳</span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
@@ -549,6 +562,11 @@
                     <a href="support.html" class="user-menu-item">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
@@ -599,8 +617,10 @@
                 <label for="position">Intitulé du poste</label>
                 <input type="text" id="position" placeholder="Ex: Développeur Full-Stack, Comptable, Infirmier...">
             </div>
-            <button class="btn-generate" id="generateBtn" onclick="generateQuestions()" disabled>Générer les questions
-                d'entretien</button>
+            <button class="btn-generate btn-with-cost" id="generateBtn" onclick="generateQuestions()" disabled data-cost="1">
+                Générer les questions d'entretien
+                <span class="credit-cost-badge">1 crédit</span>
+            </button>
         </div>
 
         <div class="loading" id="loadingState">
@@ -852,6 +872,23 @@
             const position = document.getElementById('position').value.trim();
             if (!selectedSector || !position) { alert('Veuillez sélectionner un secteur et préciser le poste'); return; }
 
+            // Vérifier les crédits avant de générer
+            try {
+                const validation = await validateCredits('interview_prep');
+                if (!validation.has_enough_credits) {
+                    showInsufficientCreditsModal(
+                        validation.required_credits || 1,
+                        validation.current_balance || 0,
+                        'générer les questions d\'entretien'
+                    );
+                    return;
+                }
+            } catch (error) {
+                console.error('Erreur validation crédits:', error);
+                alert('Erreur lors de la vérification des crédits. Veuillez réessayer.');
+                return;
+            }
+
             document.getElementById('loadingState').classList.add('active');
             document.getElementById('questionsContainer').classList.remove('active');
             document.getElementById('generateBtn').disabled = true;
@@ -867,6 +904,9 @@
 
                 // Simuler un délai pour l'effet de chargement
                 await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Consommer le crédit après succès
+                await consumeCredits('interview_prep', { sector: selectedSector, position: position });
 
                 displayQuestions(sectorData.questions, sectorData.tips);
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -952,7 +992,7 @@
 
             const u = getUser();
             if (u) {
-                const tier = u.tier || 'free';
+                const tier = u.subscription_tier || u.tier || 'free';
                 const badge = document.getElementById("planBadge");
                 if (badge) {
                     badge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);

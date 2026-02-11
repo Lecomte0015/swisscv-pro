@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clés API — SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="public/css/navbar.css?v=1766451961">
+    <link rel="stylesheet" href="public/css/user-menu.css?v=1766451961">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Upgrade Notice */
+        .upgrade-notice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .upgrade-notice h2 {
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .upgrade-notice p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+        }
+
+        .btn-upgrade {
+            background: white;
+            color: #667eea;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .btn-upgrade:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #B80000;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #F3F4F6;
+            color: #666;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #E5E7EB;
+        }
+
+        .btn-danger {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        /* API Keys Table */
+        .keys-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .keys-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .keys-table thead {
+            background: #F9FAFB;
+        }
+
+        .keys-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .keys-table td {
+            padding: 16px;
+            border-top: 1px solid #F3F4F6;
+        }
+
+        .keys-table tr:hover {
+            background: #F9FAFB;
+        }
+
+        .key-prefix {
+            font-family: 'Courier New', monospace;
+            background: #F3F4F6;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-revoked {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #D1D5DB;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .api-key-display {
+            background: #F9FAFB;
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px dashed #D1D5DB;
+            margin: 16px 0;
+        }
+
+        .api-key-display code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #059669;
+            word-break: break-all;
+        }
+
+        .copy-button {
+            background: #10B981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .copy-button:hover {
+            background: #059669;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border-left: 4px solid #F59E0B;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid #10B981;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .keys-table-container {
+                overflow-x: auto;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .modal-content {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+
+            <div class="navbar-dropdown" id="cvToolsMenu">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    🎯 Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    📊 Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item">⭐ Favoris</a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+
+            <div class="credits-display" onclick="window.location.href='credits.html'" title="Voir mes crédits">
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+
+            <div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon">👤</span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="api-keys.html" class="user-menu-item">
+                        <span class="menu-icon">🔑</span>
+                        <span>Clés API</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon">🚪</span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-key"></i>
+                Clés API
+                <span class="pro-badge">Pro</span>
+            </h1>
+            <p>Gérez vos clés API pour intégrer SwissCV Pro dans vos systèmes</p>
+        </div>
+
+        <!-- Upgrade Notice (shown for non-Pro users) -->
+        <div class="upgrade-notice" id="upgradeNotice" style="display: none;">
+            <h2>🔒 Fonctionnalité Pro</h2>
+            <p>L'accès API est réservé aux utilisateurs du plan Pro. Passez à Pro pour intégrer SwissCV Pro dans vos
+                systèmes et automatiser vos analyses de CV.</p>
+            <a href="pricing.html" class="btn-upgrade">Passer à Pro</a>
+        </div>
+
+        <!-- Main Content (shown for Pro users) -->
+        <div id="mainContent" style="display: none;">
+            <div class="action-bar">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important :</strong> Ne partagez jamais vos clés API. Elles donnent accès à votre compte.
+                </div>
+                <button class="btn-primary" onclick="openCreateKeyModal()">
+                    <i class="fas fa-plus"></i>
+                    Créer une clé API
+                </button>
+            </div>
+
+            <div class="keys-table-container">
+                <div id="loadingKeys" class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Chargement des clés...</p>
+                </div>
+
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <i class="fas fa-key"></i>
+                    <h3>Aucune clé API</h3>
+                    <p>Créez votre première clé API pour commencer à utiliser l'API SwissCV Pro</p>
+                    <button class="btn-primary" onclick="openCreateKeyModal()">
+                        <i class="fas fa-plus"></i>
+                        Créer une clé API
+                    </button>
+                </div>
+
+                <table class="keys-table" id="keysTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Clé</th>
+                            <th>Dernière utilisation</th>
+                            <th>Créée le</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keysTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Key Modal -->
+    <div class="modal" id="createKeyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Créer une clé API</h2>
+                <p>Donnez un nom descriptif à votre clé pour l'identifier facilement</p>
+            </div>
+
+            <form id="createKeyForm" onsubmit="createApiKey(event)">
+                <div class="form-group">
+                    <label for="keyName">Nom de la clé *</label>
+                    <input type="text" id="keyName" placeholder="Ex: Production Server" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateKeyModal()">Annuler</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Créer la clé
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Show Key Modal -->
+    <div class="modal" id="showKeyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Clé API créée !</h2>
+                <p>Copiez cette clé maintenant. Vous ne pourrez plus la voir après avoir fermé cette fenêtre.</p>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Attention :</strong> Cette clé ne sera affichée qu'une seule fois !
+            </div>
+
+            <div class="api-key-display">
+                <code id="newApiKey"></code>
+            </div>
+
+            <button class="copy-button" onclick="copyApiKey()">
+                <i class="fas fa-copy"></i>
+                Copier la clé
+            </button>
+
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeShowKeyModal()">
+                    J'ai copié la clé
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/js/auth.js"></script>
+    <script src="public/js/notifications.js?v=1766451961"></script>
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+        let currentApiKey = '';
+
+        // Check if user is Pro
+        async function checkProAccess() {
+            const user = getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            if (user.tier !== 'pro') {
+                document.getElementById('upgradeNotice').style.display = 'block';
+                document.getElementById('mainContent').style.display = 'none';
+                return false;
+            }
+
+            document.getElementById('upgradeNotice').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            return true;
+        }
+
+        // Load API keys
+        async function loadApiKeys() {
+            const isPro = await checkProAccess();
+            if (!isPro) return;
+
+            try {
+                const response = await authenticatedFetch(`${API_BASE}/api/v1/keys`);
+                const data = await response.json();
+
+                if (data.success && data.keys && data.keys.length > 0) {
+                    displayKeys(data.keys);
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading keys:', error);
+                showEmptyState();
+            }
+        }
+
+        function displayKeys(keys) {
+            document.getElementById('loadingKeys').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('keysTable').style.display = 'table';
+
+            const tbody = document.getElementById('keysTableBody');
+            tbody.innerHTML = keys.map(key => `
+                <tr>
+                    <td><strong>${escapeHtml(key.name)}</strong></td>
+                    <td><span class="key-prefix">${escapeHtml(key.key_prefix)}</span></td>
+                    <td>${key.last_used_at ? formatDate(key.last_used_at) : 'Jamais'}</td>
+                    <td>${formatDate(key.created_at)}</td>
+                    <td>
+                        <span class="status-badge ${key.revoked_at ? 'status-revoked' : 'status-active'}">
+                            ${key.revoked_at ? 'Révoquée' : 'Active'}
+                        </span>
+                    </td>
+                    <td>
+                        ${!key.revoked_at ? `
+                            <button class="btn-danger" onclick="revokeKey('${key.id}', '${escapeHtml(key.name)}')">
+                                <i class="fas fa-ban"></i> Révoquer
+                            </button>
+                        ` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showEmptyState() {
+            document.getElementById('loadingKeys').style.display = 'none';
+            document.getElementById('keysTable').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+
+        // Create API key
+        function openCreateKeyModal() {
+            document.getElementById('createKeyModal').classList.add('active');
+            document.getElementById('keyName').value = '';
+        }
+
+        function closeCreateKeyModal() {
+            document.getElementById('createKeyModal').classList.remove('active');
+        }
+
+        async function createApiKey(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('keyName').value.trim();
+            if (!name) return;
+
+            try {
+                const response = await authenticatedFetch(`${API_BASE}/api/v1/keys`, {
+                    method: 'POST',
+                    body: JSON.stringify({ name })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentApiKey = data.api_key;
+                    closeCreateKeyModal();
+                    showNewApiKey(data.api_key);
+                    loadApiKeys();
+                } else {
+                    alert('Erreur: ' + (data.error || 'Impossible de créer la clé'));
+                }
+            } catch (error) {
+                console.error('Error creating key:', error);
+                alert('Erreur lors de la création de la clé');
+            }
+        }
+
+        function showNewApiKey(apiKey) {
+            document.getElementById('newApiKey').textContent = apiKey;
+            document.getElementById('showKeyModal').classList.add('active');
+        }
+
+        function closeShowKeyModal() {
+            document.getElementById('showKeyModal').classList.remove('active');
+            currentApiKey = '';
+        }
+
+        function copyApiKey() {
+            const apiKey = document.getElementById('newApiKey').textContent;
+            navigator.clipboard.writeText(apiKey).then(() => {
+                const btn = event.target.closest('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copié !';
+                btn.style.background = '#10B981';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // Revoke API key
+        async function revokeKey(keyId, keyName) {
+            if (!confirm(`Êtes-vous sûr de vouloir révoquer la clé "${keyName}" ? Cette action est irréversible.`)) {
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch(`${API_BASE}/api/v1/keys/${keyId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Clé révoquée avec succès');
+                    loadApiKeys();
+                } else {
+                    alert('Erreur: ' + (data.error || 'Impossible de révoquer la clé'));
+                }
+            } catch (error) {
+                console.error('Error revoking key:', error);
+                alert('Erreur lors de la révocation de la clé');
+            }
+        }
+
+        // Utility functions
+        function formatDate(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navbarMenu');
+            const burger = document.querySelector('.navbar-burger');
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Update user info in navbar
+        (function () {
+            const u = getUser();
+            if (u) {
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+                const planBadge = document.getElementById('planBadge');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() :
+                        u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
+                if (planBadge) {
+                    const tier = u.subscription_tier || u.tier || 'free';
+                    planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    planBadge.className = `plan-badge ${tier}`;
+                }
+            }
+        })();
+
+        // Load keys on page load
+        window.addEventListener('DOMContentLoaded', loadApiKeys);
+    </script>
+</body>
+
+</html>

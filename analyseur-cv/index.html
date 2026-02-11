@@ -1347,7 +1347,7 @@ document.querySelectorAll('.navbar-link, .navbar-btn').forEach(l=>{l.addEventLis
 
         function updateUIForUserRole() {
             const user = getUser();
-            const role = user ? user.tier : 'free';
+            const role = user ? (user.subscription_tier || user.tier || 'free') : 'free';
             const planBadge = document.getElementById('planBadge');
             const planIcon = document.getElementById('planIcon');
             const planText = document.getElementById('planText');

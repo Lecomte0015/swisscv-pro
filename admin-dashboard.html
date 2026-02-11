@@ -258,6 +258,7 @@
             <a href="admin-support.html">Support</a>
             <a href="admin-logs.html">Logs</a>
             <a href="admin-reports.html">📧 Rapports</a>
+            <a href="admin-cms.html">CMS</a>
             <div class="notifications-container">
                 <button class="notifications-bell">
                     🔔
@@ -344,39 +345,39 @@
         // Charger stats
         async function loadStats() {
             try {
-                // Stats overview
-                const statsResponse = await fetch(`${API_BASE}/admin/stats/overview`, {
+                // Stats overview (utilise /admin/stats)
+                const statsResponse = await fetch(`${API_BASE}/admin/stats`, {
                     headers: { 'Authorization': `Bearer ${getAdminToken()}` }
                 });
-                const stats = await statsResponse.json();
+                const statsData = await statsResponse.json();
+                console.log('Stats loaded:', statsData);
 
-                // Analytics (analyses CV + inscriptions)
-                const analyticsResponse = await fetch(`${API_BASE}/admin/analytics`, {
-                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
-                });
-                const analytics = await analyticsResponse.json();
+                // L'API retourne { success: true, stats: { ... } }
+                const stats = statsData.stats || statsData;
 
                 // Metrics (MRR, etc.)
                 const metricsResponse = await fetch(`${API_BASE}/admin/metrics`, {
                     headers: { 'Authorization': `Bearer ${getAdminToken()}` }
                 });
-                const metrics = await metricsResponse.json();
+                const metricsData = await metricsResponse.json();
+                console.log('Metrics loaded:', metricsData);
+                const metrics = metricsData.metrics || metricsData;
 
                 // Mettre à jour les stats
                 const totalUsersEl = document.getElementById('totalUsers');
                 if (totalUsersEl) totalUsersEl.textContent = stats.total_users || 0;
 
                 const premiumUsersEl = document.getElementById('premiumUsers');
-                if (premiumUsersEl) premiumUsersEl.textContent = (stats.premium_users + stats.pro_users) || 0;
+                if (premiumUsersEl) premiumUsersEl.textContent = ((stats.premium_users || 0) + (stats.pro_users || 0));
 
                 const totalAnalysesEl = document.getElementById('totalAnalyses');
-                if (totalAnalysesEl) totalAnalysesEl.textContent = analytics.total_analyses || 0;
+                if (totalAnalysesEl) totalAnalysesEl.textContent = stats.total_analyses || 0;
 
                 const revenueEl = document.getElementById('revenue');
-                if (revenueEl) revenueEl.textContent = metrics.mrr ? `€${metrics.mrr}` : '-';
+                if (revenueEl) revenueEl.textContent = metrics.mrr ? `CHF ${metrics.mrr}` : (stats.revenue_monthly ? `CHF ${stats.revenue_monthly}` : '-');
 
                 // Charts avec vraies données
-                createRegistrationsChart(analytics.registrations_by_day || {});
+                createRegistrationsChart(metrics.monthly_registrations || {});
                 createPlansChart(stats);
 
             } catch (error) {

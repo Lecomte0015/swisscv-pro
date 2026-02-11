@@ -832,10 +832,13 @@
                 </div>
             </div>
 
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link active" id="teamNavLink" style="display:none;">👥 Team</a>
+
             <!-- Menu Utilisateur Dropdown -->
             
             <!-- Credit Balance Display -->
-            <div class="credits-display" onclick="window.location.href='settings.html'" title="Voir mes crédits">
+            <div class="credits-display" title="Voir mes crédits">
                 <span class="credits-icon">💳</span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
@@ -860,6 +863,11 @@
                     <a href="support.html" class="user-menu-item">
                         <span class="menu-icon">💬</span>
                         <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon">💳</span>
+                        <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
@@ -975,7 +983,7 @@
             const teamLink = document.getElementById("teamLink");
 
             if (u && planBadge) {
-                const tier = u.tier || 'free';
+                const tier = u.subscription_tier || u.tier || 'free';
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
                 // Mettre à jour le nom et l'email de l'utilisateur dans le menu

@@ -2,7 +2,7 @@
 // CREDIT SYSTEM - FRONTEND JAVASCRIPT
 // ============================================
 
-const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+// API_BASE is already defined globally, no need to redeclare
 
 // Credit costs (must match backend)
 const CREDIT_COSTS = {
@@ -28,6 +28,9 @@ async function loadCreditBalance() {
 
         if (data.success) {
             updateCreditDisplay(data.balance, data.monthly_limit);
+
+            // Update Team link visibility based on existing user tier (don't override tier from balance API)
+            updateTeamLinkVisibility();
         }
     } catch (error) {
         console.error('Error loading credit balance:', error);
@@ -213,6 +216,21 @@ function addCreditCostBadge(buttonElement, actionType) {
 }
 
 /**
+ * Show/hide Team link based on user tier
+ */
+function updateTeamLinkVisibility() {
+    const teamLink = document.getElementById('teamNavLink');
+    if (!teamLink) return;
+
+    const user = getUser();
+    if (user && user.subscription_tier === 'pro') {
+        teamLink.style.display = 'inline-block';
+    } else {
+        teamLink.style.display = 'none';
+    }
+}
+
+/**
  * Initialize credit system on page load
  */
 function initCreditSystem() {
@@ -223,6 +241,19 @@ function initCreditSystem() {
     if (!document.getElementById('insufficientCreditsModal')) {
         createInsufficientCreditsModal();
     }
+
+    // Add click event listener to credit display for navigation
+    const displayEl = document.querySelector('.credits-display');
+    if (displayEl) {
+        displayEl.addEventListener('click', () => {
+            window.location.href = 'credits.html';
+        });
+        // Add cursor pointer to indicate it's clickable
+        displayEl.style.cursor = 'pointer';
+    }
+
+    // Update Team link visibility based on user tier
+    updateTeamLinkVisibility();
 
     // Refresh balance every 30 seconds
     setInterval(loadCreditBalance, 30000);

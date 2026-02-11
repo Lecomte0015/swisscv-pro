@@ -601,7 +601,7 @@
             const teamLink = document.getElementById("teamLink");
 
             if (u && planBadge) {
-                const tier = u.tier || 'free';
+                const tier = u.subscription_tier || u.tier || 'free';
                 planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
                 planBadge.className = `plan-badge ${tier}`;
 

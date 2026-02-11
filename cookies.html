@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de cookies - SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; color: #333; line-height: 1.7; }
+
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        .navbar-brand { font-size: 20px; font-weight: 800; color: #0D0D0D; text-decoration: none; }
+        .navbar-link { padding: 8px 16px; background: #D50000; color: white; border-radius: 6px; text-decoration: none; font-weight: 600; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 120px 24px 60px; }
+
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; color: #0D0D0D; }
+        .subtitle { color: #666; margin-bottom: 40px; }
+
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 { font-size: 1.4rem; font-weight: 700; margin: 32px 0 16px; color: #0D0D0D; }
+        h2:first-child { margin-top: 0; }
+
+        p { margin-bottom: 16px; color: #444; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .cookie-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .cookie-essential { background: #E8F5E9; color: #2E7D32; }
+        .cookie-analytics { background: #E3F2FD; color: #1565C0; }
+        .cookie-functional { background: #FFF3E0; color: #E65100; }
+
+        .footer {
+            background: white;
+            border-top: 2px solid #E0E0E0;
+            padding: 60px 40px 40px;
+            margin-top: 60px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        .footer-about h3 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .footer-about p { color: #666; line-height: 1.7; margin-bottom: 12px; }
+        .footer-email { margin-top: 16px; font-size: 15px; }
+        .footer-email a { color: #D50000; text-decoration: none; font-weight: 500; }
+        .footer-email a:hover { text-decoration: underline; }
+        .footer-hosting { font-size: 12px; color: #999; margin-top: 8px; }
+        .footer-links h4 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+        .footer-links ul { list-style: none; }
+        .footer-links a { color: #666; text-decoration: none; display: block; margin-bottom: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: #D50000; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #E0E0E0;
+            color: #666;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <a href="index.html" class="navbar-link">Retour</a>
+    </nav>
+
+    <div class="container">
+        <h1>Politique de cookies</h1>
+        <p class="subtitle">Derniere mise a jour : Fevrier 2025</p>
+
+        <div class="content-card">
+            <h2>1. Qu'est-ce qu'un cookie ?</h2>
+            <p>Un cookie est un petit fichier texte stocke sur votre appareil lorsque vous visitez un site web. Les cookies nous permettent de reconnaitre votre navigateur et de memoriser certaines informations.</p>
+
+            <h2>2. Types de cookies utilises</h2>
+
+            <table>
+                <tr>
+                    <th>Cookie</th>
+                    <th>Type</th>
+                    <th>Duree</th>
+                    <th>Finalite</th>
+                </tr>
+                <tr>
+                    <td>swisscv_token</td>
+                    <td><span class="cookie-type cookie-essential">Essentiel</span></td>
+                    <td>Session</td>
+                    <td>Authentification utilisateur</td>
+                </tr>
+                <tr>
+                    <td>swisscv_user</td>
+                    <td><span class="cookie-type cookie-essential">Essentiel</span></td>
+                    <td>Session</td>
+                    <td>Donnees de session</td>
+                </tr>
+                <tr>
+                    <td>cookie_consent</td>
+                    <td><span class="cookie-type cookie-functional">Fonctionnel</span></td>
+                    <td>1 an</td>
+                    <td>Memorise vos preferences cookies</td>
+                </tr>
+                <tr>
+                    <td>_ga, _gid</td>
+                    <td><span class="cookie-type cookie-analytics">Analytique</span></td>
+                    <td>2 ans / 24h</td>
+                    <td>Google Analytics - statistiques</td>
+                </tr>
+            </table>
+
+            <h2>3. Cookies essentiels</h2>
+            <p>Ces cookies sont necessaires au fonctionnement du site. Ils permettent notamment :</p>
+            <ul>
+                <li>De vous maintenir connecte a votre compte</li>
+                <li>De securiser votre session</li>
+                <li>De memoriser le contenu de votre panier</li>
+            </ul>
+            <p>Ces cookies ne peuvent pas etre desactives.</p>
+
+            <h2>4. Cookies analytiques</h2>
+            <p>Ces cookies nous aident a comprendre comment les visiteurs utilisent notre site. Les donnees collectees sont anonymisees et agregees.</p>
+
+            <h2>5. Gerer vos preferences</h2>
+            <p>Vous pouvez controler les cookies de plusieurs facons :</p>
+            <ul>
+                <li><strong>Parametres du navigateur :</strong> La plupart des navigateurs vous permettent de bloquer ou supprimer les cookies</li>
+                <li><strong>Notre banniere cookies :</strong> Lors de votre premiere visite, vous pouvez accepter ou refuser les cookies non essentiels</li>
+            </ul>
+
+            <h2>6. Impact du refus des cookies</h2>
+            <p>Si vous choisissez de bloquer certains cookies, certaines fonctionnalites du site pourraient ne pas fonctionner correctement.</p>
+
+            <h2>7. Contact</h2>
+            <p>Pour toute question concernant notre utilisation des cookies : <a href="mailto:privacy@swisscv.ch">privacy@swisscv.ch</a></p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite, confidentielle et instantanée avec IA.</p>
+                <p class="footer-email">contact@swisscv-pro.ch</p>
+                <p class="footer-hosting">Hébergé en Suisse - Données traitées selon standards suisses</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Entreprises</h4>
+                <ul>
+                    <li><a href="pricing.html#pro">SwissCV Pro</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Team Management</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="terms.html">Conditions d'utilisation</a></li>
+                    <li><a href="privacy.html">Confidentialité</a></li>
+                    <li><a href="cookies.html">Cookies</a></li>
+                    <li><a href="rgpd.html">RGPD</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
+        </div>
+    </footer>
+</body>
+</html>

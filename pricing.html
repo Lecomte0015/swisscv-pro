@@ -23,6 +23,7 @@
             --gray-600: #666666;
             --gray-900: #1A1A1A;
             --green-check: #4CAF50;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         body {
@@ -91,7 +92,7 @@
             background: var(--swiss-black);
             color: white;
             text-align: center;
-            padding: 80px 24px;
+            padding: 80px 24px 100px;
         }
 
         .hero h1 {
@@ -110,14 +111,49 @@
             font-size: 19px;
             color: #B0B0B0;
             max-width: 700px;
-            margin: 0 auto;
+            margin: 0 auto 32px;
             font-weight: 400;
+        }
+
+        .hero-credits-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .credit-usage-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 12px;
+        }
+
+        .credit-usage-icon {
+            font-size: 24px;
+        }
+
+        .credit-usage-text {
+            text-align: left;
+        }
+
+        .credit-usage-action {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .credit-usage-cost {
+            font-size: 13px;
+            color: #B0B0B0;
         }
 
         /* Pricing Cards */
         .pricing-container {
             max-width: 1200px;
-            margin: -60px auto 100px;
+            margin: -60px auto 80px;
             padding: 0 24px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -199,6 +235,45 @@
             font-weight: 400;
         }
 
+        /* Credits highlight */
+        .plan-credits {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .credits-number {
+            font-size: 42px;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .credits-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-top: 8px;
+        }
+
+        .credits-per-unit {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #667eea30;
+        }
+
+        .credits-per-unit strong {
+            color: #667eea;
+        }
+
         .plan-features {
             margin-bottom: 32px;
         }
@@ -226,16 +301,6 @@
 
         .feature.disabled .feature-icon {
             color: #DDD;
-        }
-
-        .features-more {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--gray-100);
-            text-align: center;
-            font-size: 14px;
-            color: var(--gray-600);
-            font-weight: 500;
         }
 
         .plan-button {
@@ -270,6 +335,78 @@
         .plan-button.secondary:hover {
             background: white;
             border-color: var(--swiss-black);
+        }
+
+        /* Credit Explanation Section */
+        .credits-explanation {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+
+        .credits-explanation h2 {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--swiss-black);
+            letter-spacing: -1px;
+        }
+
+        .credits-explanation p.subtitle {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 18px;
+            margin-bottom: 48px;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .credit-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border-color: #667eea;
+        }
+
+        .credit-card-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .credit-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--swiss-black);
+            margin-bottom: 8px;
+        }
+
+        .credit-card p {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-bottom: 16px;
+        }
+
+        .credit-cost-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         /* Comparison Section */
@@ -362,6 +499,104 @@
         .cross {
             color: #DDD;
             font-size: 20px;
+        }
+
+        .table-cell.highlight {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Credit Packs Section */
+        .credit-packs-section {
+            background: var(--gray-50);
+            padding: 80px 24px;
+            margin: 80px 0;
+        }
+
+        .credit-packs-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .credit-packs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .credit-pack {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .credit-pack:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .pack-credits {
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pack-credits-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 16px;
+        }
+
+        .pack-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--swiss-black);
+            margin-bottom: 4px;
+        }
+
+        .pack-per-credit {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+
+        .pack-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .pack-btn:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .pack-note {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+
+        .pack-note strong {
+            color: var(--swiss-black);
         }
 
         /* FAQ Section */
@@ -531,12 +766,29 @@
                 max-width: 500px;
             }
 
+            .credits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credit-packs-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
             .navbar-menu {
                 display: none;
             }
 
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-credits-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
             }
         }
 
@@ -560,6 +812,10 @@
                 grid-template-columns: 1fr;
                 gap: 36px;
             }
+
+            .credits-explanation h2 {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
@@ -571,7 +827,7 @@
         <div class="navbar-menu">
             <a href="index.html" class="navbar-link">Accueil</a>
             <a href="pricing.html" class="navbar-link">Tarifs</a>
-            <a href="#" class="navbar-link">À propos</a>
+            <a href="#" class="navbar-link">A propos</a>
             <a href="#" class="navbar-link">Contact</a>
             <button class="navbar-btn" onclick="window.location.href='login.html'">Connexion</button>
         </div>
@@ -579,8 +835,33 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>Choisissez le plan <span class="highlight">parfait</span> pour vous</h1>
-        <p>Des outils IA puissants pour accélérer votre recherche d'emploi en Suisse</p>
+        <h1>Un systeme de <span class="highlight">credits</span> simple et flexible</h1>
+        <p>Payez uniquement pour ce que vous utilisez. Chaque action IA consomme des credits - pas de mauvaises
+            surprises.</p>
+
+        <div class="hero-credits-info">
+            <div class="credit-usage-item">
+                <span class="credit-usage-icon">📄</span>
+                <div class="credit-usage-text">
+                    <div class="credit-usage-action">Analyse CV</div>
+                    <div class="credit-usage-cost">1 credit</div>
+                </div>
+            </div>
+            <div class="credit-usage-item">
+                <span class="credit-usage-icon">✉️</span>
+                <div class="credit-usage-text">
+                    <div class="credit-usage-action">Lettre de motivation</div>
+                    <div class="credit-usage-cost">2 credits</div>
+                </div>
+            </div>
+            <div class="credit-usage-item">
+                <span class="credit-usage-icon">🔍</span>
+                <div class="credit-usage-text">
+                    <div class="credit-usage-action">Comparaison CV/Offre</div>
+                    <div class="credit-usage-cost">1 credit</div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Pricing Cards -->
@@ -592,13 +873,18 @@
                 <div class="plan-price">CHF 0</div>
                 <div class="plan-period">Pour toujours</div>
             </div>
+            <div class="plan-credits">
+                <div class="credits-number">5</div>
+                <div class="credits-label">credits / mois</div>
+            </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>2 analyses CV / mois</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>1 lettre IA / semaine</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>5 credits offerts chaque mois</span>
+                </div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Tous les outils IA accessibles</span>
+                </div>
                 <div class="feature"><span class="feature-icon">✓</span> <span>Templates CV basiques</span></div>
-                <div class="feature disabled"><span class="feature-icon">✗</span> <span>Accès job search</span></div>
-                <div class="feature disabled"><span class="feature-icon">✗</span> <span>Job tracker</span></div>
-                <div class="features-more">+ 3 fonctionnalités de base</div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Recherche d'emploi illimitee</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimite</span></div>
             </div>
             <button class="plan-button secondary" onclick="window.location.href='login.html'">Commencer
                 gratuitement</button>
@@ -606,22 +892,25 @@
 
         <!-- Premium Plan -->
         <div class="pricing-card popular">
-            <div class="popular-badge">Recommandé</div>
+            <div class="popular-badge">Meilleur rapport qualite/prix</div>
             <div class="plan-header">
                 <div class="plan-name">Premium</div>
                 <div class="plan-price">CHF 9<small> / mois</small></div>
-                <div class="plan-period">Facturé mensuellement</div>
+                <div class="plan-period">Facture mensuellement</div>
+            </div>
+            <div class="plan-credits">
+                <div class="credits-number">100</div>
+                <div class="credits-label">credits / mois</div>
+                <div class="credits-per-unit">Soit <strong>0.09 CHF / credit</strong></div>
             </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>Analyses CV illimitées</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>4 lettres IA / semaine</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Accès job search</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>15 candidatures trackées</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>100 credits chaque mois</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Suggestions IA personnalisees</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Tout le plan gratuit inclus</span></div>
                 <div class="feature"><span class="feature-icon">✓</span> <span>Assistance entretien</span></div>
-                <div class="features-more">+ 5 fonctionnalités premium</div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Templates premium</span></div>
             </div>
-            <button class="plan-button primary" onclick="window.location.href='login.html'">Commencer
-                maintenant</button>
+            <button class="plan-button primary" onclick="window.location.href='login.html'">Choisir Premium</button>
         </div>
 
         <!-- Pro Plan -->
@@ -629,59 +918,154 @@
             <div class="plan-header">
                 <div class="plan-name">Pro</div>
                 <div class="plan-price">CHF 29<small> / mois</small></div>
-                <div class="plan-period">Facturé mensuellement</div>
+                <div class="plan-period">Facture mensuellement</div>
+            </div>
+            <div class="plan-credits">
+                <div class="credits-number">200</div>
+                <div class="credits-label">credits / mois</div>
+                <div class="credits-per-unit">Soit <strong>0.145 CHF / credit</strong></div>
             </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>Tout Premium +</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimité</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Gestion d'équipe</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Analytics avancés</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>200 credits chaque mois</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimite</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Gestion d'equipe</span></div>
+                <div class="feature"><span class="feature-icon">✓</span> <span>Analytics avances</span></div>
                 <div class="feature"><span class="feature-icon">✓</span> <span>Support prioritaire 24/7</span></div>
-                <div class="features-more">+ 8 fonctionnalités entreprise</div>
             </div>
             <button class="plan-button secondary" onclick="window.location.href='login.html'">Passer au Pro</button>
         </div>
     </section>
 
+    <!-- Credit Explanation Section -->
+    <section class="credits-explanation">
+        <h2>Comment fonctionnent les credits ?</h2>
+        <p class="subtitle">Chaque fonctionnalite IA consomme un certain nombre de credits. Simple et transparent.</p>
+
+        <div class="credits-grid">
+            <div class="credit-card">
+                <div class="credit-card-icon">📄</div>
+                <h3>Analyse de CV</h3>
+                <p>Obtenez une analyse detaillee de votre CV avec des recommandations personnalisees pour le marche
+                    suisse.</p>
+                <div class="credit-cost-badge">1 credit</div>
+            </div>
+
+            <div class="credit-card">
+                <div class="credit-card-icon">✉️</div>
+                <h3>Lettre de motivation</h3>
+                <p>Generez une lettre de motivation personnalisee adaptee a l'offre d'emploi ciblee.</p>
+                <div class="credit-cost-badge">2 credits</div>
+            </div>
+
+            <div class="credit-card">
+                <div class="credit-card-icon">🔍</div>
+                <h3>Comparaison CV/Offre</h3>
+                <p>Analysez la compatibilite entre votre CV et une offre d'emploi specifique.</p>
+                <div class="credit-cost-badge">1 credit</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credit Packs Section -->
+    <section class="credit-packs-section">
+        <div class="credit-packs-container">
+            <h2 class="section-title">Besoin de credits supplementaires ?</h2>
+            <p class="section-subtitle">Achetez des packs de credits a la demande, sans engagement</p>
+
+            <div class="credit-packs-grid">
+                <div class="credit-pack">
+                    <div class="pack-credits">5</div>
+                    <div class="pack-credits-label">credits</div>
+                    <div class="pack-price">2 CHF</div>
+                    <div class="pack-per-credit">0.40 CHF / credit</div>
+                    <button class="pack-btn" onclick="window.location.href='login.html'">Acheter</button>
+                </div>
+
+                <div class="credit-pack">
+                    <div class="pack-credits">15</div>
+                    <div class="pack-credits-label">credits</div>
+                    <div class="pack-price">5 CHF</div>
+                    <div class="pack-per-credit">0.33 CHF / credit</div>
+                    <button class="pack-btn" onclick="window.location.href='login.html'">Acheter</button>
+                </div>
+
+                <div class="credit-pack">
+                    <div class="pack-credits">30</div>
+                    <div class="pack-credits-label">credits</div>
+                    <div class="pack-price">8 CHF</div>
+                    <div class="pack-per-credit">0.27 CHF / credit</div>
+                    <button class="pack-btn" onclick="window.location.href='login.html'">Acheter</button>
+                </div>
+            </div>
+
+            <p class="pack-note"><strong>Astuce :</strong> Les abonnements offrent un bien meilleur rapport qualite/prix
+                (jusqu'a 0.09 CHF/credit avec Premium)</p>
+        </div>
+    </section>
+
     <!-- Comparison Table -->
     <section class="comparison-section">
-        <h2 class="section-title">Comparaison détaillée des plans</h2>
-        <p class="section-subtitle">Tous les détails en un coup d'œil</p>
+        <h2 class="section-title">Comparaison detaillee des plans</h2>
+        <p class="section-subtitle">Tous les details en un coup d'oeil</p>
 
         <div class="comparison-table">
             <div class="table-header">
-                <div>Fonctionnalité</div>
+                <div>Fonctionnalite</div>
                 <div>Free</div>
                 <div>Premium</div>
                 <div>Pro</div>
             </div>
 
-            <!-- Catégorie: Fonctionnalités de base -->
-            <div class="table-category-header">Fonctionnalités de base</div>
+            <!-- Categorie: Credits -->
+            <div class="table-category-header">Credits & Tarifs</div>
 
             <div class="table-row">
-                <div class="table-cell">Analyses CV par mois</div>
-                <div class="table-cell">2</div>
-                <div class="table-cell">Illimité</div>
-                <div class="table-cell">Illimité</div>
+                <div class="table-cell">Credits par mois</div>
+                <div class="table-cell highlight">5</div>
+                <div class="table-cell highlight">100</div>
+                <div class="table-cell highlight">200</div>
             </div>
 
             <div class="table-row">
-                <div class="table-cell">Lettres IA par semaine</div>
-                <div class="table-cell">1</div>
-                <div class="table-cell">4</div>
-                <div class="table-cell">4</div>
+                <div class="table-cell">Prix par credit</div>
+                <div class="table-cell">Gratuit</div>
+                <div class="table-cell highlight">0.09 CHF</div>
+                <div class="table-cell highlight">0.145 CHF</div>
             </div>
 
             <div class="table-row">
-                <div class="table-cell">Templates CV</div>
-                <div class="table-cell">Basiques</div>
-                <div class="table-cell">Premium</div>
-                <div class="table-cell">Premium</div>
+                <div class="table-cell">Reports des credits non utilises</div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross">✗</span></div>
             </div>
 
-            <!-- Catégorie: Fonctionnalités avancées -->
-            <div class="table-category-header">Fonctionnalités avancées</div>
+            <!-- Categorie: Fonctionnalites IA -->
+            <div class="table-category-header">Fonctionnalites IA</div>
+
+            <div class="table-row">
+                <div class="table-cell">Analyse de CV (1 credit)</div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Lettre de motivation (2 credits)</div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="table-cell">Comparaison CV/Offre (1 credit)</div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check">✓</span></div>
+            </div>
+
+            <!-- Categorie: Fonctionnalites avancees -->
+            <div class="table-category-header">Fonctionnalites avancees</div>
 
             <div class="table-row">
                 <div class="table-cell">Assistance entretien</div>
@@ -691,31 +1075,31 @@
             </div>
 
             <div class="table-row">
-                <div class="table-cell">Accès job search</div>
+                <div class="table-cell">Acces job search</div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell"><span class="check">✓</span></div>
                 <div class="table-cell"><span class="check">✓</span></div>
             </div>
 
             <div class="table-row">
-                <div class="table-cell">Candidatures trackées</div>
+                <div class="table-cell">Candidatures trackees</div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell">15</div>
-                <div class="table-cell">Illimité</div>
+                <div class="table-cell">Illimite</div>
             </div>
 
-            <!-- Catégorie: Équipe & entreprise -->
-            <div class="table-category-header">Équipe & entreprise</div>
+            <!-- Categorie: Equipe & entreprise -->
+            <div class="table-category-header">Equipe & entreprise</div>
 
             <div class="table-row">
-                <div class="table-cell">Gestion d'équipe</div>
+                <div class="table-cell">Gestion d'equipe</div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell"><span class="check">✓</span></div>
             </div>
 
             <div class="table-row">
-                <div class="table-cell">Analytics avancés</div>
+                <div class="table-cell">Analytics avances</div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell"><span class="cross">✗</span></div>
                 <div class="table-cell"><span class="check">✓</span></div>
@@ -728,12 +1112,12 @@
                 <div class="table-cell"><span class="check">✓</span></div>
             </div>
 
-            <!-- Catégorie: Support -->
+            <!-- Categorie: Support -->
             <div class="table-category-header">Support</div>
 
             <div class="table-row">
                 <div class="table-cell">Support</div>
-                <div class="table-cell">Communauté</div>
+                <div class="table-cell">Communaute</div>
                 <div class="table-cell">Email</div>
                 <div class="table-cell">24/7</div>
             </div>
@@ -742,84 +1126,103 @@
 
     <!-- FAQ -->
     <section class="faq-section">
-        <h2 class="section-title">Questions fréquentes</h2>
+        <h2 class="section-title">Questions frequentes</h2>
 
         <div class="faq-item">
             <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Quelle est la différence entre Premium et Pro ?</span>
+                <span>Qu'est-ce qu'un credit ?</span>
                 <div class="faq-icon">+</div>
             </div>
             <div class="faq-answer">
                 <div class="faq-answer-content">
-                    Le plan Premium est idéal pour les chercheurs d'emploi actifs avec 15 candidatures trackées et
-                    toutes les fonctionnalités IA. Le plan Pro ajoute le tracking illimité, la gestion d'équipe, les
-                    analytics avancés et un support prioritaire 24/7 - parfait pour les professionnels et les équipes.
+                    Un credit est l'unite de mesure pour utiliser nos fonctionnalites IA. Chaque action IA consomme un
+                    certain nombre de credits : 1 credit pour une analyse de CV, 2 credits pour une lettre de
+                    motivation, 1 credit pour une comparaison CV/offre. C'est simple et transparent - vous savez
+                    toujours exactement ce que vous depensez.
                 </div>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Puis-je changer de plan à tout moment ?</span>
+                <span>Les credits non utilises sont-ils reportes ?</span>
                 <div class="faq-icon">+</div>
             </div>
             <div class="faq-answer">
                 <div class="faq-answer-content">
-                    Oui, absolument ! Vous pouvez upgrader ou downgrader votre plan à tout moment depuis votre profil.
-                    Les changements prennent effet immédiatement et nous calculons le prorata pour les paiements.
+                    Non, les credits sont reinitialises chaque mois a la date de renouvellement de votre abonnement. Si
+                    vous avez besoin de plus de credits un mois donne, vous pouvez acheter des packs de credits
+                    supplementaires a tout moment.
                 </div>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Comment fonctionne la limite de lettres IA ?</span>
+                <span>Puis-je acheter des credits sans abonnement ?</span>
                 <div class="faq-icon">+</div>
             </div>
             <div class="faq-answer">
                 <div class="faq-answer-content">
-                    Les limites se réinitialisent chaque semaine. Plan Free : 1 lettre par semaine, Premium et Pro : 4
-                    lettres par semaine. Si vous avez besoin de plus, contactez notre support pour des options
-                    personnalisées.
+                    Oui ! Meme avec un compte gratuit, vous pouvez acheter des packs de credits a la demande. Cependant,
+                    les abonnements offrent un bien meilleur rapport qualite/prix (jusqu'a 4x moins cher par credit avec
+                    Premium).
                 </div>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Y a-t-il un engagement minimum ?</span>
+                <span>Quelle est la difference entre Premium et Pro ?</span>
                 <div class="faq-icon">+</div>
             </div>
             <div class="faq-answer">
                 <div class="faq-answer-content">
-                    Non, aucun engagement ! Tous nos plans sont sans engagement et vous pouvez annuler à tout moment.
-                    Vous gardez l'accès jusqu'à la fin de votre période de facturation.
+                    Le plan Premium (100 credits/mois, 9 CHF) est ideal pour les chercheurs d'emploi actifs. Le plan Pro
+                    (200 credits/mois, 29 CHF) double vos credits et ajoute le job tracker illimite, la gestion
+                    d'equipe, les analytics avances et un support prioritaire 24/7 - parfait pour les professionnels
+                    intensifs et les equipes.
                 </div>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Les paiements sont-ils sécurisés ?</span>
+                <span>Comment puis-je voir mon solde de credits ?</span>
                 <div class="faq-icon">+</div>
             </div>
             <div class="faq-answer">
                 <div class="faq-answer-content">
-                    Oui, tous les paiements sont traités de manière sécurisée via Stripe, leader mondial du paiement en
+                    Votre solde de credits est toujours visible dans la barre de navigation en haut de chaque page. Vous
+                    pouvez egalement consulter votre historique d'utilisation detaille dans la page "Credits" de votre
+                    compte.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Puis-je changer de plan a tout moment ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Oui, absolument ! Vous pouvez upgrader ou downgrader votre plan a tout moment depuis votre profil.
+                    Lors d'un upgrade, vous recevez immediatement vos nouveaux credits. Les changements prennent effet
+                    immediatement.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Les paiements sont-ils securises ?</span>
+                <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Oui, tous les paiements sont traites de maniere securisee via Stripe, leader mondial du paiement en
                     ligne. Nous ne stockons jamais vos informations de carte bancaire sur nos serveurs.
-                </div>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">
-                <span>Puis-je obtenir un remboursement ?</span>
-                <div class="faq-icon">+</div>
-            </div>
-            <div class="faq-answer">
-                <div class="faq-answer-content">
-                    Nous offrons une garantie satisfait ou remboursé de 14 jours. Si vous n'êtes pas satisfait de
-                    SwissCV Pro, contactez notre support pour un remboursement complet, sans questions posées.
                 </div>
             </div>
         </div>
@@ -827,8 +1230,8 @@
 
     <!-- CTA -->
     <section class="cta-section">
-        <h2>Prêt à booster votre carrière ?</h2>
-        <p>Rejoignez des milliers de professionnels qui ont trouvé leur emploi idéal avec SwissCV Pro</p>
+        <h2>Pret a booster votre carriere ?</h2>
+        <p>Commencez gratuitement avec 5 credits offerts. Aucune carte de credit requise.</p>
         <a href="login.html" class="cta-button">Commencer gratuitement →</a>
     </section>
 
@@ -836,40 +1239,30 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>À Propos</h3>
-                <a href="#">Notre mission</a>
-                <a href="#">L'équipe</a>
-                <a href="#">Carrières</a>
-                <a href="#">Blog</a>
-            </div>
-
-            <div class="footer-section">
                 <h3>Produit</h3>
-                <a href="#">Fonctionnalités</a>
+                <a href="app.html">Analyser mon CV</a>
                 <a href="pricing.html">Tarifs</a>
-                <a href="#">Sécurité</a>
-                <a href="#">Changelog</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="job-search.html">Recherche d'emploi</a>
             </div>
 
             <div class="footer-section">
                 <h3>Support</h3>
                 <a href="support.html">Centre d'aide</a>
-                <a href="#">Documentation</a>
-                <a href="#">Contact</a>
-                <a href="#">Status</a>
+                <a href="contact.html">Contact</a>
             </div>
 
             <div class="footer-section">
-                <h3>Légal</h3>
-                <a href="#">Conditions d'utilisation</a>
-                <a href="#">Politique de confidentialité</a>
-                <a href="#">Cookies</a>
-                <a href="#">RGPD</a>
+                <h3>Legal</h3>
+                <a href="terms.html">Conditions d'utilisation</a>
+                <a href="privacy.html">Politique de confidentialite</a>
+                <a href="cookies.html">Cookies</a>
+                <a href="rgpd.html">RGPD</a>
             </div>
         </div>
 
         <div class="footer-bottom">
-            © 2024 SwissCV Pro. Tous droits réservés. Fait avec ❤️ en Suisse.
+            © 2024 SwissCV Pro. Tous droits reserves. Fait avec ❤️ en Suisse.
         </div>
     </footer>
 

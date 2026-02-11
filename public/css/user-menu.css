@@ -84,15 +84,37 @@
     white-space: nowrap;
 }
 
-.user-menu-badge {
+.user-menu-badge,
+.plan-badge {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 12px;
-    background: #FFD700;
-    color: #0D0D0D;
+    background: #E0E0E0;
+    color: #666;
     font-size: 11px;
     font-weight: 600;
     margin-top: 8px;
+}
+
+/* Free plan */
+.user-menu-badge.free,
+.plan-badge.free {
+    background: #E0E0E0;
+    color: #666;
+}
+
+/* Premium plan */
+.user-menu-badge.premium,
+.plan-badge.premium {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Pro plan */
+.user-menu-badge.pro,
+.plan-badge.pro {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
 }
 
 /* Divider */

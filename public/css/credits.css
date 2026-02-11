@@ -7,24 +7,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
+    padding: 10px 18px;
+    background: #1a1a1a;
+    border-radius: 8px;
     color: white;
     font-weight: 600;
     font-size: 14px;
     margin-right: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    transition: all 0.2s ease;
+    border: 1px solid #333;
 }
 
 .credits-display:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    background: #000;
+    border-color: #555;
+    transform: translateY(-1px);
 }
 
 .credits-icon {
+    display: none;
+    /* Hidden per user request */
     font-size: 18px;
     animation: pulse 2s infinite;
 }
@@ -42,8 +45,15 @@
 }
 
 .credits-balance {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
+}
+
+.credits-balance::before {
+    content: 'Crédits: ';
+    font-weight: 500;
+    opacity: 0.8;
+    margin-right: 4px;
 }
 
 .credits-limit {
@@ -212,6 +222,17 @@
 }
 
 /* Credit Cost Badge */
+.credit-cost {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 4px;
+    opacity: 0.9;
+}
+
 .credit-cost-badge {
     display: inline-flex;
     align-items: center;
@@ -251,13 +272,22 @@
 /* Responsive */
 @media (max-width: 768px) {
     .credits-display {
-        padding: 6px 12px;
+        padding: 8px 14px;
         font-size: 13px;
-        margin-right: 8px;
+        margin-right: 12px;
+        gap: 6px;
     }
 
     .credits-balance {
-        font-size: 16px;
+        font-size: 14px;
+    }
+
+    .credits-balance::before {
+        content: 'Crédits: ';
+    }
+
+    .credits-limit {
+        font-size: 12px;
     }
 
     .credits-modal-content {
@@ -270,5 +300,26 @@
 
     .credits-modal .modal-actions {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .credits-display {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin-right: 8px;
+    }
+
+    .credits-balance {
+        font-size: 13px;
+    }
+
+    .credits-balance::before {
+        content: 'C: ';
+        /* Shortened for mobile */
+    }
+
+    .credits-limit {
+        font-size: 11px;
     }
 }

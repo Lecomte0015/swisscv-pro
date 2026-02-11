@@ -866,7 +866,7 @@
 
             <script>
                 (async function () {
-                    console.log("Dashboard chargé - VERSION 2025-12-14-10:35");
+                    console.log("Dashboard chargé - VERSION 2026-02-11");
                     const token = getToken();
                     if (!token) {
                         console.log("Pas de token - Redirection login");
@@ -881,17 +881,22 @@
                         if (data.success) {
                             console.log("Auth OK:", data.user.email);
                             localStorage.setItem("swisscv_user", JSON.stringify(data.user));
+                            // Update both badge elements with fresh tier data
+                            const freshTier = data.user.tier || 'free';
                             const badge = document.getElementById("userBadge");
-                            console.log("✅ APRÈS Auth OK - Tentative chargement historique...");
-                            // Charger historique analyses
-                            if (badge && data.user) {
-                                if (data.user.tier === "premium" || data.user.tier === "pro") {
+                            if (badge) {
+                                if (freshTier === "premium" || freshTier === "pro") {
                                     badge.className = "navbar-badge premium";
-                                    badge.textContent = data.user.tier === "pro" ? "Pro" : "Premium";
+                                    badge.textContent = freshTier === "pro" ? "Pro" : "Premium";
                                 } else {
                                     badge.className = "navbar-badge free";
                                     badge.textContent = "Free";
                                 }
+                            }
+                            const planBadge = document.getElementById("planBadge");
+                            if (planBadge) {
+                                planBadge.textContent = freshTier.charAt(0).toUpperCase() + freshTier.slice(1);
+                                planBadge.className = `plan-badge ${freshTier}`;
                             }
                         } else {
                             throw new Error("Auth failed");
@@ -899,71 +904,66 @@
                     } catch (error) {
                         console.error("Erreur auth:", error);
                         logout();
+                        return;
+                    }
+
+                    // Charger l'historique des analyses (après auth réussie)
+                    const historyLoading = document.getElementById('historyLoading');
+                    const historyEmpty = document.getElementById('historyEmpty');
+                    const historyGrid = document.getElementById('historyGrid');
+
+                    if (historyLoading) historyLoading.style.display = 'block';
+                    if (historyEmpty) historyEmpty.style.display = 'none';
+                    if (historyGrid) historyGrid.style.display = 'none';
+
+                    try {
+                        const histResponse = await authenticatedFetch('/analyses/history');
+                        const histData = await histResponse.json();
+
+                        if (histData.success && histData.analyses && histData.analyses.length > 0) {
+                            if (historyGrid) {
+                                historyGrid.innerHTML = histData.analyses.map(analysis => `
+                                <div class="offer-card" style="position: relative;">
+                                    <button onclick="event.stopPropagation(); deleteAnalysis('${analysis.id}')"
+                                            style="position: absolute; top: 12px; right: 12px; background: #FFE5E5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #D50000; font-size: 18px; font-weight: bold; transition: all 0.2s;"
+                                            onmouseover="this.style.background='#D50000'; this.style.color='white';"
+                                            onmouseout="this.style.background='#FFE5E5'; this.style.color='#D50000';"
+                                            title="Supprimer cette analyse">
+                                        ×
+                                    </button>
+                                    <div onclick="showAnalysisDetail('${analysis.id}')" style="cursor: pointer;">
+                                        <div class="offer-title">${analysis.filename || 'CV analysé'}</div>
+                                        <div class="offer-company">Analysé le ${analysis.createdAt ? new Date(analysis.createdAt * 1000).toLocaleDateString('fr-CH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Date inconnue'}</div>
+                                        <div style="display: flex; gap: 16px; margin: 16px 0;">
+                                            <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
+                                                <div style="font-size: 24px; font-weight: 700; color: #D50000;">${analysis.score}</div>
+                                                <div style="font-size: 12px; color: #666;">Score CV</div>
+                                            </div>
+                                            <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
+                                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">${analysis.atsScore}</div>
+                                                <div style="font-size: 12px; color: #666;">Score ATS</div>
+                                            </div>
+                                        </div>
+                                        <div class="offer-footer">
+                                            <span class="offer-source">${analysis.strongPoints.length} points forts</span>
+                                            <button class="btn-view" onclick="event.stopPropagation(); showAnalysisDetail('${analysis.id}')">Voir détails</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                `).join('');
+                                historyGrid.style.display = 'grid';
+                                window.analysesData = histData.analyses;
+                            }
+                        } else {
+                            if (historyEmpty) historyEmpty.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Erreur chargement historique:', error);
+                        if (historyEmpty) historyEmpty.style.display = 'block';
+                    } finally {
+                        if (historyLoading) historyLoading.style.display = 'none';
                     }
                 })();
-
-                // Charger l'historique des analyses
-                const historyLoading = document.getElementById('historyLoading');
-                const historyEmpty = document.getElementById('historyEmpty');
-                const historyGrid = document.getElementById('historyGrid');
-
-                historyLoading.style.display = 'block';
-                historyEmpty.style.display = 'none';
-                historyGrid.style.display = 'none';
-
-                try {
-                    console.log("🔍 Appel API /analyses/history...");
-                    console.log("🔍 Token présent:", !!localStorage.getItem('swisscv_token'));
-                    const response = await authenticatedFetch('/analyses/history');
-                    const data = await response.json();
-                    console.log("📊 Réponse analyses/history:", data);
-                    console.log("📊 Nombre analyses:", data.analyses?.length);
-
-                    if (data.success && data.analyses && data.analyses.length > 0) {
-                        historyGrid.innerHTML = data.analyses.map(analysis => `
-                        <div class="offer-card" style="position: relative;">
-                            <button onclick="event.stopPropagation(); deleteAnalysis('${analysis.id}')" 
-                                    style="position: absolute; top: 12px; right: 12px; background: #FFE5E5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #D50000; font-size: 18px; font-weight: bold; transition: all 0.2s;"
-                                    onmouseover="this.style.background='#D50000'; this.style.color='white';"
-                                    onmouseout="this.style.background='#FFE5E5'; this.style.color='#D50000';"
-                                    title="Supprimer cette analyse">
-                                ×
-                            </button>
-                            <div onclick="showAnalysisDetail('${analysis.id}')" style="cursor: pointer;">
-                                <div class="offer-title">${analysis.filename || 'CV analysé'}</div>
-                                <div class="offer-company">Analysé le ${analysis.createdAt ? new Date(analysis.createdAt * 1000).toLocaleDateString('fr-CH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Date inconnue'}</div>
-                                <div style="display: flex; gap: 16px; margin: 16px 0;">
-                                    <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
-                                        <div style="font-size: 24px; font-weight: 700; color: #D50000;">${analysis.score}</div>
-                                        <div style="font-size: 12px; color: #666;">Score CV</div>
-                                    </div>
-                                    <div style="flex: 1; text-align: center; padding: 12px; background: #F5F5F5; border-radius: 8px;">
-                                        <div style="font-size: 24px; font-weight: 700; color: #10b981;">${analysis.atsScore}</div>
-                                        <div style="font-size: 12px; color: #666;">Score ATS</div>
-                                    </div>
-                                </div>
-                                <div class="offer-footer">
-                                    <span class="offer-source">${analysis.strongPoints.length} points forts</span>
-                                    <button class="btn-view" onclick="event.stopPropagation(); showAnalysisDetail('${analysis.id}')">Voir détails</button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-
-                        historyGrid.style.display = 'grid';
-
-                        // Stocker les analyses pour le modal
-                        window.analysesData = data.analyses;
-                    } else {
-                        historyEmpty.style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error('Erreur chargement historique:', error);
-                    historyEmpty.style.display = 'block';
-                } finally {
-                    historyLoading.style.display = 'none';
-                }
-                }
 
                 // Afficher les détails d'une analyse
                 function showAnalysisDetail(analysisId) {
