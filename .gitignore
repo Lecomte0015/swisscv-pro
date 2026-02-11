@@ -24,3 +24,10 @@ worker.js
 worker-*.js
 
 .dev.vars
+
+# Scripts temporaires - ne pas committer
+*.py
+test-*.html
+
+# Fichiers temporaires
+index.js.*
