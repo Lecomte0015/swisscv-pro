@@ -135,7 +135,7 @@ Réponds UNIQUEMENT avec ce format JSON exact (sans markdown, sans \`\`\`json):
         });
 
     } catch (error) {
-        console.error('❌ Erreur handleOptimizeCV:', error);
+        console.error('Erreur handleOptimizeCV:', error);
         return jsonResponse({
             success: false,
             error: 'Erreur lors de l\'optimisation',
@@ -230,7 +230,7 @@ Réponds UNIQUEMENT avec ce format JSON exact:
         });
 
     } catch (error) {
-        console.error('❌ Erreur handleCompareCV:', error);
+        console.error('Erreur handleCompareCV:', error);
         return jsonResponse({
             success: false,
             error: 'Erreur lors de l\'analyse',
@@ -270,7 +270,7 @@ async function handleGetAIUsage(request, env) {
         });
 
     } catch (error) {
-        console.error('❌ Erreur handleGetAIUsage:', error);
+        console.error('Erreur handleGetAIUsage:', error);
         return jsonResponse({ success: false, error: 'Erreur' }, 500);
     }
 }

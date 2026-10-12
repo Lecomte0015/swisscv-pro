@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Moderne — Swiss Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body { font-family: 'Inter', sans-serif; background: #E8EAED; color: #1C1C1C; }
+.page-wrapper { display: flex; justify-content: center; padding: 30px 0 60px; }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.18);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* ===== HEADER ===== */
+.header {
+  padding: 38px 48px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 3px solid #D50000;
+  gap: 24px;
+}
+.header-left { display: flex; align-items: center; gap: 22px; }
+
+.photo {
+  width: 86px;
+  height: 86px;
+  border-radius: 12px;
+  background: #F2F2F2;
+  border: 2px solid #E0E0E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.photo span { font-size: 38px; opacity: 0.3; }
+
+.header-name h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+.header-name .h-role {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #D50000;
+  letter-spacing: 0.3px;
+}
+.header-name .h-location {
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: #888;
+}
+
+.header-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #444;
+  background: #F8F8F8;
+  border: 1px solid #EBEBEB;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.contact-chip span { font-size: 12px; }
+
+/* ===== BODY ===== */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+}
+
+.main { padding: 32px 40px 40px; }
+.sidebar { padding: 32px 24px 40px; background: #FAFAFA; border-left: 1px solid #F0F0F0; }
+
+/* Section titles */
+.sec-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: #D50000;
+  margin-bottom: 14px;
+}
+.sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #F0F0F0;
+}
+
+.sec { margin-bottom: 26px; }
+
+/* Profile */
+.profile-p { font-size: 12px; line-height: 1.8; color: #555; }
+
+/* Experience timeline */
+.exp-wrap { display: flex; flex-direction: column; gap: 0; }
+.exp-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  padding-bottom: 20px;
+}
+.exp-item:last-child { padding-bottom: 0; }
+
+.exp-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 14px;
+}
+.exp-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #D50000;
+  flex-shrink: 0;
+  margin-top: 3px;
+  box-shadow: 0 0 0 3px rgba(213,0,0,0.12);
+}
+.exp-line {
+  width: 2px;
+  flex: 1;
+  background: #EDEDED;
+  margin-top: 4px;
+}
+.exp-item:last-child .exp-line { display: none; }
+
+.exp-content { flex: 1; }
+.exp-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+.exp-poste { font-size: 13px; font-weight: 600; color: #111; }
+.exp-date {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: white;
+  background: #D50000;
+  padding: 1px 8px;
+  border-radius: 10px;
+}
+.exp-co { font-size: 11.5px; color: #888; margin: 3px 0 6px; }
+.exp-co strong { color: #D50000; font-weight: 600; }
+.exp-ul { list-style: none; padding: 0; }
+.exp-ul li {
+  font-size: 11.5px;
+  color: #555;
+  padding-left: 12px;
+  position: relative;
+  margin-bottom: 3px;
+  line-height: 1.55;
+}
+.exp-ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 7px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #E0E0E0;
+}
+
+/* Formation */
+.edu-item { margin-bottom: 12px; }
+.edu-deg { font-size: 12.5px; font-weight: 600; color: #111; }
+.edu-sch { font-size: 11.5px; color: #D50000; font-weight: 500; margin: 1px 0; }
+.edu-yr { font-size: 10.5px; color: #999; }
+
+/* ===== SIDEBAR ===== */
+.s-sec { margin-bottom: 22px; }
+.s-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: #BBBBB;
+  color: #BBB;
+  border-bottom: 1px solid #EDEDED;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* Info */
+.s-info { display: flex; flex-direction: column; gap: 5px; }
+.s-info-row { display: flex; gap: 7px; font-size: 11px; color: #555; align-items: flex-start; }
+.s-icon { font-size: 12px; flex-shrink: 0; }
+
+/* Skills pills */
+.skills-wrap { display: flex; flex-direction: column; gap: 7px; }
+.skill-row { display: flex; flex-direction: column; gap: 3px; }
+.skill-label { font-size: 11px; font-weight: 500; color: #333; }
+.skill-bar { height: 4px; background: #EDEDED; border-radius: 2px; }
+.skill-fill { height: 100%; background: linear-gradient(90deg, #D50000, #FF4444); border-radius: 2px; }
+
+/* Languages */
+.lang-grid { display: flex; flex-direction: column; gap: 8px; }
+.lang-item {}
+.lang-top { display: flex; justify-content: space-between; }
+.lang-name { font-size: 11.5px; font-weight: 500; color: #222; }
+.lang-lvl { font-size: 10px; color: #D50000; font-weight: 600; }
+.lang-bar { height: 3px; background: #EDEDED; border-radius: 2px; margin-top: 3px; }
+.lang-fill { height: 100%; background: #D50000; border-radius: 2px; }
+
+/* Tags */
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: #D50000;
+  background: rgba(213,0,0,0.06);
+  border: 1px solid rgba(213,0,0,0.15);
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+.dl-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: #111;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 9999;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.dl-badge { background: rgba(213,0,0,0.2); border: 1px solid #D50000; color: #FF6666; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.7); margin-left: 12px; }
+.dl-btn { background: #D50000; color: white; border: none; padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+.dl-btn:hover { background: #AA0000; }
+@media (max-width: 600px) { .dl-bar { padding: 0 12px; } .dl-title { display: none; } .dl-btn { padding: 7px 14px; font-size: 12px; } }
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div style="display:flex;align-items:center">
+    <span class="dl-badge">Moderne</span>
+    <span class="dl-title">Swiss Digital — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="photo"><span>👤</span></div>
+      <div class="header-name">
+        <h1>Lucas<br>Bernasconi</h1>
+        <div class="h-role">Lead Software Engineer</div>
+        <div class="h-location">📍 Bâle, Suisse</div>
+      </div>
+    </div>
+    <div class="header-contact">
+      <div class="contact-chip"><span>📞</span> +41 61 234 56 78</div>
+      <div class="contact-chip"><span>✉️</span> l.bernasconi@email.ch</div>
+      <div class="contact-chip"><span>🔗</span> linkedin.com/in/lbernasconi</div>
+      <div class="contact-chip"><span>💻</span> github.com/lbernasconi</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+    <div class="main">
+
+      <div class="sec">
+        <div class="sec-title">À propos</div>
+        <p class="profile-p">Ingénieur logiciel passionné avec 9 ans d'expérience dans le développement d'applications cloud-native et de systèmes distribués. Spécialisé en architecture microservices et DevOps. Habitué des environnements agiles et internationaux dans la fintech et l'industrie pharmaceutique suisse.</p>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Expérience</div>
+        <div class="exp-wrap">
+
+          <div class="exp-item">
+            <div class="exp-left"><div class="exp-dot"></div><div class="exp-line"></div></div>
+            <div class="exp-content">
+              <div class="exp-top"><span class="exp-poste">Lead Software Engineer</span><span class="exp-date">03.2021 – Présent</span></div>
+              <div class="exp-co"><strong>Temenos AG</strong> — Bâle</div>
+              <ul class="exp-ul">
+                <li>Architecture et développement de la plateforme bancaire cloud (Java 17, Kubernetes, AWS)</li>
+                <li>Management d'une équipe de 6 développeurs, revues de code et mentorat</li>
+                <li>Réduction de 60% des temps de déploiement via pipeline CI/CD (GitHub Actions)</li>
+                <li>Migration d'un monolithe legacy vers 18 microservices en 18 mois</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-left"><div class="exp-dot"></div><div class="exp-line"></div></div>
+            <div class="exp-content">
+              <div class="exp-top"><span class="exp-poste">Software Engineer Senior</span><span class="exp-date">06.2018 – 02.2021</span></div>
+              <div class="exp-co"><strong>Novartis Digital</strong> — Bâle</div>
+              <ul class="exp-ul">
+                <li>Développement d'API REST & GraphQL pour la plateforme data science (Python, FastAPI)</li>
+                <li>Mise en place du monitoring applicatif (Prometheus, Grafana)</li>
+                <li>Participation à la refonte de l'architecture Data Lakehouse (Azure)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-left"><div class="exp-dot"></div><div class="exp-line"></div></div>
+            <div class="exp-content">
+              <div class="exp-top"><span class="exp-poste">Développeur Full Stack</span><span class="exp-date">09.2015 – 05.2018</span></div>
+              <div class="exp-co"><strong>ELCA Informatique SA</strong> — Lausanne</div>
+              <ul class="exp-ul">
+                <li>Développement d'applications web pour clients administrations cantonales (React, Node.js)</li>
+                <li>Intégration de solutions e-Gov avec les systèmes fédéraux</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Formation</div>
+        <div class="edu-item">
+          <div class="edu-deg">Master en Informatique (MSc CS)</div>
+          <div class="edu-sch">ETH Zürich</div>
+          <div class="edu-yr">2013 – 2015</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-deg">Bachelor en Génie Logiciel</div>
+          <div class="edu-sch">EPFL — École Polytechnique Fédérale de Lausanne</div>
+          <div class="edu-yr">2010 – 2013</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="s-sec">
+        <div class="s-title">Informations</div>
+        <div class="s-info">
+          <div class="s-info-row"><span class="s-icon">🇨🇭</span><span>Nationalité suisse</span></div>
+          <div class="s-info-row"><span class="s-icon">📅</span><span>Né le 22.11.1990</span></div>
+          <div class="s-info-row"><span class="s-icon">🪪</span><span>Permis B</span></div>
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Compétences Tech</div>
+        <div class="skills-wrap">
+          <div class="skill-row"><div class="skill-label">Java / Spring Boot</div><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div></div>
+          <div class="skill-row"><div class="skill-label">Python / FastAPI</div><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+          <div class="skill-row"><div class="skill-label">React / TypeScript</div><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div></div>
+          <div class="skill-row"><div class="skill-label">Kubernetes / Docker</div><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+          <div class="skill-row"><div class="skill-label">AWS / Azure</div><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+          <div class="skill-row"><div class="skill-label">PostgreSQL / Redis</div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Langues</div>
+        <div class="lang-grid">
+          <div class="lang-item"><div class="lang-top"><span class="lang-name">Français</span><span class="lang-lvl">C2</span></div><div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div></div>
+          <div class="lang-item"><div class="lang-top"><span class="lang-name">Allemand</span><span class="lang-lvl">C1</span></div><div class="lang-bar"><div class="lang-fill" style="width:85%"></div></div></div>
+          <div class="lang-item"><div class="lang-top"><span class="lang-name">Anglais</span><span class="lang-lvl">C1</span></div><div class="lang-bar"><div class="lang-fill" style="width:85%"></div></div></div>
+          <div class="lang-item"><div class="lang-top"><span class="lang-name">Espagnol</span><span class="lang-lvl">B1</span></div><div class="lang-bar"><div class="lang-fill" style="width:50%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Certifications</div>
+        <div style="font-size:10.5px;color:#555;line-height:1.9;">
+          AWS Solutions Architect<br>
+          Google Cloud Professional<br>
+          Kubernetes CKA<br>
+          Scrum Master PSM I
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Autres</div>
+        <div class="tag-wrap">
+          <span class="tag">Agile / Scrum</span>
+          <span class="tag">TDD</span>
+          <span class="tag">Clean Code</span>
+          <span class="tag">Open Source</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Classique — Zurich Corporate</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #DCDFE3;
+  color: #1A1A1A;
+}
+
+.page-wrapper { display: flex; justify-content: center; padding: 30px 0 60px; }
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.2);
+}
+
+/* Header bar */
+.header {
+  background: #111;
+  padding: 40px 48px 34px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.header-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.header-photo span { font-size: 38px; opacity: 0.3; }
+
+.header-text { flex: 1; }
+.header-text h1 {
+  font-family: 'EB Garamond', serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 0.5px;
+  line-height: 1.15;
+}
+.header-text .h-title {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.header-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: right;
+}
+.header-contact span {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.4;
+}
+
+/* Red accent line */
+.accent-line {
+  height: 3px;
+  background: linear-gradient(90deg, #CC0000, #FF4444 60%, transparent);
+}
+
+/* Body layout */
+.body-wrap {
+  display: flex;
+}
+
+.body-main {
+  flex: 1;
+  padding: 36px 40px;
+  border-right: 1px solid #EBEBEB;
+}
+
+.body-side {
+  width: 200px;
+  padding: 36px 24px;
+}
+
+/* Sections */
+.sec { margin-bottom: 28px; }
+.sec-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  border-bottom: 1.5px solid #111;
+  padding-bottom: 5px;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+
+.profile-p {
+  font-size: 12px;
+  line-height: 1.78;
+  color: #444;
+}
+
+/* Timeline experience */
+.timeline { position: relative; padding-left: 16px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 1px;
+  background: #E0E0E0;
+}
+.t-item { position: relative; margin-bottom: 18px; }
+.t-dot {
+  position: absolute;
+  left: -19px;
+  top: 5px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #CC0000;
+  border: 1.5px solid white;
+  box-shadow: 0 0 0 1.5px #CC0000;
+}
+.t-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+.t-poste { font-size: 12.5px; font-weight: 600; color: #111; }
+.t-date { font-size: 10.5px; color: #999; }
+.t-co { font-size: 11.5px; color: #CC0000; font-weight: 500; margin: 2px 0 5px; }
+.t-ul { list-style: none; padding: 0; }
+.t-ul li {
+  font-size: 11.5px;
+  color: #555;
+  padding-left: 10px;
+  position: relative;
+  margin-bottom: 3px;
+  line-height: 1.5;
+}
+.t-ul li::before { content: '—'; position: absolute; left: 0; color: #CCC; font-size: 9px; top: 3px; }
+
+/* Formation */
+.edu-item { margin-bottom: 12px; }
+.edu-deg { font-size: 12px; font-weight: 600; color: #111; }
+.edu-sch { font-size: 11.5px; color: #CC0000; font-weight: 500; }
+.edu-yr { font-size: 10.5px; color: #999; margin-top: 1px; }
+
+/* Side sections */
+.side-sec { margin-bottom: 24px; }
+.side-title {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  border-bottom: 1px solid #EBEBEB;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* Tags */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  background: #F4F4F4;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  color: #444;
+}
+
+/* Langue side */
+.l-item { margin-bottom: 8px; }
+.l-name { font-size: 11.5px; font-weight: 500; color: #222; }
+.l-lvl { font-size: 10px; color: #999; margin-bottom: 3px; }
+.l-bar { height: 2.5px; background: #EBEBEB; border-radius: 2px; }
+.l-fill { height: 100%; background: #111; border-radius: 2px; }
+
+/* Info side */
+.info-item {
+  display: flex;
+  gap: 7px;
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.info-icon { font-size: 12px; flex-shrink: 0; }
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+.dl-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: #111;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 9999;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.dl-badge { background: rgba(204,0,0,0.2); border: 1px solid #CC0000; color: #FF6666; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.7); margin-left: 12px; }
+.dl-btn { background: #CC0000; color: white; border: none; padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+.dl-btn:hover { background: #AA0000; }
+@media (max-width: 600px) { .dl-bar { padding: 0 12px; } .dl-title { display: none; } .dl-btn { padding: 7px 14px; font-size: 12px; } }
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div style="display:flex;align-items:center">
+    <span class="dl-badge">Classique</span>
+    <span class="dl-title">Zurich Corporate — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <div class="header">
+    <div class="header-photo"><span>👤</span></div>
+    <div class="header-text">
+      <h1>Sophie<br>Zimmermann</h1>
+      <div class="h-title">Juriste d'Entreprise Senior</div>
+    </div>
+    <div class="header-contact">
+      <span>📍 Bahnhofstrasse 22, 8001 Zürich</span>
+      <span>📞 +41 44 987 65 43</span>
+      <span>✉️ s.zimmermann@email.ch</span>
+      <span>🔗 linkedin.com/in/s-zimmermann</span>
+    </div>
+  </div>
+  <div class="accent-line"></div>
+
+  <div class="body-wrap">
+    <div class="body-main">
+
+      <div class="sec">
+        <div class="sec-title">Profil</div>
+        <p class="profile-p">Juriste d'entreprise avec 12 ans d'expérience en droit des sociétés, contrats commerciaux et compliance. Habituée aux environnements multilingues (DE/FR/EN) et aux structures corporate complexes. Reconnue pour sa rigueur analytique et sa capacité à vulgariser les enjeux juridiques auprès des instances dirigeantes.</p>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Expérience Professionnelle</div>
+        <div class="timeline">
+
+          <div class="t-item">
+            <div class="t-dot"></div>
+            <div class="t-head"><span class="t-poste">Juriste Senior — Droit des Sociétés</span><span class="t-date">02.2019 – Présent</span></div>
+            <div class="t-co">Roche Holding AG — Bâle</div>
+            <ul class="t-ul">
+              <li>Conseil juridique aux divisions opérationnelles sur les contrats M&A et joint-ventures</li>
+              <li>Rédaction et négociation de contrats commerciaux complexes (CHF 50M+)</li>
+              <li>Coordination avec les cabinets externes en Suisse, Allemagne et France</li>
+              <li>Mise en place du programme de conformité GDPR pour l'ensemble du groupe</li>
+            </ul>
+          </div>
+
+          <div class="t-item">
+            <div class="t-dot"></div>
+            <div class="t-head"><span class="t-poste">Juriste d'Entreprise</span><span class="t-date">09.2014 – 01.2019</span></div>
+            <div class="t-co">ABB Ltd — Zurich</div>
+            <ul class="t-ul">
+              <li>Gestion du portefeuille contractuel pour la division Energy (200+ contrats/an)</li>
+              <li>Support juridique aux projets d'acquisition et de restructuration</li>
+              <li>Formation des équipes commerciales aux bonnes pratiques contractuelles</li>
+            </ul>
+          </div>
+
+          <div class="t-item">
+            <div class="t-dot"></div>
+            <div class="t-head"><span class="t-poste">Avocate Stagiaire / Collaboratrice</span><span class="t-date">03.2012 – 08.2014</span></div>
+            <div class="t-co">Lenz & Staehelin — Genève</div>
+            <ul class="t-ul">
+              <li>Droit des sociétés, fusions-acquisitions et droit bancaire</li>
+              <li>Rédaction de mémoires juridiques et due diligences</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Formation</div>
+        <div class="edu-item">
+          <div class="edu-deg">Master en Droit (Lic. iur.) — mention très bien</div>
+          <div class="edu-sch">Universität Zürich (UZH)</div>
+          <div class="edu-yr">2007 – 2012</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-deg">Brevet d'avocat — Canton de Genève</div>
+          <div class="edu-sch">Tribunal cantonal, Genève</div>
+          <div class="edu-yr">2014</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-deg">LL.M. in International Business Law</div>
+          <div class="edu-sch">University College London (UCL)</div>
+          <div class="edu-yr">2012 – 2013</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="body-side">
+
+      <div class="side-sec">
+        <div class="side-title">Informations</div>
+        <div class="info-item"><span class="info-icon">🇨🇭</span><span>Nationalité suisse</span></div>
+        <div class="info-item"><span class="info-icon">📅</span><span>Née le 08.07.1988</span></div>
+        <div class="info-item"><span class="info-icon">🪪</span><span>Permis B</span></div>
+      </div>
+
+      <div class="side-sec">
+        <div class="side-title">Langues</div>
+        <div class="l-item"><div class="l-name">Allemand</div><div class="l-lvl">Langue maternelle</div><div class="l-bar"><div class="l-fill" style="width:100%"></div></div></div>
+        <div class="l-item"><div class="l-name">Français</div><div class="l-lvl">Courant (C2)</div><div class="l-bar"><div class="l-fill" style="width:92%"></div></div></div>
+        <div class="l-item"><div class="l-name">Anglais</div><div class="l-lvl">Courant (C1)</div><div class="l-bar"><div class="l-fill" style="width:85%"></div></div></div>
+        <div class="l-item"><div class="l-name">Italien</div><div class="l-lvl">Notions (A2)</div><div class="l-bar"><div class="l-fill" style="width:30%"></div></div></div>
+      </div>
+
+      <div class="side-sec">
+        <div class="side-title">Domaines Juridiques</div>
+        <div class="tag-cloud">
+          <span class="tag">Droit sociétés</span>
+          <span class="tag">M&A</span>
+          <span class="tag">Compliance</span>
+          <span class="tag">Contrats</span>
+          <span class="tag">GDPR</span>
+          <span class="tag">IP</span>
+          <span class="tag">Droit du travail</span>
+          <span class="tag">Due diligence</span>
+        </div>
+      </div>
+
+      <div class="side-sec">
+        <div class="side-title">Certifications</div>
+        <div style="font-size:11px;color:#555;line-height:1.7;">
+          Brevet d'avocat GE<br>
+          CIPP/E (Privacy)<br>
+          Swiss Board School
+        </div>
+      </div>
+
+      <div class="side-sec">
+        <div class="side-title">Outils</div>
+        <div class="tag-cloud">
+          <span class="tag">Legasis</span>
+          <span class="tag">SAP</span>
+          <span class="tag">DocuSign</span>
+          <span class="tag">Office 365</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

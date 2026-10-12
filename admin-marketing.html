@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Marketing — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #F8F9FA; color: #1f2937; }
+
+        .admin-navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); }
+        .admin-navbar h1 { color: white; font-size: 24px; font-weight: 800; }
+        .admin-nav-links { display: flex; gap: 24px; align-items: center; }
+        .admin-nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 15px; padding: 8px 16px; border-radius: 6px; transition: all 0.2s; }
+        .admin-nav-links a:hover { background: rgba(255, 255, 255, 0.2); }
+        .admin-nav-links a.active { background: rgba(255, 255, 255, 0.3); }
+        .logout-btn { background: rgba(255, 255, 255, 0.2); border: 2px solid white; color: white; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .logout-btn:hover { background: white; color: #667eea; }
+
+        .container { max-width: 1400px; margin: 32px auto; padding: 0 32px; }
+        h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        h3 { font-size: 18px; font-weight: 800; margin: 32px 0 6px; }
+        .sub { color: #6b7280; font-size: 14px; margin-bottom: 20px; }
+
+        .filters { background: white; padding: 14px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .filters select, .filters input[type="date"] { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: inherit; font-size: 14px; }
+        .filters label { font-size: 14px; color: #374151; display: flex; align-items: center; gap: 6px; }
+        .filters button { background: #667eea; color: white; border: 0; padding: 9px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 8px; }
+        .stat-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); text-align: center; }
+        .stat-box .number { font-size: 30px; font-weight: 800; }
+        .stat-box .label { font-size: 13px; color: #6b7280; margin-top: 4px; }
+        .stat-box .hint { font-size: 11.5px; color: #9ca3af; margin-top: 6px; }
+
+        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f1f1f4; white-space: nowrap; }
+        th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #6b7280; background: #fafafa; }
+        td.num, th.num { text-align: right; }
+        tr:last-child td { border-bottom: 0; }
+        .empty { padding: 24px; color: #6b7280; text-align: center; font-size: 14px; }
+
+        .notice { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 10px; padding: 12px 16px; font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
+        .defs summary { cursor: pointer; font-weight: 700; padding: 14px 16px; }
+        .defs .body { padding: 0 16px 16px; font-size: 13.5px; color: #374151; line-height: 1.7; }
+        .defs code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 12.5px; }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 16px; margin: 20px auto; }
+            .admin-navbar { padding: 12px 16px; }
+            .admin-nav-links { display: none; }
+            h2 { font-size: 22px; }
+        }
+    </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>📈 Marketing — du visiteur au client payant</h2>
+        <p class="sub">Comptes internes (admin, test, système) et comptes bannis exclus par défaut. Les achats viennent uniquement des événements de paiement Stripe confirmés côté serveur.</p>
+
+        <div class="filters">
+            <select id="period" onchange="onPeriodChange()">
+                <option value="7">7 derniers jours</option>
+                <option value="30" selected>30 derniers jours</option>
+                <option value="90">90 derniers jours</option>
+                <option value="all">Depuis le début</option>
+                <option value="custom">Personnalisée…</option>
+            </select>
+            <span id="customRange" style="display:none;gap:8px;align-items:center;">
+                <input type="date" id="fromDate"> → <input type="date" id="toDate">
+            </span>
+            <label><input type="checkbox" id="includeInternal"> Inclure les comptes internes</label>
+            <button onclick="load()">Actualiser</button>
+        </div>
+
+        <div id="notices"></div>
+
+        <div class="stats-row" id="kpis"></div>
+
+        <h3>Inscriptions par source</h3>
+        <p class="sub">« Activé » = au moins 1 analyse de CV dans les 7 jours suivant l'inscription. « Payant » = a payé au moins une fois ou possède un abonnement Stripe actif. La source n'est enregistrée que pour les inscriptions faites depuis le 11.10.2026 ; les comptes plus anciens apparaissent en « inconnu ».</p>
+        <div class="card" id="bySource"></div>
+
+        <h3>Tunnel de vente</h3>
+        <p class="sub">Un clic sur « Choisir Premium » ou un paiement démarré n'est jamais compté comme un achat.</p>
+        <div class="card" id="salesFunnel"></div>
+
+        <h3>Paiements confirmés (période)</h3>
+        <div class="card" id="payments"></div>
+
+        <h3>Pack Recherche d'emploi</h3>
+        <div class="card" id="pack"></div>
+
+        <h3>Visiteurs par source</h3>
+        <div class="notice">Les visiteurs (avant inscription) sont mesurés par Google Analytics, uniquement pour les personnes ayant accepté le bandeau de consentement. Consultez Google Analytics → Acquisition → Acquisition de trafic. Cette page ne montre que ce que SwissCV Pro enregistre lui-même.</div>
+
+        <h3>Définitions et formules</h3>
+        <details class="card defs">
+            <summary>Afficher les formules utilisées</summary>
+            <div class="body">
+                <p><strong>Inscrits</strong> : comptes créés dans la période (hors internes et bannis).</p>
+                <p><strong>Taux d'activation</strong> : <code>inscrits de la période avec ≥ 1 analyse dans les 7 jours ÷ inscrits de la période</code> (cohorte).</p>
+                <p><strong>Utilisateurs récurrents</strong> : inscrits de la période ayant ≥ 2 analyses.</p>
+                <p><strong>Consultation des offres</strong> : inscrits de la période ayant lancé une recherche d'offres (suivi depuis le 11.10.2026) ou créé une recherche sauvegardée manuelle.</p>
+                <p><strong>Conversion en client payant (cohorte)</strong> : <code>inscrits de la période devenus payants à ce jour ÷ inscrits de la période</code>. Mesurée à aujourd'hui, donc elle monte avec le temps pour les cohortes récentes.</p>
+                <p><strong>Clients actifs</strong> : comptes Premium/Pro avec un abonnement Stripe lié (un plan attribué à la main depuis l'admin n'est pas compté).</p>
+                <p><strong>MRR (tarif public)</strong> : <code>Premium actifs × 9 + Pro actifs × 29</code> CHF, avant remises (ex. code SWISS20). Il sera remplacé par le revenu réel dès que le registre des paiements aura assez d'historique.</p>
+                <p><strong>Achats confirmés</strong> : lignes du registre <code>payments</code> issues de webhooks Stripe signés, dédoublonnées par identifiant d'événement Stripe.</p>
+                <p><strong>Résiliations</strong> : événements <code>canceled</code> reçus de Stripe (la résiliation « programmée » est comptée à part). Le churn n'est pas calculé tant que l'historique est trop court.</p>
+                <p><strong>Période</strong> : fuseau UTC ; bornes incluses ; « Depuis le début » = toute la base.</p>
+            </div>
+        </details>
+    </div>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function getAdminToken() { return localStorage.getItem('admin_token'); }
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+        if (!getAdminToken()) window.location.href = 'admin-login.html';
+
+        const KIND_LABELS = {
+            subscription_invoice: 'Abonnement (facture payée)',
+            credit_purchase: 'Achat de crédits',
+            job_pack: 'Pack Recherche d\'emploi',
+            refund: 'Remboursement'
+        };
+        const FUNNEL_LABELS = {
+            signup_page_viewed: 'Page connexion/inscription vue',
+            pricing_viewed: 'Page tarifs vue',
+            premium_cta_clicked: 'Clic « Choisir Premium / Pro »',
+            checkout_started: 'Paiement démarré'
+        };
+        const PACK_LABELS = {
+            viewed: 'Page Pack vue',
+            cta_clicked: 'Clic sur « Acheter »',
+            checkout_started: 'Paiement démarré',
+            purchased: 'Achat confirmé',
+            activated: 'Pack activé'
+        };
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+        function pct(v) { return v == null ? '—' : v.toFixed(1).replace(/\.0$/, '') + ' %'; }
+        function chf(cents) { return (cents / 100).toFixed(2) + ' CHF'; }
+        function ratio(n, d) { return d > 0 ? Math.round(n / d * 1000) / 10 : null; }
+
+        function onPeriodChange() {
+            document.getElementById('customRange').style.display = document.getElementById('period').value === 'custom' ? 'inline-flex' : 'none';
+        }
+        function isoDay(d) { return d.toISOString().slice(0, 10); }
+
+        function buildQuery() {
+            const p = document.getElementById('period').value;
+            const q = new URLSearchParams();
+            const today = new Date();
+            if (p === 'custom') {
+                const f = document.getElementById('fromDate').value, t = document.getElementById('toDate').value;
+                if (f) q.set('from', f);
+                if (t) q.set('to', t);
+            } else if (p === 'all') {
+                q.set('from', '2025-01-01');
+            } else {
+                q.set('from', isoDay(new Date(today.getTime() - parseInt(p, 10) * 86400000)));
+            }
+            if (document.getElementById('includeInternal').checked) q.set('include_internal', '1');
+            return q.toString();
+        }
+
+        function table(headers, rows, emptyMsg) {
+            if (!rows.length) return '<div class="empty">' + esc(emptyMsg) + '</div>';
+            return '<table><thead><tr>' + headers.map((h, i) => '<th' + (i > 0 ? ' class="num"' : '') + '>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>' +
+                rows.map(r => '<tr>' + r.map((c, i) => '<td' + (i > 0 ? ' class="num"' : '') + '>' + c + '</td>').join('') + '</tr>').join('') + '</tbody></table>';
+        }
+
+        function render(d) {
+            const c = d.cohort, s = d.subscriptions;
+            const cancels = (s.events.find(e => e.event === 'canceled') || {}).n || 0;
+            const scheduled = (s.events.find(e => e.event === 'cancel_scheduled') || {}).n || 0;
+            const notices = [];
+            if (!s.ledger_started_at) {
+                notices.push('Le registre des paiements est actif mais n\'a encore enregistré aucun paiement ni résiliation : les chiffres de revenu et de résiliations ne couvrent que la période suivant le 11.10.2026.');
+            }
+            document.getElementById('notices').innerHTML = notices.map(n => '<div class="notice">' + esc(n) + '</div>').join('');
+
+            const kpis = [
+                [c.signups, 'Inscrits (période)', ''],
+                [pct(c.activation_rate), 'Activation (analyse sous 7 j)', c.activated + ' sur ' + c.signups],
+                [pct(c.repeat_rate), '2 analyses ou plus', c.repeat_users + ' sur ' + c.signups],
+                [pct(c.viewed_jobs_rate), 'Ont consulté des offres', 'suivi depuis le 11.10.2026'],
+                [pct(c.paying_rate), 'Conversion en client payant', c.paying + ' sur ' + c.signups + ' (cohorte)'],
+                [(s.premium_active + s.pro_active), 'Clients actifs Premium/Pro', s.premium_active + ' Premium · ' + s.pro_active + ' Pro'],
+                [s.mrr_list_price + ' CHF', 'MRR (tarif public)', 'avant remises'],
+                [cancels, 'Résiliations (période)', scheduled + ' programmée(s)']
+            ];
+            document.getElementById('kpis').innerHTML = kpis.map(k =>
+                '<div class="stat-box"><div class="number">' + esc(k[0]) + '</div><div class="label">' + esc(k[1]) + '</div>' + (k[2] ? '<div class="hint">' + esc(k[2]) + '</div>' : '') + '</div>').join('');
+
+            document.getElementById('bySource').innerHTML = table(
+                ['Source', 'Canal', 'Inscrits', 'Activés', 'Taux d\'activation', 'Payants'],
+                d.by_source.map(r => [esc(r.source), esc(r.medium || '—'), r.signups, r.activated, pct(ratio(r.activated, r.signups)), r.paying]),
+                'Aucune inscription sur la période.');
+
+            const funnelRows = [];
+            ['signup_page_viewed', 'pricing_viewed', 'premium_cta_clicked', 'checkout_started'].forEach(ev => {
+                d.sales_funnel.filter(r => r.event_type === ev).forEach(r => {
+                    funnelRows.push([esc(FUNNEL_LABELS[ev]) + (r.plan ? ' — ' + esc(r.plan) : ''), r.events, r.visitors]);
+                });
+            });
+            document.getElementById('salesFunnel').innerHTML = table(
+                ['Étape', 'Événements', 'Visiteurs distincts'], funnelRows,
+                'Aucun événement enregistré sur la période (le suivi a démarré le 11.10.2026 ; les visiteurs qui refusent le bandeau ne sont pas comptés).');
+
+            document.getElementById('payments').innerHTML = table(
+                ['Type', 'Nombre', 'Montant'],
+                d.payments.map(r => [esc(KIND_LABELS[r.kind] || r.kind), r.n, (r.kind === 'refund' ? '− ' : '') + chf(r.total)]),
+                'Aucun paiement confirmé sur la période.');
+
+            const packOrder = ['viewed', 'cta_clicked', 'checkout_started', 'purchased', 'activated'];
+            document.getElementById('pack').innerHTML = table(
+                ['Étape', 'Événements', 'Utilisateurs connectés'],
+                packOrder.map(ev => { const r = d.pack.find(p => p.event_type === ev); return [esc(PACK_LABELS[ev]), r ? r.events : 0, r ? r.users : 0]; }),
+                '');
+        }
+
+        async function load() {
+            document.getElementById('kpis').innerHTML = '<div class="empty" style="grid-column:1/-1;">Chargement…</div>';
+            try {
+                const res = await fetch(API_BASE + '/admin/marketing/funnel?' + buildQuery(), {
+                    headers: { 'Authorization': 'Bearer ' + getAdminToken() }
+                });
+                if (res.status === 401 || res.status === 403) { logout(); return; }
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur de chargement');
+                render(data);
+            } catch (e) {
+                document.getElementById('kpis').innerHTML = '<div class="empty" style="grid-column:1/-1;">Erreur : ' + esc(e.message) + '</div>';
+            }
+        }
+        load();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre avis — SwissCV Pro</title>
+  <link rel="canonical" href="https://swisscv-pro.ch/feedback">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --red: #D50000; --black: #0D0D0D; --gray: #E6E6E6; }
+    body { font-family: 'Inter', sans-serif; background: #F8F9FA; color: var(--black); -webkit-font-smoothing: antialiased; }
+
+    .topbar { background: linear-gradient(135deg,#D50000 0%,#7f1d1d 100%); padding: 40px 24px 56px; text-align: center; color: white; }
+    .topbar-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .topbar-logo .cross { width: 26px; height: 26px; background: rgba(255,255,255,.18); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 800; }
+    .topbar-logo .name { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.8); }
+    .topbar h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .topbar p { font-size: 14px; color: rgba(255,255,255,.85); max-width: 480px; margin: 0 auto; line-height: 1.5; }
+
+    .container { max-width: 560px; margin: -32px auto 60px; padding: 0 20px; }
+    .card { background: white; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.1); padding: 32px; }
+
+    .form-group { margin-bottom: 24px; }
+    .form-group label.question { display: block; font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 12px; }
+    .form-group .hint { font-size: 12px; color: #9ca3af; font-weight: 400; margin-top: 2px; }
+
+    .radio-option { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 2px solid var(--gray); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: border-color .15s, background .15s; }
+    .radio-option:hover { border-color: #f0b3b3; }
+    .radio-option input[type="radio"] { accent-color: var(--red); width: 16px; height: 16px; flex-shrink: 0; }
+    .radio-option.selected { border-color: var(--red); background: #FFF8F8; }
+    .radio-option span { font-size: 14px; }
+
+    .nps-scale { display: flex; gap: 6px; flex-wrap: wrap; }
+    .nps-btn {
+      flex: 1; min-width: 30px; padding: 10px 0; border: 2px solid var(--gray); border-radius: 6px;
+      background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color .15s, background .15s, color .15s;
+      font-family: inherit;
+    }
+    .nps-btn:hover { border-color: #f0b3b3; }
+    .nps-btn.selected { border-color: var(--red); background: var(--red); color: white; }
+    .nps-scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: #9ca3af; margin-top: 6px; }
+
+    .form-group input[type="email"], .form-group textarea {
+      width: 100%; padding: 12px 14px; border: 2px solid var(--gray); border-radius: 8px;
+      font-size: 14px; font-family: inherit; resize: vertical;
+    }
+    .form-group textarea { min-height: 90px; }
+    .form-group input[type="email"]:focus, .form-group textarea:focus { outline: none; border-color: var(--red); }
+
+    .btn-submit {
+      width: 100%; padding: 15px; background: var(--red); color: white; border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s;
+    }
+    .btn-submit:hover:not(:disabled) { background: #B80000; }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    .reward-note { background: #fff8f0; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 14px; font-size: 12.5px; color: #92400e; margin-bottom: 24px; }
+
+    #formView.hidden, #successView.hidden, #errorMsg.hidden { display: none; }
+    #successView { text-align: center; padding: 20px 0; }
+    #successView .icon { width: 56px; height: 56px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    #successView h2 { font-size: 19px; margin-bottom: 8px; }
+    #successView p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+
+    #errorMsg { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; }
+
+    @media (max-width: 480px) { .card { padding: 24px 20px; } }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-logo"><span class="cross">+</span><span class="name">SwissCV Pro</span></div>
+    <h1>Votre avis compte</h1>
+    <p>Deux minutes pour nous aider à améliorer SwissCV Pro — votre avis compte, qu'il soit bon ou moins bon.</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+
+      <div id="errorMsg" class="hidden"></div>
+
+      <form id="formView">
+        <div class="reward-note">🎁 En remerciement, nous ajoutons <strong>5 crédits gratuits</strong> à votre compte dès l'envoi du formulaire.</div>
+
+        <div class="form-group">
+          <input type="hidden" id="email" name="email">
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q1Label">Qu'est-ce qui vous a le plus arrêté avant de passer à l'abonnement Premium ?</label>
+          <div class="radio-group" id="blockerGroup">
+            <label class="radio-option"><input type="radio" name="blocker_reason" value="price"><span>Le prix</span></label>
+            <label class="radio-option"><input type="radio" name="blocker_reason" value="missing_feature"><span>Il manquait une fonctionnalité</span></label>
+            <label class="radio-option"><input type="radio" name="blocker_reason" value="not_used_enough"><span>Je n'ai pas assez utilisé le produit pour me décider</span></label>
+            <label class="radio-option"><input type="radio" name="blocker_reason" value="not_convinced"><span>Je n'étais pas convaincu par la qualité</span></label>
+            <label class="radio-option"><input type="radio" name="blocker_reason" value="other"><span>Autre raison</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q2Label">Qu'avez-vous pensé de la qualité de l'analyse CV ?</label>
+          <div class="radio-group" id="qualityGroup">
+            <label class="radio-option"><input type="radio" name="quality_rating" value="very_useful"><span>Très utile</span></label>
+            <label class="radio-option"><input type="radio" name="quality_rating" value="useful"><span>Utile</span></label>
+            <label class="radio-option"><input type="radio" name="quality_rating" value="not_very_useful"><span>Peu utile</span></label>
+            <label class="radio-option"><input type="radio" name="quality_rating" value="not_useful"><span>Pas utile</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q5Label">Avez-vous utilisé "Candidature en 1 clic" ou "Candidatures en masse" ?</label>
+          <div class="radio-group" id="usageGroup">
+            <label class="radio-option"><input type="radio" name="usage_features" value="used"><span>Oui, je les ai utilisées</span></label>
+            <label class="radio-option"><input type="radio" name="usage_features" value="didnt_know"><span>Non, je ne savais pas que ça existait</span></label>
+            <label class="radio-option"><input type="radio" name="usage_features" value="no_need"><span>Non, pas eu besoin</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q6Label">Sur une échelle de 0 à 10, recommanderiez-vous SwissCV Pro à un proche en recherche d'emploi ?</label>
+          <div class="nps-scale" id="npsScale">
+            <button type="button" class="nps-btn" data-value="0">0</button>
+            <button type="button" class="nps-btn" data-value="1">1</button>
+            <button type="button" class="nps-btn" data-value="2">2</button>
+            <button type="button" class="nps-btn" data-value="3">3</button>
+            <button type="button" class="nps-btn" data-value="4">4</button>
+            <button type="button" class="nps-btn" data-value="5">5</button>
+            <button type="button" class="nps-btn" data-value="6">6</button>
+            <button type="button" class="nps-btn" data-value="7">7</button>
+            <button type="button" class="nps-btn" data-value="8">8</button>
+            <button type="button" class="nps-btn" data-value="9">9</button>
+            <button type="button" class="nps-btn" data-value="10">10</button>
+          </div>
+          <div class="nps-scale-labels"><span>Pas du tout</span><span>Certainement</span></div>
+          <input type="hidden" id="npsScoreInput">
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q3Label">Une fonctionnalité qui vous manque ? <span class="hint">(optionnel)</span></label>
+          <textarea id="missingFeature" name="missing_feature" placeholder="Ex: comparer plusieurs offres en même temps..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="question" id="q4Label">Commentaire libre <span class="hint">(optionnel)</span></label>
+          <textarea id="comment" name="comment" placeholder="Tout ce que vous voulez nous dire..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Envoyer mon avis</button>
+      </form>
+
+      <div id="successView" class="hidden">
+        <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h2>Merci !</h2>
+        <p id="successText">Votre avis a bien été envoyé.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+    // Préremplir l'email depuis le lien de l'email (?email=...)
+    const params = new URLSearchParams(window.location.search);
+    const prefillEmail = params.get('email') || '';
+    document.getElementById('email').value = prefillEmail;
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Applique les libellés modifiables depuis l'admin — ne touche jamais aux
+    // attributs "value" des options radio, seulement au texte affiché, pour ne
+    // pas casser la correspondance avec les statistiques déjà enregistrées.
+    function applyConfig(config) {
+      if (config.q1_label) document.getElementById('q1Label').textContent = config.q1_label;
+      if (config.q2_label) document.getElementById('q2Label').textContent = config.q2_label;
+      if (config.q3_label) document.getElementById('q3Label').innerHTML = esc(config.q3_label) + ' <span class="hint">(optionnel)</span>';
+      if (config.q4_label) document.getElementById('q4Label').innerHTML = esc(config.q4_label) + ' <span class="hint">(optionnel)</span>';
+      if (config.q5_label) document.getElementById('q5Label').textContent = config.q5_label;
+      if (config.q6_label) document.getElementById('q6Label').textContent = config.q6_label;
+
+      (config.q1_options || []).forEach(opt => {
+        const input = document.querySelector('#blockerGroup input[value="' + opt.value + '"]');
+        if (input) input.closest('.radio-option').querySelector('span').textContent = opt.label;
+      });
+      (config.q2_options || []).forEach(opt => {
+        const input = document.querySelector('#qualityGroup input[value="' + opt.value + '"]');
+        if (input) input.closest('.radio-option').querySelector('span').textContent = opt.label;
+      });
+      (config.q5_options || []).forEach(opt => {
+        const input = document.querySelector('#usageGroup input[value="' + opt.value + '"]');
+        if (input) input.closest('.radio-option').querySelector('span').textContent = opt.label;
+      });
+    }
+
+    // Sélection du score NPS (0-10)
+    document.querySelectorAll('.nps-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('npsScoreInput').value = btn.dataset.value;
+      });
+    });
+
+    fetch(API_BASE + '/feedback/config')
+      .then(r => r.json())
+      .then(data => { if (data.success) applyConfig(data.config); })
+      .catch(() => {}); // silencieux — le texte par défaut déjà dans le HTML reste affiché
+
+    // Style visuel de sélection sur les options radio
+    document.querySelectorAll('.radio-group').forEach(group => {
+      group.addEventListener('change', () => {
+        group.querySelectorAll('.radio-option').forEach(opt => {
+          opt.classList.toggle('selected', opt.querySelector('input').checked);
+        });
+      });
+    });
+
+    document.getElementById('formView').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById('errorMsg');
+      errorEl.classList.add('hidden');
+
+      const email = document.getElementById('email').value.trim();
+      const blockerInput = document.querySelector('input[name="blocker_reason"]:checked');
+
+      if (!email) {
+        errorEl.textContent = "Lien invalide — l'adresse email est manquante. Réessayez depuis le lien reçu par email.";
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      if (!blockerInput) {
+        errorEl.textContent = 'Merci de répondre à la première question.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi...';
+
+      try {
+        const qualityInput = document.querySelector('input[name="quality_rating"]:checked');
+        const usageInput = document.querySelector('input[name="usage_features"]:checked');
+        const npsValue = document.getElementById('npsScoreInput').value;
+        const res = await fetch(API_BASE + '/feedback/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            blocker_reason: blockerInput.value,
+            quality_rating: qualityInput ? qualityInput.value : '',
+            usage_features: usageInput ? usageInput.value : '',
+            nps_score: npsValue !== '' ? npsValue : '',
+            missing_feature: document.getElementById('missingFeature').value.trim(),
+            comment: document.getElementById('comment').value.trim()
+          })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          errorEl.textContent = data.error || "Une erreur est survenue, réessayez.";
+          errorEl.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Envoyer mon avis';
+          return;
+        }
+        document.getElementById('successText').textContent = data.credited
+          ? 'Votre avis a bien été envoyé. Vos 5 crédits gratuits ont été ajoutés à votre compte.'
+          : 'Votre avis a bien été envoyé. Merci ! Les 5 crédits de remerciement ne sont offerts qu\'une fois par compte.';
+        document.getElementById('formView').classList.add('hidden');
+        document.getElementById('successView').classList.remove('hidden');
+      } catch (err) {
+        errorEl.textContent = 'Erreur réseau. Vérifiez votre connexion et réessayez.';
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer mon avis';
+      }
+    });
+  </script>
+
+</body>
+</html>

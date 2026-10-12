@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -127,11 +128,13 @@
             display: none;
         }
     </style>
+    <script src="/analytics.js"></script>
+    <script src="/checkout-intent.js"></script>
 </head>
 
 <body>
     <div class="confirm-container">
-        <div class="logo-icon">🇨🇭</div>
+        <div class="logo-icon"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="2" width="6" height="20" rx="1"/><rect x="2" y="9" width="20" height="6" rx="1"/></svg></div>
         <div class="logo-text">SwissCV Pro</div>
 
         <!-- Loading State -->
@@ -143,7 +146,7 @@
 
         <!-- Success State -->
         <div id="successState" class="hidden">
-            <div class="status-icon">✅</div>
+            <div class="status-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <h1 class="success">Email confirmé !</h1>
             <p>Votre adresse email a été confirmée avec succès. Vous pouvez maintenant vous connecter à votre compte SwissCV Pro.</p>
             <a href="login.html" class="btn">Se connecter →</a>
@@ -151,7 +154,7 @@
 
         <!-- Error State -->
         <div id="errorState" class="hidden">
-            <div class="status-icon">❌</div>
+            <div class="status-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
             <h1 class="error">Erreur de confirmation</h1>
             <p id="errorMessage">Le lien de confirmation est invalide ou a expiré. Veuillez demander un nouveau lien.</p>
             <a href="login.html" class="btn">Retour à la connexion</a>
@@ -159,7 +162,7 @@
 
         <!-- Already Confirmed State -->
         <div id="alreadyConfirmedState" class="hidden">
-            <div class="status-icon">ℹ️</div>
+            <div class="status-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
             <h1>Déjà confirmé</h1>
             <p>Votre email a déjà été confirmé. Vous pouvez vous connecter.</p>
             <a href="login.html" class="btn">Se connecter →</a>
@@ -179,6 +182,30 @@
         function showError(message) {
             document.getElementById('errorMessage').textContent = message;
             showState('errorState');
+        }
+
+        function redirectAfterConfirmation(data) {
+            if (data.token) {
+                localStorage.setItem('swisscv_token', data.token);
+                localStorage.setItem('swisscv_user', JSON.stringify(data.user));
+
+                const successEl = document.getElementById('successState');
+                successEl.querySelector('p').textContent = 'Votre adresse email a été confirmée. Vous êtes connecté(e), redirection en cours...';
+                const btn = successEl.querySelector('.btn');
+                const nextPage = swisscvIntent.nextPage(data.user && data.user.profileCompleted ? 'dashboard.html' : 'app.html', data.user && (data.user.tier || data.user.subscription_tier));
+                btn.href = nextPage;
+                btn.textContent = 'Continuer →';
+
+                showState('successState');
+                setTimeout(() => {
+                    window.location.href = nextPage;
+                }, 1500);
+            } else {
+                showState('successState');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3000);
+            }
         }
 
         async function handleConfirmation() {
@@ -228,10 +255,7 @@
                     console.log('Verify response:', data);
 
                     if (data.success || response.ok) {
-                        showState('successState');
-                        setTimeout(() => {
-                            window.location.href = 'login.html';
-                        }, 3000);
+                        redirectAfterConfirmation(data);
                     } else {
                         showError(data.error || 'Erreur de confirmation');
                     }

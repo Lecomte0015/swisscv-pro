@@ -22,7 +22,7 @@ async function loadAnalytics() {
         const overviewData = await overviewResponse.json();
 
         // Get history data
-        const historyResponse = await fetch(API_BASE + '/api/analytics/history?limit=30', {
+        const historyResponse = await fetch(API_BASE + '/analyses/history', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -31,6 +31,12 @@ async function loadAnalytics() {
         }
 
         const historyData = await historyResponse.json();
+        // Normalize field names (API returns camelCase)
+        if (historyData.analyses) {
+            historyData.analyses = historyData.analyses.map(function(a) {
+                return Object.assign({}, a, { created_at: a.createdAt || a.created_at });
+            });
+        }
 
         // Update KPI Cards with null checks
         const overview = overviewData.overview;
@@ -217,7 +223,7 @@ function generateRecommendations(analyses, favorites, overview) {
     // No analyses yet
     if (analyses.length === 0) {
         recommendations.push({
-            icon: '🚀',
+            icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
             title: 'Commencez votre analyse',
             description: 'Analysez votre premier CV pour obtenir des recommandations personnalisées',
             type: 'action',
@@ -230,7 +236,7 @@ function generateRecommendations(analyses, favorites, overview) {
 
         if (daysSinceLastAnalysis > 14) {
             recommendations.push({
-                icon: '🔄',
+                icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
                 title: 'Mettez à jour votre CV',
                 description: `Vous n'avez pas analysé votre CV depuis ${daysSinceLastAnalysis} jours`,
                 type: 'warning',
@@ -238,7 +244,7 @@ function generateRecommendations(analyses, favorites, overview) {
             });
         } else if (daysSinceLastAnalysis === 0) {
             recommendations.push({
-                icon: '✅',
+                icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
                 title: 'CV analysé aujourd\'hui',
                 description: 'Votre CV est à jour ! Continuez à postuler aux offres.',
                 type: 'success'
@@ -252,14 +258,14 @@ function generateRecommendations(analyses, favorites, overview) {
             const improvement = lastScore - firstScore;
             if (improvement > 10) {
                 recommendations.push({
-                    icon: '🎉',
+                    icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l6.5-2.2c.6 1.3 2 2.2 3.5 2.2 2.2 0 4-1.8 4-4 0-1.5-.9-2.9-2.2-3.5L16 8l6-2-2 6-6.5 2.2"/><path d="M22 2L2 9l7 3 3 7z"/></svg>',
                     title: 'Excellente progression !',
                     description: `Votre score a augmenté de ${improvement} points`,
                     type: 'success'
                 });
             } else if (improvement < -5) {
                 recommendations.push({
-                    icon: '⚠️',
+                    icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
                     title: 'Score en baisse',
                     description: 'Votre dernier CV a un score plus faible. Revoyez vos modifications.',
                     type: 'warning'
@@ -271,7 +277,7 @@ function generateRecommendations(analyses, favorites, overview) {
         if (overview && overview.avgScore) {
             if (overview.avgScore < 60) {
                 recommendations.push({
-                    icon: '📝',
+                    icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
                     title: 'Améliorez votre CV',
                     description: 'Votre score moyen est de ' + overview.avgScore + '/100. Optimisez votre CV avec nos suggestions.',
                     type: 'action',
@@ -279,7 +285,7 @@ function generateRecommendations(analyses, favorites, overview) {
                 });
             } else if (overview.avgScore >= 80) {
                 recommendations.push({
-                    icon: '⭐',
+                    icon: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
                     title: 'Excellent CV !',
                     description: 'Votre CV a un excellent score. Continuez à postuler !',
                     type: 'success'
@@ -290,7 +296,7 @@ function generateRecommendations(analyses, favorites, overview) {
         // Check favorites
         if (favorites.length > 5) {
             recommendations.push({
-                icon: '📝',
+                icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
                 title: 'Passez à l\'action',
                 description: `Vous avez ${favorites.length} offres en favoris. Commencez à postuler !`,
                 type: 'action',
@@ -298,7 +304,7 @@ function generateRecommendations(analyses, favorites, overview) {
             });
         } else if (favorites.length === 0) {
             recommendations.push({
-                icon: '🔍',
+                icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
                 title: 'Trouvez des offres',
                 description: 'Explorez les offres d\'emploi et ajoutez-les à vos favoris',
                 type: 'action',
@@ -308,10 +314,10 @@ function generateRecommendations(analyses, favorites, overview) {
     }
 
     // Premium features
-    const user = getUser();
+    const user = (typeof getUser === 'function') ? getUser() : JSON.parse(localStorage.getItem('swisscv_user') || 'null');
     if (user && (user.tier === 'free' || !user.tier)) {
         recommendations.push({
-            icon: '⭐',
+            icon: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
             title: 'Passez à Premium',
             description: 'Débloquez l\'optimisation CV, templates professionnels et plus',
             type: 'upgrade',

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Créatif — Berne Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body { font-family: 'Space Grotesk', sans-serif; background: #F0EAE0; color: #1A1A1A; }
+.page-wrapper { display: flex; justify-content: center; padding: 30px 0 60px; }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #FAFAF8;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.18);
+}
+
+/* === HEADER BOLD === */
+.header {
+  background: #1A1A1A;
+  padding: 0;
+  display: flex;
+  min-height: 130px;
+}
+.header-accent {
+  width: 8px;
+  background: linear-gradient(180deg, #F97316, #EA580C);
+  flex-shrink: 0;
+}
+.header-content {
+  flex: 1;
+  padding: 28px 36px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.header-photo {
+  width: 80px; height: 80px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.07);
+  border: 2px solid rgba(249,115,22,0.4);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; overflow: hidden;
+}
+.header-photo span { font-size: 34px; opacity: 0.25; }
+.header-text { flex: 1; }
+.header-text h1 {
+  font-size: 30px; font-weight: 700; color: white;
+  line-height: 1.1; letter-spacing: -0.5px;
+}
+.header-text .h-role {
+  font-size: 12px; color: #F97316; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
+}
+.header-right {
+  display: flex; flex-direction: column; gap: 5px; align-items: flex-end;
+}
+.h-contact {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: rgba(255,255,255,0.55);
+}
+.h-contact span:first-child { font-size: 12px; }
+
+/* === BODY === */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+  min-height: calc(297mm - 130px);
+}
+
+/* MAIN */
+.main { padding: 32px 36px 40px; border-right: 1px solid #EDEDE9; }
+
+/* Sections */
+.sec { margin-bottom: 26px; }
+.sec-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2.5px;
+  color: white;
+  background: #1A1A1A;
+  padding: 4px 12px 4px 6px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.sec-title::before {
+  content: '';
+  width: 4px; height: 16px;
+  background: #F97316;
+  border-radius: 2px;
+}
+
+.profile-p { font-size: 12px; line-height: 1.8; color: #555; }
+
+/* Experience */
+.exp { margin-bottom: 16px; padding: 14px 16px; background: white; border-radius: 8px; border: 1px solid #EDEDE9; border-left: 3px solid #F97316; }
+.exp-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 4px; margin-bottom: 3px; }
+.exp-poste { font-size: 13px; font-weight: 700; color: #1A1A1A; }
+.exp-date {
+  font-size: 10px; font-weight: 600; color: #F97316;
+  background: rgba(249,115,22,0.08);
+  padding: 2px 8px; border-radius: 8px;
+}
+.exp-co { font-size: 11.5px; color: #999; font-weight: 500; margin-bottom: 6px; }
+.exp-co strong { color: #EA580C; }
+.exp-ul { list-style: none; }
+.exp-ul li {
+  font-size: 11.5px; color: #555; line-height: 1.55;
+  padding-left: 14px; position: relative; margin-bottom: 3px;
+}
+.exp-ul li::before {
+  content: '→'; position: absolute; left: 0;
+  color: #F97316; font-size: 10px; top: 1px;
+}
+
+/* Formation */
+.edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.edu-card { background: white; border: 1px solid #EDEDE9; border-radius: 8px; padding: 12px 14px; }
+.edu-deg { font-size: 11.5px; font-weight: 700; color: #1A1A1A; margin-bottom: 3px; }
+.edu-sch { font-size: 11px; color: #F97316; font-weight: 600; }
+.edu-yr { font-size: 10px; color: #BBB; margin-top: 2px; }
+
+/* === SIDEBAR === */
+.sidebar { padding: 32px 22px 40px; background: white; display: flex; flex-direction: column; gap: 22px; }
+
+.s-sec { }
+.s-title {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: #BBB;
+  border-bottom: 1px solid #F0F0F0;
+  padding-bottom: 5px; margin-bottom: 10px;
+}
+
+/* Info */
+.s-info-row { display: flex; gap: 8px; font-size: 11px; color: #555; margin-bottom: 6px; align-items: flex-start; }
+.s-icon { font-size: 13px; flex-shrink: 0; }
+
+/* Skill bars */
+.sk-item { margin-bottom: 9px; }
+.sk-label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 4px; }
+.sk-track { height: 5px; background: #F0F0F0; border-radius: 3px; }
+.sk-fill { height: 100%; background: linear-gradient(90deg, #F97316, #FDBA74); border-radius: 3px; }
+
+/* Langues */
+.lang-item { margin-bottom: 9px; }
+.lang-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.lang-name { font-size: 11.5px; font-weight: 600; color: #222; }
+.lang-badge {
+  font-size: 9.5px; font-weight: 700; color: white;
+  background: #1A1A1A; padding: 1px 7px; border-radius: 8px;
+}
+.lang-sub { font-size: 10px; color: #BBB; }
+
+/* Tags */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 10px; font-weight: 600;
+  color: #EA580C; background: rgba(249,115,22,0.07);
+  border: 1px solid rgba(249,115,22,0.2);
+  padding: 3px 9px; border-radius: 10px;
+}
+.tag.dark {
+  color: white; background: #1A1A1A; border-color: #1A1A1A;
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+.dl-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: #1A1A1A;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 9999;
+  font-family: 'Space Grotesk', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.dl-badge { background: rgba(249,115,22,0.2); border: 1px solid #F97316; color: #FB923C; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.6); margin-left: 12px; }
+.dl-btn { background: #F97316; color: white; border: none; padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; }
+.dl-btn:hover { background: #EA580C; }
+@media (max-width: 600px) { .dl-bar { padding: 0 12px; } .dl-title { display: none; } .dl-btn { padding: 7px 14px; font-size: 12px; } }
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div style="display:flex;align-items:center">
+    <span class="dl-badge">Créatif</span>
+    <span class="dl-title">Berne Design — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-accent"></div>
+    <div class="header-content">
+      <div class="header-photo"><span>👤</span></div>
+      <div class="header-text">
+        <h1>Marco<br>Ferretti</h1>
+        <div class="h-role">Creative Director · Brand Strategy</div>
+      </div>
+      <div class="header-right">
+        <div class="h-contact"><span>📍</span><span>Kramgasse 8, 3011 Berne</span></div>
+        <div class="h-contact"><span>📞</span><span>+41 31 567 89 01</span></div>
+        <div class="h-contact"><span>✉️</span><span>m.ferretti@email.ch</span></div>
+        <div class="h-contact"><span>🌐</span><span>marcoferretti.ch</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+    <div class="main">
+
+      <div class="sec">
+        <div class="sec-title">Profil</div>
+        <p class="profile-p">Directeur créatif avec 11 ans d'expérience en branding, direction artistique et stratégie de communication. Capacité à unifier vision créative et objectifs business pour des marques suisses et internationales. Expertise reconnue dans les secteurs luxe, horlogerie et tech. Fondateur d'un studio créatif primé aux Cannes Lions 2023.</p>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Expérience</div>
+
+        <div class="exp">
+          <div class="exp-head"><span class="exp-poste">Directeur Créatif</span><span class="exp-date">03.2021 – Présent</span></div>
+          <div class="exp-co"><strong>Swatch Group Design Studio</strong> — Bienne</div>
+          <ul class="exp-ul">
+            <li>Direction artistique des campagnes globales Swatch et Omega (30+ marchés)</li>
+            <li>Management d'une équipe de 14 créatifs (DA, copywriters, motion designers)</li>
+            <li>Refonte de l'identité visuelle Longines : +28% de mémorabilité de marque</li>
+            <li>Lauréat Cannes Lions Silver 2023 — catégorie Brand Experience</li>
+          </ul>
+        </div>
+
+        <div class="exp">
+          <div class="exp-head"><span class="exp-poste">Directeur Artistique Senior</span><span class="exp-date">06.2017 – 02.2021</span></div>
+          <div class="exp-co"><strong>Publicis.Sapient</strong> — Zurich</div>
+          <ul class="exp-ul">
+            <li>Direction créative des comptes Nestlé, Rolex et Sunrise (budgets CHF 4–12M)</li>
+            <li>Mise en place d'un workflow de production digitale réduisant les délais de 35%</li>
+            <li>Conception de la campagne "Swiss Heritage 2020" — 180M d'impressions</li>
+          </ul>
+        </div>
+
+        <div class="exp">
+          <div class="exp-head"><span class="exp-poste">Art Director</span><span class="exp-date">09.2014 – 05.2017</span></div>
+          <div class="exp-co"><strong>Jung von Matt Limmat</strong> — Zurich</div>
+          <ul class="exp-ul">
+            <li>Conception d'identités visuelles pour 8 marques suisses majeures</li>
+            <li>Animation de workshops créatifs et de sessions de brainstorming</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-title">Formation</div>
+        <div class="edu-grid">
+          <div class="edu-card">
+            <div class="edu-deg">Master en Design de Communication</div>
+            <div class="edu-sch">ECAL Lausanne</div>
+            <div class="edu-yr">2012 – 2014</div>
+          </div>
+          <div class="edu-card">
+            <div class="edu-deg">Bachelor en Arts Graphiques</div>
+            <div class="edu-sch">HEAD Genève</div>
+            <div class="edu-yr">2009 – 2012</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="s-sec">
+        <div class="s-title">Informations</div>
+        <div class="s-info-row"><span class="s-icon">🇮🇹</span><span>Nationalité italienne<br>Permis C</span></div>
+        <div class="s-info-row"><span class="s-icon">📅</span><span>Né le 21.09.1988</span></div>
+        <div class="s-info-row"><span class="s-icon">🪪</span><span>Permis de conduire B</span></div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Expertise Créative</div>
+        <div class="sk-item"><div class="sk-label">Direction Artistique</div><div class="sk-track"><div class="sk-fill" style="width:98%"></div></div></div>
+        <div class="sk-item"><div class="sk-label">Brand Identity</div><div class="sk-track"><div class="sk-fill" style="width:95%"></div></div></div>
+        <div class="sk-item"><div class="sk-label">Motion Design</div><div class="sk-track"><div class="sk-fill" style="width:82%"></div></div></div>
+        <div class="sk-item"><div class="sk-label">Strategy de marque</div><div class="sk-track"><div class="sk-fill" style="width:88%"></div></div></div>
+        <div class="sk-item"><div class="sk-label">Direction d'équipe</div><div class="sk-track"><div class="sk-fill" style="width:90%"></div></div></div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Langues</div>
+        <div class="lang-item">
+          <div class="lang-header"><span class="lang-name">Italien</span><span class="lang-badge">C2</span></div>
+          <div class="lang-sub">Langue maternelle</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-header"><span class="lang-name">Français</span><span class="lang-badge">C1</span></div>
+          <div class="lang-sub">Courant</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-header"><span class="lang-name">Allemand</span><span class="lang-badge">B2</span></div>
+          <div class="lang-sub">Professionnel</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-header"><span class="lang-name">Anglais</span><span class="lang-badge">C1</span></div>
+          <div class="lang-sub">Courant</div>
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Logiciels</div>
+        <div class="tag-cloud">
+          <span class="tag">Adobe CC</span>
+          <span class="tag">Figma</span>
+          <span class="tag">Cinema 4D</span>
+          <span class="tag">After Effects</span>
+          <span class="tag">Sketch</span>
+          <span class="tag">Blender</span>
+        </div>
+      </div>
+
+      <div class="s-sec">
+        <div class="s-title">Prix & Distinctions</div>
+        <div style="font-size:10.5px;color:#555;line-height:1.8;">
+          🥈 Cannes Lions Silver 2023<br>
+          🏆 Best Swiss Branding 2022<br>
+          ⭐ ADC Awards Finalist 2021<br>
+          🎖 One Show Merit 2020
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

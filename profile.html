@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -32,9 +33,9 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            /* ✅ CORRIGÉ : Retiré margin-top qui causait le problème */
+            /* CORRIGÉ : Retiré margin-top qui causait le problème */
             padding: 40px;
-            /* ✅ AJOUTÉ : Padding interne pour l'espacement */
+            /* AJOUTÉ : Padding interne pour l'espacement */
         }
 
         .card {
@@ -260,9 +261,10 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="public/js/modal-system.js"></script>
+    <script src="public/js/modal-system.js?v=20260831a"></script>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
+    <script src="/analytics.js"></script>
 </head>
 
 <body>
@@ -619,39 +621,39 @@
             <!-- Menu Outils CV (Tous les plans) -->
             <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    🎯 Outils CV <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
 
             <a href="job-search.html" class="navbar-link">Offres</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
 
 
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    📊 Suivi <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris <span id="favoritesBadge"
                             style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
                     <a href="job-tracker.html" class="dropdown-item">Tracker</a>
                 </div>
             </div>
 
             <!-- Lien Team (Pro uniquement) -->
-            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team</a>
 
             <!-- Menu Utilisateur Dropdown -->
             
             <!-- Credit Balance Display -->
             <div class="credits-display" title="Voir mes crédits">
-                <span class="credits-icon">💳</span>
+                <span class="credits-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
             </div>
@@ -668,29 +670,29 @@
                     <div class="user-menu-divider"></div>
 
                     <a href="profile.html" class="user-menu-item active">
-                        <span class="menu-icon">👤</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                         <span>Mon Profil</span>
                     </a>
 
                     <a href="support.html" class="user-menu-item">
-                        <span class="menu-icon">💬</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
                         <span>Support</span>
                     </a>
 
                     <a href="credits.html" class="user-menu-item">
-                        <span class="menu-icon">💳</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                         <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
-                        <span class="menu-icon">⚙️</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                         <span>Paramètres</span>
                     </a>
 
                     <div class="user-menu-divider"></div>
 
                     <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
-                        <span class="menu-icon">🚪</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                         <span>Déconnexion</span>
                     </a>
                 </div>
@@ -838,10 +840,10 @@
         })();
     </script>
 
-    <!-- ✅ CONTENU PRINCIPAL CORRIGÉ -->
+    <!-- CONTENU PRINCIPAL CORRIGÉ -->
     <main class="container">
         <div class="profile-header">
-            <div class="profile-avatar">👤</div>
+            <div class="profile-avatar"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <h1>Mon Profil</h1>
             <p>Gérez vos informations personnelles et votre abonnement</p>
         </div>
@@ -879,10 +881,10 @@
 
                 <div class="actions">
                     <button type="submit" class="btn" id="saveBtn">
-                        💾 Enregistrer les modifications
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Enregistrer les modifications
                     </button>
                     <button type="button" class="btn-secondary" onclick="resetForm()">
-                        🔄 Réinitialiser
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Réinitialiser
                     </button>
                 </div>
             </form>
@@ -969,7 +971,7 @@
         }
 
         async function unsubscribe() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
+            if (!confirm('Êtes-vous sûr de vouloir vous désabonner ?\n\nVous perdrez l\'accès aux fonctionnalités Premium :\n• Analyses CV illimitées\n• Lettres de motivation IA\n• Export PDF\n\nVous reviendrez au plan gratuit (2 analyses).')) {
                 return;
             }
 
@@ -979,7 +981,7 @@
                 });
 
                 if (response.ok) {
-                    showSuccess('✅ Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
+                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Désabonnement effectué. Vous êtes maintenant en plan gratuit.');
 
                     // Mettre à jour les données locales
                     const user = getUser();
@@ -1003,7 +1005,7 @@
         }
 
         async function changePassword() {
-            const newPassword = prompt('🔑 Entrez votre nouveau mot de passe :\n(Minimum 6 caractères)');
+            const newPassword = prompt('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> Entrez votre nouveau mot de passe :\n(Minimum 6 caractères)');
 
             if (!newPassword) return;
 
@@ -1019,7 +1021,7 @@
                 });
 
                 if (response.ok) {
-                    showSuccess('✅ Mot de passe changé avec succès !');
+                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Mot de passe changé avec succès !');
                 } else {
                     const error = await response.json();
                     showError(error.error || 'Erreur lors du changement de mot de passe');
@@ -1048,7 +1050,7 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
 
-                    showSuccess('✅ Données exportées avec succès !');
+                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Données exportées avec succès !');
                 } else {
                     showError('Erreur lors de l\'export des données');
                 }
@@ -1059,7 +1061,7 @@
         }
 
         async function deleteAccount() {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer votre compte ?\n\nCette action est IRRÉVERSIBLE.\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Jobs trackés')) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer votre compte ?\n\nCette action est IRRÉVERSIBLE.\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Jobs trackés')) {
                 return;
             }
 
@@ -1076,7 +1078,7 @@
                 });
 
                 if (response.ok) {
-                    alert('✅ Votre compte a été supprimé.\n\nVous allez être déconnecté.');
+                    alert('Votre compte a été supprimé.\n\nVous allez être déconnecté.');
                     logout();
                 } else {
                     const error = await response.json();
@@ -1103,9 +1105,9 @@
         }
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js"></script>
-    <script src="public/js/favorites-badge.js"></script>
-    <script src="public/js/credits.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
+    <script src="public/js/favorites-badge.js?v=20260821a"></script>
+    <script src="public/js/credits.js?v=20260821a"></script>
 </body>
 
 </html>

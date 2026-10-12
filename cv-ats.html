@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV ATS : comment passer les logiciels de tri automatique | SwissCV Pro</title>
+    <meta name="description" content="Comment fonctionnent les ATS (Applicant Tracking System), pourquoi votre CV peut être rejeté avant qu'un humain ne le lise, et comment l'optimiser : mots-clés, mise en page, format PDF.">
+    <link rel="canonical" href="https://swisscv-pro.ch/cv-ats">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CV ATS : comment passer les logiciels de tri automatique">
+    <meta property="og:description" content="Comment fonctionnent les ATS et comment optimiser son CV pour les passer.">
+    <meta property="og:url" content="https://swisscv-pro.ch/cv-ats">
+    <meta property="og:locale" content="fr_CH">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CV ATS : comment passer les logiciels de tri automatique">
+    <meta name="twitter:description" content="Comment fonctionnent les ATS et comment optimiser son CV pour les passer.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "CV ATS : comment passer les logiciels de tri automatique",
+        "description": "Comment fonctionnent les ATS et comment optimiser son CV pour les passer.",
+        "inLanguage": "fr-CH",
+        "publisher": { "@type": "Organization", "name": "SwissCV Pro", "url": "https://swisscv-pro.ch" },
+        "mainEntityOfPage": "https://swisscv-pro.ch/cv-ats"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://swisscv-pro.ch/" },
+            { "@type": "ListItem", "position": 2, "name": "CV ATS", "item": "https://swisscv-pro.ch/cv-ats" }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Les ATS lisent-ils les CV en PDF ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Oui, la plupart des ATS modernes lisent correctement le PDF, à condition qu'il contienne du texte réel et non une image scannée. Évitez les PDF générés à partir d'une photo ou d'un scan de votre CV papier." }
+            },
+            {
+                "@type": "Question",
+                "name": "Qu'est-ce qu'un ATS exactement ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Un ATS (Applicant Tracking System) est un logiciel utilisé par les entreprises pour recevoir, trier et filtrer automatiquement les candidatures avant qu'un recruteur humain ne les consulte. Il extrait le texte de votre CV et le compare aux critères du poste." }
+            },
+            {
+                "@type": "Question",
+                "name": "Comment savoir si mon CV est compatible ATS ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Le plus fiable est de le tester avec un outil d'analyse dédié, qui simule la lecture par un ATS et signale les problèmes de structure, de mots-clés ou de mise en page avant l'envoi." }
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --swiss-red: #D50000; --swiss-black: #0D0D0D; --swiss-white: #FFFFFF; --swiss-gray: #E6E6E6; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #f9fafb; color: #1f2937; line-height: 1.7; }
+
+        .header { background: var(--swiss-white); border-bottom: 2px solid var(--swiss-gray); padding: 16px 0; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 20px; font-weight: 800; color: var(--swiss-black); text-decoration: none; }
+        .header-buttons { display: flex; align-items: center; gap: 16px; }
+        .btn-login { color: var(--swiss-black); text-decoration: none; font-weight: 600; font-size: 14px; padding: 10px 20px; border-radius: 4px; transition: all 0.2s; }
+        .btn-login:hover { background: #F5F5F5; }
+        .btn-cta { background: var(--swiss-red); color: white; padding: 12px 28px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; }
+        .btn-cta:hover { opacity: 0.9; }
+
+        .breadcrumb { max-width: 760px; margin: 24px auto 0; padding: 0 24px; font-size: 13px; color: #6b7280; }
+        .breadcrumb a { color: #6b7280; text-decoration: none; }
+        .breadcrumb a:hover { color: var(--swiss-red); }
+
+        article { max-width: 760px; margin: 0 auto; padding: 16px 24px 80px; }
+        header.hero { padding: 24px 0 32px; }
+        h1 { font-size: 2.1rem; font-weight: 800; color: var(--swiss-black); line-height: 1.25; margin-bottom: 14px; }
+        .lede { font-size: 1.1rem; color: #4b5563; }
+        h2 { font-size: 1.5rem; font-weight: 700; color: var(--swiss-black); margin: 40px 0 16px; }
+        h3 { font-size: 1.15rem; font-weight: 700; color: var(--swiss-black); margin: 24px 0 10px; }
+        p { margin-bottom: 14px; color: #374151; }
+        ul, ol { margin: 0 0 16px 22px; color: #374151; }
+        li { margin-bottom: 8px; }
+        strong { color: var(--swiss-black); }
+
+        .callout { background: #fff3f3; border-left: 4px solid var(--swiss-red); border-radius: 8px; padding: 18px 20px; margin: 24px 0; font-size: 15px; }
+
+        .steps-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+        .steps-flow .step { background: white; border: 1px solid var(--swiss-gray); border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 600; }
+        .steps-flow .arrow { color: #9ca3af; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 28px; position: relative; }
+        .checklist li::before { content: "✓"; position: absolute; left: 0; color: #059669; font-weight: 800; }
+
+        .mistakes { list-style: none; margin-left: 0; }
+        .mistakes li { padding-left: 28px; position: relative; }
+        .mistakes li::before { content: "✕"; color: var(--swiss-red); }
+
+        .cta-box { background: linear-gradient(135deg, var(--swiss-red) 0%, #b71c1c 100%); border-radius: 14px; padding: 32px; text-align: center; color: white; margin: 40px 0; }
+        .cta-box h3 { color: white; margin-top: 0; }
+        .cta-box p { color: rgba(255,255,255,0.9); }
+        .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+        .btn-primary-cta { background: white; color: var(--swiss-red); padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; }
+        .btn-secondary-cta { background: rgba(255,255,255,0.15); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; border: 1.5px solid rgba(255,255,255,0.5); }
+
+        .faq-item { border-bottom: 1px solid var(--swiss-gray); padding: 16px 0; }
+        .faq-item h3 { margin-top: 0; margin-bottom: 8px; }
+
+        .related-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+        .related-links a { display: block; background: white; border: 1px solid var(--swiss-gray); border-radius: 10px; padding: 16px; text-decoration: none; color: var(--swiss-black); font-weight: 600; font-size: 14px; }
+        .related-links a:hover { border-color: var(--swiss-red); }
+
+        .footer { background: white; border-top: 2px solid var(--swiss-gray); padding: 60px 40px 40px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; }
+        .footer-about h3 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .footer-about p { color: #666; line-height: 1.7; margin-bottom: 12px; }
+        .footer-email { margin-top: 16px; font-size: 15px; }
+        .footer-email a { color: var(--swiss-red); text-decoration: none; font-weight: 500; }
+        .footer-email a:hover { text-decoration: underline; }
+        .footer-hosting { font-size: 12px; color: #999; margin-top: 8px; }
+        .footer-links h4 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+        .footer-links ul { list-style: none; }
+        .footer-links a { color: #666; text-decoration: none; display: block; margin-bottom: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--swiss-red); }
+        .footer-bottom { text-align: center; padding-top: 40px; border-top: 1px solid var(--swiss-gray); color: #666; font-size: 14px; }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.6rem; }
+            .related-links { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; gap: 32px; }
+            .cta-buttons { flex-direction: column; }
+        }
+    </style>
+    <script src="/analytics.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">SwissCV Pro</a>
+            <div class="header-buttons">
+                <a href="login.html" class="btn-login">Se connecter</a>
+                <a href="app.html" class="btn-cta">Essayer gratuitement</a>
+            </div>
+        </div>
+    </header>
+
+    <p class="breadcrumb"><a href="index.html">Accueil</a> › CV ATS</p>
+
+    <article>
+        <header class="hero">
+            <h1>CV ATS : ce qui bloque votre candidature avant même qu'un humain ne la lise</h1>
+            <p class="lede">De plus en plus d'entreprises suisses filtrent les candidatures avec un logiciel avant tout examen humain. Un CV mal structuré peut être écarté automatiquement, même s'il correspond parfaitement au poste.</p>
+        </header>
+
+        <p>ATS signifie <strong>Applicant Tracking System</strong> — un logiciel de gestion des candidatures qui reçoit, trie et parfois note automatiquement les CV reçus pour une offre. Plus l'entreprise reçoit de candidatures, plus elle a de chances d'en utiliser un. Comprendre son fonctionnement change concrètement la façon dont vous devez construire votre CV.</p>
+
+        <h2>Comment fonctionne un ATS</h2>
+        <div class="steps-flow">
+            <div class="step">Vous postulez</div>
+            <span class="arrow">→</span>
+            <div class="step">L'ATS extrait le texte</div>
+            <span class="arrow">→</span>
+            <div class="step">Il compare aux critères</div>
+            <span class="arrow">→</span>
+            <div class="step">Score ou tri</div>
+            <span class="arrow">→</span>
+            <div class="step">Lecture humaine (ou pas)</div>
+        </div>
+        <p>L'ATS ouvre votre fichier, en extrait le texte, puis le compare aux mots-clés et critères définis pour le poste (compétences, années d'expérience, formation, localisation). Selon le système, votre candidature peut être classée, notée, ou purement et simplement écartée si elle ne dépasse pas un certain seuil — avant qu'aucun recruteur ne l'ait vue.</p>
+
+        <h2>Ce qui perturbe un ATS</h2>
+        <ul class="mistakes">
+            <li><strong>Les tableaux et colonnes multiples</strong> — l'ATS peut lire le contenu dans le mauvais ordre, mélangeant les sections</li>
+            <li><strong>Les CV en image ou scannés</strong> — s'il n'y a pas de texte réel à extraire, l'ATS ne voit rien du tout</li>
+            <li><strong>Les en-têtes et pieds de page</strong> — certains ATS ignorent complètement le contenu placé dans ces zones (coordonnées y compris)</li>
+            <li><strong>Les icônes à la place du texte</strong> — un symbole de téléphone sans le mot « téléphone » à proximité n'est pas toujours interprété correctement</li>
+            <li><strong>Les intitulés de section non standards</strong> — « Mon parcours » au lieu de « Expérience professionnelle » peut ne pas être reconnu</li>
+        </ul>
+
+        <h2>Comment optimiser son CV pour un ATS</h2>
+        <ul class="checklist">
+            <li>Utilisez une structure simple en une seule colonne, avec des titres de section classiques (Expérience, Formation, Compétences)</li>
+            <li>Envoyez votre CV en PDF texte (pas en image) ou en .docx selon ce que demande l'offre</li>
+            <li>Reprenez les mots-clés exacts de l'annonce quand ils correspondent réellement à votre profil</li>
+            <li>Écrivez les intitulés de poste et de diplômes en toutes lettres, sans abréviation inconnue</li>
+            <li>Évitez les tableaux pour l'expérience professionnelle — préférez des listes verticales simples</li>
+        </ul>
+
+        <div class="callout">
+            Un CV optimisé pour l'ATS n'est pas incompatible avec un CV agréable à lire pour un humain. La plupart des recommandations ci-dessus (structure claire, mots-clés pertinents, intitulés standards) améliorent aussi la lisibilité pour un recruteur pressé.
+        </div>
+
+        <h2>Mots-clés : lesquels utiliser ?</h2>
+        <p>Reprenez le vocabulaire exact de l'offre d'emploi visée, à condition qu'il reflète vraiment vos compétences. Si l'annonce mentionne « gestion de projet Agile », et que c'est le cas, utilisez ces mots précis plutôt qu'un synonyme comme « méthodologie itérative ». L'ATS compare du texte, pas des idées équivalentes.</p>
+
+        <div class="cta-box">
+            <h3>Votre CV est-il lisible par un ATS ?</h3>
+            <p>Notre analyse détecte les problèmes de structure, de mots-clés et de mise en page qui peuvent bloquer votre candidature.</p>
+            <div class="cta-buttons">
+                <a href="app.html" class="btn-primary-cta">Analyser mon CV gratuitement</a>
+                <a href="cv-suisse.html" class="btn-secondary-cta">Voir le guide CV Suisse</a>
+            </div>
+        </div>
+
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+            <h3>Les ATS lisent-ils les CV en PDF ?</h3>
+            <p>Oui, la plupart des ATS modernes lisent correctement le PDF, à condition qu'il contienne du texte réel et non une image scannée.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Qu'est-ce qu'un ATS exactement ?</h3>
+            <p>Un logiciel utilisé par les entreprises pour recevoir, trier et filtrer automatiquement les candidatures avant qu'un recruteur humain ne les consulte.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Comment savoir si mon CV est compatible ATS ?</h3>
+            <p>Le plus fiable est de le tester avec un outil d'analyse dédié, qui simule la lecture par un ATS et signale les problèmes avant l'envoi.</p>
+        </div>
+
+        <h2>Pour aller plus loin</h2>
+        <div class="related-links">
+            <a href="cv-suisse.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Guide complet CV Suisse</a>
+            <a href="analyse-cv.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Comment fonctionne l'analyse CV</a>
+            <a href="adapter-cv-offre-emploi.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Adapter son CV à une offre</a>
+            <a href="app.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Analyser mon CV gratuitement</a>
+            <a href="pack-recherche-emploi.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Pack Recherche d'Emploi — CHF 19.90</a>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite,
+                    confidentielle et instantanée avec IA.</p>
+                <p class="footer-email">contact@swisscv-pro.ch</p>
+                <p class="footer-hosting">Hébergé en Suisse - Données traitées selon standards suisses</p>
+            </div>
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Entreprises</h4>
+                <ul>
+                    <li><a href="pricing.html#pro">SwissCV Pro</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Team Management</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="terms.html">Conditions d'utilisation</a></li>
+                    <li><a href="privacy.html">Confidentialité</a></li>
+                    <li><a href="cookies.html">Cookies</a></li>
+                    <li><a href="rgpd.html">RGPD</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse</div>
+    </footer>
+</body>
+</html>

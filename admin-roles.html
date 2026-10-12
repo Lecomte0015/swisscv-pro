@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Rôles - SwissCV Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin/css/mobile-menu.css">
     <link rel="stylesheet" href="admin/css/notifications.css">
     <link rel="stylesheet" href="admin/css/dark-mode.css">
     <style>
@@ -245,32 +244,13 @@
             }
         }
     </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
 </head>
 
 <body>
     <!-- Admin Navbar -->
-    <nav class="admin-navbar">
-        <h1>🔐 Admin Dashboard</h1>
-        <div class="admin-nav-links">
-            <a href="admin-dashboard.html">Dashboard</a>
-            <a href="admin-users.html">Utilisateurs</a>
-            <a href="admin-testimonials.html">💬 Témoignages</a>
-            <a href="admin-analytics.html">Analytics</a>
-            <a href="admin-support.html">Support</a>
-            <a href="admin-logs.html">Logs</a>
-            <a href="admin-reports.html">📧 Rapports</a>
-            <a href="admin-cms.html">CMS</a>
-            <a href="admin-roles.html" class="active">👥 Rôles</a>
-            <div class="notifications-container">
-                <button class="notifications-bell">
-                    🔔
-                    <span class="notifications-badge">0</span>
-                </button>
-            </div>
-        </div>
-        <button class="logout-btn" onclick="logout()">Déconnexion</button>
-    </nav>
-
     <div class="container">
         <h1>👥 Gestion des Rôles et Permissions</h1>
 
@@ -383,9 +363,7 @@
             window.location.href = 'admin-login.html';
         }
     </script>
-    <script src="admin/js/mobile-menu.js"></script>
     <script src="admin/js/notifications.js"></script>
-    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>

@@ -108,7 +108,7 @@ async function consumeCredits(actionType, metadata = {}) {
                 updateCreditDisplay(data.new_balance, limit);
             }
 
-            console.log(`✅ Credits consumed: ${data.credits_consumed}`);
+            console.log(` Credits consumed: ${data.credits_consumed}`);
         }
 
         return data;
@@ -157,7 +157,7 @@ function createInsufficientCreditsModal() {
     const modalHTML = `
     <div id="insufficientCreditsModal" class="credits-modal">
       <div class="credits-modal-content">
-        <div class="credits-modal-icon">💳</div>
+        <div class="credits-modal-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
         <h2>Crédits insuffisants</h2>
         <p>Vous n'avez pas assez de crédits pour <strong id="modalActionName">cette action</strong>.</p>
         
@@ -182,7 +182,7 @@ function createInsufficientCreditsModal() {
 
         <div class="modal-actions">
           <button class="btn-upgrade" onclick="window.location.href='pricing.html'">
-            🚀 Améliorer mon abonnement
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Améliorer mon abonnement
           </button>
           <button class="btn-cancel" onclick="closeInsufficientCreditsModal()">
             Annuler

@@ -48,7 +48,7 @@ async function handleGetApplicationStats(request, env) {
             }
         });
     } catch (error) {
-        console.error('❌ Erreur handleGetApplicationStats:', error);
+        console.error('Erreur handleGetApplicationStats:', error);
         return jsonResponse({ success: false, error: 'Failed to get stats', details: error.message }, 500);
     }
 }
@@ -74,7 +74,7 @@ async function handleAddApplicationNote(request, env, applicationId) {
 
         return jsonResponse({ success: true, note_id: noteId });
     } catch (error) {
-        console.error('❌ Erreur handleAddApplicationNote:', error);
+        console.error('Erreur handleAddApplicationNote:', error);
         return jsonResponse({ success: false, error: 'Failed to add note', details: error.message }, 500);
     }
 }
@@ -104,7 +104,7 @@ async function handleGetApplicationTimeline(request, env, applicationId) {
             timeline: { status_history: history, notes: notes.results || [], applied_date: app.applied_date, last_update: app.last_status_change }
         });
     } catch (error) {
-        console.error('❌ Erreur handleGetApplicationTimeline:', error);
+        console.error('Erreur handleGetApplicationTimeline:', error);
         return jsonResponse({ success: false, error: 'Failed to get timeline', details: error.message }, 500);
     }
 }
@@ -128,7 +128,7 @@ async function handleSetApplicationReminder(request, env, applicationId) {
 
         return jsonResponse({ success: true, message: 'Reminder set' });
     } catch (error) {
-        console.error('❌ Erreur handleSetApplicationReminder:', error);
+        console.error('Erreur handleSetApplicationReminder:', error);
         return jsonResponse({ success: false, error: 'Failed to set reminder', details: error.message }, 500);
     }
 }
@@ -150,7 +150,7 @@ async function handleGetActiveReminders(request, env) {
 
         return jsonResponse({ success: true, reminders: reminders.results || [] });
     } catch (error) {
-        console.error('❌ Erreur handleGetActiveReminders:', error);
+        console.error('Erreur handleGetActiveReminders:', error);
         return jsonResponse({ success: false, error: 'Failed to get reminders', details: error.message }, 500);
     }
 }

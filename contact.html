@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - SwissCV Pro</title>
+    <link rel="canonical" href="https://swisscv-pro.ch/contact">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #f9fafb; color: #333; line-height: 1.7; }
 
@@ -150,6 +152,21 @@
             margin-top: 20px;
         }
 
+        .error-message {
+            display: none;
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .footer {
             background: white;
             border-top: 2px solid #E0E0E0;
@@ -185,6 +202,7 @@
             .footer-content { grid-template-columns: 1fr; gap: 40px; }
         }
     </style>
+    <script src="/analytics.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -198,19 +216,19 @@
 
         <div class="contact-grid">
             <div class="contact-card">
-                <div class="contact-icon">📧</div>
+                <div class="contact-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
                 <h3>Email</h3>
                 <p>Pour toute question generale</p>
                 <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a>
             </div>
             <div class="contact-card">
-                <div class="contact-icon">💬</div>
+                <div class="contact-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
                 <h3>Support</h3>
                 <p>Besoin d'aide technique ?</p>
                 <a href="support.html">Centre d'aide</a>
             </div>
             <div class="contact-card">
-                <div class="contact-icon">🔒</div>
+                <div class="contact-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                 <h3>Donnees personnelles</h3>
                 <p>Questions RGPD / confidentialite</p>
                 <a href="mailto:privacy@swisscv.ch">privacy@swisscv.ch</a>
@@ -246,9 +264,12 @@
                     <label for="message">Message</label>
                     <textarea id="message" name="message" required placeholder="Decrivez votre demande..."></textarea>
                 </div>
-                <button type="submit" class="btn-submit">Envoyer le message</button>
+                <button type="submit" class="btn-submit" id="submitBtn">Envoyer le message</button>
                 <div class="success-message" id="successMessage">
                     Merci pour votre message ! Nous vous repondrons dans les plus brefs delais.
+                </div>
+                <div class="error-message" id="errorMessage">
+                    Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous écrire directement à contact@swisscv-pro.ch.
                 </div>
             </form>
         </div>
@@ -299,14 +320,51 @@
     </footer>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Simulate form submission
-            document.getElementById('successMessage').style.display = 'block';
-            this.reset();
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 5000);
+
+            const successEl = document.getElementById('successMessage');
+            const errorEl = document.getElementById('errorMessage');
+            const submitBtn = document.getElementById('submitBtn');
+
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value.trim()
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/contact`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    successEl.style.display = 'block';
+                    this.reset();
+                    setTimeout(() => { successEl.style.display = 'none'; }, 6000);
+                } else {
+                    errorEl.textContent = data.error || 'Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous écrire directement à contact@swisscv-pro.ch.';
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                errorEl.textContent = 'Erreur de connexion. Veuillez réessayer ou nous écrire directement à contact@swisscv-pro.ch.';
+                errorEl.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Envoyer le message';
+            }
         });
     </script>
 </body>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Campagnes email — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; }
+        .hidden { display: none !important; }
+        h2 { margin: 0 0 4px; }
+        .sub { color: var(--adm-muted, #64748B); font-size: 14px; margin: 0 0 20px; }
+        .toolbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 18px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--adm-border, #E2E8F0); background: var(--adm-surface, #fff); color: var(--adm-text, #0F172A); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s, border-color .15s; }
+        .btn:hover { background: var(--adm-surface-2, #F8FAFC); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; }
+        .btn:focus-visible, .field :is(input, select, textarea):focus-visible, .theme-card:focus-visible { outline: 2px solid var(--adm-ring, #3B82F6); outline-offset: 2px; }
+        .btn-primary { background: #D50000; border-color: #D50000; color: #fff; }
+        .btn-primary:hover { background: #B80000; }
+        .btn-danger { color: #B91C1C; border-color: #FCA5A5; }
+        .btn-sm { min-height: 36px; padding: 0 12px; font-size: 13px; }
+
+        .card-box { background: var(--adm-surface, #fff); border: 1px solid var(--adm-border, #E2E8F0); border-radius: 14px; box-shadow: var(--adm-shadow, none); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--adm-border, #E2E8F0); vertical-align: middle; }
+        th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--adm-muted, #64748B); font-weight: 600; }
+        tr:last-child td { border-bottom: 0; }
+        .table-wrap { overflow-x: auto; }
+        .empty { padding: 40px 20px; text-align: center; color: var(--adm-muted, #64748B); }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+        .b-draft { background: #E5E7EB; color: #374151; }
+        .b-sending { background: #FEF3C7; color: #92400E; }
+        .b-sent { background: #DCFCE7; color: #166534; }
+        .b-cancelled { background: #FEE2E2; color: #991B1B; }
+        .num { font-variant-numeric: tabular-nums; }
+        .link-btn { background: none; border: 0; color: #D50000; font: inherit; font-weight: 600; cursor: pointer; padding: 6px 4px; min-height: 36px; }
+
+        .editor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+        .panel { padding: 20px; }
+        .panel h3 { margin: 0 0 14px; font-size: 15px; font-weight: 700; }
+        .field { margin-bottom: 14px; }
+        .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .field .hint { font-size: 12px; color: var(--adm-muted, #64748B); margin-top: 4px; }
+        .field :is(input, select, textarea) { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--adm-border, #CBD5E1); border-radius: 10px; font: inherit; font-size: 14px; background: var(--adm-surface, #fff); color: var(--adm-text, #0F172A); }
+        .field textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .theme-card { text-align: left; padding: 0; border: 2px solid var(--adm-border, #E2E8F0); border-radius: 12px; background: var(--adm-surface, #fff); cursor: pointer; overflow: hidden; font: inherit; color: var(--adm-text, #0F172A); }
+        .theme-card[aria-pressed="true"] { border-color: #D50000; box-shadow: 0 0 0 3px rgba(213, 0, 0, .12); }
+        .theme-swatch { height: 26px; }
+        .theme-name { padding: 8px 10px; font-size: 13px; font-weight: 600; }
+        .audience-box { background: var(--adm-surface-2, #F8FAFC); border: 1px solid var(--adm-border, #E2E8F0); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+        .audience-count { font-size: 22px; font-weight: 800; }
+        .alert { padding: 12px 14px; border-radius: 10px; font-size: 14px; margin-bottom: 14px; }
+        .alert-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        .alert-ok { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+        .alert-info { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+        .preview-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; flex-wrap: wrap; }
+        .seg { display: inline-flex; border: 1px solid var(--adm-border, #CBD5E1); border-radius: 10px; overflow: hidden; }
+        .seg button { min-height: 36px; padding: 0 14px; border: 0; background: transparent; color: var(--adm-text, #0F172A); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .seg button[aria-pressed="true"] { background: #D50000; color: #fff; }
+        .preview-frame-wrap { background: #E5E7EB; border-radius: 12px; padding: 12px; display: flex; justify-content: center; }
+        iframe#preview { width: 100%; max-width: 640px; height: 760px; border: 0; background: #fff; border-radius: 8px; transition: max-width .2s; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 14px; }
+        .stat { background: var(--adm-surface-2, #F8FAFC); border: 1px solid var(--adm-border, #E2E8F0); border-radius: 10px; padding: 10px 12px; }
+        .stat strong { display: block; font-size: 20px; font-weight: 800; }
+        .stat span { font-size: 12px; color: var(--adm-muted, #64748B); }
+        .progress { height: 8px; background: var(--adm-border, #E2E8F0); border-radius: 999px; overflow: hidden; margin: 6px 0 14px; }
+        .progress > div { height: 100%; background: #D50000; width: 0; transition: width .4s; }
+
+        .cm-overlay { position: fixed; inset: 0; background: rgba(2, 6, 14, .6); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .cm-dialog { background: var(--adm-surface, #fff); color: var(--adm-text, #0F172A); border-radius: 16px; max-width: 460px; width: 100%; padding: 24px; box-shadow: 0 24px 60px rgba(0, 0, 0, .35); }
+        .cm-dialog h3 { margin: 0 0 8px; font-size: 18px; }
+        .cm-dialog p { margin: 0 0 18px; color: var(--adm-muted, #475569); line-height: 1.55; font-size: 14px; }
+        .cm-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+
+        @media (max-width: 1100px) { .editor { grid-template-columns: 1fr; } iframe#preview { height: 640px; } }
+        @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } .btn { width: 100%; } .actions .btn, .cm-actions .btn { flex: 1 1 100%; } }
+    </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
+</head>
+
+<body>
+    <div id="viewList">
+        <div class="toolbar">
+            <div>
+                <h2>Campagnes email</h2>
+                <p class="sub">Écrivez un email aux couleurs de SwissCV Pro, choisissez qui le reçoit, testez-le, puis envoyez-le.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnNew">Nouvelle campagne</button>
+        </div>
+        <div class="card-box table-wrap" id="listBox"><div class="empty">Chargement…</div></div>
+    </div>
+
+    <div id="viewEditor" class="hidden">
+        <div class="toolbar">
+            <div>
+                <h2 id="editorTitle">Nouvelle campagne</h2>
+                <p class="sub" id="editorSub">Les modifications sont enregistrées dans un brouillon ; rien n'est envoyé avant votre confirmation.</p>
+            </div>
+            <button type="button" class="btn" id="btnBack">← Retour aux campagnes</button>
+        </div>
+        <div id="alertBox" role="status" aria-live="polite"></div>
+
+        <div class="editor">
+            <div>
+                <div class="card-box panel" id="panelProgress" hidden>
+                    <h3>Suivi de l'envoi</h3>
+                    <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+                    <div class="stats" id="statsBox"></div>
+                    <div class="actions" id="progressActions"></div>
+                </div>
+
+                <div class="card-box panel" style="margin-top:0" id="panelForm">
+                    <h3>1. Modèle</h3>
+                    <div class="themes" id="themes" role="group" aria-label="Modèle d'email"></div>
+
+                    <h3 style="margin-top:22px">2. Contenu</h3>
+                    <div class="field"><label for="fName">Nom interne (visible par vous seul)</label><input id="fName" maxlength="100" placeholder="Ex. Vœux de Noël"></div>
+                    <div class="field"><label for="fSubject">Sujet de l'email</label><input id="fSubject" maxlength="150"></div>
+                    <div class="field"><label for="fPre">Texte d'aperçu (affiché à côté du sujet dans la boîte de réception)</label><input id="fPre" maxlength="160"></div>
+                    <div class="field"><label for="fHeading">Titre dans l'email</label><input id="fHeading" maxlength="140"></div>
+                    <div class="field"><label for="fBody">Texte</label><textarea id="fBody" maxlength="6000"></textarea>
+                        <div class="hint">Laissez une ligne vide pour changer de paragraphe. Variables : <code>{{prenom}}</code> (prénom, vide si inconnu), <code>{{code}}</code>.</div></div>
+                    <div class="row2">
+                        <div class="field"><label for="fCtaLabel">Texte du bouton</label><input id="fCtaLabel" maxlength="40"></div>
+                        <div class="field"><label for="fCtaUrl">Lien du bouton (https://)</label><input id="fCtaUrl" maxlength="500" inputmode="url"></div>
+                    </div>
+                    <div class="row2">
+                        <div class="field"><label for="fCode">Code promo à afficher (facultatif)</label><input id="fCode" maxlength="40" placeholder="Ex. NOEL10"></div>
+                        <div class="field"><label for="fCodeNote">Précision sous le code</label><input id="fCodeNote" maxlength="200" placeholder="Ex. Valable jusqu'au 31 décembre"></div>
+                    </div>
+                    <div class="alert alert-info" id="codeInfo" hidden>Le code est ici <strong>affiché</strong> dans l'email : son activation automatique dans l'application (crédits offerts) arrive à l'étape suivante.</div>
+                    <div class="field"><label for="fSignature">Signature</label><input id="fSignature" maxlength="100"></div>
+
+                    <h3 style="margin-top:22px">3. Destinataires</h3>
+                    <div class="field"><label for="fSegment">Qui reçoit cet email ?</label><select id="fSegment"></select></div>
+                    <div class="field hidden" id="rowDays"><label for="fDays">Inactifs depuis (jours)</label><input id="fDays" type="number" min="7" max="365" value="30"></div>
+                    <div class="audience-box" aria-live="polite">
+                        <div><span class="audience-count" id="audCount">…</span> <span id="audText">destinataire(s)</span></div>
+                        <div class="hint" id="audSample"></div>
+                        <div class="hint">Sont toujours exclus : personnes désinscrites, comptes bannis et comptes internes.</div>
+                    </div>
+                    <div class="alert alert-info" id="registeredWarn" hidden style="margin-top:12px">Ce choix inclut des adresses jamais vérifiées (inscrits n'ayant fait aucune analyse) : plus de rebonds possibles, ce qui nuit à la réputation de votre domaine d'envoi.</div>
+                    <div class="field" style="margin-top:14px"><label for="fCap">Maximum d'emails par jour</label><input id="fCap" type="number" min="1" max="5000" value="80">
+                        <div class="hint">À régler selon l'abonnement de votre service d'envoi (Resend). Si le total dépasse ce plafond, l'envoi continue automatiquement le lendemain.</div></div>
+
+                    <div class="actions" id="formActions">
+                        <button type="button" class="btn" id="btnSave">Enregistrer le brouillon</button>
+                        <button type="button" class="btn" id="btnTest">M'envoyer un test</button>
+                        <button type="button" class="btn btn-primary" id="btnSend">Lancer l'envoi…</button>
+                        <button type="button" class="btn btn-danger" id="btnDelete">Supprimer le brouillon</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-box panel">
+                <div class="preview-head">
+                    <h3 style="margin:0">Aperçu</h3>
+                    <div class="seg" role="group" aria-label="Taille de l'aperçu">
+                        <button type="button" id="devDesktop" aria-pressed="true">Ordinateur</button>
+                        <button type="button" id="devMobile" aria-pressed="false">Mobile</button>
+                    </div>
+                </div>
+                <div class="preview-frame-wrap"><iframe id="preview" title="Aperçu de l'email" sandbox></iframe></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cm-overlay hidden" id="cmOverlay">
+        <div class="cm-dialog" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+            <h3 id="cmTitle"></h3>
+            <p id="cmText"></p>
+            <div class="cm-actions"><button type="button" class="btn" id="cmCancel">Annuler</button><button type="button" class="btn btn-primary" id="cmOk"></button></div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+        const token = () => localStorage.getItem('admin_token');
+        const $ = id => document.getElementById(id);
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        let meta = null;
+        let cur = { id: null, status: 'draft', theme: 'classique', touched: false };
+        let pollTimer = null, previewTimer = null, audTimer = null;
+
+        async function api(method, path, body) {
+            const res = await fetch(API + path, { method, headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
+            let data = {}; try { data = await res.json(); } catch (e) { /* ignore */ }
+            return { ok: res.ok && data.success !== false, status: res.status, data };
+        }
+        function showAlert(msg, kind) { $('alertBox').innerHTML = msg ? '<div class="alert alert-' + (kind || 'error') + '">' + esc(msg) + '</div>' : ''; if (msg) $('alertBox').scrollIntoView({ block: 'nearest' }); }
+
+        function confirmModal(title, text, okLabel) {
+            return new Promise(resolve => {
+                $('cmTitle').textContent = title; $('cmText').textContent = text; $('cmOk').textContent = okLabel || 'Confirmer';
+                const ov = $('cmOverlay'); ov.classList.remove('hidden'); $('cmCancel').focus();
+                const close = v => { ov.classList.add('hidden'); $('cmOk').onclick = $('cmCancel').onclick = ov.onclick = null; document.removeEventListener('keydown', onKey); resolve(v); };
+                const onKey = e => { if (e.key === 'Escape') close(false); };
+                document.addEventListener('keydown', onKey);
+                $('cmOk').onclick = () => close(true); $('cmCancel').onclick = () => close(false);
+                ov.onclick = e => { if (e.target === ov) close(false); };
+            });
+        }
+
+        const fmtDate = ts => ts ? new Date(ts * 1000).toLocaleString('fr-CH', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        const STATUS = { draft: ['Brouillon', 'b-draft'], sending: ['En cours', 'b-sending'], sent: ['Terminée', 'b-sent'], cancelled: ['Arrêtée', 'b-cancelled'] };
+
+        // ---------------- Liste ----------------
+        async function loadList() {
+            const r = await api('GET', '/admin/campaigns');
+            if (!r.ok) { $('listBox').innerHTML = '<div class="empty">Impossible de charger les campagnes.</div>'; return; }
+            const rows = r.data.campaigns;
+            if (!rows.length) { $('listBox').innerHTML = '<div class="empty">Aucune campagne pour le moment.<br>Cliquez sur « Nouvelle campagne » pour écrire votre premier email.</div>'; return; }
+            $('listBox').innerHTML = '<table><thead><tr><th>Campagne</th><th>Statut</th><th class="num">Envoyés</th><th class="num">Ouverts</th><th class="num">Clics</th><th>Date</th><th></th></tr></thead><tbody>' +
+                rows.map(c => {
+                    const s = c.stats, st = STATUS[c.status] || [c.status, 'b-draft'];
+                    const tot = c.total_recipients || 0;
+                    const pct = n => (s.sent > 0 ? ' <span style="color:#64748B">(' + Math.round(n / s.sent * 100) + ' %)</span>' : '');
+                    return '<tr><td><strong>' + esc(c.name) + '</strong><div style="font-size:12px;color:#64748B">' + esc(c.subject) + '</div></td>' +
+                        '<td><span class="badge ' + st[1] + '">' + st[0] + '</span></td>' +
+                        '<td class="num">' + (c.status === 'draft' ? '—' : s.sent + ' / ' + tot) + '</td>' +
+                        '<td class="num">' + (c.status === 'draft' ? '—' : s.opened + pct(s.opened)) + '</td>' +
+                        '<td class="num">' + (c.status === 'draft' ? '—' : s.clicked + pct(s.clicked)) + '</td>' +
+                        '<td>' + fmtDate(c.started_at || c.created_at) + '</td>' +
+                        '<td><button type="button" class="link-btn" data-open="' + esc(c.id) + '">' + (c.status === 'draft' ? 'Modifier' : 'Voir') + '</button></td></tr>';
+                }).join('') + '</tbody></table>';
+            document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => openCampaign(b.dataset.open)));
+        }
+
+        // ---------------- Éditeur ----------------
+        function renderThemes() {
+            $('themes').innerHTML = Object.entries(meta.themes).map(([k, t]) =>
+                '<button type="button" class="theme-card" data-theme="' + k + '" aria-pressed="' + (cur.theme === k) + '"><div class="theme-swatch" style="background:' + t.band + '"></div><div class="theme-name">' + esc(t.label) + '</div></button>').join('');
+            document.querySelectorAll('.theme-card').forEach(b => b.addEventListener('click', () => chooseTheme(b.dataset.theme)));
+        }
+        function readContent() {
+            return { subject: $('fSubject').value, preheader: $('fPre').value, heading: $('fHeading').value, body: $('fBody').value, cta_label: $('fCtaLabel').value, cta_url: $('fCtaUrl').value, code: $('fCode').value, code_note: $('fCodeNote').value, signature: $('fSignature').value };
+        }
+        function writeContent(c) {
+            $('fSubject').value = c.subject || ''; $('fPre').value = c.preheader || ''; $('fHeading').value = c.heading || ''; $('fBody').value = c.body || '';
+            $('fCtaLabel').value = c.cta_label || ''; $('fCtaUrl').value = c.cta_url || ''; $('fCode').value = c.code || ''; $('fCodeNote').value = c.code_note || ''; $('fSignature').value = c.signature || meta.signature;
+        }
+        function readAudience() { return { segment: $('fSegment').value, inactive_days: parseInt($('fDays').value, 10) || 30 }; }
+
+        async function chooseTheme(k) {
+            if (cur.status !== 'draft' || k === cur.theme) return;
+            if (cur.touched && !(await confirmModal('Changer de modèle ?', 'Le texte actuel sera remplacé par celui du modèle « ' + meta.themes[k].label + ' ». Vos modifications seront perdues.', 'Remplacer le texte'))) return;
+            cur.theme = k; cur.touched = false;
+            writeContent(Object.assign({ signature: meta.signature }, meta.themes[k].defaults));
+            renderThemes(); schedulePreview(); onCodeInput();
+        }
+        function onCodeInput() { $('codeInfo').hidden = !$('fCode').value.trim(); }
+
+        function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(refreshPreview, 350); }
+        async function refreshPreview() {
+            const r = await api('POST', '/admin/campaigns/preview', { theme: cur.theme, content: readContent() });
+            if (r.ok) { $('preview').srcdoc = r.data.html; if (cur.status === 'draft') showAlert(''); }
+            else if (cur.status === 'draft') showAlert(r.data.error || 'Aperçu impossible', 'error');
+        }
+        function scheduleAudience() { clearTimeout(audTimer); audTimer = setTimeout(refreshAudience, 300); }
+        async function refreshAudience() {
+            const a = readAudience();
+            $('rowDays').classList.toggle('hidden', a.segment !== 'inactive');
+            $('registeredWarn').hidden = a.segment !== 'registered_all';
+            const r = await api('POST', '/admin/campaigns/audience', { audience: a });
+            if (!r.ok) { $('audCount').textContent = '?'; return; }
+            $('audCount').textContent = r.data.count; $('audText').textContent = r.data.count > 1 ? 'destinataires' : 'destinataire';
+            $('audSample').textContent = r.data.sample.length ? 'Exemples : ' + r.data.sample.join(', ') : 'Aucun destinataire pour ce choix.';
+            cur.count = r.data.count;
+        }
+        function payload() { return { name: $('fName').value, theme: cur.theme, content: readContent(), audience: readAudience(), daily_cap: parseInt($('fCap').value, 10) || 80 }; }
+
+        async function save(quiet) {
+            const body = payload();
+            if (!body.name.trim()) { showAlert('Donnez un nom à la campagne.'); $('fName').focus(); return false; }
+            const r = cur.id ? await api('PUT', '/admin/campaigns/' + cur.id, body) : await api('POST', '/admin/campaigns', body);
+            if (!r.ok) { showAlert(r.data.error || 'Enregistrement impossible'); return false; }
+            if (!cur.id) cur.id = r.data.id;
+            if (!quiet) showAlert('Brouillon enregistré.', 'ok');
+            return true;
+        }
+
+        function setEditable(editable) {
+            ['fName', 'fSubject', 'fPre', 'fHeading', 'fBody', 'fCtaLabel', 'fCtaUrl', 'fCode', 'fCodeNote', 'fSignature', 'fSegment', 'fDays', 'fCap'].forEach(id => { $(id).disabled = !editable; });
+            $('formActions').classList.toggle('hidden', !editable);
+            document.querySelectorAll('.theme-card').forEach(b => { b.disabled = !editable; });
+        }
+
+        async function showEditor(c) {
+            clearInterval(pollTimer);
+            $('viewList').classList.add('hidden'); $('viewEditor').classList.remove('hidden');
+            cur = { id: c ? c.id : null, status: c ? c.status : 'draft', theme: c ? c.theme : 'classique', touched: !!c, count: 0 };
+            $('editorTitle').textContent = c ? c.name : 'Nouvelle campagne';
+            $('fSegment').innerHTML = Object.entries(meta.segments).map(([k, v]) => '<option value="' + k + '">' + esc(v) + '</option>').join('');
+            renderThemes();
+            if (c) {
+                $('fName').value = c.name; writeContent(c.content); $('fSegment').value = c.audience.segment; $('fDays').value = c.audience.inactive_days; $('fCap').value = c.daily_cap;
+            } else {
+                $('fName').value = ''; writeContent(Object.assign({ signature: meta.signature }, meta.themes.classique.defaults)); $('fSegment').value = 'active'; $('fDays').value = 30; $('fCap').value = meta.default_daily_cap;
+            }
+            const draft = cur.status === 'draft';
+            setEditable(draft);
+            $('btnDelete').classList.toggle('hidden', !(draft && cur.id));
+            $('editorSub').textContent = draft ? 'Les modifications sont enregistrées dans un brouillon ; rien n\'est envoyé avant votre confirmation.' : 'Cette campagne a été lancée : elle n\'est plus modifiable.';
+            $('panelProgress').hidden = draft;
+            onCodeInput(); refreshPreview(); refreshAudience();
+            if (!draft) { renderProgress(c); if (c.status === 'sending') pollTimer = setInterval(pollCampaign, 3000); }
+        }
+
+        function renderProgress(c) {
+            const s = c.stats, tot = c.total_recipients || 0, done = s.sent + s.failed + s.skipped;
+            $('progressBar').style.width = (tot ? Math.round(done / tot * 100) : 0) + '%';
+            const pct = n => (s.sent > 0 ? Math.round(n / s.sent * 100) + ' %' : '—');
+            $('statsBox').innerHTML = [['Envoyés', s.sent + ' / ' + tot], ['En attente', s.pending + s.sending], ['Échecs', s.failed], ['Ignorés', s.skipped], ['Ouverts', s.opened + ' (' + pct(s.opened) + ')'], ['Clics', s.clicked + ' (' + pct(s.clicked) + ')']]
+                .map(x => '<div class="stat"><strong>' + esc(x[1]) + '</strong><span>' + x[0] + '</span></div>').join('');
+            const st = STATUS[c.status] || [c.status, ''];
+            let html = '<span class="badge ' + st[1] + '">' + st[0] + '</span>';
+            if (c.status === 'sending') {
+                html += (s.pending > 0 ? ' <span class="sub" style="margin:0">Si le plafond journalier est atteint, l\'envoi reprend automatiquement demain.</span>' : '') +
+                    '<div style="width:100%;display:flex;gap:10px;flex-wrap:wrap;margin-top:8px"><button type="button" class="btn btn-sm" id="btnResume">Reprendre maintenant</button><button type="button" class="btn btn-sm btn-danger" id="btnCancel">Arrêter l\'envoi</button></div>';
+            }
+            if (c.status === 'sending' && c.last_error) html += '<div class="sub" style="width:100%;margin:8px 0 0;color:var(--danger,#b91c1c)">Dernier incident : ' + esc(c.last_error) + ' — l\'envoi sera réessayé automatiquement.</div>';
+            $('progressActions').innerHTML = html;
+            if ($('btnResume')) $('btnResume').onclick = async () => { const r = await api('POST', '/admin/campaigns/' + cur.id + '/resume'); showAlert(r.ok ? 'Reprise demandée.' : (r.data.error || 'Impossible'), r.ok ? 'ok' : 'error'); setTimeout(pollCampaign, 1500); };
+            if ($('btnCancel')) $('btnCancel').onclick = async () => {
+                if (!(await confirmModal('Arrêter l\'envoi ?', 'Les personnes qui n\'ont pas encore reçu l\'email ne le recevront pas. Les emails déjà partis ne peuvent pas être rappelés.', 'Arrêter l\'envoi'))) return;
+                const r = await api('POST', '/admin/campaigns/' + cur.id + '/cancel'); showAlert(r.ok ? 'Envoi arrêté.' : (r.data.error || 'Impossible'), r.ok ? 'ok' : 'error'); pollCampaign();
+            };
+        }
+        async function pollCampaign() {
+            const r = await api('GET', '/admin/campaigns/' + cur.id);
+            if (!r.ok) return;
+            cur.status = r.data.campaign.status; renderProgress(r.data.campaign);
+            if (cur.status !== 'sending') { clearInterval(pollTimer); setEditable(false); }
+        }
+
+        async function openCampaign(id) {
+            const r = await api('GET', '/admin/campaigns/' + id);
+            if (!r.ok) { alert('Campagne introuvable'); return; }
+            await showEditor(r.data.campaign);
+        }
+
+        // ---------------- Actions ----------------
+        $('btnNew').addEventListener('click', () => { showAlert(''); showEditor(null); });
+        $('btnBack').addEventListener('click', () => { clearInterval(pollTimer); $('viewEditor').classList.add('hidden'); $('viewList').classList.remove('hidden'); showAlert(''); loadList(); });
+        $('btnSave').addEventListener('click', () => save(false));
+        $('btnTest').addEventListener('click', async () => {
+            $('btnTest').disabled = true;
+            try {
+                if (!(await save(true))) return;
+                const r = await api('POST', '/admin/campaigns/' + cur.id + '/test');
+                showAlert(r.ok ? 'Email de test envoyé à ' + r.data.sent_to + '. Vérifiez aussi vos courriers indésirables.' : (r.data.error || 'Envoi du test impossible'), r.ok ? 'ok' : 'error');
+            } finally { $('btnTest').disabled = false; }
+        });
+        $('btnSend').addEventListener('click', async () => {
+            if (!(await save(true))) return;
+            await refreshAudience();
+            const n = cur.count || 0;
+            if (n === 0) { showAlert('Aucun destinataire pour cette audience.'); return; }
+            const subject = $('fSubject').value.trim();
+            if (!subject || !$('fHeading').value.trim() || !$('fBody').value.trim()) { showAlert('Le sujet, le titre et le texte sont obligatoires avant l\'envoi.'); return; }
+            const ok = await confirmModal('Envoyer à ' + n + ' personne' + (n > 1 ? 's' : '') + ' ?', 'Sujet : « ' + subject + ' ». Cette action est définitive : les emails ne pourront pas être rappelés. Avez-vous bien envoyé un test à votre adresse ?', 'Envoyer à ' + n + ' personne' + (n > 1 ? 's' : ''));
+            if (!ok) return;
+            $('btnSend').disabled = true;
+            try {
+                const r = await api('POST', '/admin/campaigns/' + cur.id + '/send', { expected_count: n });
+                if (!r.ok) { showAlert(r.data.error || 'Envoi impossible'); return; }
+                showAlert('Envoi lancé.', 'ok');
+                await openCampaign(cur.id);
+            } finally { $('btnSend').disabled = false; }
+        });
+        $('btnDelete').addEventListener('click', async () => {
+            if (!cur.id || !(await confirmModal('Supprimer ce brouillon ?', 'Le brouillon sera définitivement supprimé.', 'Supprimer'))) return;
+            const r = await api('DELETE', '/admin/campaigns/' + cur.id);
+            if (r.ok) { $('btnBack').click(); } else showAlert(r.data.error || 'Suppression impossible');
+        });
+        ['fSubject', 'fPre', 'fHeading', 'fBody', 'fCtaLabel', 'fCtaUrl', 'fCode', 'fCodeNote', 'fSignature'].forEach(id => $(id).addEventListener('input', () => { cur.touched = true; schedulePreview(); if (id === 'fCode') onCodeInput(); }));
+        ['fSegment', 'fDays'].forEach(id => $(id).addEventListener('input', scheduleAudience));
+        $('devDesktop').addEventListener('click', () => { $('preview').style.maxWidth = '640px'; $('devDesktop').setAttribute('aria-pressed', 'true'); $('devMobile').setAttribute('aria-pressed', 'false'); });
+        $('devMobile').addEventListener('click', () => { $('preview').style.maxWidth = '380px'; $('devMobile').setAttribute('aria-pressed', 'true'); $('devDesktop').setAttribute('aria-pressed', 'false'); });
+
+        (async function init() {
+            if (!token()) { location.href = 'admin-login.html'; return; }
+            const r = await api('GET', '/admin/campaigns/meta');
+            if (!r.ok) { $('listBox').innerHTML = '<div class="empty">Impossible de charger la configuration.</div>'; return; }
+            meta = r.data;
+            loadList();
+        })();
+    </script>
+</body>
+
+</html>

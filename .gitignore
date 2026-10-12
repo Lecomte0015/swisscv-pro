@@ -31,3 +31,8 @@ test-*.html
 
 # Fichiers temporaires
 index.js.*
+wrangler.staging.toml
+
+# Fichiers parasites macOS (disque externe) et réglages locaux
+._*
+.claude/

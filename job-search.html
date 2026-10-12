@@ -10,6 +10,7 @@
     <!-- jsPDF pour export PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -28,15 +29,18 @@
             background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
             color: var(--swiss-black);
             min-height: 100vh;
-            padding-top: 80px;
-            /* ✅ CORRIGÉ : Pour la navbar fixe */
+            padding-top: 72px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 56px; }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            /* ✅ AJOUTÉ : Padding pour mobile */
+            /* AJOUTÉ : Padding pour mobile */
         }
 
         .search-section {
@@ -50,7 +54,7 @@
         .search-section h1 {
             font-size: 32px;
             margin-bottom: 16px;
-            /* ✅ CORRIGÉ : Réduit de 24px à 16px */
+            /* CORRIGÉ : Réduit de 24px à 16px */
             color: var(--swiss-black);
         }
 
@@ -58,7 +62,7 @@
             margin-bottom: 24px;
             color: #666;
             font-size: 18px;
-            /* ✅ AJOUTÉ : Taille de police augmentée */
+            /* AJOUTÉ : Taille de police augmentée */
             line-height: 1.5;
         }
 
@@ -243,34 +247,34 @@
             box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
         }
 
-        /* ✅ CORRECTION POUR MOBILE */
+        /* CORRECTION POUR MOBILE */
         @media (max-width: 768px) {
             .search-form {
                 grid-template-columns: 1fr;
-                /* ✅ Une colonne sur mobile */
+                /* Une colonne sur mobile */
                 gap: 12px;
             }
 
             .search-section {
                 padding: 24px 20px;
-                /* ✅ Padding réduit sur mobile */
+                /* Padding réduit sur mobile */
             }
 
             .search-section h1 {
                 font-size: 24px;
-                /* ✅ Taille réduite sur mobile */
+                /* Taille réduite sur mobile */
             }
 
             .search-section p {
                 font-size: 16px;
-                /* ✅ Taille réduite sur mobile */
+                /* Taille réduite sur mobile */
             }
         }
 
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
-                /* ✅ Padding encore plus réduit sur très petits écrans */
+                /* Padding encore plus réduit sur très petits écrans */
             }
 
             .search-section {
@@ -292,7 +296,7 @@
             font-family: 'Inter', sans-serif;
             transition: border-color 0.2s;
             width: 100%;
-            /* ✅ AJOUTÉ : Pour s'assurer qu'il prend toute la largeur */
+            /* AJOUTÉ : Pour s'assurer qu'il prend toute la largeur */
         }
 
         input:focus {
@@ -312,7 +316,7 @@
             transition: all 0.2s;
             box-shadow: 0 4px 16px rgba(213, 0, 0, 0.3);
             white-space: nowrap;
-            /* ✅ AJOUTÉ : Empêche le texte de se couper */
+            /* AJOUTÉ : Empêche le texte de se couper */
         }
 
         .btn-search:hover {
@@ -327,13 +331,13 @@
             transform: none;
         }
 
-        /* ✅ CORRECTION BOUTON SUR MOBILE */
+        /* CORRECTION BOUTON SUR MOBILE */
         @media (max-width: 768px) {
             .btn-search {
                 padding: 16px 24px;
                 font-size: 16px;
                 width: 100%;
-                /* ✅ Pleine largeur sur mobile */
+                /* Pleine largeur sur mobile */
             }
         }
 
@@ -487,7 +491,7 @@
             padding-top: 16px;
             border-top: 1px solid var(--swiss-gray);
             flex-wrap: wrap;
-            /* ✅ AJOUTÉ : Pour s'adapter sur mobile */
+            /* AJOUTÉ : Pour s'adapter sur mobile */
         }
 
         .job-tag {
@@ -640,7 +644,7 @@
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
-            /* ✅ AJOUTÉ : Pour s'adapter sur mobile */
+            /* AJOUTÉ : Pour s'adapter sur mobile */
         }
 
         /* ========================================
@@ -940,9 +944,123 @@
             content: "⚠";
             color: #FF5252;
         }
+
+        /* Multi-select checkboxes */
+        .job-select-checkbox {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #D50000;
+            z-index: 2;
+            display: none;
+        }
+
+        .bulk-mode .job-select-checkbox,
+        #suggestionsGrid.bulk-mode .job-select-checkbox {
+            display: block;
+        }
+
+        .bulk-mode .job-card,
+        #suggestionsGrid.bulk-mode .job-card {
+            padding-left: 48px;
+        }
+
+        .job-card.selected {
+            border: 2px solid #D50000;
+            background: #FFF5F5;
+        }
+
+        /* Floating bulk action bar */
+        #bulkActionBar {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0D0D0D;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            z-index: 9000;
+            align-items: center;
+            gap: 20px;
+            white-space: nowrap;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        #bulkActionBar.show {
+            display: flex;
+        }
+
+        #bulkActionBar .bulk-count {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        #bulkActionBar .bulk-generate-btn {
+            background: #D50000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #bulkActionBar .bulk-generate-btn:hover {
+            background: #B00000;
+            transform: translateY(-1px);
+        }
+
+        #bulkActionBar .bulk-cancel-btn {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #444;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #bulkActionBar .bulk-cancel-btn:hover {
+            color: white;
+            border-color: #888;
+        }
+
+        .btn-bulk-select {
+            background: #F5F5F5;
+            color: #333;
+            border: 2px solid #E0E0E0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+
+        .btn-bulk-select.active {
+            background: #FFE5E5;
+            border-color: #D50000;
+            color: #D50000;
+        }
+
+        .btn-bulk-select:hover {
+            border-color: #D50000;
+        }
     </style>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
+    <script src="sync-user.js"></script>
+    <script src="/analytics.js"></script>
 </head>
 
 <body>
@@ -1077,24 +1195,24 @@
             }
 
             .navbar-menu {
+                display: none;
                 position: fixed;
-                top: 62px;
+                top: 53px;
                 left: 0;
                 right: 0;
                 background: white;
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
+                max-height: 80vh;
+                overflow-y: auto;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 border-bottom: 2px solid #E0E0E0;
                 z-index: 9999
             }
 
             .navbar-menu.active {
-                max-height: 600px
+                display: flex
             }
 
             .navbar-link,
@@ -1272,39 +1390,39 @@
             <!-- Menu Outils CV (Tous les plans) -->
             <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    🎯 Outils CV <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
 
             <a href="job-search.html" class="navbar-link active">Offres</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
 
 
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    📊 Suivi <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris <span id="favoritesBadge"
                             style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
                     <a href="job-tracker.html" class="dropdown-item">Tracker</a>
                 </div>
             </div>
 
             <!-- Lien Team (Pro uniquement) -->
-            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team</a>
 
             <!-- Menu Utilisateur Dropdown -->
             
             <!-- Credit Balance Display -->
             <div class="credits-display" title="Voir mes crédits">
-                <span class="credits-icon">💳</span>
+                <span class="credits-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
             </div>
@@ -1321,29 +1439,29 @@
                     <div class="user-menu-divider"></div>
 
                     <a href="profile.html" class="user-menu-item">
-                        <span class="menu-icon">👤</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                         <span>Mon Profil</span>
                     </a>
 
                     <a href="support.html" class="user-menu-item">
-                        <span class="menu-icon">💬</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
                         <span>Support</span>
                     </a>
 
                     <a href="credits.html" class="user-menu-item">
-                        <span class="menu-icon">💳</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                         <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
-                        <span class="menu-icon">⚙️</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                         <span>Paramètres</span>
                     </a>
 
                     <div class="user-menu-divider"></div>
 
                     <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
-                        <span class="menu-icon">🚪</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                         <span>Déconnexion</span>
                     </a>
                 </div>
@@ -1633,7 +1751,7 @@
 
         <!-- RECHERCHE MANUELLE -->
         <div class="search-section">
-            <h1>🔍 Trouver des offres d'emploi</h1>
+            <h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Trouver des offres d'emploi</h1>
             <p>Recherchez des offres spécifiques selon vos critères</p>
 
             <form class="search-form" id="searchForm">
@@ -1641,18 +1759,18 @@
                 <input type="text" id="location" placeholder="Ex: Genève, Zurich..." value="Suisse">
                 <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                     <button type="submit" class="btn-search" id="searchBtn">
-                        🔍 Rechercher
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Rechercher
                     </button>
                     <button type="button" class="btn-save-search" id="btnSaveSearch" onclick="saveCurrentSearch()"
                         style="display: none; background: #10b981; color: white; border: none; padding: 14px 24px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s;">
-                        💾 Sauvegarder cette recherche
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Sauvegarder cette recherche
                     </button>
 
                     <!-- ICÔNE RECHERCHES SAUVEGARDÉES -->
                     <div style="position: relative;">
                         <button type="button" id="savedSearchesBtn" onclick="toggleSavedSearchesMenu()"
                             style="background: #F5F5F5; border: 2px solid #E0E0E0; color: #0D0D0D; padding: 14px 20px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; position: relative;">
-                            💾 Mes recherches
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Mes recherches
                             <span id="savedSearchesCount"
                                 style="background: #D50000; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; display: none;">0</span>
                         </button>
@@ -1663,7 +1781,7 @@
                             <div
                                 style="padding: 16px; border-bottom: 1px solid #E0E0E0; display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-weight: 700; font-size: 16px; color: #0D0D0D;">💾 Recherches
+                                    <div style="font-weight: 700; font-size: 16px; color: #0D0D0D;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Recherches
                                         sauvegardées</div>
                                     <div style="font-size: 12px; color: #666; margin-top: 4px;"
                                         id="savedSearchesMenuCount">
@@ -1678,10 +1796,10 @@
                             <div style="padding: 12px 16px; border-bottom: 1px solid #E0E0E0; background: #FAFAFA;">
                                 <select id="sortSearches" onchange="sortSavedSearches()"
                                     style="width: 100%; padding: 8px 12px; border: 1px solid #E0E0E0; border-radius: 6px; font-size: 13px; cursor: pointer; background: white;">
-                                    <option value="recent">🕒 Plus récent</option>
-                                    <option value="oldest">📅 Plus ancien</option>
-                                    <option value="az">🔤 A → Z</option>
-                                    <option value="za">🔤 Z → A</option>
+                                    <option value="recent"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Plus récent</option>
+                                    <option value="oldest"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Plus ancien</option>
+                                    <option value="az"> A → Z</option>
+                                    <option value="za"> Z → A</option>
                                 </select>
                             </div>
                             <div id="savedSearchesList" style="padding: 8px;">
@@ -1689,10 +1807,10 @@
                             </div>
                             <div id="savedSearchesEmpty"
                                 style="padding: 32px; text-align: center; color: #666; display: none;">
-                                <div style="font-size: 48px; margin-bottom: 12px;">📂</div>
+                                <div style="font-size: 48px; margin-bottom: 12px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
                                 <div style="font-size: 14px;">Aucune recherche sauvegardée</div>
                                 <div style="font-size: 12px; color: #999; margin-top: 4px;">Faites une recherche puis
-                                    cliquez sur "💾 Sauvegarder"</div>
+                                    cliquez sur "<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Sauvegarder"</div>
                             </div>
                         </div>
                     </div>
@@ -1702,14 +1820,14 @@
             <!-- FILTRES AVANCÉS -->
             <div class="filters-section" style="margin-top: 24px;">
                 <button class="filters-toggle" id="filtersToggle" onclick="toggleFilters()" type="button">
-                    <span>⚙️ Filtres avancés</span>
+                    <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Filtres avancés</span>
                     <span class="toggle-icon" id="toggleIcon">▼</span>
                 </button>
 
                 <div class="filters-content" id="filtersContent" style="display: none;">
                     <!-- Salaire -->
                     <div class="filter-group">
-                        <label class="filter-label">💰 Salaire annuel (CHF)</label>
+                        <label class="filter-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Salaire annuel (CHF)</label>
                         <div style="display: flex; gap: 12px; align-items: center;">
                             <input type="number" id="salaryMin" placeholder="Min"
                                 style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
@@ -1721,7 +1839,7 @@
 
                     <!-- Type de contrat -->
                     <div class="filter-group">
-                        <label class="filter-label">📄 Type de contrat</label>
+                        <label class="filter-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Type de contrat</label>
                         <div class="checkbox-group">
                             <label class="checkbox-label">
                                 <input type="checkbox" name="contractType" value="CDI" checked>
@@ -1744,7 +1862,7 @@
 
                     <!-- Remote -->
                     <div class="filter-group">
-                        <label class="filter-label">🏠 Mode de travail</label>
+                        <label class="filter-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Mode de travail</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="remote" value="all" checked>
@@ -1767,7 +1885,7 @@
 
                     <!-- Niveau d'expérience -->
                     <div class="filter-group">
-                        <label class="filter-label">📊 Niveau d'expérience</label>
+                        <label class="filter-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Niveau d'expérience</label>
                         <select id="experienceLevel"
                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: white;">
                             <option value="">Tous les niveaux</option>
@@ -1780,10 +1898,10 @@
                     <!-- Boutons actions -->
                     <div style="display: flex; gap: 12px; margin-top: 20px;">
                         <button type="button" class="btn-reset" onclick="resetFilters()">
-                            🔄 Réinitialiser
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Réinitialiser
                         </button>
                         <button type="button" class="btn-apply" onclick="applyFilters()">
-                            ✓ Appliquer les filtres
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Appliquer les filtres
                         </button>
                     </div>
                 </div>
@@ -1794,8 +1912,15 @@
 
         <!-- SUGGESTIONS IA -->
         <div id="suggestionsSection" class="page-header" style="margin-bottom: 40px;">
-            <h1>💡 Suggestions pour vous</h1>
-            <p>Notre IA sélectionne les meilleures offres pour votre profil</p>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+                <div>
+                    <h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.75V17h8v-2.25A7 7 0 0 0 12 2z"/></svg> Suggestions pour vous</h1>
+                    <p>Notre IA sélectionne les meilleures offres pour votre profil</p>
+                </div>
+                <button class="btn-bulk-select" id="btnBulkModeSuggestions" onclick="toggleBulkModeSuggestions()" style="margin-top:8px; display:none;">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sélection multiple
+                </button>
+            </div>
             <button class="btn-refresh" id="btnRefreshSuggestions" onclick="refreshSuggestions()"
                 style="padding: 12px 24px; background: #D50000; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 16px;">
                 Rafraîchir les suggestions
@@ -1808,7 +1933,7 @@
 
         <div id="suggestionsEmpty" class="empty-state"
             style="display:none; text-align: center; padding: 60px 20px; background: #F5F5F5; border-radius: 12px; margin-bottom: 40px;">
-            <div style="font-size: 64px;">🎯</div>
+            <div style="font-size: 64px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <h2 id="suggestionsEmptyTitle">Aucune suggestion pour le moment</h2>
             <p id="suggestionsEmptyMessage">Cliquez sur "Rafraîchir" pour que l'IA recherche de nouvelles offres</p>
         </div>
@@ -1821,18 +1946,31 @@
 
         <div class="loading" id="loading">
             <div class="loading-spinner"></div>
-            <p style="font-size: 18px; color: #666;">🤖 Notre IA scrape le web pour vous...</p>
+            <p style="font-size: 18px; color: #666;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg> Notre IA scrape le web pour vous...</p>
             <p style="font-size: 14px; color: #999; margin-top: 8px;">Cela peut prendre 10-15 secondes</p>
         </div>
 
         <div class="results-section" id="resultsSection">
             <div class="results-header">
                 <h2>Offres trouvées</h2>
-                <span class="results-count" id="resultsCount">0 résultats</span>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="results-count" id="resultsCount">0 résultats</span>
+                    <button class="btn-bulk-select" id="btnBulkMode" onclick="toggleBulkMode()">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sélection multiple
+                    </button>
+                </div>
             </div>
 
             <div id="jobsList"></div>
         </div>
+    </div>
+
+    <!-- Floating bulk action bar -->
+    <div id="bulkActionBar">
+        <span class="bulk-count" id="bulkCount">0 offre sélectionnée</span>
+        <span style="color:#666; font-size:13px;" id="bulkCreditCost"></span>
+        <button class="bulk-generate-btn" onclick="startBulkGeneration()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Générer mes candidatures</button>
+        <button class="bulk-cancel-btn" onclick="toggleBulkMode()">Annuler</button>
     </div>
 
     <!-- Modal Détails Offre -->
@@ -1843,7 +1981,7 @@
             <div class="modal-header"
                 style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px;">
                 <h2 style="margin: 0; font-size: 24px; display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 32px;">💾</span>
+                    <span style="font-size: 32px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
                     Sauvegarder la recherche
                 </h2>
                 <button class="close-btn" onclick="closeSaveModal()"
@@ -1858,6 +1996,13 @@
                     placeholder="Ex: Développeur à Zurich"
                     onfocus="this.style.borderColor='#10b981'; this.style.boxShadow='0 0 0 3px rgba(16,185,129,0.1)'"
                     onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'">
+                <label style="display:flex;align-items:flex-start;gap:10px;margin-top:16px;cursor:pointer;background:#f0fdf4;border:1px solid #bbf7d0;padding:12px 14px;border-radius:8px;">
+                    <input type="checkbox" id="saveSearchAlerts" style="width:18px;height:18px;accent-color:#10b981;cursor:pointer;margin-top:2px;flex-shrink:0;">
+                    <span style="font-size:14px;color:#374151;">
+                        <strong style="color:#059669;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Recevoir des alertes email</strong><br>
+                        <span style="color:#6b7280;font-size:12px;">Soyez notifié chaque matin des nouvelles offres correspondantes</span>
+                    </span>
+                </label>
             </div>
             <div class="modal-footer"
                 style="display: flex; justify-content: flex-end; gap: 12px; padding: 0 24px 24px 24px;">
@@ -1870,7 +2015,7 @@
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16,185,129,0.4)'"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.3)'">
                     <span style="display: flex; align-items: center; gap: 8px;">
-                        💾 Sauvegarder
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Sauvegarder
                     </span>
                 </button>
             </div>
@@ -1973,8 +2118,8 @@
         <div class="modal-content"
             style="background:white; max-width:800px; margin:50px auto; padding:30px; border-radius:12px; position:relative;">
             <button onclick="document.getElementById('compareModal').style.display='none'"
-                style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
-            <h2 style="margin-bottom:20px;">📊 Comparaison CV vs Offre</h2>
+                style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <h2 style="margin-bottom:20px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Comparaison CV vs Offre</h2>
             <div id="compareResults"></div>
         </div>
     </div>
@@ -1988,12 +2133,12 @@
                         <p id="modalCompany" style="margin: 0; color: #666; font-size: 16px;"></p>
                         <p id="modalLocation" style="margin: 0; color: #999; font-size: 14px;"></p>
                         <button class="btn btn-secondary" id="btnCalculateMatch"
-                            style="font-size: 13px; padding: 6px 12px;">🎯 Calculer compatibilité</button>
+                            style="font-size: 13px; padding: 6px 12px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Calculer compatibilité</button>
                     </div>
                 </div>
                 <div style="display: flex; align-items: flex-start; gap: 12px;">
                     <a id="btnVisitOfferLink" href="#" target="_blank"
-                        style="color: var(--swiss-red); text-decoration: none; font-size: 14px; white-space: nowrap;">🔗
+                        style="color: var(--swiss-red); text-decoration: none; font-size: 14px; white-space: nowrap;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                         Voir l'offre →</a>
                     <button class="close-btn" onclick="closeModal()">×</button>
                 </div>
@@ -2001,8 +2146,8 @@
 
             <!-- Tabs -->
             <div class="modal-tabs">
-                <button class="modal-tab active" onclick="switchTab('details')">📋 Détails de l'offre</button>
-                <button class="modal-tab" id="tabLetterBtn" onclick="switchTab('letter')" style="display: none;">📝
+                <button class="modal-tab active" onclick="switchTab('details')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Détails de l'offre</button>
+                <button class="modal-tab" id="tabLetterBtn" onclick="switchTab('letter')" style="display: none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
                     Lettre de motivation</button>
             </div>
 
@@ -2031,10 +2176,12 @@
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
                     <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-                    <div style="display: flex; gap: 12px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" id="btnGenerateApplication"
+                            style="background: #1f2937; border: none; font-weight: 700;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Générer ma candidature <span class="credit-cost">(3 crédits)</span></button>
                         <button class="btn btn-primary" id="btnGenerateLetter"
-                            style="background: var(--swiss-red); border: none;">📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span></button>
-                        <button class="btn btn-primary" id="btnAddToTracker">➕ Ajouter au tracker</button>
+                            style="background: var(--swiss-red); border: none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Lettre de motivation <span class="credit-cost">(2 crédits)</span></button>
+                        <button class="btn btn-primary" id="btnAddToTracker"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Tracker</button>
                     </div>
                 </div>
             </div>
@@ -2050,11 +2197,11 @@
                     <div id="letterContent" style="display: none;">
                         <div
                             style="margin-bottom: 24px; display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-secondary" onclick="copyCoverLetter()">📋 Copier</button>
-                            <button class="btn btn-secondary" onclick="downloadCoverLetter()">⬇️ Télécharger
+                            <button class="btn btn-secondary" onclick="copyCoverLetter()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copier</button>
+                            <button class="btn btn-secondary" onclick="downloadCoverLetter()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Télécharger
                                 TXT</button>
-                            <button class="btn btn-primary" onclick="downloadLetterAsPDF()">📄 Télécharger PDF</button>
-                            <button class="btn btn-secondary" onclick="enableEditLetter()">✏️ Modifier</button>
+                            <button class="btn btn-primary" onclick="downloadLetterAsPDF()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Télécharger PDF</button>
+                            <button class="btn btn-secondary" onclick="enableEditLetter()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Modifier</button>
                         </div>
                         <textarea id="coverLetterContent" readonly
                             style="width: 100%; min-height: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Georgia', serif; line-height: 1.8; font-size: 15px; resize: vertical;">
@@ -2065,9 +2212,9 @@
                     <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
                     <div style="display: flex; gap: 12px;">
                         <button class="btn btn-primary" onclick="applyWithLetter()"
-                            style="background: var(--swiss-red); border: none;">🚀 Ouvrir l'offre & copier la
+                            style="background: var(--swiss-red); border: none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Ouvrir l'offre & copier la
                             lettre</button>
-                        <button class="btn btn-primary" id="btnAddToTracker2">➕ Ajouter au tracker</button>
+                        <button class="btn btn-primary" id="btnAddToTracker2"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter au tracker</button>
                     </div>
                 </div>
             </div>
@@ -2081,6 +2228,10 @@
         let userFavorites = new Set(); // IDs des jobs en favoris
         let savedSearches = []; // Recherches sauvegardées
         let isExecutingSavedSearch = false; // Flag pour tracker si on exécute une recherche sauvegardée
+        // true dès qu'une recherche manuelle est lancée — empêche loadSuggestions() (appelée au
+        // chargement de la page, asynchrone) de réafficher le panneau de suggestions par-dessus
+        // les résultats si sa réponse arrive après coup (l'offre apparaissait alors en double).
+        let manualSearchActive = false;
 
         // ========================================
         // VÉRIFICATION TIER POUR SUGGESTIONS IA UNIQUEMENT
@@ -2102,7 +2253,7 @@
             upgradePrompt.id = 'suggestionsUpgradePrompt';
             upgradePrompt.style.cssText = 'background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%); border: 2px solid #7C4DFF; border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: center;';
             upgradePrompt.innerHTML = `
-                <div style="font-size: 28px; margin-bottom: 8px;">✨</div>
+                <div style="font-size: 28px; margin-bottom: 8px;"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg></div>
                 <h4 style="font-size: 16px; margin-bottom: 8px; color: #5E35B1;">Suggestions IA personnalisées</h4>
                 <p style="color: #666; font-size: 14px; margin-bottom: 12px;">Passez à Premium pour des suggestions d'emploi basées sur votre CV et profil.</p>
                 <a href="pricing.html" style="display: inline-block; background: linear-gradient(135deg, #7C4DFF 0%, #5E35B1 100%); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;">Découvrir Premium</a>
@@ -2119,7 +2270,7 @@
                 const data = await response.json();
                 if (data.success) {
                     userFavorites = new Set((data.favorites || []).map(f => f.job_offer_id));
-                    console.log('✅ Favoris chargés:', userFavorites.size);
+                    console.log(' Favoris chargés:', userFavorites.size);
                 }
             } catch (error) {
                 console.error('Erreur chargement favoris:', error);
@@ -2131,22 +2282,22 @@
         // Charger les recherches sauvegardées
         async function loadSavedSearches() {
             try {
-                console.log('🔄 Chargement recherches sauvegardées...');
+                console.log(' Chargement recherches sauvegardées...');
                 const response = await authenticatedFetch('/saved-searches');
                 const data = await response.json();
 
-                console.log('📥 Réponse loadSavedSearches:', data);
+                console.log(' Réponse loadSavedSearches:', data);
 
                 if (data.success) {
                     savedSearches = data.searches || [];
-                    console.log('📋 Recherches reçues:', savedSearches);
+                    console.log(' Recherches reçues:', savedSearches);
                     updateSavedSearchesMenu();
-                    console.log('✅ Recherches sauvegardées chargées:', savedSearches.length);
+                    console.log(' Recherches sauvegardées chargées:', savedSearches.length);
                 } else {
-                    console.error('❌ Erreur API:', data.error);
+                    console.error(' Erreur API:', data.error);
                 }
             } catch (error) {
-                console.error('❌ Erreur chargement recherches:', error);
+                console.error(' Erreur chargement recherches:', error);
             }
         }
 
@@ -2159,11 +2310,11 @@
             const badge = document.getElementById('savedSearchesCount');
 
             if (!list) {
-                console.error('❌ savedSearchesList introuvable!');
+                console.error(' savedSearchesList introuvable!');
                 return;
             }
 
-            console.log('🔄 Mise à jour menu avec', savedSearches.length, 'recherches');
+            console.log(' Mise à jour menu avec', savedSearches.length, 'recherches');
 
             // Mettre à jour le compteur
             if (savedSearches.length > 0) {
@@ -2182,17 +2333,17 @@
                             </div>
                         </div>
                         <button onclick="event.stopPropagation(); deleteSearchFromMenu(${index})" style="background: transparent; border: none; color: #999; cursor: pointer; padding: 8px; font-size: 18px; transition: all 0.2s; opacity: 0;" class="delete-btn">
-                            🗑️
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                         </button>
                     </div>
                 `).join('');
 
-                console.log('✅ Menu mis à jour avec', savedSearches.length, 'recherches');
+                console.log(' Menu mis à jour avec', savedSearches.length, 'recherches');
             } else {
                 badge.style.display = 'none';
                 menuCount.textContent = '0 recherche';
                 emptyState.style.display = 'block';
-                console.log('✅ emptyState affiché:', emptyState.style.display);
+                console.log(' emptyState affiché:', emptyState.style.display);
                 list.innerHTML = '';
             }
         }
@@ -2208,7 +2359,7 @@
         function sortSavedSearches() {
             const sortValue = document.getElementById('sortSearches').value;
 
-            console.log('🔄 Tri recherches:', sortValue);
+            console.log(' Tri recherches:', sortValue);
 
             switch (sortValue) {
                 case 'recent':
@@ -2242,7 +2393,7 @@
 
             // Rafraîchir l'affichage
             updateSavedSearchesMenu();
-            console.log('✅ Tri appliqué');
+            console.log(' Tri appliqué');
         }
 
         // Fermer le menu au clic extérieur
@@ -2259,7 +2410,7 @@
             const search = savedSearches[index];
             if (!search) return;
 
-            console.log('▶️ Exécution recherche:', search.name);
+            console.log('▶ Exécution recherche:', search.name);
 
             try {
                 const response = await authenticatedFetch(`/searches/${search.id}/execute`, {
@@ -2289,7 +2440,7 @@
                 }
             } catch (error) {
                 console.error('Erreur exécution:', error);
-                alert('❌ Erreur lors de l\'exécution');
+                alert('Erreur lors de l\'exécution');
             }
         }
 
@@ -2306,12 +2457,12 @@
                 });
 
                 if (response.ok) {
-                    showSuccessToast('✅ Recherche supprimée');
+                    showSuccessToast('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Recherche supprimée');
                     await loadSavedSearches(); // Recharger la liste
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
-                alert('❌ Erreur lors de la suppression');
+                alert('Erreur lors de la suppression');
             }
         }
 
@@ -2355,15 +2506,17 @@
             if (!customName) return;
 
             // Préparer le payload
+            const emailAlerts = document.getElementById('saveSearchAlerts') ? document.getElementById('saveSearchAlerts').checked : false;
             const payload = {
                 name: customName,
                 keywords: keywords || '',
                 location: location || '',
-                filters: filters || {}
+                filters: filters || {},
+                email_alerts: emailAlerts ? 1 : 0
             };
 
-            console.log('📤 Envoi payload:', payload);
-            console.log('📤 Payload JSON:', JSON.stringify(payload));
+            console.log(' Envoi payload:', payload);
+            console.log(' Payload JSON:', JSON.stringify(payload));
 
             try {
                 const response = await authenticatedFetch('/searches/save', {
@@ -2371,24 +2524,24 @@
                     body: JSON.stringify(payload)
                 });
 
-                console.log('📥 Response status:', response.status);
+                console.log(' Response status:', response.status);
 
                 const data = await response.json();
-                console.log('📥 Response data:', data);
+                console.log(' Response data:', data);
 
                 if (data.success) {
-                    showSuccessToast('✅ Recherche sauvegardée !');
+                    showSuccessToast('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Recherche sauvegardée !');
                     await loadSavedSearches(); // Recharger la liste
                 } else if (data.upgrade_required) {
                     if (confirm(data.error + '\n\nVoulez-vous passer à Premium ?')) {
                         window.location.href = 'pricing.html';
                     }
                 } else {
-                    alert('❌ ' + (data.error || 'Erreur lors de la sauvegarde'));
+                    alert((data.error || 'Erreur lors de la sauvegarde'));
                 }
             } catch (error) {
                 console.error('Erreur sauvegarde:', error);
-                alert('❌ Erreur lors de la sauvegarde');
+                alert('Erreur lors de la sauvegarde');
             }
         }
 
@@ -2427,7 +2580,7 @@
                 }
             } catch (error) {
                 console.error('Erreur exécution:', error);
-                alert('❌ Erreur lors de l\'exécution');
+                alert('Erreur lors de l\'exécution');
             }
         }
 
@@ -2452,12 +2605,12 @@
                 });
 
                 if (response.ok) {
-                    alert('✅ Recherche supprimée');
+                    alert('Recherche supprimée');
                     // loadSavedSearches(); // Désactivé temporairement // Recharger la liste
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
-                alert('❌ Erreur lors de la suppression');
+                alert('Erreur lors de la suppression');
             }
         }
 
@@ -2517,18 +2670,18 @@
                 // Vérifier si l'utilisateur est premium/pro
                 const user = getUser();
                 if (!user || user.tier === 'free') {
-                    console.log('🔒 Utilisateur Free - Suggestions désactivées');
+                    console.log(' Utilisateur Free - Suggestions désactivées');
                     return;
                 }
 
-                console.log('🔄 Chargement suggestions basées sur profil et CV...');
+                console.log(' Chargement suggestions basées sur profil et CV...');
                 const loading = document.getElementById('suggestionsLoading');
                 const emptyState = document.getElementById('suggestionsEmpty');
                 const suggestionsGrid = document.getElementById('suggestionsGrid');
                 const btnRefresh = document.getElementById('btnRefreshSuggestions');
 
                 if (!loading || !emptyState || !suggestionsGrid) {
-                    console.error('❌ Éléments DOM manquants!');
+                    console.error(' Éléments DOM manquants!');
                     return;
                 }
 
@@ -2568,18 +2721,18 @@
                             const profileData = await profileResponse.json();
                             if (profileData.profile) {
                                 location = profileData.profile.location || 'Suisse';
-                                console.log('📍 Localisation:', location);
+                                console.log(' Localisation:', location);
 
                                 // Extraire des mots-clés de la bio
                                 if (profileData.profile.bio) {
                                     const bioKeywords = extractKeywords(profileData.profile.bio, 5);
-                                    console.log('📝 Mots-clés bio:', bioKeywords);
+                                    console.log(' Mots-clés bio:', bioKeywords);
                                     searchKeywords.push(...bioKeywords);
                                 }
                             }
                         }
                     } catch (e) {
-                        console.log('ℹ️ Profil non disponible, utilisation des données de base');
+                        console.log(' Profil non disponible, utilisation des données de base');
                     }
 
                     // 2. Récupérer les données de l'analyse CV (endpoint corrigé)
@@ -2587,10 +2740,10 @@
                         const cvResponse = await authenticatedFetch('/analyses/history');
                         if (cvResponse && cvResponse.ok) {
                             const cvData = await cvResponse.json();
-                            console.log('📄 Données CV reçues:', cvData);
+                            console.log(' Données CV reçues:', cvData);
                             if (cvData.success && cvData.analyses && cvData.analyses.length > 0) {
                                 const lastAnalysis = cvData.analyses[0];
-                                console.log('📄 Analyse CV trouvée');
+                                console.log(' Analyse CV trouvée');
 
                                 // Extraire les mots-clés de l'analyse
                                 if (lastAnalysis.keywords) {
@@ -2600,7 +2753,7 @@
 
                                     // Si keywords est un array, l'utiliser directement
                                     if (Array.isArray(keywords)) {
-                                        console.log('🔑 Keywords CV:', keywords.slice(0, 5));
+                                        console.log(' Keywords CV:', keywords.slice(0, 5));
                                         searchKeywords.push(...keywords.slice(0, 5));
                                     }
                                 }
@@ -2608,7 +2761,7 @@
                                 // Extraire des compétences des points forts
                                 const strongPoints = lastAnalysis.strongPoints || lastAnalysis.strong_points || [];
                                 if (Array.isArray(strongPoints) && strongPoints.length > 0) {
-                                    console.log('💪 Points forts:', strongPoints.slice(0, 3));
+                                    console.log(' Points forts:', strongPoints.slice(0, 3));
                                     strongPoints.slice(0, 3).forEach(point => {
                                         const pointKeywords = extractKeywords(point, 3);
                                         searchKeywords.push(...pointKeywords);
@@ -2619,13 +2772,13 @@
                                 if (lastAnalysis.suggestedTitle || lastAnalysis.suggested_title) {
                                     const title = lastAnalysis.suggestedTitle || lastAnalysis.suggested_title;
                                     const titleKeywords = extractKeywords(title, 2);
-                                    console.log('💼 Titre suggéré:', titleKeywords);
+                                    console.log(' Titre suggéré:', titleKeywords);
                                     searchKeywords.push(...titleKeywords);
                                 }
                             }
                         }
                     } catch (e) {
-                        console.log('ℹ️ Analyse CV non disponible');
+                        console.log(' Analyse CV non disponible');
                     }
 
                     // 3. Nettoyer et dédupliquer les mots-clés
@@ -2634,23 +2787,27 @@
 
                     // 4. Si pas de mots-clés, utiliser des valeurs par défaut
                     if (searchKeywords.length === 0) {
-                        console.log('⚠️ Aucun mot-clé trouvé, utilisation des valeurs par défaut');
+                        console.log(' Aucun mot-clé trouvé, utilisation des valeurs par défaut');
                         searchKeywords = ['développeur', 'manager', 'ingénieur'];
                     }
 
                     // 5. Rechercher des offres basées sur les mots-clés (max 5 mots-clés)
                     const finalKeywords = searchKeywords.slice(0, 5);
-                    console.log('🔍 Recherche avec mots-clés:', finalKeywords);
+                    console.log(' Recherche avec mots-clés:', finalKeywords);
                     const searchQuery = finalKeywords.join(' ');
 
                     const jobsResponse = await authenticatedFetch(`/jobs/search?what=${encodeURIComponent(searchQuery)}&where=${encodeURIComponent(location)}&results_per_page=6`);
+
+                    // Une recherche manuelle a été lancée pendant cet appel réseau — ne pas
+                    // réafficher les suggestions par-dessus ses résultats.
+                    if (manualSearchActive) return;
 
                     if (jobsResponse && jobsResponse.ok) {
                         const jobsData = await jobsResponse.json();
 
                         if (jobsData.success && jobsData.results && jobsData.results.length > 0) {
                             suggestions = jobsData.results;
-                            console.log(`✅ ${suggestions.length} suggestions trouvées`);
+                            console.log(` ${suggestions.length} suggestions trouvées`);
                             displaySuggestions();
                             suggestionsGrid.style.display = 'grid';
                         } else {
@@ -2663,27 +2820,39 @@
                     }
 
                 } catch (error) {
-                    console.error('❌ Erreur chargement suggestions:', error);
-                    document.getElementById('suggestionsEmptyTitle').textContent = 'Impossible de charger les suggestions';
-                    document.getElementById('suggestionsEmptyMessage').textContent = 'Veuillez réessayer plus tard ou compléter votre profil';
-                    emptyState.style.display = 'block';
+                    console.error(' Erreur chargement suggestions:', error);
+                    if (!manualSearchActive) {
+                        document.getElementById('suggestionsEmptyTitle').textContent = 'Impossible de charger les suggestions';
+                        document.getElementById('suggestionsEmptyMessage').textContent = 'Veuillez réessayer plus tard ou compléter votre profil';
+                        emptyState.style.display = 'block';
+                    }
                 } finally {
                     loading.style.display = 'none';
                     if (btnRefresh) btnRefresh.disabled = false;
                 }
             } catch (outerError) {
-                console.error('❌ Erreur fatale loadSuggestions:', outerError);
+                console.error(' Erreur fatale loadSuggestions:', outerError);
             }
         }
 
         function displaySuggestions() {
             const grid = document.getElementById('suggestionsGrid');
             grid.innerHTML = '';
+            // Afficher le bouton sélection multiple pour les suggestions
+            const btnBulkSuggestions = document.getElementById('btnBulkModeSuggestions');
+            if (btnBulkSuggestions) btnBulkSuggestions.style.display = 'inline-block';
 
             suggestions.forEach(offer => {
                 const card = document.createElement('div');
                 card.className = 'job-card';
-                card.onclick = () => openJobModal(offer);
+                card.onclick = () => {
+                    if (bulkMode) {
+                        const cb = card.querySelector('.job-select-checkbox');
+                        if (cb) { cb.checked = !cb.checked; toggleJobSelection(offer.id, cb); }
+                    } else {
+                        openJobModal(offer);
+                    }
+                };
 
                 const salaryText = offer.salary_min && offer.salary_max
                     ? `CHF ${offer.salary_min.toLocaleString()} - ${offer.salary_max.toLocaleString()}`
@@ -2692,14 +2861,15 @@
                 const isFavorite = userFavorites.has(offer.id);
 
                 card.innerHTML = `
+                    <input type="checkbox" class="job-select-checkbox" onclick="event.stopPropagation(); toggleJobSelection('${offer.id}', this)">
                     <div class="job-header">
                         <div>
                             <div class="job-title">${escapeHtml(offer.title)}</div>
                             <div class="job-company">${escapeHtml(offer.company)}</div>
-                            <div class="job-location">📍 ${escapeHtml(offer.location)}</div>
+                            <div class="job-location"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${escapeHtml(offer.location)}</div>
                         </div>
                         <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-job-id="${offer.id}" onclick="event.stopPropagation(); toggleFavorite('${offer.id}', this)">
-                            ${isFavorite ? '⭐' : '☆'}
+                            ${isFavorite ? '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>' : '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>'}
                         </button>
                     </div>
                     <div class="job-description">${escapeHtml(offer.description || 'Pas de description disponible')}</div>
@@ -2708,7 +2878,7 @@
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
                         <span class="job-tag">${escapeHtml(offer.source || 'Adzuna')}</span>
                         <button class="compare-cv-btn" id="compareBtn_${offer.id}" onclick="event.stopPropagation(); compareWithCV('${offer.id}', \`${escapeHtml(offer.title)}\`, \`${escapeHtml(offer.description || '')}\`)">
-                            📊 Comparer avec mon CV <span class="credit-cost">(1 crédit)</span>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Comparer avec mon CV <span class="credit-cost">(1 crédit)</span>
                         </button>
                     </div>
                 `;
@@ -2829,9 +2999,9 @@
                     const data = await response.json();
                     if (data.success) {
                         userFavorites.delete(jobId);
-                        button.textContent = '☆';
+                        button.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>';
                         button.classList.remove('favorited');
-                        console.log('✅ Retiré des favoris');
+                        console.log(' Retiré des favoris');
                     } else {
                         console.error('Erreur retrait favori:', data.error);
                     }
@@ -2846,14 +3016,14 @@
                     if (!response) return;
 
                     const data = await response.json();
-                    console.log('📥 Response data:', data);
+                    console.log(' Response data:', data);
                     if (data.success) {
                         userFavorites.add(jobId);
-                        button.textContent = '⭐';
+                        button.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>';
                         button.classList.add('favorited');
-                        console.log('✅ Ajouté aux favoris');
+                        console.log(' Ajouté aux favoris');
                     } else {
-                        console.error('❌ Erreur ajout favori:', data);
+                        console.error(' Erreur ajout favori:', data);
                     }
                 }
             } catch (error) {
@@ -2869,6 +3039,7 @@
             e.preventDefault();
 
             // Cacher les suggestions quand recherche manuelle
+            manualSearchActive = true;
             document.getElementById('suggestionsSection').style.display = 'none';
             document.getElementById('suggestionsGrid').style.display = 'none';
             document.getElementById('suggestionsEmpty').style.display = 'none';
@@ -2902,9 +3073,9 @@
                 if (!response) return;
 
                 const data = await response.json();
-                console.log("🔍 API Response:", data);
-                console.log("🔍 Success:", data.success);
-                console.log("🔍 Offers count:", data.offers?.length);
+                console.log(" API Response:", data);
+                console.log(" Success:", data.success);
+                console.log(" Offers count:", data.offers?.length);
 
                 if (data.success) {
                     currentJobs = data.offers;
@@ -2929,7 +3100,7 @@
                 alert('Erreur de recherche');
             } finally {
                 searchBtn.disabled = false;
-                searchBtn.textContent = '🔍 Rechercher';
+                searchBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Rechercher';
                 loading.classList.remove('show');
             }
         });
@@ -2942,7 +3113,14 @@
             jobs.forEach(job => {
                 const card = document.createElement('div');
                 card.className = 'job-card';
-                card.onclick = () => openJobModal(job);
+                card.onclick = () => {
+                    if (bulkMode) {
+                        const cb = card.querySelector('.job-select-checkbox');
+                        if (cb) { cb.checked = !cb.checked; toggleJobSelection(job.id, cb); }
+                    } else {
+                        openJobModal(job);
+                    }
+                };
 
                 const salaryText = job.salary_min && job.salary_max
                     ? `CHF ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}`
@@ -2951,14 +3129,15 @@
                 const isFavorite = userFavorites.has(job.id);
 
                 card.innerHTML = `
+                    <input type="checkbox" class="job-select-checkbox" onclick="event.stopPropagation(); toggleJobSelection('${job.id}', this)">
                     <div class="job-header">
                         <div>
                             <div class="job-title">${job.title}</div>
                             <div class="job-company">${job.company}</div>
-                            <div class="job-location">📍 ${job.location}</div>
+                            <div class="job-location"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${job.location}</div>
                         </div>
                         <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-job-id="${job.id}" onclick="event.stopPropagation(); toggleFavorite('${job.id}', this)">
-                            ${isFavorite ? '⭐' : '☆'}
+                            ${isFavorite ? '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>' : '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>'}
                         </button>
                     </div>
                     <div class="job-description">${job.description}</div>
@@ -2968,7 +3147,7 @@
                         <span class="job-tag">${job.source || 'Adzuna'}</span>
                         ${salaryText ? `<span class="job-tag salary-tag">${salaryText}</span>` : ''}
                         <button class="compare-cv-btn" id="compareBtn_${job.id}" onclick="event.stopPropagation(); compareWithCV('${job.id}', \`${job.title}\`, \`${job.description || ''}\`)">
-                            📊 Comparer avec mon CV <span class="credit-cost">(1 crédit)</span>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Comparer avec mon CV <span class="credit-cost">(1 crédit)</span>
                         </button>
                     </div>
                 `;
@@ -2986,7 +3165,7 @@
 
             document.getElementById('modalTitle').textContent = job.title;
             document.getElementById('modalCompany').textContent = job.company;
-            document.getElementById('modalLocation').textContent = '📍 ' + job.location;
+            document.getElementById('modalLocation').innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ' + job.location;
             document.getElementById('modalDescription').textContent = job.description || 'Pas de description disponible';
 
             // Requirements - utiliser description si pas de requirements séparé
@@ -3019,6 +3198,17 @@
 
             // Bouton générer lettre de motivation
             document.getElementById('btnGenerateLetter').onclick = () => generateCoverLetter(job);
+
+            // Bouton générer candidature complète
+            document.getElementById('btnGenerateApplication').onclick = () => {
+                sessionStorage.setItem('apply_job', JSON.stringify({
+                    title: job.title || '',
+                    company: job.company || '',
+                    description: job.description || '',
+                    url: job.url || ''
+                }));
+                window.location.href = 'apply.html';
+            };
 
             // Bouton calculer match
             document.getElementById('btnCalculateMatch').onclick = () => calculateMatch(job);
@@ -3084,7 +3274,7 @@
                 alert('Erreur de calcul');
             } finally {
                 btn.disabled = false;
-                btn.textContent = '🎯 Recalculer';
+                btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Recalculer';
             }
         }
 
@@ -3093,13 +3283,13 @@
             document.getElementById('matchScore').textContent = match.score + '%';
 
             const strengthsHtml = `
-                <h4>✅ Points forts</h4>
+                <h4><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Points forts</h4>
                 <ul>${match.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
             `;
             document.getElementById('matchStrengths').innerHTML = strengthsHtml;
 
             const gapsHtml = `
-                <h4>⚠️ Points à améliorer</h4>
+                <h4><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Points à améliorer</h4>
                 <ul>${match.gaps.map(g => `<li>${g}</li>`).join('')}</ul>
             `;
             document.getElementById('matchGaps').innerHTML = gapsHtml;
@@ -3131,22 +3321,22 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    alert('✅ Offre ajoutée au tracker !');
-                    btn.textContent = '✓ Ajouté';
+                    alert('Offre ajoutée au tracker !');
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Ajouté';
                     setTimeout(() => {
-                        btn.textContent = '➕ Ajouter au tracker';
+                        btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter au tracker';
                         btn.disabled = false;
                     }, 2000);
                 } else {
                     console.error('Erreur:', data.error);
                     btn.disabled = false;
-                    btn.textContent = '➕ Ajouter au tracker';
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter au tracker';
                 }
             } catch (error) {
                 console.error('Erreur ajout tracker:', error);
                 alert('Erreur d\'ajout');
                 btn.disabled = false;
-                btn.textContent = '➕ Ajouter au tracker';
+                btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter au tracker';
             }
         }
 
@@ -3181,7 +3371,7 @@
 
                 if (!response) {
                     btn.disabled = false;
-                    btn.innerHTML = '📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
                     switchTab('details');
                     return;
                 }
@@ -3191,9 +3381,9 @@
                     const errorData = await response.json();
                     document.getElementById('letterLoading').style.display = 'none';
                     btn.disabled = false;
-                    btn.innerHTML = '📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
                     switchTab('details');
-                    showToast(`❌ Crédits insuffisants. Requis: ${errorData.credits_required || 2}, Disponible: ${errorData.credits_balance || 0}`, 'error');
+                    showToast(`<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Crédits insuffisants. Requis: ${errorData.credits_required || 2}, Disponible: ${errorData.credits_balance || 0}`, 'error');
                     // Recharger le solde de crédits
                     if (typeof loadCreditBalance === 'function') loadCreditBalance();
                     return;
@@ -3209,22 +3399,22 @@
                     document.getElementById('letterLoading').style.display = 'none';
                     document.getElementById('letterContent').style.display = 'block';
 
-                    btn.textContent = '✓ Lettre générée';
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Lettre générée';
                     setTimeout(() => {
-                        btn.innerHTML = '📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
+                        btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
                         btn.disabled = false;
                     }, 2000);
                 } else {
                     console.error('Erreur:', data.error);
                     btn.disabled = false;
-                    btn.innerHTML = '📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
+                    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
                     switchTab('details');
                 }
             } catch (error) {
                 console.error('Erreur génération lettre:', error);
                 alert('Erreur lors de la génération de la lettre');
                 btn.disabled = false;
-                btn.innerHTML = '📝 Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
+                btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Générer lettre de motivation <span class="credit-cost">(2 crédits)</span>';
                 switchTab('details');
             }
         }
@@ -3236,13 +3426,13 @@
                 textarea.readOnly = false;
                 textarea.style.borderColor = 'var(--swiss-red)';
                 textarea.focus();
-                event.target.textContent = '💾 Sauvegarder';
+                event.target.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Sauvegarder';
             } else {
                 textarea.readOnly = true;
                 textarea.style.borderColor = '#ddd';
                 currentCoverLetter = textarea.value;
-                event.target.textContent = '✏️ Modifier';
-                showToast('✅ Modifications sauvegardées !', 'success');
+                event.target.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Modifier';
+                showToast('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Modifications sauvegardées !', 'success');
             }
         }
 
@@ -3255,7 +3445,7 @@
 
             // Copier automatiquement la lettre
             navigator.clipboard.writeText(currentCoverLetter).then(() => {
-                showToast('✅ Lettre copiée ! L\'offre s\'ouvre dans un nouvel onglet', 'success');
+                showToast('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Lettre copiée ! L\'offre s\'ouvre dans un nouvel onglet', 'success');
 
                 // Ouvrir l'offre dans un nouvel onglet après un court délai
                 setTimeout(() => {
@@ -3277,7 +3467,7 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
 
-            const icon = type === 'success' ? '✅' : '❌';
+            const icon = type === 'success' ? '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 
             toast.innerHTML = `
             <div class="toast-icon">${icon}</div>
@@ -3298,7 +3488,7 @@
             if (!currentCoverLetter) return;
 
             navigator.clipboard.writeText(currentCoverLetter).then(() => {
-                showToast('✅ Lettre copiée dans le presse-papier !', 'success');
+                showToast('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Lettre copiée dans le presse-papier !', 'success');
             }).catch(err => {
                 console.error('Erreur copie:', err);
                 showToast('Erreur lors de la copie', 'error');
@@ -3412,10 +3602,119 @@
                 closeModal();
             }
         });
+
+        // ========================================
+        // MULTI-SELECT / BULK GENERATION
+        // ========================================
+        let bulkMode = false;
+        let selectedJobs = new Map(); // id -> job object
+
+        function setBulkMode(active, targetGrid) {
+            bulkMode = active;
+            selectedJobs.clear();
+
+            const bar = document.getElementById('bulkActionBar');
+            const jobsList = document.getElementById('jobsList');
+            const suggestionsGrid = document.getElementById('suggestionsGrid');
+            const btnResults = document.getElementById('btnBulkMode');
+            const btnSuggestions = document.getElementById('btnBulkModeSuggestions');
+
+            // Reset all
+            jobsList.classList.remove('bulk-mode');
+            if (suggestionsGrid) suggestionsGrid.classList.remove('bulk-mode');
+            document.querySelectorAll('.job-card.selected').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.job-select-checkbox').forEach(cb => { cb.checked = false; });
+
+            if (btnResults) { btnResults.classList.remove('active'); btnResults.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sélection multiple'; }
+            if (btnSuggestions) { btnSuggestions.classList.remove('active'); btnSuggestions.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sélection multiple'; }
+
+            if (active) {
+                if (targetGrid === 'suggestions' && suggestionsGrid) {
+                    suggestionsGrid.classList.add('bulk-mode');
+                    if (btnSuggestions) { btnSuggestions.classList.add('active'); btnSuggestions.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Quitter la sélection'; }
+                } else {
+                    jobsList.classList.add('bulk-mode');
+                    if (btnResults) { btnResults.classList.add('active'); btnResults.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Quitter la sélection'; }
+                }
+                bar.classList.add('show');
+                updateBulkBar();
+            } else {
+                bar.classList.remove('show');
+            }
+        }
+
+        function toggleBulkMode() {
+            setBulkMode(!bulkMode, 'results');
+        }
+
+        function toggleBulkModeSuggestions() {
+            setBulkMode(!bulkMode, 'suggestions');
+        }
+
+        function toggleJobSelection(jobId, checkbox) {
+            if (!bulkMode) return;
+
+            // Find job in currentJobs or suggestions
+            const job = currentJobs.find(j => j.id === jobId) || suggestions.find(j => j.id === jobId);
+            if (!job) return;
+
+            const card = checkbox.closest('.job-card');
+
+            const user = getUser();
+            const isPremium = user && (user.tier === 'premium' || user.tier === 'pro');
+            const maxJobs = isPremium ? 10 : 5;
+
+            if (checkbox.checked) {
+                if (selectedJobs.size >= maxJobs) {
+                    checkbox.checked = false;
+                    showToast('Maximum ' + maxJobs + ' offres pour votre plan', 'error');
+                    return;
+                }
+                selectedJobs.set(jobId, job);
+                if (card) card.classList.add('selected');
+            } else {
+                selectedJobs.delete(jobId);
+                if (card) card.classList.remove('selected');
+            }
+
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            const count = selectedJobs.size;
+            const countEl = document.getElementById('bulkCount');
+            const costEl = document.getElementById('bulkCreditCost');
+            const bar = document.getElementById('bulkActionBar');
+
+            countEl.textContent = count + ' offre' + (count > 1 ? 's' : '') + ' sélectionnée' + (count > 1 ? 's' : '');
+            costEl.textContent = count > 0 ? '(' + (count * 2) + ' crédits)' : '';
+
+            if (bulkMode) {
+                bar.classList.add('show');
+            }
+        }
+
+        function startBulkGeneration() {
+            if (selectedJobs.size === 0) {
+                showToast('Sélectionnez au moins une offre', 'error');
+                return;
+            }
+
+            const jobs = Array.from(selectedJobs.values()).map(j => ({
+                id: j.id || '',
+                title: j.title || '',
+                company: j.company || '',
+                description: j.description || '',
+                url: j.url || ''
+            }));
+
+            sessionStorage.setItem('bulk_apply_jobs', JSON.stringify(jobs));
+            window.location.href = 'bulk-apply.html';
+        }
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js"></script>
-    <script src="public/js/favorites-badge.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
+    <script src="public/js/favorites-badge.js?v=20260821a"></script>
 
     <script>
         // Afficher boutons compare pour Premium/Pro
@@ -3488,7 +3787,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                     const errorData = await compareResponse.json();
                     results.innerHTML = `
                         <div style="background:#FFEBEE; padding:20px; border-radius:8px; text-align:center;">
-                            <p style="color:#D32F2F; margin:0;">❌ Crédits insuffisants</p>
+                            <p style="color:#D32F2F; margin:0;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Crédits insuffisants</p>
                             <p style="color:#666; margin:10px 0 0 0;">Requis: ${errorData.credits_required || 1} crédit(s), Disponible: ${errorData.credits_balance || 0}</p>
                             <a href="credits.html" style="display:inline-block; margin-top:15px; padding:10px 20px; background:#D50000; color:white; text-decoration:none; border-radius:6px;">Obtenir plus de crédits</a>
                         </div>
@@ -3517,7 +3816,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                     </div>
 
                     <div style="margin-bottom:20px;">
-                        <h4>✅ Points forts</h4>
+                        <h4><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Points forts</h4>
                         ${analysis.strengths.map(s => `
                             <div style="background:#E8F5E9; padding:12px; margin:8px 0; border-radius:6px; border-left:4px solid #4CAF50;">
                                 <strong>${s.title}</strong>: ${s.description}
@@ -3526,24 +3825,24 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                     </div>
 
                     <div style="margin-bottom:20px;">
-                        <h4>⚠️ Points à améliorer</h4>
+                        <h4><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Points à améliorer</h4>
                         ${analysis.gaps.map(g => `
                             <div style="background:#FFF3E0; padding:12px; margin:8px 0; border-radius:6px; border-left:4px solid ${g.severity === 'high' ? '#F44336' : g.severity === 'medium' ? '#FF9800' : '#FFC107'};">
                                 <strong>${g.title}</strong>: ${g.description}
-                                <span style="float:right; font-size:12px; color:#666;">${g.severity === 'high' ? '🔴 Critique' : g.severity === 'medium' ? '🟠 Moyen' : '🟡 Faible'}</span>
+                                <span style="float:right; font-size:12px; color:#666;">${g.severity === 'high' ? '<svg class="icon" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="8"/></svg> Critique' : g.severity === 'medium' ? '<svg class="icon" viewBox="0 0 24 24" fill="#f59e0b"><circle cx="12" cy="12" r="8"/></svg> Moyen' : '<svg class="icon" viewBox="0 0 24 24" fill="#eab308"><circle cx="12" cy="12" r="8"/></svg> Faible'}</span>
                             </div>
                         `).join('')}
                     </div>
 
                     <div style="margin-bottom:20px;">
-                        <h4>💡 Recommandations</h4>
+                        <h4><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.75V17h8v-2.25A7 7 0 0 0 12 2z"/></svg> Recommandations</h4>
                         ${analysis.recommendations.map(r => `
                             <div style="background:#F5F5F5; padding:10px; margin:6px 0; border-radius:6px;">• ${r}</div>
                         `).join('')}
                     </div>
 
                     <div style="background:#E1F5FE; padding:15px; border-radius:8px;">
-                        <h4 style="margin-top:0;">📋 Verdict</h4>
+                        <h4 style="margin-top:0;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Verdict</h4>
                         <p style="line-height:1.6; margin:0;">${analysis.verdict}</p>
                     </div>
                 `;
@@ -3552,7 +3851,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
                 console.error('Erreur comparaison:', error);
                 results.innerHTML = `
                     <div style="background:#FFEBEE; padding:20px; border-radius:8px; text-align:center;">
-                        <p style="color:#D32F2F; margin:0;">❌ Erreur: ${error.message}</p>
+                        <p style="color:#D32F2F; margin:0;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Erreur: ${error.message}</p>
                     </div>
                 `;
             }
@@ -3561,7 +3860,7 @@ ${lastAnalysis.swissAdvice || lastAnalysis.swiss_advice || 'N/A'}
         // Fonction déjà appelée dans displayJobs()
     </script>
 
-    <script src="public/js/credits.js"></script>
+    <script src="public/js/credits.js?v=20260821a"></script>
 </body>
 
 </html>

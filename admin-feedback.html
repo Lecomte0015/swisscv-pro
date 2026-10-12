@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback — Admin SwissCV Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/notifications.css">
+    <link rel="stylesheet" href="admin/css/dark-mode.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #1f2937;
+        }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-navbar h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .admin-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .stat-box .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .filters {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filters select {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .responses-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .response-item {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .response-item:last-child {
+            border-bottom: none;
+        }
+
+        .response-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .response-email {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .response-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-reason { background: #fee2e2; color: #991b1b; }
+        .badge-quality { background: #dbeafe; color: #1e40af; }
+        .badge-credited { background: #d1fae5; color: #065f46; }
+        .badge-not-credited { background: #f3f4f6; color: #6b7280; }
+        .badge-usage { background: #ede9fe; color: #5b21b6; }
+        .badge-nps-promoter { background: #d1fae5; color: #065f46; }
+        .badge-nps-passive { background: #fef3c7; color: #92400e; }
+        .badge-nps-detractor { background: #fee2e2; color: #991b1b; }
+
+        .response-body {
+            font-size: 13.5px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .response-body .field-label {
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            margin-top: 8px;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .editor-toggle {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .editor-toggle:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .btn-send-campaign {
+            background: #D50000;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-left: 10px;
+        }
+
+        .btn-send-campaign:hover:not(:disabled) {
+            background: #B80000;
+        }
+
+        .btn-send-campaign:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .campaign-status {
+            font-size: 13px;
+            margin-left: 12px;
+        }
+
+        .editor-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .editor-panel.hidden {
+            display: none;
+        }
+
+        .editor-block {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .editor-block:last-of-type {
+            border-bottom: none;
+        }
+
+        .editor-block label.field-title {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .editor-block input[type="text"],
+        .editor-block textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            margin-bottom: 8px;
+        }
+
+        .editor-block textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .editor-option-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .editor-option-row .option-value {
+            font-size: 12px;
+            color: #9ca3af;
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .editor-option-row input[type="text"] {
+            margin-bottom: 0;
+        }
+
+        .btn-save-config {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-save-config:hover {
+            background: #5a67d8;
+        }
+
+        .save-status {
+            font-size: 13px;
+            margin-left: 12px;
+            color: #16a34a;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(17, 24, 39, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-box-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-box-header h3 {
+            font-size: 17px;
+            color: #1f2937;
+        }
+
+        .modal-box-body {
+            padding: 20px 24px;
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .modal-box-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-btn-cancel {
+            background: #F5F5F5;
+            color: #1f2937;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .modal-btn-confirm {
+            background: #D50000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .modal-btn-confirm:hover {
+            background: #B80000;
+        }
+
+        @media (max-width: 768px) {
+            .admin-navbar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .admin-nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+        }
+    </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>📝 Réponses au feedback "Pourquoi pas Premium ?"</h2>
+
+        <button class="editor-toggle" onclick="toggleEditor()">✏️ Modifier les questions du formulaire</button>
+        <button class="btn-send-campaign" id="sendCampaignBtn" onclick="sendCampaign()">📤 Envoyer la campagne aux utilisateurs éligibles</button>
+        <span class="campaign-status" id="campaignStatus"></span>
+
+        <div class="editor-panel hidden" id="editorPanel">
+            <div class="editor-block">
+                <label class="field-title">Question 1</label>
+                <input type="text" id="cfg_q1_label">
+                <div id="cfg_q1_options"></div>
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Question 2</label>
+                <input type="text" id="cfg_q2_label">
+                <div id="cfg_q2_options"></div>
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Question 5 (usage des fonctionnalités)</label>
+                <input type="text" id="cfg_q5_label">
+                <div id="cfg_q5_options"></div>
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Question 6 (score NPS, 0-10)</label>
+                <input type="text" id="cfg_q6_label">
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Question 3 (texte libre)</label>
+                <input type="text" id="cfg_q3_label">
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Question 4 (texte libre)</label>
+                <input type="text" id="cfg_q4_label">
+            </div>
+            <div class="editor-block">
+                <label class="field-title">Email — objet</label>
+                <input type="text" id="cfg_email_subject">
+                <label class="field-title" style="margin-top:12px;">Email — 1er paragraphe</label>
+                <textarea id="cfg_email_paragraph1"></textarea>
+                <label class="field-title" style="margin-top:12px;">Email — 2e paragraphe</label>
+                <textarea id="cfg_email_paragraph2"></textarea>
+            </div>
+            <button class="btn-save-config" onclick="saveConfig()">Enregistrer</button>
+            <span class="save-status" id="saveStatus"></span>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="number" id="statTotal">—</div>
+                <div class="label">Réponses reçues</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="statPrice">—</div>
+                <div class="label">Bloqués par le prix</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="statFeature">—</div>
+                <div class="label">Fonctionnalité manquante</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="statCredited">—</div>
+                <div class="label">Crédités automatiquement</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="statNps">—</div>
+                <div class="label">Score NPS moyen (/10)</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <select id="reasonFilter" onchange="renderList()">
+                <option value="">Toutes les raisons</option>
+                <option value="price">Le prix</option>
+                <option value="missing_feature">Fonctionnalité manquante</option>
+                <option value="not_used_enough">Pas assez utilisé</option>
+                <option value="not_convinced">Pas convaincu par la qualité</option>
+                <option value="other">Autre</option>
+            </select>
+        </div>
+
+        <div class="responses-list" id="responsesList">
+            <div class="empty-state">⏳ Chargement...</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <h3>📤 Confirmer l'envoi</h3>
+            </div>
+            <div class="modal-box-body">
+                <p>Ceci va envoyer un email réel à tous les utilisateurs free ayant déjà analysé un CV et jamais encore contactés pour cette campagne.</p>
+                <p style="margin-top:10px;color:#6b7280;font-size:13px;">Cette action ne peut pas être annulée une fois lancée.</p>
+            </div>
+            <div class="modal-box-footer">
+                <button class="modal-btn-cancel" onclick="closeConfirmModal()">Annuler</button>
+                <button class="modal-btn-confirm" onclick="confirmSendCampaign()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function getAdminToken() { return localStorage.getItem('admin_token'); }
+        function logout() {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+        }
+        if (!getAdminToken()) window.location.href = 'admin-login.html';
+
+        const REASON_LABELS = {
+            price: 'Le prix',
+            missing_feature: 'Fonctionnalité manquante',
+            not_used_enough: 'Pas assez utilisé',
+            not_convinced: 'Pas convaincu par la qualité',
+            other: 'Autre'
+        };
+        const QUALITY_LABELS = {
+            very_useful: 'Très utile',
+            useful: 'Utile',
+            not_very_useful: 'Peu utile',
+            not_useful: 'Pas utile'
+        };
+        const USAGE_LABELS = {
+            used: 'A utilisé 1-clic/masse',
+            didnt_know: 'Ne savait pas que ça existait',
+            no_need: 'Pas eu besoin'
+        };
+
+        function esc(s) {
+            return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        let allResponses = [];
+
+        async function loadResponses() {
+            try {
+                const res = await fetch(`${API_BASE}/admin/feedback/responses`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur de chargement');
+                allResponses = data.responses || [];
+                renderStats();
+                renderList();
+            } catch (e) {
+                document.getElementById('responsesList').innerHTML = `<div class="empty-state">Erreur : ${esc(e.message)}</div>`;
+            }
+        }
+
+        function renderStats() {
+            document.getElementById('statTotal').textContent = allResponses.length;
+            document.getElementById('statPrice').textContent = allResponses.filter(r => r.blocker_reason === 'price').length;
+            document.getElementById('statFeature').textContent = allResponses.filter(r => r.blocker_reason === 'missing_feature').length;
+            document.getElementById('statCredited').textContent = allResponses.filter(r => r.credited).length;
+            const npsScores = allResponses.filter(r => r.nps_score !== null && r.nps_score !== undefined).map(r => r.nps_score);
+            document.getElementById('statNps').textContent = npsScores.length
+                ? (npsScores.reduce((a, b) => a + b, 0) / npsScores.length).toFixed(1)
+                : '—';
+        }
+
+        function renderList() {
+            const filter = document.getElementById('reasonFilter').value;
+            const list = filter ? allResponses.filter(r => r.blocker_reason === filter) : allResponses;
+            const container = document.getElementById('responsesList');
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="empty-state">📭 Aucune réponse pour le moment</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(r => {
+                const date = new Date(r.created_at * 1000).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+                const reasonLabel = REASON_LABELS[r.blocker_reason] || r.blocker_reason;
+                const qualityLabel = QUALITY_LABELS[r.quality_rating] || null;
+                const usageLabel = USAGE_LABELS[r.usage_features] || null;
+                const hasNps = r.nps_score !== null && r.nps_score !== undefined;
+                const npsClass = hasNps ? (r.nps_score >= 9 ? 'badge-nps-promoter' : r.nps_score >= 7 ? 'badge-nps-passive' : 'badge-nps-detractor') : '';
+                return `
+                    <div class="response-item">
+                        <div class="response-head">
+                            <div>
+                                <span class="response-email">${esc(r.email)}</span>
+                                <span class="response-date"> · ${date}</span>
+                            </div>
+                            <div>
+                                <span class="badge badge-reason">${esc(reasonLabel)}</span>
+                                ${qualityLabel ? `<span class="badge badge-quality">${esc(qualityLabel)}</span>` : ''}
+                                ${usageLabel ? `<span class="badge badge-usage">${esc(usageLabel)}</span>` : ''}
+                                ${hasNps ? `<span class="badge ${npsClass}">NPS ${r.nps_score}/10</span>` : ''}
+                                <span class="badge ${r.credited ? 'badge-credited' : 'badge-not-credited'}">${r.credited ? '✓ Crédité' : 'Non crédité'}</span>
+                            </div>
+                        </div>
+                        <div class="response-body">
+                            ${r.missing_feature ? `<div class="field-label">Fonctionnalité manquante</div><div>${esc(r.missing_feature)}</div>` : ''}
+                            ${r.comment ? `<div class="field-label">Commentaire</div><div>${esc(r.comment)}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        loadResponses();
+
+        // ===== Éditeur des questions =====
+        let editorLoaded = false;
+        let currentConfig = null;
+
+        function toggleEditor() {
+            const panel = document.getElementById('editorPanel');
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden') && !editorLoaded) {
+                loadConfig();
+            }
+        }
+
+        function renderOptionInputs(containerId, options) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = options.map((opt, i) => `
+                <div class="editor-option-row">
+                    <span class="option-value">${esc(opt.value)}</span>
+                    <input type="text" data-index="${i}" value="${esc(opt.label)}">
+                </div>
+            `).join('');
+        }
+
+        async function loadConfig() {
+            try {
+                const res = await fetch(`${API_BASE}/admin/feedback/config`, {
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur de chargement');
+                currentConfig = data.config;
+                document.getElementById('cfg_q1_label').value = currentConfig.q1_label || '';
+                document.getElementById('cfg_q2_label').value = currentConfig.q2_label || '';
+                document.getElementById('cfg_q3_label').value = currentConfig.q3_label || '';
+                document.getElementById('cfg_q4_label').value = currentConfig.q4_label || '';
+                document.getElementById('cfg_q5_label').value = currentConfig.q5_label || '';
+                document.getElementById('cfg_q6_label').value = currentConfig.q6_label || '';
+                document.getElementById('cfg_email_subject').value = currentConfig.email_subject || '';
+                document.getElementById('cfg_email_paragraph1').value = currentConfig.email_paragraph1 || '';
+                document.getElementById('cfg_email_paragraph2').value = currentConfig.email_paragraph2 || '';
+                renderOptionInputs('cfg_q1_options', currentConfig.q1_options || []);
+                renderOptionInputs('cfg_q2_options', currentConfig.q2_options || []);
+                renderOptionInputs('cfg_q5_options', currentConfig.q5_options || []);
+                editorLoaded = true;
+            } catch (e) {
+                document.getElementById('editorPanel').insertAdjacentHTML('afterbegin', `<div class="empty-state">Erreur : ${esc(e.message)}</div>`);
+            }
+        }
+
+        function collectOptions(containerId, originalOptions) {
+            const inputs = document.querySelectorAll(`#${containerId} input[type="text"]`);
+            return originalOptions.map((opt, i) => ({ value: opt.value, label: inputs[i].value }));
+        }
+
+        async function saveConfig() {
+            const statusEl = document.getElementById('saveStatus');
+            statusEl.textContent = 'Enregistrement...';
+            statusEl.style.color = '#6b7280';
+            try {
+                const payload = {
+                    q1_label: document.getElementById('cfg_q1_label').value,
+                    q1_options: collectOptions('cfg_q1_options', currentConfig.q1_options || []),
+                    q2_label: document.getElementById('cfg_q2_label').value,
+                    q2_options: collectOptions('cfg_q2_options', currentConfig.q2_options || []),
+                    q5_label: document.getElementById('cfg_q5_label').value,
+                    q5_options: collectOptions('cfg_q5_options', currentConfig.q5_options || []),
+                    q6_label: document.getElementById('cfg_q6_label').value,
+                    q3_label: document.getElementById('cfg_q3_label').value,
+                    q4_label: document.getElementById('cfg_q4_label').value,
+                    email_subject: document.getElementById('cfg_email_subject').value,
+                    email_paragraph1: document.getElementById('cfg_email_paragraph1').value,
+                    email_paragraph2: document.getElementById('cfg_email_paragraph2').value
+                };
+                const res = await fetch(`${API_BASE}/admin/feedback/config`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getAdminToken()}` },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur');
+                currentConfig = data.config;
+                statusEl.textContent = '✓ Enregistré';
+                statusEl.style.color = '#16a34a';
+                setTimeout(() => { statusEl.textContent = ''; }, 3000);
+            } catch (e) {
+                statusEl.textContent = 'Erreur : ' + e.message;
+                statusEl.style.color = '#dc2626';
+            }
+        }
+
+        // ===== Envoi de la campagne =====
+        // Action réelle et irréversible (envoie de vrais emails) — confirmation
+        // obligatoire avant chaque déclenchement, via une modal plutôt que confirm()
+        // natif du navigateur, pour rester cohérent avec le design du site.
+        function sendCampaign() {
+            document.getElementById('confirmModal').classList.add('open');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('open');
+        }
+
+        async function confirmSendCampaign() {
+            closeConfirmModal();
+            const btn = document.getElementById('sendCampaignBtn');
+            const statusEl = document.getElementById('campaignStatus');
+            btn.disabled = true;
+            statusEl.textContent = 'Envoi en cours...';
+            statusEl.style.color = '#6b7280';
+
+            try {
+                const res = await fetch(`${API_BASE}/admin/campaigns/feedback-survey`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getAdminToken()}` }
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur');
+                statusEl.textContent = `✓ Campagne déclenchée — ${data.eligible} email(s) en cours d'envoi`;
+                statusEl.style.color = '#16a34a';
+            } catch (e) {
+                statusEl.textContent = 'Erreur : ' + e.message;
+                statusEl.style.color = '#dc2626';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Utilisateurs — Admin SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin/css/mobile-menu.css">
     <link rel="stylesheet" href="admin/css/notifications.css">
     <link rel="stylesheet" href="admin/css/dark-mode.css">
     <style>
@@ -615,36 +614,12 @@
             }
         }
     </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
 </head>
 
 <body>
-    <nav class="admin-navbar">
-        <h1>🔐 Admin Dashboard</h1>
-        <div class="admin-nav-links">
-            <a href="admin-dashboard.html">Dashboard</a>
-            <a href="admin-users.html" class="active">Utilisateurs</a>
-            <a href="admin-testimonials.html">💬 Témoignages</a>
-            <a href="admin-analytics.html">Analytics</a>
-            <a href="admin-support.html">Support</a>
-            <a href="admin-logs.html">Logs</a>
-            <a href="admin-reports.html">📧 Rapports</a>
-            <a href="admin-cms.html">CMS</a>
-            <div class="notifications-container">
-                <button class="notifications-bell">
-                    🔔
-                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
-                </button>
-                <div class="notifications-dropdown" id="notificationsDropdown">
-                    <div class="notifications-header">Notifications</div>
-                    <div id="notificationsList">
-                        <div class="notifications-empty">⏳ Chargement...</div>
-                    </div>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="logout()">Déconnexion</button>
-        </div>
-    </nav>
-
     <div class="container">
         <div class="page-header">
             <h2>👥 Gestion Utilisateurs</h2>
@@ -799,6 +774,7 @@
                         <div class="actions">
                             <button class="btn-sm btn-view" onclick='viewUser("${user.id}", "${user.email}")'>👁️ Voir</button>
                             <button class="btn-sm btn-edit" onclick='editUser("${user.id}", "${tier}")'>✏️ Modifier</button>
+                            ${tier !== 'free' ? `<button class="btn-sm btn-ban" onclick='cancelUserSubscription("${user.id}", "${user.email}", "${tier}")'>💳 Résilier</button>` : ''}
                             <button class="btn-sm btn-ban" onclick='banUser("${user.id}", "${user.email}")'>🚫 Bannir</button>
                         </div>
                     </td>
@@ -917,9 +893,11 @@
 
             const rows = data.cv_analyses.map(analysis => {
                 const date = new Date(analysis.created_at * 1000).toLocaleDateString('fr-FR');
-                const statusBadge = analysis.status === 'completed' ?
-                    '<span class="badge premium">Complété</span>' :
-                    '<span class="badge free">En cours</span>';
+                // Une ligne cv_analyses n'existe qu'une fois l'analyse IA terminée (INSERT
+                // unique, après coup) — il n'y a pas d'état "en cours" possible en base, donc
+                // pas de vrai statut à afficher. On l'affiche toujours comme complété plutôt
+                // que de tester un champ "status" qui n'existe pas dans la table.
+                const statusBadge = '<span class="badge premium">Complété</span>';
 
                 return `
                     <tr>
@@ -1179,6 +1157,55 @@
                 });
         }
 
+        function cancelUserSubscription(id, email, tier) {
+            showModal(
+                '⚠️ Résilier l\'abonnement',
+                `
+                    <p>Vous êtes sur le point de résilier l'abonnement <strong>${tier.toUpperCase()}</strong> de :</p>
+                    <p style="margin-top: 8px;"><strong>${email}</strong></p>
+                    <p style="margin-top: 12px; color: #dc2626;">L'abonnement sera annulé immédiatement chez Stripe (plus aucun prélèvement), le compte repassera en plan gratuit, et un email de confirmation lui sera envoyé automatiquement.</p>
+                `,
+                [
+                    { text: 'Annuler', class: 'btn-cancel', action: closeModal },
+                    { text: 'Résilier l\'abonnement', class: 'btn-danger', action: () => confirmCancelUserSubscription(id, email) }
+                ]
+            );
+        }
+
+        function confirmCancelUserSubscription(id, email) {
+            closeModal();
+
+            fetch(`${API_BASE}/admin/users/${id}/cancel-subscription`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${getAdminToken()}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showModal(
+                            '✅ Abonnement résilié',
+                            `L'abonnement de <strong>${email}</strong> a été résilié et repasse en plan gratuit.<br><br>${data.email_sent ? 'Un email de confirmation lui a été envoyé.' : '⚠️ La résiliation est effective mais l\'email de confirmation n\'a pas pu être envoyé.'}`,
+                            [{ text: 'OK', class: 'btn-confirm', action: () => { closeModal(); loadUsers(currentPage); } }]
+                        );
+                    } else {
+                        showModal(
+                            '❌ Erreur',
+                            `Impossible de résilier l'abonnement : ${data.error}`,
+                            [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                        );
+                    }
+                })
+                .catch(error => {
+                    showModal(
+                        '❌ Erreur',
+                        `Une erreur est survenue: ${error.message}`,
+                        [{ text: 'OK', class: 'btn-cancel', action: closeModal }]
+                    );
+                });
+        }
+
         function showModal(title, body, buttons) {
             document.getElementById('modalHeader').innerHTML = title;
             document.getElementById('modalBody').innerHTML = body;
@@ -1231,9 +1258,7 @@
             initPage();
         }
     </script>
-    <script src="admin/js/mobile-menu.js"></script>
     <script src="admin/js/notifications.js"></script>
-    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>

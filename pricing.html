@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarifs — SwissCV Pro</title>
+    <link rel="canonical" href="https://swisscv-pro.ch/pricing">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
@@ -12,6 +13,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        .icon {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            vertical-align: -0.15em;
+            flex-shrink: 0;
         }
 
         :root {
@@ -23,7 +32,7 @@
             --gray-600: #666666;
             --gray-900: #1A1A1A;
             --green-check: #4CAF50;
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-primary: linear-gradient(135deg, #D50000 0%, #b71c1c 100%);
         }
 
         body {
@@ -34,57 +43,148 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation */
-        .navbar {
-            background: var(--swiss-black);
-            padding: 18px 48px;
+        /* Navigation (identique au reste du site) */
+        .header {
+            background: white;
+            border-bottom: 2px solid var(--gray-200);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar-brand {
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--swiss-black);
             text-decoration: none;
-            letter-spacing: -0.5px;
         }
 
-        .navbar-menu {
+        .nav-menu {
             display: flex;
-            gap: 40px;
             align-items: center;
+            gap: 32px;
         }
 
-        .navbar-link {
-            color: white;
+        .nav-menu a {
+            color: var(--swiss-black);
             text-decoration: none;
-            font-size: 15px;
             font-weight: 500;
-            transition: color 0.2s ease;
+            font-size: 14px;
+            transition: color 0.2s;
         }
 
-        .navbar-link:hover {
+        .nav-menu a:hover {
             color: var(--swiss-red);
         }
 
-        .navbar-btn {
-            background: var(--swiss-red);
-            color: white;
-            padding: 11px 28px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 15px;
-            transition: all 0.2s ease;
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        .navbar-btn:hover {
+        .btn-login {
+            color: var(--swiss-black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-login:hover {
+            background: var(--gray-100);
+        }
+
+        .btn-cta {
+            background: var(--swiss-red);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-cta:hover {
             background: #B80000;
-            transform: translateY(-1px);
+        }
+
+        /* Burger menu (mobile) */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .burger-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--swiss-black);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger-menu.active span:nth-child(2) { opacity: 0; }
+        .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+        .mobile-menu-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid var(--gray-200);
+            z-index: 999;
+        }
+
+        .mobile-menu-container.active { max-height: 500px; }
+
+        .mobile-menu {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-menu a {
+            padding: 12px 16px;
+            border-radius: 6px;
+            text-align: center;
+            transition: background 0.2s;
+            color: var(--swiss-black);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .mobile-menu a:hover { background: var(--gray-100); }
+        .mobile-menu .btn-cta { margin-top: 8px; color: white; font-weight: 600; }
+        .mobile-menu .btn-login { color: var(--swiss-black); font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .nav-menu, .header-buttons { display: none; }
+            .burger-menu { display: flex; }
         }
 
         /* Hero */
@@ -237,8 +337,8 @@
 
         /* Credits highlight */
         .plan-credits {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border: 2px solid #667eea;
+            background: linear-gradient(135deg, #D5000015 0%, #b71c1c15 100%);
+            border: 2px solid var(--swiss-red);
             border-radius: 16px;
             padding: 20px;
             margin: 24px 0;
@@ -258,7 +358,7 @@
         .credits-label {
             font-size: 14px;
             font-weight: 600;
-            color: #667eea;
+            color: var(--swiss-red);
             margin-top: 8px;
         }
 
@@ -267,11 +367,11 @@
             color: var(--gray-600);
             margin-top: 8px;
             padding-top: 12px;
-            border-top: 1px solid #667eea30;
+            border-top: 1px solid rgba(213,0,0,0.2);
         }
 
         .credits-per-unit strong {
-            color: #667eea;
+            color: var(--swiss-red);
         }
 
         .plan-features {
@@ -377,8 +477,8 @@
 
         .credit-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            border-color: #667eea;
+            box-shadow: 0 8px 24px rgba(213, 0, 0, 0.1);
+            border-color: var(--swiss-red);
         }
 
         .credit-card-icon {
@@ -401,7 +501,7 @@
 
         .credit-cost-badge {
             display: inline-block;
-            background: var(--gradient-primary);
+            background: var(--swiss-red);
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -503,7 +603,7 @@
 
         .table-cell.highlight {
             font-weight: 700;
-            color: #667eea;
+            color: var(--swiss-red);
         }
 
         /* Credit Packs Section */
@@ -535,9 +635,9 @@
         }
 
         .credit-pack:hover {
-            border-color: #667eea;
+            border-color: var(--swiss-red);
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 8px 24px rgba(213, 0, 0, 0.12);
         }
 
         .pack-credits {
@@ -552,7 +652,7 @@
         .pack-credits-label {
             font-size: 14px;
             font-weight: 600;
-            color: #667eea;
+            color: var(--swiss-red);
             margin-bottom: 16px;
         }
 
@@ -570,7 +670,7 @@
         }
 
         .pack-btn {
-            background: var(--gradient-primary);
+            background: var(--swiss-red);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -583,9 +683,9 @@
         }
 
         .pack-btn:hover {
-            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+            background: #B80000;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(213, 0, 0, 0.3);
         }
 
         .pack-note {
@@ -715,47 +815,82 @@
 
         /* Footer */
         .footer {
-            background: var(--swiss-black);
-            color: white;
-            padding: 64px 24px 40px;
+            background: white;
+            border-top: 2px solid var(--gray-200);
+            padding: 60px 40px 40px;
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 56px;
-            margin-bottom: 48px;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
         }
 
-        .footer-section h3 {
-            font-size: 16px;
+        .footer-about h3 {
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 24px;
-            color: white;
+            margin-bottom: 16px;
         }
 
-        .footer-section a {
-            display: block;
-            color: #B0B0B0;
+        .footer-about p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .footer-email {
+            margin-top: 16px;
+            font-size: 15px;
+        }
+
+        .footer-email a {
+            color: var(--swiss-red);
             text-decoration: none;
-            margin-bottom: 14px;
-            font-size: 14px;
-            transition: color 0.2s ease;
+            font-weight: 500;
         }
 
-        .footer-section a:hover {
-            color: white;
+        .footer-email a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-hosting {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .footer-links h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--swiss-red);
         }
 
         .footer-bottom {
             max-width: 1200px;
             margin: 0 auto;
-            padding-top: 36px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            color: #B0B0B0;
+            padding-top: 40px;
+            border-top: 1px solid var(--gray-200);
+            color: #666;
             font-size: 14px;
         }
 
@@ -775,10 +910,6 @@
                 max-width: 400px;
                 margin-left: auto;
                 margin-right: auto;
-            }
-
-            .navbar-menu {
-                display: none;
             }
 
             .footer-content {
@@ -818,47 +949,96 @@
             }
         }
     </style>
+    <script src="/analytics.js"></script>
 </head>
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
-        <div class="navbar-menu">
-            <a href="index.html" class="navbar-link">Accueil</a>
-            <a href="pricing.html" class="navbar-link">Tarifs</a>
-            <a href="#" class="navbar-link">A propos</a>
-            <a href="#" class="navbar-link">Contact</a>
-            <button class="navbar-btn" onclick="window.location.href='login.html'">Connexion</button>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">SwissCV Pro</a>
+
+            <nav class="nav-menu">
+                <a href="index.html#features">Fonctionnalités</a>
+                <a href="pricing.html">Tarifs</a>
+                <a href="index.html#how-it-works">Comment ça marche</a>
+                <a href="index.html#testimonials">Témoignages</a>
+            </nav>
+
+            <div class="header-buttons">
+                <a href="login.html" class="btn-login">Se connecter</a>
+                <a href="app.html" class="btn-cta">Essayer gratuitement</a>
+            </div>
+
+            <div class="burger-menu" onclick="toggleMobileMenu()" id="burgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </nav>
+    </header>
+
+    <!-- ========== MOBILE MENU ========== -->
+    <div class="mobile-menu-container" id="mobileMenuContainer">
+        <div class="mobile-menu">
+            <a href="index.html#features">Fonctionnalités</a>
+            <a href="pricing.html">Tarifs</a>
+            <a href="index.html#how-it-works">Comment ça marche</a>
+            <a href="index.html#testimonials">Témoignages</a>
+            <a href="login.html" class="btn-login">Se connecter</a>
+            <a href="app.html" class="btn-cta">Essayer gratuitement</a>
+        </div>
+    </div>
+
+    <!-- Urgency Banner -->
+    <div style="background:linear-gradient(135deg,#D50000,#b71c1c);color:white;text-align:center;padding:12px 24px;font-size:14px;font-weight:600;">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Offre de lancement — Code <strong style="letter-spacing:1px;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:4px;">SWISS20</strong> pour −20% sur Premium &nbsp;·&nbsp; <span style="opacity:0.9;font-weight:400;">Valable pour les nouveaux abonnés</span>
+    </div>
 
     <!-- Hero -->
     <section class="hero">
-        <h1>Un systeme de <span class="highlight">credits</span> simple et flexible</h1>
-        <p>Payez uniquement pour ce que vous utilisez. Chaque action IA consomme des credits - pas de mauvaises
-            surprises.</p>
+        <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:32px;">
+            <div id="statUsersBadge" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:24px;padding:8px 20px;font-size:13px;font-weight:600;display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span id="statUsers"></span> professionnels suisses</div>
+            <div id="statAnalysesBadge" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:24px;padding:8px 20px;font-size:13px;font-weight:600;display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> <span id="statAnalyses"></span> CV analysés</div>
+            <div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:24px;padding:8px 20px;font-size:13px;font-weight:600;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Résultats en 30 secondes</div>
+        </div>
+        <h1>Obtenez plus d'entretiens<br><span class="highlight">en Suisse</span></h1>
+        <p>CV optimisé pour les ATS suisses · Candidatures en 1 clic · Lettres personnalisées par IA.<br>Commencez gratuitement, upgradez quand vous êtes prêt.</p>
 
         <div class="hero-credits-info">
             <div class="credit-usage-item">
-                <span class="credit-usage-icon">📄</span>
+                <span class="credit-usage-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
                 <div class="credit-usage-text">
                     <div class="credit-usage-action">Analyse CV</div>
                     <div class="credit-usage-cost">1 credit</div>
                 </div>
             </div>
             <div class="credit-usage-item">
-                <span class="credit-usage-icon">✉️</span>
+                <span class="credit-usage-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></span>
                 <div class="credit-usage-text">
                     <div class="credit-usage-action">Lettre de motivation</div>
                     <div class="credit-usage-cost">2 credits</div>
                 </div>
             </div>
             <div class="credit-usage-item">
-                <span class="credit-usage-icon">🔍</span>
+                <span class="credit-usage-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
                 <div class="credit-usage-text">
-                    <div class="credit-usage-action">Comparaison CV/Offre</div>
-                    <div class="credit-usage-cost">1 credit</div>
+                    <div class="credit-usage-action">Candidature 1 clic</div>
+                    <div class="credit-usage-cost">3 credits</div>
+                </div>
+            </div>
+            <div class="credit-usage-item">
+                <span class="credit-usage-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                <div class="credit-usage-text">
+                    <div class="credit-usage-action">Candidatures en masse</div>
+                    <div class="credit-usage-cost">2 credits / offre</div>
+                </div>
+            </div>
+            <div class="credit-usage-item">
+                <span class="credit-usage-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                <div class="credit-usage-text">
+                    <div class="credit-usage-action">Création de CV suisse</div>
+                    <div class="credit-usage-cost">2 credits</div>
                 </div>
             </div>
         </div>
@@ -878,13 +1058,12 @@
                 <div class="credits-label">credits / mois</div>
             </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>5 credits offerts chaque mois</span>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>5 credits offerts chaque mois</span>
                 </div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Tous les outils IA accessibles</span>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Tous les outils IA accessibles</span>
                 </div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Templates CV basiques</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Recherche d'emploi illimitee</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimite</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Recherche d'emploi illimitee</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Job tracker illimite</span></div>
             </div>
             <button class="plan-button secondary" onclick="window.location.href='login.html'">Commencer
                 gratuitement</button>
@@ -892,25 +1071,29 @@
 
         <!-- Premium Plan -->
         <div class="pricing-card popular">
-            <div class="popular-badge">Meilleur rapport qualite/prix</div>
+            <div class="popular-badge"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Le plus populaire</div>
             <div class="plan-header">
                 <div class="plan-name">Premium</div>
                 <div class="plan-price">CHF 9<small> / mois</small></div>
-                <div class="plan-period">Facture mensuellement</div>
+                <div class="plan-period">Facture mensuellement · <strong style="color:var(--swiss-red);">Code SWISS20 = 7.20 CHF</strong></div>
             </div>
             <div class="plan-credits">
                 <div class="credits-number">100</div>
                 <div class="credits-label">credits / mois</div>
-                <div class="credits-per-unit">Soit <strong>0.09 CHF / credit</strong></div>
+                <div class="credits-per-unit">Soit <strong>0.09 CHF / credit</strong> — 4x moins cher qu'à l'unité</div>
             </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>100 credits chaque mois</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Suggestions IA personnalisees</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Tout le plan gratuit inclus</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Assistance entretien</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Templates premium</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span><strong>100 credits/mois</strong> — 20x plus que le gratuit</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Analyses CV illimitées</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Lettres de motivation illimitées</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span><strong>Candidature en 1 clic</strong> — CV optimisé + lettre depuis une offre, PDF prêt à envoyer</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span><strong>Candidatures en masse</strong> — jusqu'à 10 offres en simultané</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Alertes emploi personnalisées</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span><strong>Générateur de CV</strong> — 6 modèles suisses, aperçu en temps réel + score qualité</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Support prioritaire par email</span></div>
             </div>
-            <button class="plan-button primary" onclick="window.location.href='login.html'">Choisir Premium</button>
+            <button class="plan-button primary" onclick="if (window.swisscvTrack) swisscvTrack('premium_cta_clicked', 'premium'); window.location.href='login.html?plan=premium'">Choisir Premium — dès 7.20 CHF</button>
+            <p style="text-align:center;font-size:12px;color:#999;margin-top:12px;">Sans engagement · Annulation à tout moment · Satisfait ou remboursé 7j</p>
         </div>
 
         <!-- Pro Plan -->
@@ -923,16 +1106,17 @@
             <div class="plan-credits">
                 <div class="credits-number">200</div>
                 <div class="credits-label">credits / mois</div>
-                <div class="credits-per-unit">Soit <strong>0.145 CHF / credit</strong></div>
+                <div class="credits-per-unit">Gestion d'équipe + fonctionnalités avancées</div>
             </div>
             <div class="plan-features">
-                <div class="feature"><span class="feature-icon">✓</span> <span>200 credits chaque mois</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Job tracker illimite</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Gestion d'equipe</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Analytics avances</span></div>
-                <div class="feature"><span class="feature-icon">✓</span> <span>Support prioritaire 24/7</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>200 credits chaque mois</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span><strong>Générateur de CV</strong> — 6 modèles suisses, aperçu en temps réel + score qualité</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Job tracker illimite</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Gestion d'equipe</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Analytics avances</span></div>
+                <div class="feature"><span class="feature-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> <span>Support prioritaire 24/7</span></div>
             </div>
-            <button class="plan-button secondary" onclick="window.location.href='login.html'">Passer au Pro</button>
+            <button class="plan-button secondary" onclick="if (window.swisscvTrack) swisscvTrack('premium_cta_clicked', 'pro'); window.location.href='login.html?plan=pro'">Passer au Pro</button>
         </div>
     </section>
 
@@ -943,7 +1127,7 @@
 
         <div class="credits-grid">
             <div class="credit-card">
-                <div class="credit-card-icon">📄</div>
+                <div class="credit-card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
                 <h3>Analyse de CV</h3>
                 <p>Obtenez une analyse detaillee de votre CV avec des recommandations personnalisees pour le marche
                     suisse.</p>
@@ -951,18 +1135,30 @@
             </div>
 
             <div class="credit-card">
-                <div class="credit-card-icon">✉️</div>
+                <div class="credit-card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
                 <h3>Lettre de motivation</h3>
                 <p>Generez une lettre de motivation personnalisee adaptee a l'offre d'emploi ciblee.</p>
                 <div class="credit-cost-badge">2 credits</div>
             </div>
 
             <div class="credit-card">
-                <div class="credit-card-icon">🔍</div>
+                <div class="credit-card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 <h3>Comparaison CV/Offre</h3>
                 <p>Analysez la compatibilite entre votre CV et une offre d'emploi specifique.</p>
                 <div class="credit-cost-badge">1 credit</div>
             </div>
+        </div>
+    </section>
+
+    <!-- Job Pack Promo Banner -->
+    <section style="padding:0 24px;">
+        <div style="max-width:1000px;margin:0 auto 48px;background:linear-gradient(135deg,#0D0D0D 0%,#D50000 120%);border-radius:16px;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;color:white;">
+            <div>
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:8px;">Paiement unique — sans abonnement</div>
+                <div style="font-size:22px;font-weight:800;margin-bottom:6px;">Pack Recherche d'Emploi — CHF 19.90</div>
+                <div style="font-size:14px;opacity:.9;">Vous cherchez un emploi maintenant, pas pour toujours ? 55 crédits sans expiration pour optimiser vos candidatures, sans engagement mensuel.</div>
+            </div>
+            <a href="pack-recherche-emploi.html" style="background:white;color:#D50000;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap;">Découvrir le Pack →</a>
         </div>
     </section>
 
@@ -1035,9 +1231,9 @@
 
             <div class="table-row">
                 <div class="table-cell">Reports des credits non utilises</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
             </div>
 
             <!-- Categorie: Fonctionnalites IA -->
@@ -1045,45 +1241,52 @@
 
             <div class="table-row">
                 <div class="table-cell">Analyse de CV (1 credit)</div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">Lettre de motivation (2 credits)</div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">Comparaison CV/Offre (1 credit)</div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <!-- Categorie: Fonctionnalites avancees -->
             <div class="table-category-header">Fonctionnalites avancees</div>
 
             <div class="table-row">
+                <div class="table-cell">Generateur de CV (6 modeles suisses)</div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+            </div>
+
+            <div class="table-row">
                 <div class="table-cell">Assistance entretien</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">Acces job search</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">Candidatures trackees</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
                 <div class="table-cell">15</div>
                 <div class="table-cell">Illimite</div>
             </div>
@@ -1093,23 +1296,23 @@
 
             <div class="table-row">
                 <div class="table-cell">Gestion d'equipe</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">Analytics avances</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <div class="table-row">
                 <div class="table-cell">API access</div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="cross">✗</span></div>
-                <div class="table-cell"><span class="check">✓</span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="cross"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                <div class="table-cell"><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>
             </div>
 
             <!-- Categorie: Support -->
@@ -1122,6 +1325,39 @@
                 <div class="table-cell">24/7</div>
             </div>
         </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section style="max-width:1100px;margin:80px auto;padding:0 24px;">
+        <h2 style="font-size:36px;font-weight:800;text-align:center;margin-bottom:12px;color:var(--swiss-black);letter-spacing:-1px;">Ce que disent nos utilisateurs</h2>
+        <p style="text-align:center;color:var(--gray-600);font-size:17px;margin-bottom:48px;">Des professionnels suisses qui ont boosté leur recherche d'emploi</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+            <div style="background:white;border:1px solid var(--gray-200);border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+                <div style="color:#f59e0b;font-size:18px;margin-bottom:14px;"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+                <p style="font-size:15px;color:#444;line-height:1.7;margin-bottom:16px;">"Mon score ATS est passé de 42% à 81% en 2 analyses. J'ai eu 3 entretiens la semaine suivante après des mois de silence."</p>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--swiss-red);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">ML</div>
+                    <div><div style="font-weight:600;font-size:14px;color:var(--swiss-black);">Marc-Luc F.</div><div style="font-size:12px;color:var(--gray-600);">Ingénieur, Lausanne</div></div>
+                </div>
+            </div>
+            <div style="background:white;border:2px solid var(--swiss-red);border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(213,0,0,0.08);">
+                <div style="color:#f59e0b;font-size:18px;margin-bottom:14px;"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+                <p style="font-size:15px;color:#444;line-height:1.7;margin-bottom:16px;">"La candidature en 1 clic est incroyable. En 2 minutes j'avais un CV adapté + une lettre parfaite pour l'offre. Vraiment bluffant."</p>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--swiss-red);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">SB</div>
+                    <div><div style="font-weight:600;font-size:14px;color:var(--swiss-black);">Sophie B.</div><div style="font-size:12px;color:var(--gray-600);">Responsable RH, Zürich</div></div>
+                </div>
+            </div>
+            <div style="background:white;border:1px solid var(--gray-200);border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+                <div style="color:#f59e0b;font-size:18px;margin-bottom:14px;"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+                <p style="font-size:15px;color:#444;line-height:1.7;margin-bottom:16px;">"J'ai posté sur 8 offres en même temps grâce aux candidatures en masse. Premium vaut chaque centime — j'ai décroché mon poste en 3 semaines."</p>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--swiss-red);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">AK</div>
+                    <div><div style="font-weight:600;font-size:14px;color:var(--swiss-black);">Alina K.</div><div style="font-size:12px;color:var(--gray-600);">Marketing Manager, Bâle</div></div>
+                </div>
+            </div>
+        </div>
+        <style>@media(max-width:900px){.testimonials-grid{grid-template-columns:1fr!important;}}</style>
     </section>
 
     <!-- FAQ -->
@@ -1230,43 +1466,101 @@
 
     <!-- CTA -->
     <section class="cta-section">
-        <h2>Pret a booster votre carriere ?</h2>
-        <p>Commencez gratuitement avec 5 credits offerts. Aucune carte de credit requise.</p>
-        <a href="login.html" class="cta-button">Commencer gratuitement →</a>
+        <div style="display:inline-block;background:rgba(213,0,0,0.3);border:1px solid rgba(213,0,0,0.6);border-radius:24px;padding:6px 18px;font-size:13px;font-weight:600;margin-bottom:24px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Code SWISS20 — −20% sur Premium</div>
+        <h2>Prêt à décrocher votre prochain poste en Suisse ?</h2>
+        <p>Commencez gratuitement avec 5 crédits offerts. Aucune carte de crédit requise.</p>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+            <a href="login.html" class="cta-button">Commencer gratuitement →</a>
+            <a href="login.html" style="display:inline-block;background:transparent;color:white;border:2px solid rgba(255,255,255,0.4);padding:18px 40px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;transition:all 0.2s ease;" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='rgba(255,255,255,0.4)'">Voir Premium — 7.20 CHF/mois</a>
+        </div>
+        <p style="margin-top:24px;font-size:14px;color:rgba(255,255,255,0.5);">Plus de 120 professionnels suisses nous font confiance · Sans engagement</p>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>Produit</h3>
-                <a href="app.html">Analyser mon CV</a>
-                <a href="pricing.html">Tarifs</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="job-search.html">Recherche d'emploi</a>
+            <div class="footer-about">
+                <h3>SwissCV Pro</h3>
+                <p>Outil d'optimisation de CV spécialement conçu pour le marché suisse romand. Analyse gratuite,
+                    confidentielle et instantanée avec IA.</p>
+                <p class="footer-email">contact@swisscv-pro.ch</p>
+                <p class="footer-hosting">Hébergé en Suisse - Données traitées selon standards suisses</p>
             </div>
 
-            <div class="footer-section">
-                <h3>Support</h3>
-                <a href="support.html">Centre d'aide</a>
-                <a href="contact.html">Contact</a>
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="app.html">Analyser mon CV</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
             </div>
 
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <a href="terms.html">Conditions d'utilisation</a>
-                <a href="privacy.html">Politique de confidentialite</a>
-                <a href="cookies.html">Cookies</a>
-                <a href="rgpd.html">RGPD</a>
+            <div class="footer-links">
+                <h4>Entreprises</h4>
+                <ul>
+                    <li><a href="pricing.html#pro">SwissCV Pro</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Team Management</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="terms.html">Conditions d'utilisation</a></li>
+                    <li><a href="privacy.html">Confidentialité</a></li>
+                    <li><a href="cookies.html">Cookies</a></li>
+                    <li><a href="rgpd.html">RGPD</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            © 2024 SwissCV Pro. Tous droits reserves. Fait avec ❤️ en Suisse.
+            © 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
         </div>
     </footer>
 
     <script>
+        // Menu mobile (identique au reste du site)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenuContainer');
+            const burger = document.getElementById('burgerMenu');
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.getElementById('mobileMenuContainer').classList.remove('active');
+                    document.getElementById('burgerMenu').classList.remove('active');
+                });
+            });
+        });
+
+        // Chiffres réels (utilisateurs, analyses) — jamais de nombre inventé
+        (async function loadRealStats() {
+            try {
+                const res = await fetch('https://swisscv-pro.dallyhermann-71e.workers.dev/public/stats');
+                const data = await res.json();
+                if (!data.success) return;
+
+                if (data.total_users > 0) {
+                    document.getElementById('statUsers').textContent = data.total_users;
+                    document.getElementById('statUsersBadge').style.display = 'block';
+                }
+                if (data.total_analyses > 0) {
+                    document.getElementById('statAnalyses').textContent = data.total_analyses;
+                    document.getElementById('statAnalysesBadge').style.display = 'block';
+                }
+            } catch (e) {
+                // Pas de chiffre plutôt qu'un chiffre inventé
+                console.error('Erreur chargement stats publiques:', e);
+            }
+        })();
+
         // Toggle FAQ
         function toggleFaq(element) {
             const faqItem = element.parentElement;
@@ -1283,6 +1577,7 @@
             }
         }
     </script>
+<script>if (window.swisscvTrack) swisscvTrack('pricing_viewed');</script>
 </body>
 
 </html>

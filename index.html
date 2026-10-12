@@ -7,19 +7,14 @@
     <title>SwissCV Pro — Optimisez votre CV pour le marché suisse</title>
     <meta name="description"
         content="Analysez et optimisez votre CV gratuitement selon les standards du marché suisse romand. Score détaillé, lettres de motivation IA, ATS scoring. 2 analyses gratuites.">
+    <link rel="canonical" href="https://swisscv-pro.ch/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-VE7PJZTF8L');
-    </script>
+    <script src="/analytics.js"></script>
 
     <!-- Instant CMS styles from cache to prevent flash of default colors -->
     <script>
@@ -456,63 +451,94 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
 
         .feature-card {
             background: white;
-            padding: 40px;
-            border-radius: 12px;
-            border: 2px solid #E6E6E6;
-            transition: all 0.3s;
+            padding: 32px;
+            border-radius: 10px;
+            border: 1px solid #E6E6E6;
+            transition: all 0.25s;
+            position: relative;
         }
 
         .feature-card:hover {
+            border-color: #ccc;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            transform: translateY(-2px);
+        }
+
+        .feature-card--new {
+            border-color: #ffd6d6;
+            background: #fffafa;
+        }
+
+        .feature-card--new:hover {
             border-color: var(--swiss-red);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: #FFF5F5;
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            background: #F5F5F5;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card--new .feature-icon {
+            background: #FFF0F0;
         }
 
         .feature-icon svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
+            color: #555;
+        }
+
+        .feature-card--new .feature-icon svg {
             color: var(--swiss-red);
         }
 
         .feature-card h3 {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            color: var(--swiss-black);
         }
 
         .feature-card p {
             color: #666;
-            line-height: 1.7;
-            font-size: 15px;
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        .feature-card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
         }
 
         .feature-badge {
             display: inline-block;
-            background: #FFE6E6;
-            color: var(--swiss-red);
-            padding: 4px 12px;
-            border-radius: 12px;
+            background: #F0F0F0;
+            color: #555;
+            padding: 3px 10px;
+            border-radius: 20px;
             font-size: 11px;
-            font-weight: 700;
-            margin-top: 12px;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .feature-badge--new {
+            background: #FFE8E8;
+            color: var(--swiss-red);
         }
 
         /* ========== TESTIMONIALS ========== */
@@ -585,7 +611,191 @@
             color: #666;
         }
 
-        /* ========== CTA FINAL ========== */
+        .testimonials-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .btn-leave-review {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: white;
+            border: 2px solid var(--swiss-red);
+            color: var(--swiss-red);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-leave-review:hover {
+            background: var(--swiss-red);
+            color: white;
+        }
+
+        /* ========== MODAL TÉMOIGNAGE ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 520px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+        }
+
+        .modal-close:hover { color: #333; }
+
+        .modal-box h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-box > p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .star-rating input { display: none; }
+
+        .star-rating label {
+            font-size: 36px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #FFD700;
+        }
+
+        .modal-field {
+            margin-bottom: 16px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .modal-field input,
+        .modal-field textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #E6E6E6;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: vertical;
+        }
+
+        .modal-field input:focus,
+        .modal-field textarea:focus {
+            border-color: var(--swiss-red);
+        }
+
+        .modal-fields-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .modal-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .modal-submit:hover { background: #b71c1c; }
+        .modal-submit:disabled { background: #ccc; cursor: not-allowed; }
+
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .modal-success .success-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        .modal-success h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-success p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .testimonials-empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 15px;
+        }
+
+        /* ========== CTA SECTION ========== */
         .cta-section {
             padding: 80px 40px;
             background: var(--swiss-black);
@@ -714,7 +924,7 @@
             }
 
             .features-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .testimonials-grid {
@@ -750,6 +960,10 @@
 
             .trust-item span {
                 font-size: 12px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
             }
 
             .cms-media-wrapper {
@@ -823,13 +1037,13 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Optimisez votre CV pour le <span>marché suisse</span></h1>
-                <p>Analyse détaillée, scoring ATS, lettres de motivation générées par IA. Tout ce qu'il faut pour décrocher un entretien en Suisse romande.</p>
+                <h1>Votre prochain emploi en <span>Suisse romande</span></h1>
+                <p>Analysez votre CV, trouvez des offres adaptées à votre profil et postulez — le tout depuis une seule plateforme.</p>
                 <div class="hero-cta-group">
-                    <a href="app.html" class="hero-cta-primary">Commencer gratuitement</a>
-                    <a href="login.html" class="hero-cta-secondary">Se connecter</a>
+                    <a href="app.html" class="hero-cta-primary">Analyser mon CV gratuitement</a>
+                    <a href="pricing.html" class="hero-cta-secondary">Voir les tarifs</a>
                 </div>
-                <p class="hero-note">5 crédits offerts à l'inscription, sans engagement</p>
+                <p class="hero-note">5 crédits offerts à l'inscription · Sans engagement · Sans carte bancaire</p>
             </div>
         </div>
     </section>
@@ -843,7 +1057,7 @@
             </div>
             <div class="trust-item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                <span>12'000+ CV analysés</span>
+                <span id="trustBarAnalysesCount">CV analysés avec IA</span>
             </div>
             <div class="trust-item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -861,7 +1075,7 @@
         <div class="steps-content">
             <div class="section-header">
                 <h2>Comment ça marche</h2>
-                <p>Trois étapes pour un CV qui fait la différence</p>
+                <p>Trois étapes pour passer de votre CV à votre prochain entretien</p>
             </div>
 
             <div class="steps-grid">
@@ -869,24 +1083,24 @@
                     <div class="step-number">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     </div>
-                    <h3>1. Uploadez votre CV</h3>
-                    <p>Importez votre CV au format PDF. L'analyse démarre instantanément.</p>
+                    <h3>1. Importez votre CV</h3>
+                    <p>Déposez votre CV en PDF. Notre outil l'analyse en quelques secondes selon les critères du marché suisse.</p>
                 </div>
 
                 <div class="step-item">
                     <div class="step-number">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     </div>
-                    <h3>2. Recevez votre analyse</h3>
-                    <p>Score détaillé, compatibilité ATS, points forts et axes d'amélioration.</p>
+                    <h3>2. Trouvez les bonnes offres</h3>
+                    <p>Recherchez des offres correspondant à votre profil. Comparez votre CV avec chaque poste avant de postuler.</p>
                 </div>
 
                 <div class="step-item">
                     <div class="step-number">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     </div>
-                    <h3>3. Optimisez et postulez</h3>
-                    <p>Appliquez les recommandations et générez vos lettres de motivation.</p>
+                    <h3>3. Postulez en quelques clics</h3>
+                    <p>Générez votre CV adapté et votre lettre de motivation pour chaque offre. Téléchargez le PDF et envoyez.</p>
                 </div>
             </div>
         </div>
@@ -896,8 +1110,8 @@
     <section class="features" id="features">
         <div class="features-content">
             <div class="section-header">
-                <h2>Des outils pensés pour le marché suisse</h2>
-                <p>Tout ce dont vous avez besoin pour décrocher votre prochain poste</p>
+                <h2>Toutes les fonctionnalités dont vous avez besoin</h2>
+                <p>De l'analyse CV à la candidature complète, en passant par la recherche d'emploi</p>
             </div>
 
             <div class="features-grid">
@@ -921,9 +1135,11 @@
                     <div class="feature-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     </div>
-                    <h3>Lettres de motivation IA</h3>
-                    <p>Génération automatique de lettres professionnelles adaptées au marché suisse romand. Basées sur votre CV et l'offre d'emploi visée, prêtes à envoyer.</p>
-                    <span class="feature-badge">Premium</span>
+                    <h3>Lettres de motivation</h3>
+                    <p>Générez une lettre professionnelle adaptée à chaque offre d'emploi, basée sur votre CV et le poste visé. Prête à envoyer en quelques secondes.</p>
+                    <div class="feature-card-tags">
+                        <span class="feature-badge">Premium</span>
+                    </div>
                 </div>
 
                 <div class="feature-card">
@@ -931,7 +1147,31 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
                     </div>
                     <h3>Suivi de candidatures</h3>
-                    <p>Organisez toutes vos candidatures de manière claire. Suivez l'état de chaque postulation, les relances à faire et ne perdez plus aucune opportunité.</p>
+                    <p>Un tableau kanban pour organiser toutes vos postulations, suivre les relances à faire et visualiser l'avancement de votre recherche d'emploi.</p>
+                </div>
+
+                <div class="feature-card feature-card--new">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="12" y1="12" x2="12" y2="18"/></svg>
+                    </div>
+                    <h3>Candidature en 1 clic</h3>
+                    <p>Depuis une offre d'emploi, générez en quelques secondes un CV adapté au poste, une lettre de motivation personnalisée et un score de compatibilité. Téléchargement PDF inclus.</p>
+                    <div class="feature-card-tags">
+                        <span class="feature-badge">Premium</span>
+                        <span class="feature-badge feature-badge--new">Nouveau</span>
+                    </div>
+                </div>
+
+                <div class="feature-card feature-card--new">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><polyline points="7 8 12 13 17 8"/></svg>
+                    </div>
+                    <h3>Candidatures en masse</h3>
+                    <p>Sélectionnez jusqu'à 10 offres et générez toutes vos candidatures en parallèle — CV et lettre adaptés pour chaque poste. Ce qui prenait des heures ne prend plus que quelques minutes.</p>
+                    <div class="feature-card-tags">
+                        <span class="feature-badge">Premium</span>
+                        <span class="feature-badge feature-badge--new">Nouveau</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -945,54 +1185,78 @@
                 <p>Des professionnels satisfaits en Suisse romande</p>
             </div>
 
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="testimonial-text">"SwissCV Pro m'a aidé à identifier les faiblesses de mon CV que je ne
-                        voyais pas. Grâce aux suggestions spécifiques au marché suisse, j'ai décroché 3 entretiens en 2
-                        semaines."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">MC</div>
-                        <div class="testimonial-info">
-                            <h4>Marie C.</h4>
-                            <p>Développeuse Full-Stack, Lausanne</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <!-- Chargés dynamiquement depuis l'API -->
+            </div>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="testimonial-text">"En tant que responsable RH, j'utilise la version Pro pour former nos
-                        candidats. La génération de lettres de motivation fait gagner un temps précieux."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">PD</div>
-                        <div class="testimonial-info">
-                            <h4>Philippe D.</h4>
-                            <p>RH Manager, Genève</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-                    <p class="testimonial-text">"Mon CV n'était pas aux standards suisses après mes études. SwissCV Pro m'a guidé étape par étape. Le score est passé de 62 à 89."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">SB</div>
-                        <div class="testimonial-info">
-                            <h4>Sarah B.</h4>
-                            <p>Business Analyst, Neuchâtel</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="testimonials-cta">
+                <button class="btn-leave-review" onclick="document.getElementById('reviewModal').classList.add('open')">
+                    &#9733; Laisser un avis
+                </button>
             </div>
         </div>
     </section>
 
+    <!-- ========== MODAL TÉMOIGNAGE ========== -->
+    <div class="modal-overlay" id="reviewModal" onclick="if(event.target===this)closeReviewModal()">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+
+            <div id="reviewForm">
+                <h3>Partagez votre expérience</h3>
+                <p>Votre avis aide d'autres professionnels à trouver le bon outil.</p>
+
+                <div class="star-rating">
+                    <input type="radio" name="rating" id="s5" value="5"><label for="s5">&#9733;</label>
+                    <input type="radio" name="rating" id="s4" value="4"><label for="s4">&#9733;</label>
+                    <input type="radio" name="rating" id="s3" value="3"><label for="s3">&#9733;</label>
+                    <input type="radio" name="rating" id="s2" value="2"><label for="s2">&#9733;</label>
+                    <input type="radio" name="rating" id="s1" value="1"><label for="s1">&#9733;</label>
+                </div>
+
+                <div class="modal-field">
+                    <label>Votre témoignage *</label>
+                    <textarea id="reviewText" rows="4" placeholder="Décrivez votre expérience avec SwissCV Pro..."></textarea>
+                </div>
+
+                <div class="modal-fields-row">
+                    <div class="modal-field" style="margin-bottom:0">
+                        <label>Prénom *</label>
+                        <input type="text" id="reviewFirstName" placeholder="Marie">
+                    </div>
+                    <div class="modal-field" style="margin-bottom:0">
+                        <label>Nom *</label>
+                        <input type="text" id="reviewLastName" placeholder="C.">
+                    </div>
+                </div>
+
+                <div class="modal-fields-row">
+                    <div class="modal-field" style="margin-bottom:0">
+                        <label>Poste</label>
+                        <input type="text" id="reviewJobTitle" placeholder="Développeur Full-Stack">
+                    </div>
+                    <div class="modal-field" style="margin-bottom:0">
+                        <label>Ville</label>
+                        <input type="text" id="reviewCity" placeholder="Lausanne">
+                    </div>
+                </div>
+
+                <button class="modal-submit" id="reviewSubmitBtn" onclick="submitReview()">Envoyer mon avis</button>
+            </div>
+
+            <div class="modal-success" id="reviewSuccess">
+                <div class="success-icon">&#127881;</div>
+                <h4>Merci pour votre avis !</h4>
+                <p>Votre témoignage a été soumis et sera visible après validation par notre équipe.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ========== CTA FINAL ========== -->
     <section class="cta-section">
-        <h2>Prêt à optimiser votre CV ?</h2>
-        <p>5 crédits offerts à l'inscription, sans engagement</p>
-        <a href="app.html" class="hero-cta-primary">Commencer l'analyse gratuite</a>
+        <h2>Prêt à décrocher votre prochain emploi ?</h2>
+        <p>5 crédits gratuits à l'inscription. Sans engagement.</p>
+        <a href="app.html" class="hero-cta-primary">Commencer gratuitement</a>
     </section>
 
     <!-- ========== FOOTER ========== -->
@@ -1040,51 +1304,6 @@
             © 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
         </div>
     </footer>
-
-    <!-- ========== JAVASCRIPT ========== -->
-    <script>
-        // Helper: Escape HTML to prevent XSS
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Load and display testimonials from API
-        async function loadTestimonials() {
-            try {
-                const response = await fetch('https://swisscv-pro.dallyhermann-71e.workers.dev/testimonials?limit=6');
-                const result = await response.json();
-
-                if (result.success && result.testimonials.length > 0) {
-                    const container = document.querySelector('.testimonials-grid');
-
-                    result.testimonials.slice(0, 3).forEach(t => {
-                        const card = document.createElement('div');
-                        card.className = 'testimonial-card';
-                        const stars = '&#9733;'.repeat(t.rating || 5);
-                        card.innerHTML = `
-                            <div class="testimonial-rating">${stars}</div>
-                            <p class="testimonial-text">"${escapeHtml(t.text)}"</p>
-                            <div class="testimonial-author">
-                                <div class="testimonial-avatar">${escapeHtml(t.firstName.charAt(0))}${escapeHtml(t.lastName.charAt(0))}</div>
-                                <div class="testimonial-info">
-                                    <h4>${escapeHtml(t.firstName)} ${escapeHtml(t.lastName.charAt(0))}.</h4>
-                                    <p>${escapeHtml(t.jobTitle)}, ${escapeHtml(t.city)}</p>
-                                </div>
-                            </div>
-                        `;
-                        container.appendChild(card);
-                    });
-                }
-            } catch (error) {
-                console.error('Erreur chargement témoignages:', error);
-            }
-        }
-
-        // Load testimonials on page load
-        document.addEventListener('DOMContentLoaded', loadTestimonials);
-    </script>
 
     <!-- ========== BURGER MENU SCRIPT ========== -->
     <script>
@@ -1161,6 +1380,22 @@
 
             } catch (error) {
                 console.log('CMS content not available, using defaults');
+            } finally {
+                applyRealAnalysesCount();
+            }
+        }
+
+        // Chiffre réel d'analyses CV — remplace toujours le texte de la trust bar
+        // (statique ou CMS) par le vrai total, jamais un nombre inventé.
+        async function applyRealAnalysesCount() {
+            try {
+                const res = await fetch('https://swisscv-pro.dallyhermann-71e.workers.dev/public/stats');
+                const data = await res.json();
+                if (!data.success || !data.total_analyses) return;
+                const el = document.getElementById('trustBarAnalysesCount');
+                if (el) el.textContent = data.total_analyses + ' CV analysés';
+            } catch (e) {
+                console.error('Erreur chargement stats publiques:', e);
             }
         }
 
@@ -1497,6 +1732,110 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadCMSContent);
+    </script>
+
+    <script>
+        const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+        function decodeHtml(str) {
+            var txt = document.createElement('textarea');
+            txt.innerHTML = str;
+            return txt.value;
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        async function loadTestimonials() {
+            try {
+                const res = await fetch(API_BASE + '/testimonials');
+                if (!res.ok) return;
+                const data = await res.json();
+                const grid = document.getElementById('testimonialsGrid');
+                grid.innerHTML = '';
+                if (!data.testimonials || data.testimonials.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;padding:40px 0;">Soyez le premier à laisser un avis !</p>';
+                    return;
+                }
+                grid.innerHTML = '';
+                data.testimonials.forEach(function(t) {
+                    const stars = '&#9733;'.repeat(t.rating) + (t.rating < 5 ? '&#9734;'.repeat(5 - t.rating) : '');
+                    const initials = ((t.firstName ? t.firstName[0] : '') + (t.lastName ? t.lastName[0] : '')).toUpperCase();
+                    const name = escapeHtml(decodeHtml(t.firstName) + ' ' + (t.lastName || ''));
+                    const meta = escapeHtml([decodeHtml(t.jobTitle || ''), decodeHtml(t.city || '')].filter(Boolean).join(', '));
+                    const text = escapeHtml(decodeHtml(t.text));
+                    var card = document.createElement('div');
+                    card.className = 'testimonial-card';
+                    card.innerHTML = '<div class="testimonial-rating">' + stars + '</div>'
+                        + '<p class="testimonial-text">&#8220;' + text + '&#8221;</p>'
+                        + '<div class="testimonial-author">'
+                        + '<div class="testimonial-avatar">' + initials + '</div>'
+                        + '<div class="testimonial-info"><h4>' + name + '</h4><p>' + meta + '</p></div>'
+                        + '</div>';
+                    grid.appendChild(card);
+                });
+            } catch(e) {}
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('open');
+            document.getElementById('reviewForm').style.display = 'block';
+            document.getElementById('reviewSuccess').style.display = 'none';
+            document.getElementById('reviewText').value = '';
+            document.getElementById('reviewFirstName').value = '';
+            document.getElementById('reviewLastName').value = '';
+            document.getElementById('reviewJobTitle').value = '';
+            document.getElementById('reviewCity').value = '';
+            document.querySelectorAll('input[name="rating"]').forEach(function(r){ r.checked = false; });
+        }
+
+        async function submitReview() {
+            const ratingInput = document.querySelector('input[name="rating"]:checked');
+            const text = document.getElementById('reviewText').value.trim();
+            const firstName = document.getElementById('reviewFirstName').value.trim();
+            const lastName = document.getElementById('reviewLastName').value.trim();
+            const jobTitle = document.getElementById('reviewJobTitle').value.trim();
+            const city = document.getElementById('reviewCity').value.trim();
+
+            if (!ratingInput) { alert('Veuillez sélectionner une note.'); return; }
+            if (!text || text.length < 20) { alert('Votre témoignage doit contenir au moins 20 caractères.'); return; }
+            if (!firstName || firstName.length < 2) { alert('Veuillez indiquer votre prénom (min. 2 caractères).'); return; }
+            if (!lastName || lastName.length < 2) { alert('Veuillez indiquer votre nom (min. 2 caractères).'); return; }
+
+            const btn = document.getElementById('reviewSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Envoi en cours...';
+
+            try {
+                const res = await fetch(API_BASE + '/testimonials', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        rating: parseInt(ratingInput.value),
+                        text: text,
+                        firstName: firstName,
+                        lastName: lastName,
+                        jobTitle: jobTitle,
+                        city: city
+                    })
+                });
+                if (res.ok) {
+                    document.getElementById('reviewForm').style.display = 'none';
+                    document.getElementById('reviewSuccess').style.display = 'block';
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    btn.disabled = false;
+                    btn.textContent = 'Envoyer mon avis';
+                }
+            } catch(e) {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                btn.disabled = false;
+                btn.textContent = 'Envoyer mon avis';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTestimonials);
     </script>
 </body>
 

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Créatif — Lausanne Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body { font-family: 'Montserrat', sans-serif; background: #E5E0F0; color: #1A1A1A; }
+.page-wrapper { display: flex; justify-content: center; padding: 30px 0 60px; }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.18);
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 37%;
+  background: linear-gradient(160deg, #5B21B6 0%, #7C3AED 50%, #8B5CF6 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.sidebar-hero {
+  padding: 44px 28px 32px;
+  position: relative;
+  text-align: center;
+}
+.sidebar-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+.photo-ring {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 3px solid rgba(255,255,255,0.35);
+  margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.photo-ring span { font-size: 42px; opacity: 0.3; }
+
+.hero-name {
+  font-size: 20px; font-weight: 800; color: white;
+  line-height: 1.2; margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.hero-role {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: rgba(255,255,255,0.65);
+}
+
+/* Sidebar body */
+.sidebar-sections { padding: 26px 26px 36px; display: flex; flex-direction: column; gap: 22px; }
+
+.s-sec-title {
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 10px;
+}
+
+/* Contact */
+.contact-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 7px; }
+.contact-icon-box {
+  width: 24px; height: 24px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0;
+}
+.contact-text { font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+/* Info */
+.info-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 10.5px; color: rgba(255,255,255,0.75);
+  margin: 0 4px 5px 0;
+}
+
+/* Skills hexagonal feel */
+.skill-row { margin-bottom: 9px; }
+.skill-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.skill-name { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 500; }
+.skill-n { font-size: 10px; color: rgba(255,255,255,0.4); }
+.skill-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+.skill-fill { height: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.9)); border-radius: 2px; }
+
+/* Languages */
+.lang-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+.lang-info { }
+.lang-name { font-size: 11.5px; color: rgba(255,255,255,0.85); font-weight: 500; }
+.lang-lv { font-size: 9.5px; color: rgba(255,255,255,0.45); }
+.lang-pip { display: flex; gap: 3px; }
+.pip { width: 9px; height: 9px; border-radius: 2px; background: rgba(255,255,255,0.15); }
+.pip.on { background: white; }
+
+/* MAIN */
+.main { flex: 1; padding: 44px 36px 44px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+.main-header {}
+.main-header h1 {
+  font-size: 30px; font-weight: 800; color: #1A0533;
+  line-height: 1.1; letter-spacing: -0.5px;
+}
+.main-header .m-role { font-size: 12px; color: #7C3AED; font-weight: 600; margin-top: 5px; }
+.main-header .m-sub { font-size: 11px; color: #AAA; margin-top: 2px; }
+
+/* Divider */
+.divider { height: 2px; background: linear-gradient(90deg, #7C3AED, transparent); border-radius: 1px; }
+
+/* Section */
+.m-sec { display: flex; flex-direction: column; gap: 10px; }
+.m-sec-title {
+  font-size: 9px; font-weight: 800; letter-spacing: 2.5px;
+  text-transform: uppercase; color: #7C3AED; margin-bottom: 2px;
+}
+
+.profile-p { font-size: 11.5px; line-height: 1.82; color: #555; }
+
+/* Project cards */
+.exp { margin-bottom: 14px; }
+.exp-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 4px; }
+.exp-poste { font-size: 12.5px; font-weight: 700; color: #1A0533; }
+.exp-date {
+  font-size: 10px; font-weight: 600;
+  color: #7C3AED;
+  background: rgba(124,58,237,0.08);
+  padding: 2px 8px; border-radius: 8px;
+}
+.exp-co { font-size: 11.5px; color: #999; font-weight: 500; margin: 2px 0 5px; }
+.exp-co strong { color: #7C3AED; }
+.exp-ul { list-style: none; }
+.exp-ul li {
+  font-size: 11px; color: #555; line-height: 1.6;
+  padding-left: 12px; position: relative; margin-bottom: 3px;
+}
+.exp-ul li::before {
+  content: '◆'; position: absolute; left: 0;
+  color: #C4B5FD; font-size: 6px; top: 5px;
+}
+
+/* Formation */
+.edu { margin-bottom: 10px; }
+.edu-deg { font-size: 12px; font-weight: 700; color: #1A0533; }
+.edu-sch { font-size: 11.5px; color: #7C3AED; font-weight: 500; }
+.edu-yr { font-size: 10.5px; color: #AAA; }
+
+/* Tags */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 10px; font-weight: 600;
+  color: #7C3AED; background: rgba(124,58,237,0.07);
+  border: 1px solid rgba(124,58,237,0.2);
+  padding: 3px 10px; border-radius: 12px;
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+.dl-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: #5B21B6;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 9999;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 2px 12px rgba(91,33,182,0.5);
+}
+.dl-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35); color: white; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.65); margin-left: 12px; }
+.dl-btn { background: white; color: #5B21B6; border: none; padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+.dl-btn:hover { background: #F0EBFF; }
+@media (max-width: 600px) { .dl-bar { padding: 0 12px; } .dl-title { display: none; } .dl-btn { padding: 7px 14px; font-size: 12px; } }
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div style="display:flex;align-items:center">
+    <span class="dl-badge">Créatif</span>
+    <span class="dl-title">Lausanne Studio — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-hero">
+      <div class="photo-ring"><span>👤</span></div>
+      <div class="hero-name">Léa<br>Dumont</div>
+      <div class="hero-role">UX / UI Designer</div>
+    </div>
+
+    <div class="sidebar-sections">
+
+      <div>
+        <div class="s-sec-title">Contact</div>
+        <div class="contact-row"><div class="contact-icon-box">📍</div><div class="contact-text">Av. de la Gare 12<br>1003 Lausanne</div></div>
+        <div class="contact-row"><div class="contact-icon-box">📞</div><div class="contact-text">+41 21 456 78 90</div></div>
+        <div class="contact-row"><div class="contact-icon-box">✉️</div><div class="contact-text">lea.dumont@email.ch</div></div>
+        <div class="contact-row"><div class="contact-icon-box">🌐</div><div class="contact-text">leadumont.design</div></div>
+        <div class="contact-row"><div class="contact-icon-box">💼</div><div class="contact-text">behance.net/leadumont</div></div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Informations</div>
+        <div>
+          <div class="info-pill">🇨🇭 Suisse</div>
+          <div class="info-pill">📅 12.08.1993</div>
+          <div class="info-pill">🪪 Permis B</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Maîtrise des outils</div>
+        <div class="skill-row"><div class="skill-top"><span class="skill-name">Figma</span></div><div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div></div>
+        <div class="skill-row"><div class="skill-top"><span class="skill-name">Adobe XD / PS / AI</span></div><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+        <div class="skill-row"><div class="skill-top"><span class="skill-name">Framer / Webflow</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+        <div class="skill-row"><div class="skill-top"><span class="skill-name">HTML / CSS</span></div><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div></div>
+        <div class="skill-row"><div class="skill-top"><span class="skill-name">Prototypage avancé</span></div><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Langues</div>
+        <div class="lang-row"><div class="lang-info"><div class="lang-name">Français</div><div class="lang-lv">Langue maternelle</div></div><div class="lang-pip"><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div></div></div>
+        <div class="lang-row"><div class="lang-info"><div class="lang-name">Anglais</div><div class="lang-lv">Courant (C1)</div></div><div class="lang-pip"><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div><div class="pip"></div></div></div>
+        <div class="lang-row"><div class="lang-info"><div class="lang-name">Allemand</div><div class="lang-lv">Intermédiaire (B1)</div></div><div class="lang-pip"><div class="pip on"></div><div class="pip on"></div><div class="pip on"></div><div class="pip"></div><div class="pip"></div></div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-header">
+      <h1>Léa<br>Dumont</h1>
+      <div class="m-role">UX/UI Designer · Design System Specialist</div>
+      <div class="m-sub">Lausanne, Suisse · Disponible dès le 01.06.2026</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Profil</div>
+      <p class="profile-p">Designer UX/UI avec 7 ans d'expérience dans la conception de produits numériques à fort trafic. Passionnée par la création d'interfaces intuitives et accessibles, du concept au prototype haute fidélité. Expertise avérée en design systems et en conduite de recherches utilisateurs quantitatives et qualitatives.</p>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Expérience</div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Lead UX Designer</span><span class="exp-date">02.2022 – Présent</span></div>
+        <div class="exp-co"><strong>Swisscom Digital Lab</strong> — Lausanne</div>
+        <ul class="exp-ul">
+          <li>Refonte du design system Swisscom (450+ composants, 12 équipes produit)</li>
+          <li>Direction de la recherche utilisateur : 60 entretiens, 4 tests d'utilisabilité</li>
+          <li>Amélioration du NPS produit de +22 points suite au redesign de l'app mobile</li>
+          <li>Encadrement de 2 designers juniors et collaboration avec 8 PMs</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">UX/UI Designer Senior</span><span class="exp-date">05.2019 – 01.2022</span></div>
+        <div class="exp-co"><strong>Digitec Galaxus AG</strong> — Zurich</div>
+        <ul class="exp-ul">
+          <li>Conception de l'expérience checkout (CHF 2.4Mrd de GMV annuel)</li>
+          <li>Mise en place du processus de design critique hebdomadaire</li>
+          <li>Optimisation du tunnel de conversion : +14% sur desktop, +22% mobile</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">UX Designer</span><span class="exp-date">07.2017 – 04.2019</span></div>
+        <div class="exp-co"><strong>Agence Helios Studio</strong> — Lausanne</div>
+        <ul class="exp-ul">
+          <li>Conception d'interfaces pour 12 clients (e-commerce, fintech, santé)</li>
+          <li>Animation d'ateliers de co-design et de sprints Design Thinking</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Formation</div>
+      <div class="edu">
+        <div class="edu-deg">Bachelor en Design d'Interaction</div>
+        <div class="edu-sch">ECAL — École Cantonale d'Art de Lausanne</div>
+        <div class="edu-yr">2014 – 2017</div>
+      </div>
+      <div class="edu">
+        <div class="edu-deg">Certificat UX Research — Nielsen Norman Group</div>
+        <div class="edu-sch">Formation continue</div>
+        <div class="edu-yr">2020</div>
+      </div>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Spécialités</div>
+      <div class="tag-cloud">
+        <span class="tag">Design System</span><span class="tag">UX Research</span>
+        <span class="tag">Accessibilité WCAG</span><span class="tag">A/B Testing</span>
+        <span class="tag">Design Sprint</span><span class="tag">Mobile First</span>
+        <span class="tag">Motion Design</span><span class="tag">Atomic Design</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

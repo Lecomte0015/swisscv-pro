@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Politique de cookies - SwissCV Pro</title>
+    <link rel="canonical" href="https://swisscv-pro.ch/cookies">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -103,6 +104,7 @@
             .footer-content { grid-template-columns: 1fr; gap: 40px; }
         }
     </style>
+    <script src="/analytics.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -140,18 +142,34 @@
                     <td>Donnees de session</td>
                 </tr>
                 <tr>
-                    <td>cookie_consent</td>
+                    <td>swisscv_consent</td>
                     <td><span class="cookie-type cookie-functional">Fonctionnel</span></td>
-                    <td>1 an</td>
-                    <td>Memorise vos preferences cookies</td>
+                    <td>Jusqu'à modification</td>
+                    <td>Mémorise votre choix (accepter / refuser) pour la mesure d'audience</td>
+                </tr>
+                <tr>
+                    <td>swisscv_attribution</td>
+                    <td><span class="cookie-type cookie-analytics">Analytique</span></td>
+                    <td>Jusqu'à l'inscription</td>
+                    <td>Mémorise, sur votre appareil, d'où vous venez (campagne ou site d'origine) pour savoir quels canaux fonctionnent. Aucune donnée personnelle ; supprimé si vous refusez.</td>
+                </tr>
+                <tr>
+                    <td>swisscv_anon</td>
+                    <td><span class="cookie-type cookie-analytics">Analytique</span></td>
+                    <td>Jusqu'à suppression</td>
+                    <td>Identifiant aléatoire pour compter les visiteurs sans les identifier. Créé uniquement si vous acceptez.</td>
                 </tr>
                 <tr>
                     <td>_ga, _gid</td>
                     <td><span class="cookie-type cookie-analytics">Analytique</span></td>
                     <td>2 ans / 24h</td>
-                    <td>Google Analytics - statistiques</td>
+                    <td>Google Analytics — statistiques d'audience. Chargé <strong>uniquement après votre accord</strong>.</td>
                 </tr>
             </table>
+
+            <p style="margin-top:16px;">
+                <button type="button" onclick="if (window.swisscvConsent) swisscvConsent.reopen();" style="background:#D50000;color:#fff;border:0;border-radius:8px;padding:10px 18px;font-weight:700;cursor:pointer;">Modifier mon choix</button>
+            </p>
 
             <h2>3. Cookies essentiels</h2>
             <p>Ces cookies sont necessaires au fonctionnement du site. Ils permettent notamment :</p>

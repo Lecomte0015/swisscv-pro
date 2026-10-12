@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+# Pages privées / compte utilisateur — pas d'intérêt pour la recherche
+Disallow: /admin-
+Disallow: /dashboard.html
+Disallow: /login.html
+Disallow: /confirm.html
+Disallow: /forgot-password.html
+Disallow: /reset-password.html
+Disallow: /onboarding.html
+Disallow: /settings.html
+Disallow: /profile.html
+Disallow: /credits.html
+Disallow: /api-keys.html
+Disallow: /favorites.html
+Disallow: /job-tracker.html
+Disallow: /team.html
+Disallow: /team-dashboard.html
+Disallow: /apply.html
+Disallow: /bulk-apply.html
+Disallow: /success.html
+Disallow: /feedback.html
+
+# Pages qui redirigent immédiatement vers la connexion — rien à indexer
+Disallow: /job-search.html
+Disallow: /cover-letter.html
+
+# Contenu dupliqué avec la page d'accueil
+Disallow: /accueil/
+
+Sitemap: https://swisscv-pro.ch/sitemap.xml
+Disallow: /unsubscribe

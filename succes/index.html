@@ -8,20 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7PJZTF8L"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-VE7PJZTF8L');
-      
-      // Track conversion
-      gtag('event', 'purchase', {
-        'transaction_id': new Date().getTime(),
-        'value': 9.00,
-        'currency': 'CHF'
-      });
-    </script>
+    <script src="/analytics.js"></script>
     <style>
         * {
             margin: 0;
@@ -179,8 +166,8 @@
 <body>
     <div class="success-container">
         <div class="success-icon">🎉</div>
-        <h1>Bienvenue chez SwissCV Pro Premium !</h1>
-        <p>Votre paiement a été effectué avec succès. Vous avez maintenant accès à toutes les fonctionnalités Premium.</p>
+        <h1 id="successTitle">Paiement reçu — activation en cours…</h1>
+        <p id="successText">Nous attendons la confirmation de Stripe : cela ne prend que quelques secondes.</p>
         
         <div class="info-box">
             <h3>✨ Ce qui est maintenant débloqué :</h3>
@@ -207,15 +194,35 @@
     </div>
 
     <script>
-        // ✅ CORRECTION : Enregistrer le statut Premium dans localStorage immédiatement
-        localStorage.setItem('swisscv_premium', 'true');
-        
-        // Optionnel : Track premium conversion
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'premium_activated', {
-                'event_category': 'conversion'
-            });
-        }
+        // Cette page n'accorde aucun droit : l'abonnement est activé uniquement par la confirmation de Stripe (webhook signé).
+        // On interroge le serveur jusqu'à voir le plan passer Premium/Pro, sans jamais se fier à l'arrivée sur cette URL.
+        (async function () {
+            var API = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+            var title = document.getElementById('successTitle');
+            var text = document.getElementById('successText');
+            var token = null;
+            try { token = localStorage.getItem('swisscv_token'); } catch (e) { token = null; }
+            if (!token) {
+                title.textContent = 'Connectez-vous pour voir votre abonnement';
+                text.textContent = 'Si votre paiement a abouti, votre plan sera actif dès votre connexion.';
+                return;
+            }
+            for (var i = 0; i < 20; i++) {
+                try {
+                    var res = await fetch(API + '/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+                    var data = await res.json();
+                    if (data && data.success && data.user && (data.user.tier === 'premium' || data.user.tier === 'pro')) {
+                        try { localStorage.setItem('swisscv_user', JSON.stringify(Object.assign({}, JSON.parse(localStorage.getItem('swisscv_user') || '{}'), data.user))); } catch (e) { /* ignore */ }
+                        title.textContent = 'Bienvenue chez SwissCV Pro ' + (data.user.tier === 'pro' ? 'Pro' : 'Premium') + ' !';
+                        text.textContent = 'Votre paiement est confirmé et votre abonnement est actif.';
+                        return;
+                    }
+                } catch (e) { /* on réessaie */ }
+                await new Promise(function (r) { setTimeout(r, 3000); });
+            }
+            title.textContent = 'Paiement en cours de confirmation';
+            text.textContent = 'Stripe n\'a pas encore confirmé votre paiement. Votre abonnement s\'activera automatiquement ; vous recevrez un email. Sans changement d\'ici quelques minutes, contactez le support.';
+        })();
     </script>
 </body>
 </html>

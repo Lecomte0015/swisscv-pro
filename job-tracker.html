@@ -8,7 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="public/js/modal-system.js?v=20260831a"></script>
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -406,6 +408,8 @@
     </style>
     <link rel="stylesheet" href="public/css/user-menu.css">
     <link rel="stylesheet" href="public/css/credits.css">
+    <script src="sync-user.js"></script>
+    <script src="/analytics.js"></script>
 </head>
 
 <body>
@@ -766,39 +770,39 @@
             <!-- Menu Outils CV (Tous les plans) -->
             <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    🎯 Outils CV <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
 
             <a href="job-search.html" class="navbar-link">Offres</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
 
 
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    📊 Suivi <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris <span id="favoritesBadge"
                             style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
                     <a href="job-tracker.html" class="dropdown-item active">Tracker</a>
                 </div>
             </div>
 
             <!-- Lien Team (Pro uniquement) -->
-            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team</a>
 
             <!-- Menu Utilisateur Dropdown -->
             
             <!-- Credit Balance Display -->
             <div class="credits-display" title="Voir mes crédits">
-                <span class="credits-icon">💳</span>
+                <span class="credits-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                 <span class="credits-balance" id="creditsBalance">--</span>
                 <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
             </div>
@@ -815,29 +819,29 @@
                     <div class="user-menu-divider"></div>
 
                     <a href="profile.html" class="user-menu-item">
-                        <span class="menu-icon">👤</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                         <span>Mon Profil</span>
                     </a>
 
                     <a href="support.html" class="user-menu-item">
-                        <span class="menu-icon">💬</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
                         <span>Support</span>
                     </a>
 
                     <a href="credits.html" class="user-menu-item">
-                        <span class="menu-icon">💳</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                         <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
-                        <span class="menu-icon">⚙️</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                         <span>Paramètres</span>
                     </a>
 
                     <div class="user-menu-divider"></div>
 
                     <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
-                        <span class="menu-icon">🚪</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                         <span>Déconnexion</span>
                     </a>
                 </div>
@@ -985,41 +989,41 @@
 
 
         <div class="tracker-header">
-            <h1>📋 Job Tracker</h1>
+            <h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Job Tracker</h1>
             <p style="color: #666; margin-top: 8px;">Gérez vos candidatures par glisser-déposer</p>
 
             <!-- Bouton Ajouter + Filtres + Toggle Vue -->
             <div class="tracker-controls" style="margin-top: 20px;">
                 <!-- Ligne 1: Bouton Ajouter (pleine largeur sur mobile) -->
                 <button onclick="openAddApplicationModal()" class="btn-add-application">
-                    ➕ Ajouter une candidature
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter une candidature
                 </button>
 
                 <!-- Ligne 2: Recherche + Filtre statut -->
                 <div class="filters-row">
-                    <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="search-input">
+                    <input type="text" id="searchInput" placeholder="Rechercher..." class="search-input">
                     <select id="filterStatus" onchange="applyFilters()" class="filter-select">
                         <option value="">Tous les statuts</option>
-                        <option value="a_consulter">📋 À Consulter</option>
-                        <option value="interesse">⭐ Intéressé</option>
-                        <option value="postule">📧 Postulé</option>
-                        <option value="entretien">🎯 Entretien</option>
-                        <option value="offre">🎉 Offre</option>
-                        <option value="refuse">❌ Refusé</option>
+                        <option value="a_consulter">À Consulter</option>
+                        <option value="interesse">Intéressé</option>
+                        <option value="postule">Postulé</option>
+                        <option value="entretien">Entretien</option>
+                        <option value="offre">Offre</option>
+                        <option value="refuse">Refusé</option>
                     </select>
                 </div>
 
                 <!-- Ligne 3: Bouton Effacer + Toggle Vue -->
                 <div class="actions-row">
                     <button onclick="clearFilters()" class="btn-clear">
-                        ❌ Effacer
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Effacer
                     </button>
                     <div class="view-toggle">
                         <button id="viewKanban" onclick="switchView('kanban')" class="view-btn active">
-                            📋 Kanban
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Kanban
                         </button>
                         <button id="viewList" onclick="switchView('list')" class="view-btn">
-                            📊 Liste
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Liste
                         </button>
                     </div>
                 </div>
@@ -1215,11 +1219,11 @@
             <!-- GRAPHIQUES DASHBOARD -->
             <div class="dashboard-charts">
                 <div class="chart-card">
-                    <h3>📊 Répartition par statut</h3>
+                    <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Répartition par statut</h3>
                     <canvas id="statusChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>📈 Tendance 7 jours</h3>
+                    <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Tendance 7 jours</h3>
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
@@ -1252,7 +1256,7 @@
         <div class="kanban-board" id="kanbanBoard" style="display: none;">
             <div class="kanban-column a_consulter" data-status="a_consulter">
                 <div class="column-header">
-                    <span class="column-title">📋 À Consulter</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> À Consulter</span>
                     <span class="column-count" id="count-a_consulter">0</span>
                 </div>
                 <div class="column-content" id="column-a_consulter"></div>
@@ -1260,7 +1264,7 @@
 
             <div class="kanban-column interesse" data-status="interesse">
                 <div class="column-header">
-                    <span class="column-title">⭐ Intéressé</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Intéressé</span>
                     <span class="column-count" id="count-interesse">0</span>
                 </div>
                 <div class="column-content" id="column-interesse"></div>
@@ -1268,7 +1272,7 @@
 
             <div class="kanban-column postule" data-status="postule">
                 <div class="column-header">
-                    <span class="column-title">📧 Postulé</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Postulé</span>
                     <span class="column-count" id="count-postule">0</span>
                 </div>
                 <!-- The following lines are likely part of a JavaScript template for job cards,
@@ -1285,7 +1289,7 @@
 
             <div class="kanban-column entretien" data-status="entretien">
                 <div class="column-header">
-                    <span class="column-title">🎯 Entretien</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</span>
                     <span class="column-count" id="count-entretien">0</span>
                 </div>
                 <div class="column-content" id="column-entretien"></div>
@@ -1293,7 +1297,7 @@
 
             <div class="kanban-column offre" data-status="offre">
                 <div class="column-header">
-                    <span class="column-title">🎉 Offre</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l6.5-2.2c.6 1.3 2 2.2 3.5 2.2 2.2 0 4-1.8 4-4 0-1.5-.9-2.9-2.2-3.5L16 8l6-2-2 6-6.5 2.2"/><path d="M22 2L2 9l7 3 3 7z"/></svg> Offre</span>
                     <span class="column-count" id="count-offre">0</span>
                 </div>
                 <div class="column-content" id="column-offre"></div>
@@ -1301,7 +1305,7 @@
 
             <div class="kanban-column refuse" data-status="refuse">
                 <div class="column-header">
-                    <span class="column-title">❌ Refusé</span>
+                    <span class="column-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Refusé</span>
                     <span class="column-count" id="count-refuse">0</span>
                 </div>
                 <div class="column-content" id="column-refuse"></div>
@@ -1340,7 +1344,7 @@
             style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
             <div style="background: white; border-radius: 16px; max-width: 600px; width: 90%; padding: 32px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h2 style="font-size: 24px; font-weight: 700;">➕ Nouvelle Candidature</h2>
+                    <h2 style="font-size: 24px; font-weight: 700;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Nouvelle Candidature</h2>
                     <button onclick="closeAddApplicationModal()"
                         style="background: transparent; border: none; font-size: 28px; cursor: pointer; color: #999;">×</button>
                 </div>
@@ -1368,9 +1372,9 @@
                             initial</label>
                         <select id="initialStatus"
                             style="width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 6px; font-size: 14px; cursor: pointer;">
-                            <option value="a_consulter">📋 À Consulter</option>
-                            <option value="interesse">⭐ Intéressé</option>
-                            <option value="postule">📧 Postulé</option>
+                            <option value="a_consulter">À Consulter</option>
+                            <option value="interesse">Intéressé</option>
+                            <option value="postule">Postulé</option>
                         </select>
                     </div>
                     <div style="display: flex; gap: 12px; justify-content: flex-end;">
@@ -1390,7 +1394,7 @@
             <div
                 style="background: white; border-radius: 16px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 20px; font-weight: 700;">📅 Timeline</h2>
+                    <h2 style="font-size: 20px; font-weight: 700;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Timeline</h2>
                     <button onclick="closeTimelineModal()"
                         style="background: transparent; border: none; font-size: 24px; cursor: pointer;">×</button>
                 </div>
@@ -1403,7 +1407,7 @@
             style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
             <div style="background: white; border-radius: 16px; max-width: 600px; width: 90%; padding: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 20px; font-weight: 700;">📝 Ajouter une note</h2>
+                    <h2 style="font-size: 20px; font-weight: 700;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Ajouter une note</h2>
                     <button onclick="closeNotesModal()"
                         style="background: transparent; border: none; font-size: 24px; cursor: pointer;">×</button>
                 </div>
@@ -1449,7 +1453,7 @@
         </div>
     </div>
 
-    <script src="public/js/auth.js"></script>
+    <script src="public/js/auth.js?v=20260821a"></script>
     <script>
         let applications = [];
         let draggedItem = null;
@@ -1463,7 +1467,7 @@
 
             // Charger les stats et candidatures
             await loadStats();
-            await loadTrackedJobs();
+            await loadKanban();
         })();
 
         // Charger les statistiques
@@ -1582,62 +1586,6 @@
             });
         }
 
-        // Charger les jobs trackés
-        async function loadTrackedJobs() {
-            const loading = document.getElementById('loading');
-            const kanbanBoard = document.getElementById('kanbanBoard');
-            const emptyState = document.getElementById('emptyState');
-
-            loading.style.display = 'block';
-            kanbanBoard.style.display = 'none';
-            emptyState.style.display = 'none';
-
-            try {
-                const response = await authenticatedFetch('/job-tracker/kanban', {
-                    method: 'GET'
-                });
-
-                if (!response) return;
-
-                const data = await response.json();
-
-                if (data.success) {
-                    applications = data.jobs || [];
-
-                    if (applications.length === 0) {
-                        loading.style.display = 'none';
-                        emptyState.style.display = 'block';
-                    } else {
-                        // Organiser les jobs par statut
-                        const kanban = {
-                            a_consulter: [],
-                            interesse: [],
-                            postule: [],
-                            entretien: [],
-                            offre: [],
-                            refuse: []
-                        };
-
-                        applications.forEach(job => {
-                            const status = job.status || 'a_consulter';
-                            if (kanban[status]) {
-                                kanban[status].push(job);
-                            }
-                        });
-
-                        displayKanban(kanban);
-                        updateStats(kanban);
-                        loading.style.display = 'none';
-                        kanbanBoard.style.display = 'grid';
-                    }
-                } else {
-                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
-                }
-            } catch (error) {
-                console.error('Erreur chargement:', error);
-                alert('Erreur de chargement');
-            }
-        }
 
         // Afficher le Kanban
         function displayKanban(kanbanData) {
@@ -1708,13 +1656,13 @@
                 <div class="job-item-title">${title}</div>
                 <div class="job-item-company">${company}</div>
                 ${matchBadge}
-                <div class="job-item-date">📅 ${date}</div>
+                <div class="job-item-date"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${date}</div>
                 <div style="display: flex; gap: 8px; margin-top: 12px; font-size: 11px;">
-                    <button onclick="openTimeline('${job.id}', event)" style="flex: 1; padding: 6px; background: #E3F2FD; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Timeline">📅</button>
-                    <button onclick="openNotes('${job.id}', event)" style="flex: 1; padding: 6px; background: #FFF3E0; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Notes">📝</button>
+                    <button onclick="openTimeline('${job.id}', event)" style="flex: 1; padding: 6px; background: #E3F2FD; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Timeline"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+                    <button onclick="openNotes('${job.id}', event)" style="flex: 1; padding: 6px; background: #FFF3E0; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Notes"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>
                     <button onclick="openReminder('${job.id}', event)" style="flex: 1; padding: 6px; background: #F3E5F5; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;" title="Rappel">⏰</button>
                 </div>
-                <button class="job-item-delete" onclick="deleteJob('${job.id}', event)" title="Supprimer">🗑️</button>
+                <button class="job-item-delete" onclick="deleteJob('${job.id}', event)" title="Supprimer"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             `;
 
             // Events drag
@@ -1763,10 +1711,10 @@
                 // Retirer l'effet visuel
                 column.style.backgroundColor = '';
 
-                console.log('🎯 Drop event triggered!', { draggedItem, status });
+                console.log(' Drop event triggered!', { draggedItem, status });
 
                 if (!draggedItem) {
-                    console.error('❌ No draggedItem!');
+                    console.error(' No draggedItem!');
                     return;
                 }
 
@@ -1774,7 +1722,7 @@
                 const applicationId = draggedItem.dataset.id;
                 const newStatus = status;
 
-                console.log('📝 Updating status:', { applicationId, newStatus });
+                console.log(' Updating status:', { applicationId, newStatus });
 
                 await updateJobStatus(applicationId, newStatus);
             });
@@ -1797,19 +1745,20 @@
 
                 if (data.success) {
                     // Recharger le Kanban
-                    await loadTrackedJobs();
+                    await loadKanban();
                 } else {
-                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
+                    console.error('Debug data:', data);
+                    await showError(data.error || 'Erreur inconnue');
                 }
             } catch (error) {
                 console.error('Erreur update:', error);
-                alert('Erreur de mise à jour');
+                await showError('Erreur de mise à jour du statut');
             }
         }
 
         // Mettre à jour les stats
         function updateStats(kanbanData) {
-            const total = applications.length;
+            const total = allApplications.length;
             const postule = (kanbanData.postule || []).length;
             const entretien = (kanbanData.entretien || []).length;
             const offre = (kanbanData.offre || []).length;
@@ -1822,11 +1771,14 @@
 
         // Supprimer une candidature
         async function deleteJob(jobId, event) {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
 
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cette candidature ?')) {
-                return;
-            }
+            const confirmed = await showConfirm(
+                'Cette candidature sera définitivement supprimée de votre suivi.',
+                'Supprimer la candidature',
+                true // danger
+            );
+            if (!confirmed) return;
 
             try {
                 const response = await authenticatedFetch(`/applications/${jobId}`, {
@@ -1838,14 +1790,16 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    // Recharger le tracker
-                    await loadTrackedJobs();
+                    // Recharger le tracker (Kanban ou Liste selon la vue active)
+                    await loadKanban();
+                    await showSuccess('Candidature supprimée avec succès', 'Succès !', false);
                 } else {
-                    console.log('Debug data:', data); alert('Erreur: ' + (data.error || 'Erreur inconnue'));
+                    console.error('Debug data:', data);
+                    await showError(data.error || 'Impossible de supprimer la candidature');
                 }
             } catch (error) {
                 console.error('Erreur suppression:', error);
-                alert('Erreur lors de la suppression');
+                await showError('Erreur lors de la suppression');
             }
         }
 
@@ -1886,7 +1840,7 @@
                 }
             } catch (error) {
                 console.error('Erreur timeline:', error);
-                alert('Erreur chargement timeline');
+                await showError('Erreur lors du chargement de la timeline');
             }
         }
 
@@ -1924,7 +1878,7 @@
         async function saveNote() {
             const text = document.getElementById('noteText').value.trim();
             if (!text) {
-                alert('Veuillez entrer une note');
+                await showError('Veuillez entrer une note');
                 return;
             }
 
@@ -1939,12 +1893,14 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    alert('✅ Note ajoutée');
                     closeNotesModal();
+                    await showSuccess('Note ajoutée', 'Succès !', false);
+                } else {
+                    await showError(data.error || 'Impossible d\'ajouter la note');
                 }
             } catch (error) {
                 console.error('Erreur sauvegarde note:', error);
-                alert('Erreur sauvegarde note');
+                await showError('Erreur lors de la sauvegarde de la note');
             }
         }
 
@@ -1976,12 +1932,14 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    alert('✅ Rappel défini');
                     closeReminderModal();
+                    await showSuccess('Rappel défini', 'Succès !', false);
+                } else {
+                    await showError(data.error || 'Impossible de définir le rappel');
                 }
             } catch (error) {
                 console.error('Erreur sauvegarde rappel:', error);
-                alert('Erreur sauvegarde rappel');
+                await showError('Erreur lors de la sauvegarde du rappel');
             }
         }
 
@@ -2021,15 +1979,15 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    alert('✅ Candidature ajoutée');
                     closeAddApplicationModal();
-                    loadKanban(); // Recharger
+                    await loadKanban(); // Recharger
+                    await showSuccess('Candidature ajoutée avec succès', 'Succès !', false);
                 } else {
-                    alert('❌ Erreur: ' + (result.error || 'Impossible d\'ajouter'));
+                    await showError(result.error || 'Impossible d\'ajouter la candidature');
                 }
             } catch (error) {
                 console.error('Erreur ajout candidature:', error);
-                alert('❌ Erreur lors de l\'ajout');
+                await showError('Erreur lors de l\'ajout de la candidature');
             }
         }
 
@@ -2039,7 +1997,7 @@
             const status = document.getElementById('filterStatus').value;
 
             console.log('�� applyFilters - search:', search, 'status:', status);
-            console.log('🔍 allApplications avant filtre:', allApplications.length, allApplications);
+            console.log(' allApplications avant filtre:', allApplications.length, allApplications);
 
             let filtered = [...allApplications];
 
@@ -2056,7 +2014,7 @@
                 filtered = filtered.filter(app => app.status === status);
             }
 
-            console.log('🔍 filtered après filtrage:', filtered.length, filtered);
+            console.log(' filtered après filtrage:', filtered.length, filtered);
 
             // Afficher selon la vue
             if (currentView === 'kanban') {
@@ -2066,7 +2024,7 @@
                     interesse: [],
                     postule: [],
                     entretien: [],
-                    offre_recue: [],
+                    offre: [],
                     refuse: []
                 };
                 
@@ -2076,7 +2034,7 @@
                     }
                 });
                 
-                console.log('🔍 groupedByStatus:', groupedByStatus);
+                console.log(' groupedByStatus:', groupedByStatus);
                 displayKanban(groupedByStatus);
             } else {
                 displayList(filtered);
@@ -2097,7 +2055,7 @@
 
         // Toggle Vue Kanban/Liste
         function switchView(view) {
-            console.log("🔵 switchView appelée, view:", view, "allApplications:", allApplications);
+            console.log(" switchView appelée, view:", view, "allApplications:", allApplications);
             currentView = view;
 
             const kanbanBtn = document.getElementById('viewKanban');
@@ -2130,7 +2088,7 @@
 
         // Afficher Vue Liste
         function displayList(applications) {
-            console.log("🔵 displayList appelée, applications:", applications);
+            console.log(" displayList appelée, applications:", applications);
             const tbody = document.getElementById('listViewBody');
 
             if (!applications || applications.length === 0) {
@@ -2140,12 +2098,12 @@
 
             tbody.innerHTML = applications.map(app => {
                 const statusLabels = {
-                    'a_consulter': '📋 À Consulter',
-                    'interesse': '⭐ Intéressé',
-                    'postule': '📧 Postulé',
-                    'entretien': '🎯 Entretien',
-                    'offre': '🎉 Offre',
-                    'refuse': '❌ Refusé'
+                    'a_consulter': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> À Consulter',
+                    'interesse': '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Intéressé',
+                    'postule': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Postulé',
+                    'entretien': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien',
+                    'offre': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l6.5-2.2c.6 1.3 2 2.2 3.5 2.2 2.2 0 4-1.8 4-4 0-1.5-.9-2.9-2.2-3.5L16 8l6-2-2 6-6.5 2.2"/><path d="M22 2L2 9l7 3 3 7z"/></svg> Offre',
+                    'refuse': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Refusé'
                 };
 
                 const statusColors = {
@@ -2172,13 +2130,13 @@
                         <td style="padding: 16px;">
                             <div style="display: flex; gap: 8px;">
                                 <button onclick="openNotes('${app.id}', event)" title="Notes"
-                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📝</button>
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>
                                 <button onclick="openTimeline('${app.id}', event)" title="Timeline"
-                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">📅</button>
+                                    style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
                                 <button onclick="openReminder('${app.id}', event)" title="Rappel"
                                     style="background: #F5F5F5; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">⏰</button>
-                                <button onclick="deleteApplication('${app.id}')" title="Supprimer"
-                                    style="background: #FFEBEE; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">🗑️</button>
+                                <button onclick="deleteJob('${app.id}', event)" title="Supprimer"
+                                    style="background: #FFEBEE; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                             </div>
                         </td>
                     </tr>
@@ -2189,37 +2147,63 @@
         // Charger les données du Kanban
         let kanbanData = null;
         async function loadKanban() {
-            console.log("🔵 loadKanban APPELÉE");
+            const loading = document.getElementById('loading');
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const listView = document.getElementById('listView');
+            const emptyState = document.getElementById('emptyState');
+
+            if (loading) loading.style.display = 'block';
+            if (emptyState) emptyState.style.display = 'none';
+
             try {
-                console.log("🔵 Appel API /job-tracker/kanban");
                 const response = await authenticatedFetch('/job-tracker/kanban');
+                if (!response) return;
                 const data = await response.json();
-                console.log("🔵 Réponse API:", data);
 
                 if (data.success && data.jobs) {
-                    console.log("🔵 data.jobs:", data.jobs);
-                    // Stocker les données originales pour le Kanban
-                    kanbanData = data.jobs;
-                    // Aplatir pour la liste
-                    allApplications = Object.values(data.jobs).flat();
-                    console.log("✅ allApplications rempli:", allApplications.length, "éléments");
-            console.log("🔵 Premier élément:", allApplications[0]);
-                    // Afficher selon la vue actuelle
-                    if (currentView === 'kanban') {
-                        displayKanban(data);
+                    // L'API renvoie une liste plate — on la regroupe par statut pour le Kanban
+                    allApplications = Array.isArray(data.jobs) ? data.jobs : Object.values(data.jobs).flat();
+
+                    const grouped = { a_consulter: [], interesse: [], postule: [], entretien: [], offre: [], refuse: [] };
+                    allApplications.forEach(function (job) {
+                        const status = job.status || 'a_consulter';
+                        if (grouped[status]) {
+                            grouped[status].push(job);
+                        } else {
+                            grouped.a_consulter.push(job);
+                        }
+                    });
+                    kanbanData = grouped;
+                    updateStats(grouped);
+
+                    if (loading) loading.style.display = 'none';
+
+                    if (allApplications.length === 0) {
+                        if (emptyState) emptyState.style.display = 'block';
+                        if (kanbanBoard) kanbanBoard.style.display = 'none';
+                        if (listView) listView.style.display = 'none';
+                    } else if (currentView === 'kanban') {
+                        if (kanbanBoard) kanbanBoard.style.display = 'grid';
+                        if (listView) listView.style.display = 'none';
+                        displayKanban(grouped);
                     } else {
+                        if (kanbanBoard) kanbanBoard.style.display = 'none';
+                        if (listView) listView.style.display = 'block';
                         displayList(allApplications);
                     }
                 } else {
-                    console.error("❌ data.success ou data.kanban manquant");
+                    if (loading) loading.style.display = 'none';
+                    console.error('data.success ou data.jobs manquant');
                 }
             } catch (error) {
-                console.error('❌ Erreur loadKanban:', error);
+                if (loading) loading.style.display = 'none';
+                console.error('Erreur loadKanban:', error);
+                await showError('Impossible de charger vos candidatures. Réessayez.');
             }
         }
     
         // Exposer les fonctions globalement pour les onclick HTML
-        console.log("✅ FONCTIONS EXPOSÉES - Version:", new Date().toISOString());
+        console.log(" FONCTIONS EXPOSÉES - Version:", new Date().toISOString());
         window.switchView = switchView;
         window.clearFilters = clearFilters;
         window.openAddApplicationModal = openAddApplicationModal;
@@ -2237,17 +2221,12 @@
         window.toggleDropdown = toggleDropdown;
         window.logout = logout;
 
-        // Charger les données au chargement de la page
-        document.addEventListener("DOMContentLoaded", function() {
-            loadKanban();
-        });
-
 
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js?v=1766451961"></script>
-    <script src="public/js/favorites-badge.js"></script>
-    <script src="public/js/credits.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
+    <script src="public/js/favorites-badge.js?v=20260821a"></script>
+    <script src="public/js/credits.js?v=20260821a"></script>
 </body>
 
 </html>

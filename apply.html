@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générer ma candidature — SwissCV Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="public/css/user-menu.css">
+  <link rel="stylesheet" href="public/css/credits.css">
+  <!-- PDF.js pour extraction + aperçu visuel du CV, JSZip pour extraction DOCX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style id="applyPageStyles">
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
+    :root {
+      --swiss-red: #D50000;
+      --swiss-black: #0D0D0D;
+      --swiss-white: #FFFFFF;
+      --swiss-gray: #E6E6E6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #F8F9FA; color: var(--swiss-black); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* ===== NAVBAR (identique app.html) ===== */
+    .navbar {
+      background: white;
+      border-bottom: 2px solid #E0E0E0;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 10000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .navbar-brand { font-size: 20px; font-weight: 800; color: var(--swiss-black); text-decoration: none; }
+    .navbar-menu { display: flex; align-items: center; gap: 12px; }
+    .navbar-link {
+      padding: 8px 16px;
+      background: #F5F5F5;
+      border-radius: 6px;
+      color: var(--swiss-black);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .navbar-link:hover { background: #E0E0E0; }
+    .navbar-link.active { background: var(--swiss-red); color: white; }
+    .navbar-burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 8px; }
+    .navbar-burger span { width: 25px; height: 3px; background: var(--swiss-black); border-radius: 2px; transition: all 0.3s; }
+    .navbar-burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .navbar-burger.active span:nth-child(2) { opacity: 0; }
+    .navbar-burger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+    .navbar-dropdown { position: relative; display: inline-block; }
+    .dropdown-toggle {
+      background: none; border: none; color: var(--swiss-black);
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+      padding: 8px 16px; border-radius: 6px; transition: background 0.2s;
+    }
+    .dropdown-toggle:hover { background: #E0E0E0; }
+    .dropdown-toggle .arrow { font-size: 10px; transition: transform 0.3s; }
+    .navbar-dropdown:hover .arrow { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 0;
+      background: white; border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      min-width: 180px; padding: 8px 0; margin-top: 4px;
+      opacity: 0; visibility: hidden; transform: translateY(-4px);
+      transition: all 0.2s; z-index: 1000;
+    }
+    .navbar-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-item {
+      display: block; padding: 10px 16px;
+      color: var(--swiss-black); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+    }
+    .dropdown-item:hover { background: #F5F5F5; }
+
+    @media (max-width: 1024px) {
+      .navbar { padding: 12px 20px; }
+      .navbar-burger { display: flex; }
+      .navbar-menu {
+        position: fixed; top: 62px; left: 0; right: 0;
+        background: white; flex-direction: column; align-items: stretch; gap: 0;
+        max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-bottom: 2px solid #E0E0E0; z-index: 9999;
+      }
+      .navbar-menu.active { max-height: 600px; }
+      .navbar-link { width: 100%; text-align: center; margin-bottom: 8px; display: block; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; display: none; background: #F5F5F5; }
+      .navbar-dropdown.active .dropdown-menu { display: block; }
+      .dropdown-item { padding: 12px 20px; border-left: 3px solid var(--swiss-red); }
+    }
+
+    /* ===== PAGE ===== */
+    .page-wrapper { padding-top: 80px; }
+
+    .page-hero {
+      background: var(--swiss-black);
+      color: white;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(213,0,0,0.25);
+      border: 1px solid rgba(213,0,0,0.4);
+      color: #ff8080;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+    .page-hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+    .page-hero p { font-size: 15px; color: #9ca3af; max-width: 480px; margin: 0 auto; }
+    .credits-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      padding: 5px 14px; border-radius: 20px; font-size: 13px; margin-top: 12px; color: #d1d5db;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ===== FORM CARDS ===== */
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid #E6E6E6;
+    }
+    .form-card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #F0F0F0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .step-badge {
+      width: 28px; height: 28px;
+      background: var(--swiss-red); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .form-card-header h2 { font-size: 15px; font-weight: 700; color: var(--swiss-black); }
+    .form-card-body { padding: 24px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #374151; }
+    .form-group input, .form-group textarea {
+      padding: 10px 14px;
+      border: 2px solid #E6E6E6;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+      resize: vertical;
+      color: var(--swiss-black);
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--swiss-red);
+    }
+    .form-group textarea { min-height: 120px; }
+    .form-group textarea.tall { min-height: 180px; }
+    .char-count { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 4px; }
+
+    /* ===== UPLOAD & APERÇU DU CV (remplace le textarea toujours visible) ===== */
+    .cv-dropzone { border: 2px dashed #E6E6E6; border-radius: 10px; padding: 32px 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
+    .cv-dropzone:hover, .cv-dropzone.dragover { border-color: var(--swiss-red); background: #FFF8F8; }
+    .cv-dropzone svg { width: 32px; height: 32px; color: #9ca3af; margin-bottom: 8px; }
+    .cv-dropzone-text { font-size: 14px; font-weight: 600; color: var(--swiss-black); margin-bottom: 4px; }
+    .cv-dropzone-sub { font-size: 12px; color: #9ca3af; }
+    .cv-prefill-notice { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 8px; font-size: 13px; color: #3730a3; flex-wrap: wrap; }
+    .cv-prefill-notice a { color: #4338ca; font-weight: 700; text-decoration: none; cursor: pointer; white-space: nowrap; }
+    .cv-preview-card { border: 2px solid var(--swiss-red); border-radius: 10px; overflow: hidden; position: relative; }
+    .cv-preview-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #F9FAFB; border-bottom: 1px solid #E6E6E6; gap: 10px; }
+    .cv-preview-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .cv-preview-info-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .cv-preview-info-text span:first-child { font-size: 13px; font-weight: 600; color: var(--swiss-black); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cv-preview-date { font-size: 11px; color: #9ca3af; }
+    .cv-preview-check { width: 22px; height: 22px; border-radius: 50%; background: var(--swiss-black); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cv-preview-check svg { width: 13px; height: 13px; }
+    .btn-change-cv { background: white; border: 1.5px solid var(--swiss-red); color: var(--swiss-red); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: inherit; flex-shrink: 0; }
+    .btn-change-cv:hover { background: #FFF8F8; }
+    /* Rendu du PDF nous-mêmes sur un <canvas> (pdf.js) plutôt qu'un <iframe> pointant vers
+       le PDF — un iframe affiche le lecteur PDF natif du navigateur avec toute sa barre
+       d'outils (zoom, rotation, impression...), ce qui charge l'interface. Le canvas donne
+       un aperçu propre, sans barre d'outils, à la manière d'Indeed. */
+    .cv-preview-canvas-wrap { max-height: 480px; overflow-y: auto; padding: 14px; background: #F3F4F6; text-align: center; }
+    .cv-preview-canvas-wrap canvas { max-width: 100%; height: auto; box-shadow: 0 1px 6px rgba(0,0,0,.18); margin-bottom: 10px; border-radius: 2px; }
+    .cv-preview-generic { padding: 32px 20px; text-align: center; color: #6b7280; font-size: 13px; }
+    .cv-preview-generic svg { width: 36px; height: 36px; margin-bottom: 8px; color: #9ca3af; }
+
+    .photo-upload { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+    .photo-preview { width: 60px; height: 60px; border-radius: 50%; background: #F9FAFB; border: 1px solid #E6E6E6; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-upload-text { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+
+    /* ===== GENERATE BTN ===== */
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: var(--swiss-red);
+      color: white;
+      border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .btn-generate:hover { background: #B80000; transform: translateY(-1px); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* ===== LOADING ===== */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); z-index: 10000;
+      align-items: center; justify-content: center;
+    }
+    .loading-overlay.active { display: flex; }
+    .loading-box {
+      background: white; border-radius: 16px;
+      padding: 40px; text-align: center;
+      max-width: 320px; width: 90%;
+    }
+    .loading-spinner {
+      width: 52px; height: 52px;
+      border: 4px solid #E6E6E6;
+      border-top-color: var(--swiss-red);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title { font-size: 17px; font-weight: 700; color: var(--swiss-black); margin-bottom: 16px; }
+    .loading-steps { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+    .loading-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #9ca3af; }
+    .loading-step.active { color: var(--swiss-black); font-weight: 600; }
+    .loading-step.done { color: #16a34a; }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #E6E6E6; flex-shrink: 0; }
+    .loading-step.active .step-dot { background: var(--swiss-red); }
+    .loading-step.done .step-dot { background: #16a34a; }
+
+    /* ===== RESULTS ===== */
+    #resultsSection { display: none; }
+
+    .match-card {
+      background: white; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border: 1px solid #E6E6E6;
+      padding: 32px; text-align: center;
+      margin-bottom: 20px;
+      position: relative; overflow: hidden;
+    }
+    .match-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--swiss-red);
+    }
+    .score-circle {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .score-num { font-size: 38px; font-weight: 800; line-height: 1; }
+    .score-sub { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+    .match-badge {
+      display: inline-block;
+      padding: 5px 18px; border-radius: 20px;
+      font-size: 13px; font-weight: 700; margin-bottom: 10px;
+    }
+    .match-summary-text { font-size: 14px; color: #6b7280; max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+    .action-bar {
+      background: white; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border: 1px solid #E6E6E6;
+      padding: 18px 24px;
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .action-bar span { font-size: 14px; font-weight: 600; color: var(--swiss-black); flex: 1; }
+    .btn-dl {
+      padding: 10px 18px; border-radius: 6px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border: none; display: flex; align-items: center; gap: 5px; transition: all 0.2s;
+    }
+    .btn-dl-dark { background: var(--swiss-black); color: white; }
+    .btn-dl-dark:hover { background: #333; }
+    .btn-dl-outline { background: white; color: var(--swiss-black); border: 2px solid var(--swiss-gray); }
+    .btn-dl-outline:hover { border-color: var(--swiss-black); }
+    .btn-dl-red { background: var(--swiss-red); color: white; }
+    .btn-dl-red:hover { background: #B80000; }
+
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .result-card {
+      background: white; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border: 1px solid #E6E6E6; overflow: hidden;
+    }
+    .result-card.full { grid-column: 1 / -1; }
+    .result-card-header {
+      padding: 14px 20px; border-bottom: 1px solid #F0F0F0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .result-card-title { font-size: 14px; font-weight: 700; color: var(--swiss-black); }
+    .result-card-body { padding: 20px; }
+
+    .copy-btn {
+      padding: 5px 12px;
+      background: #F5F5F5; border: none;
+      border-radius: 6px; font-size: 12px; font-weight: 600;
+      cursor: pointer; color: var(--swiss-black); transition: all 0.2s;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .copy-btn:hover { background: #E0E0E0; }
+    .copy-btn.copied { background: #d1fae5; color: #065f46; }
+
+    .text-output {
+      white-space: pre-wrap; font-size: 13px; line-height: 1.7;
+      color: #374151; background: #F8F9FA;
+      padding: 16px; border-radius: 8px;
+      max-height: 300px; overflow-y: auto;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #E6E6E6;
+    }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-gray { background: #F0F0F0; color: #374151; }
+
+    .gap-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid #F0F0F0;
+    }
+    .gap-item:last-child { border-bottom: none; }
+    .gap-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .sev-high { background: var(--swiss-red); }
+    .sev-medium { background: #f59e0b; }
+    .sev-low { background: #9ca3af; }
+    .gap-skill { font-size: 13px; font-weight: 600; color: var(--swiss-black); }
+    .gap-tip { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+    .improvement-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 8px 0; font-size: 13px; color: #374151;
+      border-bottom: 1px solid #F8F9FA;
+    }
+    .improvement-item:last-child { border-bottom: none; }
+    .improvement-item::before { content: '✓'; color: #16a34a; font-weight: 700; flex-shrink: 0; }
+
+    .error-box {
+      background: #fee2e2; border: 1px solid #fecaca;
+      color: var(--swiss-red); padding: 14px 18px;
+      border-radius: 8px; font-size: 14px; font-weight: 500;
+      display: none; margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .results-grid { grid-template-columns: 1fr; }
+      .result-card.full { grid-column: 1; }
+      .page-hero h1 { font-size: 24px; }
+    }
+
+    /* ===== CV OPTIMISÉ — rendu via le vrai modèle "Geneva Executive" du générateur
+       de CV (cv-templates.html), au lieu d'un bloc de texte brut mis en forme
+       basiquement. Le PDF final ressemble donc à un vrai CV suisse, pas à un
+       export générique. ===== */
+    #cvPreviewOutputWrap { background: #F3F4F6; padding: 20px; display: flex; justify-content: center; overflow-x: auto; }
+    .cvpreview { font-family: 'Source Sans 3', 'Inter', sans-serif; color: #2C2C2C; }
+    .cvpreview .page { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
+    .cvpreview.tpl-classique-1 { --accent: #C9A84C; }
+    .cvpreview.tpl-classique-1 .page { display: flex; }
+    .cvpreview.tpl-classique-1 .sidebar { width: 36%; background: #1B2A4A; color: white; padding: 30px 22px; display: flex; flex-direction: column; gap: 16px; }
+    .cvpreview.tpl-classique-1 .photo-wrap { display: flex; justify-content: center; }
+    .cvpreview.tpl-classique-1 .photo { width: 92px; height: 92px; border-radius: 50%; border: 3px solid var(--accent); background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .cvpreview.tpl-classique-1 .photo img { width: 100%; height: 100%; object-fit: cover; }
+    .cvpreview.tpl-classique-1 .sidebar-name { text-align: center; border-bottom: 1px solid rgba(255,255,255,.12); padding-bottom: 12px; }
+    .cvpreview.tpl-classique-1 .job-title { font-size: 12.5px; font-weight: 300; letter-spacing: 1.8px; text-transform: uppercase; color: var(--accent); }
+    .cvpreview.tpl-classique-1 .s-section { display: flex; flex-direction: column; gap: 6px; }
+    .cvpreview.tpl-classique-1 .s-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.38); border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 4px; margin-bottom: 2px; }
+    .cvpreview.tpl-classique-1 .contact-row { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; line-height: 1.4; color: rgba(255,255,255,.82); }
+    .cvpreview.tpl-classique-1 .info-row { display: flex; align-items: center; gap: 9px; font-size: 13px; color: rgba(255,255,255,.82); line-height: 1.4; }
+    .cvpreview.tpl-classique-1 .skill-item { font-size: 13px; color: rgba(255,255,255,.85); padding: 2px 0 2px 13px; position: relative; line-height: 1.35; }
+    .cvpreview.tpl-classique-1 .skill-item::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 9px; top: 5px; }
+    .cvpreview.tpl-classique-1 .lang-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .cvpreview.tpl-classique-1 .lang-name { font-size: 13px; color: rgba(255,255,255,.85); }
+    .cvpreview.tpl-classique-1 .lang-sub { font-size: 11px; color: rgba(255,255,255,.38); }
+    .cvpreview.tpl-classique-1 .lang-dots { display: flex; gap: 4px; }
+    .cvpreview.tpl-classique-1 .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.15); }
+    .cvpreview.tpl-classique-1 .dot.on { background: var(--accent); }
+    .cvpreview.tpl-classique-1 .main { width: 64%; padding: 30px 32px 30px 30px; display: flex; flex-direction: column; gap: 16px; }
+    .cvpreview.tpl-classique-1 .main-top { border-bottom: 2px solid #1B2A4A; padding-bottom: 12px; }
+    .cvpreview.tpl-classique-1 .main-top h1 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #1B2A4A; line-height: 1.1; }
+    .cvpreview.tpl-classique-1 .title-line { margin-top: 4px; font-size: 13.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); }
+    .cvpreview.tpl-classique-1 .m-section { display: flex; flex-direction: column; gap: 8px; }
+    .cvpreview.tpl-classique-1 .m-label { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: #1B2A4A; border-bottom: 2px solid var(--accent); padding-bottom: 4px; margin-bottom: 2px; }
+    .cvpreview.tpl-classique-1 .profile-text { font-size: 13px; line-height: 1.55; color: #4A4A4A; }
+    .cvpreview.tpl-classique-1 .exp { margin-bottom: 8px; }
+    .cvpreview.tpl-classique-1 .exp-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+    .cvpreview.tpl-classique-1 .exp-poste { font-size: 14px; font-weight: 600; color: #1B2A4A; }
+    .cvpreview.tpl-classique-1 .exp-dates { font-size: 12px; color: #999; white-space: nowrap; }
+    .cvpreview.tpl-classique-1 .exp-co { font-size: 13px; color: var(--accent); font-weight: 600; margin: 1px 0 4px; }
+    .cvpreview.tpl-classique-1 .exp-ul { list-style: none; padding: 0; }
+    .cvpreview.tpl-classique-1 .exp-ul li { font-size: 13px; color: #555; line-height: 1.45; padding-left: 13px; position: relative; margin-bottom: 2px; }
+    .cvpreview.tpl-classique-1 .exp-ul li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 9px; top: 3px; }
+    .cvpreview.tpl-classique-1 .edu { margin-bottom: 6px; }
+    .cvpreview.tpl-classique-1 .edu-titre { font-size: 14px; font-weight: 600; color: #1B2A4A; }
+    .cvpreview.tpl-classique-1 .edu-domain { font-weight: 400; color: #777; }
+    .cvpreview.tpl-classique-1 .edu-ecole { font-size: 13px; color: var(--accent); font-weight: 600; }
+    .cvpreview.tpl-classique-1 .edu-date { font-size: 12px; color: #999; }
+    .cvpreview.tpl-classique-1 .interest-tag { background: rgba(255,255,255,.1); color: rgba(255,255,255,.85); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15); }
+
+    /* ===== LETTRE DE MOTIVATION — même identité visuelle que le CV Geneva Executive ===== */
+    #letterPreviewOutputWrap { background: #F3F4F6; padding: 20px; display: flex; justify-content: center; overflow-x: auto; }
+    .letterpreview { font-family: 'Source Sans 3', 'Inter', sans-serif; color: #2C2C2C; }
+    .letterpreview .page { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 4px 24px rgba(0,0,0,.12); box-sizing: border-box; overflow: hidden; }
+    .letterpreview .l-topbar { height: 8px; background: linear-gradient(90deg, #1B2A4A, #C9A84C); }
+    .letterpreview .l-body { padding: 24mm 24mm 26mm; }
+    .letterpreview .l-body p { font-size: 13px; line-height: 1.75; color: #333; margin-bottom: 16px; }
+    .letterpreview .l-sender { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 14px; color: #1B2A4A; line-height: 1.6; }
+    .letterpreview .l-subject { font-weight: 700; color: #1B2A4A; font-size: 13px; margin-bottom: 4px !important; }
+    .letterpreview .l-date { color: #999; font-size: 12px; }
+    .letterpreview .l-signature { font-family: 'Playfair Display', serif; font-weight: 600; color: #1B2A4A; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    }
+  </style>
+    <script src="sync-user.js"></script>
+    <script src="/analytics.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+  <div class="navbar-burger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="navbar-menu" id="navbarMenu">
+    <a href="dashboard.html" class="navbar-link">Dashboard</a>
+    <div class="navbar-dropdown">
+      <button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span></button>
+      <div class="dropdown-menu">
+        <a href="app.html" class="dropdown-item">Analyser CV</a>
+        <a href="apply.html" class="dropdown-item active"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Générer candidature</a>
+        <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
+        <a href="cover-letter.html" class="dropdown-item">Lettre de motivation</a>
+      </div>
+    </div>
+    <a href="job-search.html" class="navbar-link">Offres</a>
+    <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
+    <div class="navbar-dropdown">
+      <button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span></button>
+      <div class="dropdown-menu">
+        <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris</a>
+        <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+      </div>
+    </div>
+
+    <!-- Crédits -->
+    <div class="credits-display" title="Voir mes crédits">
+      <span class="credits-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+      <span class="credits-balance" id="creditsBalance">--</span>
+      <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+    </div>
+
+    <!-- User avatar + dropdown -->
+    <div class="user-avatar-btn" id="userAvatarBtn">
+      <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+      <div class="user-menu-dropdown" id="userMenuDropdown">
+        <div class="user-menu-header">
+          <div class="user-menu-name">Utilisateur</div>
+          <div class="user-menu-email" id="userEmail">email@example.com</div>
+          <span class="user-menu-badge" id="planBadge">Free</span>
+        </div>
+        <div class="user-menu-divider"></div>
+        <a href="profile.html" class="user-menu-item"><span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span>Mon Profil</span></a>
+        <a href="support.html" class="user-menu-item"><span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span>Support</span></a>
+        <a href="credits.html" class="user-menu-item"><span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span><span>Crédits</span></a>
+        <a href="settings.html" class="user-menu-item"><span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span>Paramètres</span></a>
+        <div class="user-menu-divider"></div>
+        <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;"><span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span>Déconnexion</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="hero-badge"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> NOUVEAU</div>
+    <h1>Générer ma candidature en 1 clic</h1>
+    <p>CV optimisé ATS + lettre de motivation personnalisée pour cette offre, en quelques secondes.</p>
+    <div class="credits-pill"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> 3 crédits · Analyse + CV optimisé + Lettre de motivation</div>
+  </div>
+
+  <div class="container">
+    <div class="error-box" id="errorBox"></div>
+
+    <!-- FORM -->
+    <div id="formSection">
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="step-badge">1</div>
+          <h2>L'offre d'emploi</h2>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Titre du poste *</label>
+              <input type="text" id="jobTitle" placeholder="Ex: Développeur Full Stack" />
+            </div>
+            <div class="form-group">
+              <label>Entreprise *</label>
+              <input type="text" id="company" placeholder="Ex: Nestlé SA" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description complète de l'offre *</label>
+            <textarea id="jobDescription" class="tall" placeholder="Collez ici la description complète de l'offre d'emploi (missions, compétences requises, profil recherché...)"></textarea>
+            <div class="char-count"><span id="jobDescCount">0</span> caractères</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="step-badge">2</div>
+          <h2>Votre CV</h2>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group" style="margin-bottom:16px;">
+            <label>Votre nom (optionnel)</label>
+            <input type="text" id="candidateName" placeholder="Ex: Jean Dupont" />
+          </div>
+          <div class="form-group">
+            <label>Votre CV *</label>
+
+            <div id="cvDropzone" class="cv-dropzone" onclick="document.getElementById('cvFileInput').click()">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div class="cv-dropzone-text">Glissez votre CV ici ou cliquez pour choisir un fichier</div>
+              <div class="cv-dropzone-sub">PDF, DOCX ou TXT — 10 Mo max</div>
+            </div>
+
+            <div id="cvPrefillNotice" class="cv-prefill-notice" style="display:none;">
+              <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Le texte de votre CV a été récupéré depuis votre dernière analyse, mais pas de fichier à prévisualiser (analyse faite avant cette mise à jour). Vous pouvez générer votre candidature ainsi, ou importer votre fichier pour un aperçu visuel.</span>
+              <a onclick="document.getElementById('cvFileInput').click()">📎 Importer mon CV</a>
+            </div>
+
+            <div id="cvPreviewCard" class="cv-preview-card" style="display:none;">
+              <div class="cv-preview-header">
+                <div class="cv-preview-info">
+                  <div class="cv-preview-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <div class="cv-preview-info-text">
+                    <span id="cvFileName">mon-cv.pdf</span>
+                  </div>
+                </div>
+                <button type="button" class="btn-change-cv" onclick="document.getElementById('cvFileInput').click()">🔄 Changer de CV</button>
+              </div>
+              <div id="cvPreviewCanvasWrap" class="cv-preview-canvas-wrap" style="display:none;"></div>
+              <div id="cvPreviewGeneric" class="cv-preview-generic" style="display:none;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <div>Aperçu visuel non disponible pour ce format de fichier — le contenu a bien été extrait pour la génération.</div>
+              </div>
+            </div>
+
+            <input type="file" id="cvFileInput" accept=".pdf,.doc,.docx,.txt" style="display:none;">
+            <div id="cvErrorMsg" style="display:none;color:#991b1b;font-size:12px;margin-top:6px;"></div>
+
+            <!-- Texte extrait, utilisé pour la génération — plus affiché directement à l'utilisateur -->
+            <textarea id="cvText" style="display:none;"></textarea>
+            <span id="cvCount" style="display:none;">0</span>
+
+            <div class="photo-upload">
+              <div class="photo-preview" id="photoPreview"><svg class="icon" style="width:26px;height:26px;color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></div>
+              <div>
+                <button type="button" class="btn-change-cv" onclick="document.getElementById('photoInput').click()">📷 Ajouter une photo</button>
+                <div class="photo-upload-text">Optionnel — utilisée sur le CV généré pour cette candidature</div>
+              </div>
+            </div>
+            <input type="file" id="photoInput" accept="image/*" style="display:none;">
+          </div>
+          <div style="margin-top:12px;padding:12px 16px;background:#FFF8F8;border:1px solid #FECACA;border-radius:8px;font-size:13px;color:#991b1b;">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.75V17h8v-2.25A7 7 0 0 0 12 2z"/></svg> <strong>Tip :</strong> Analysez d'abord votre CV sur <a href="app.html" style="color:var(--swiss-red);font-weight:600;">la page Analyser</a> — le bouton "Générer ma candidature" prérempli automatiquement votre CV.
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-generate" onclick="generateApplication()" id="generateBtn">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Générer ma candidature — 3 crédits
+      </button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultsSection">
+
+      <div class="match-card" id="matchCard">
+        <div class="score-circle" id="scoreCircle">
+          <div class="score-num" id="scoreNum">—</div>
+          <div class="score-sub">Match</div>
+        </div>
+        <div class="match-badge" id="matchBadge">—</div>
+        <p class="match-summary-text" id="matchSummaryText"></p>
+      </div>
+
+      <div class="action-bar">
+        <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Votre candidature est prête</span>
+        <button class="btn-dl btn-dl-outline" onclick="downloadPDF('cv')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> CV (PDF)</button>
+        <button class="btn-dl btn-dl-outline" onclick="downloadPDF('letter')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Lettre (PDF)</button>
+        <button class="btn-dl btn-dl-outline" onclick="newApplication()">+ Nouvelle candidature</button>
+        <a id="btnApplyNow" class="btn-dl btn-dl-red" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none;">Postuler maintenant → <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+      </div>
+      <div id="applyNowHint" style="display:none;margin:-10px 0 20px;font-size:12px;color:#6b7280;text-align:right;">Téléchargez d'abord le CV et la lettre ci-dessus, puis joignez-les sur la page de l'offre.</div>
+
+      <div class="results-grid">
+
+        <div class="result-card full">
+          <div class="result-card-header">
+            <div class="result-card-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> CV optimisé pour cette offre</div>
+          </div>
+          <div class="result-card-body" style="padding:0;">
+            <div id="cvPreviewOutputWrap">
+              <div id="cvPreviewOutput" class="cvpreview tpl-classique-1"><div class="page" id="cvPreviewPage"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card full">
+          <div class="result-card-header">
+            <div class="result-card-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Lettre de motivation</div>
+            <button class="copy-btn" id="copyLetterBtn" onclick="copyLetterText(this)"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copier</button>
+          </div>
+          <div class="result-card-body" style="padding:0;">
+            <div id="letterPreviewOutputWrap">
+              <div id="letterPreviewOutput" class="letterpreview"><div class="page" id="letterPreviewPage"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-card-header">
+            <div class="result-card-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Mots-clés ATS intégrés</div>
+          </div>
+          <div class="result-card-body">
+            <div class="tag-list" id="keywordsList"></div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-card-header">
+            <div class="result-card-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Améliorations appliquées</div>
+          </div>
+          <div class="result-card-body">
+            <div id="improvementsList"></div>
+          </div>
+        </div>
+
+        <div class="result-card full">
+          <div class="result-card-header">
+            <div class="result-card-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Écarts détectés</div>
+          </div>
+          <div class="result-card-body">
+            <div id="gapsList"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-title">Génération en cours...</div>
+    <div class="loading-steps">
+      <div class="loading-step active" id="step1"><div class="step-dot"></div> Analyse de l'offre</div>
+      <div class="loading-step" id="step2"><div class="step-dot"></div> Comparaison CV ↔ Offre</div>
+      <div class="loading-step" id="step3"><div class="step-dot"></div> Optimisation du CV</div>
+      <div class="loading-step" id="step4"><div class="step-dot"></div> Rédaction de la lettre</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+
+  function getToken() { return localStorage.getItem('swisscv_token'); }
+  function getUser() { const u = localStorage.getItem('swisscv_user'); return u ? JSON.parse(u) : null; }
+  function logout() { localStorage.removeItem('swisscv_token'); localStorage.removeItem('swisscv_user'); window.location.href = 'index.html'; }
+  if (!getToken()) { window.location.href = 'login.html'; }
+
+  // ============================================================
+  // CV : upload + aperçu visuel (au lieu d'un texte brut à corriger à la main)
+  // ============================================================
+  if (window.pdfjsLib) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  // Lecture du fichier CV sauvegardé par app.html (IndexedDB — même origine, même
+  // navigateur). S'il existe, on l'affiche exactement comme un fichier fraîchement
+  // uploadé (aperçu visuel réel), au lieu d'un texte sans source visible à montrer.
+  const CV_DB_NAME = 'swisscv_files';
+  const CV_STORE_NAME = 'files';
+  const CV_FILE_KEY = 'last_cv';
+  function openCvDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(CV_DB_NAME, 1);
+      req.onupgradeneeded = () => { req.result.createObjectStore(CV_STORE_NAME); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function loadCvFileFromDB() {
+    try {
+      const db = await openCvDB();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(CV_STORE_NAME, 'readonly');
+        const req = tx.objectStore(CV_STORE_NAME).get(CV_FILE_KEY);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    } catch (e) {
+      console.error('Erreur lecture CV (IndexedDB):', e);
+      return null;
+    }
+  }
+
+  function setCvText(text) {
+    document.getElementById('cvText').value = text;
+    document.getElementById('cvCount').textContent = text.length;
+  }
+
+  function showCvDropzone() {
+    document.getElementById('cvDropzone').style.display = 'block';
+    document.getElementById('cvPrefillNotice').style.display = 'none';
+    document.getElementById('cvPreviewCard').style.display = 'none';
+  }
+  function showCvPrefillNotice() {
+    document.getElementById('cvDropzone').style.display = 'none';
+    document.getElementById('cvPrefillNotice').style.display = 'flex';
+    document.getElementById('cvPreviewCard').style.display = 'none';
+  }
+  function showCvFilePreview(file) {
+    document.getElementById('cvDropzone').style.display = 'none';
+    document.getElementById('cvPrefillNotice').style.display = 'none';
+    document.getElementById('cvPreviewCard').style.display = 'block';
+    document.getElementById('cvFileName').textContent = file.name;
+    const canvasWrap = document.getElementById('cvPreviewCanvasWrap');
+    const generic = document.getElementById('cvPreviewGeneric');
+    if (file.type === 'application/pdf') {
+      generic.style.display = 'none';
+      canvasWrap.style.display = 'block';
+      renderPdfPreview(file, canvasWrap).catch(function (err) {
+        console.error('Erreur rendu aperçu PDF:', err);
+        canvasWrap.style.display = 'none';
+        generic.style.display = 'block';
+      });
+    } else {
+      canvasWrap.style.display = 'none';
+      canvasWrap.innerHTML = '';
+      generic.style.display = 'block';
+    }
+  }
+
+  // Dessine chaque page du PDF sur un <canvas> — pas de barre d'outils native du
+  // navigateur (zoom, impression, rotation...), rendu propre façon Indeed.
+  async function renderPdfPreview(file, container) {
+    container.innerHTML = '';
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const targetWidth = Math.min(container.clientWidth - 28, 700) || 500;
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const baseViewport = page.getViewport({ scale: 1 });
+      const scale = targetWidth / baseViewport.width;
+      const viewport = page.getViewport({ scale: scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      container.appendChild(canvas);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+    }
+  }
+
+  async function handleCvFile(file) {
+    const errEl = document.getElementById('cvErrorMsg');
+    errEl.style.display = 'none';
+    try {
+      const text = await extractTextFromFile(file);
+      setCvText(text);
+      showCvFilePreview(file);
+    } catch (e) {
+      errEl.textContent = e.message || 'Impossible de lire ce fichier.';
+      errEl.style.display = 'block';
+      showCvDropzone();
+    }
+  }
+
+  document.getElementById('cvFileInput').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) handleCvFile(file);
+  });
+
+  (function setupCvDragDrop() {
+    const dz = document.getElementById('cvDropzone');
+    dz.addEventListener('dragover', function (e) { e.preventDefault(); dz.classList.add('dragover'); });
+    dz.addEventListener('dragleave', function () { dz.classList.remove('dragover'); });
+    dz.addEventListener('drop', function (e) {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) handleCvFile(file);
+    });
+  })();
+
+  async function extractTextFromFile(file) {
+    if (file.type === 'text/plain') {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target.result;
+          if (text.length < 100) { reject(new Error('Fichier trop court (minimum 100 caractères).')); return; }
+          resolve(text.substring(0, 8000));
+        };
+        reader.onerror = () => reject(new Error('Erreur lecture fichier'));
+        reader.readAsText(file);
+      });
+    }
+
+    if (file.type === 'application/pdf') {
+      return await extractTextFromPDF(file);
+    }
+
+    // DOCX — un .docx est une archive ZIP contenant du XML, on l'extrait via JSZip
+    // plutôt que de le lire "comme du texte" (ce qui produirait du charabia binaire).
+    if (file.type.includes('word') || file.type.includes('document')) {
+      return await extractTextFromDOCX(file);
+    }
+
+    throw new Error('Format de fichier non supporté. Utilisez un PDF, DOCX ou TXT.');
+  }
+
+  async function extractTextFromPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    // Regrouper les items par ligne (position Y) plutôt que tout joindre avec un espace :
+    // sinon les libellés en majuscules espacées de nos propres modèles (letter-spacing CSS)
+    // ressortent lettre par lettre, et les sauts de ligne entre sections sont perdus.
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      let lastY = null;
+      const lines = [];
+      let line = '';
+      textContent.items.forEach(item => {
+        if (!item.str) return;
+        const y = item.transform[5];
+        if (lastY !== null && Math.abs(y - lastY) > 2) { lines.push(line); line = ''; }
+        line += (line ? ' ' : '') + item.str;
+        lastY = y;
+      });
+      if (line) lines.push(line);
+      fullText += lines.join('\n') + '\n';
+    }
+    // Recoller les mots découpés lettre par lettre, et les apostrophes isolées.
+    fullText = fullText
+      .split('\n')
+      .map(l => l.replace(/(?:\b\p{L}\b[ \t]){2,}\b\p{L}\b/gu, m => m.replace(/[ \t]/g, '')))
+      .join('\n')
+      .replace(/\b(\p{L})\s+'\s+/gu, "$1'");
+    const cleanText = fullText.replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim().substring(0, 8000);
+    if (cleanText.length < 100) {
+      throw new Error('PDF vide ou illisible. Essayez un autre format.');
+    }
+    return cleanText;
+  }
+
+  async function extractTextFromDOCX(file) {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(arrayBuffer);
+      const documentXmlFile = zip.file('word/document.xml');
+      if (!documentXmlFile) throw new Error('not-a-docx');
+      const documentXml = await documentXmlFile.async('string');
+      const xmlDoc = new DOMParser().parseFromString(documentXml, 'application/xml');
+      const paragraphs = xmlDoc.getElementsByTagName('w:p');
+      let text = '';
+      for (let i = 0; i < paragraphs.length; i++) {
+        const textNodes = paragraphs[i].getElementsByTagName('w:t');
+        let paraText = '';
+        for (let j = 0; j < textNodes.length; j++) paraText += textNodes[j].textContent;
+        if (paraText) text += paraText + '\n';
+      }
+      const cleanText = text.replace(/[ \t]+/g, ' ').trim().substring(0, 8000);
+      if (cleanText.length < 100) throw new Error('too-short');
+      return cleanText;
+    } catch (error) {
+      if (error.message === 'too-short') {
+        throw new Error('Impossible d\'extraire suffisamment de texte de ce document Word.');
+      }
+      throw new Error('Impossible de lire ce fichier Word. Vérifiez qu\'il s\'agit bien d\'un .docx (pas un ancien .doc) et qu\'il n\'est pas corrompu. Vous pouvez aussi exporter votre CV en PDF.');
+    }
+  }
+
+  // User menu
+  function toggleUserDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('userMenuDropdown').classList.toggle('show');
+  }
+  document.addEventListener('click', function(e) {
+    const avatar = document.getElementById('userAvatarBtn');
+    const dd = document.getElementById('userMenuDropdown');
+    if (dd && avatar && !avatar.contains(e.target)) dd.classList.remove('show');
+  });
+
+  // Populate user info from localStorage
+  (function initUserInfo() {
+    const u = getUser();
+    if (!u) return;
+    const tier = u.tier || u.subscription_tier || 'free';
+    const email = u.email || '';
+    const name = u.full_name || u.name || email.split('@')[0] || 'U';
+    const emailEl = document.getElementById('userEmail');
+    const planEl = document.getElementById('planBadge');
+    const avatarEl = document.querySelector('.user-avatar-circle');
+    if (emailEl) emailEl.textContent = email;
+    if (planEl) { planEl.textContent = tier.charAt(0).toUpperCase() + tier.slice(1); planEl.className = 'user-menu-badge ' + tier; }
+    if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+    // Credits from localStorage
+    const credEl = document.getElementById('creditsBalance');
+    const limEl = document.getElementById('creditsLimit');
+    if (credEl && u.credits_balance !== undefined) credEl.textContent = u.credits_balance;
+    if (limEl && u.credits_monthly_limit !== undefined) limEl.textContent = u.credits_monthly_limit;
+  })();
+
+  // Préremplir depuis sessionStorage (job-search)
+  let currentJobUrl = ''; // lien vers l'offre d'origine — utilisé par "Postuler maintenant"
+  let cvPhoto = ''; // dataURL de la photo à afficher sur le CV généré (upload manuel ou reprise du générateur de CV)
+  const savedJob = sessionStorage.getItem('apply_job');
+  if (savedJob) {
+    try {
+      const job = JSON.parse(savedJob);
+      if (job.title)       document.getElementById('jobTitle').value = job.title;
+      if (job.company)     document.getElementById('company').value = job.company;
+      if (job.description) {
+        document.getElementById('jobDescription').value = job.description;
+        document.getElementById('jobDescCount').textContent = job.description.length;
+      }
+      if (job.url) currentJobUrl = job.url;
+    } catch(e) {}
+    sessionStorage.removeItem('apply_job');
+  }
+
+  // CV : on affiche toujours un aperçu visuel réel quand c'est possible (comme Indeed),
+  // pas un texte sans document à montrer. Le fichier d'origine (pas juste son texte) est
+  // récupéré depuis IndexedDB, sauvegardé par app.html au moment de l'analyse.
+  (async function initCvPreview() {
+    const savedTextFromSession = sessionStorage.getItem('apply_cv_text');
+    const savedTextFromStorage = localStorage.getItem('swisscv_last_cv');
+    const savedText = savedTextFromSession || savedTextFromStorage;
+    const savedFile = await loadCvFileFromDB();
+
+    if (savedFile) {
+      // Fichier réel disponible — même expérience qu'un upload frais.
+      if (savedText) {
+        setCvText(savedText);
+      } else {
+        try { setCvText(await extractTextFromFile(savedFile)); } catch (e) {}
+      }
+      showCvFilePreview(savedFile);
+    } else if (savedText) {
+      // Cas résiduel : texte d'une analyse faite avant l'ajout de la sauvegarde du
+      // fichier (ou stockage local indisponible sur ce navigateur) — pas de document à
+      // prévisualiser pour cette fois, on l'indique clairement plutôt que d'afficher un
+      // aperçu vide avec un bouton "changer" trompeur.
+      setCvText(savedText);
+      showCvPrefillNotice();
+    } else {
+      showCvDropzone();
+    }
+    sessionStorage.removeItem('apply_cv_text');
+  })();
+
+  function setCvPhoto(dataUrl) {
+    cvPhoto = dataUrl;
+    document.getElementById('photoPreview').innerHTML = '<img src="' + dataUrl + '">';
+  }
+
+  document.getElementById('photoInput').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (ev) { setCvPhoto(ev.target.result); };
+    reader.readAsDataURL(file);
+  });
+
+  // Préremplissage automatique de la photo depuis le dernier CV créé avec le générateur
+  // (cv-templates.html) — évite à l'utilisateur de re-uploader une photo qu'il a déjà
+  // ajoutée là-bas. Best-effort : silencieux si rien trouvé ou si la requête échoue.
+  (async function prefillPhotoFromCvBuilder() {
+    if (!getToken()) return;
+    try {
+      const listRes = await fetch(API_BASE + '/cv-builder/list', { headers: { 'Authorization': 'Bearer ' + getToken() } });
+      const listData = await listRes.json();
+      const firstDoc = listData.success && listData.documents && listData.documents[0];
+      if (!firstDoc) return;
+      const docRes = await fetch(API_BASE + '/cv-builder/document/' + firstDoc.id, { headers: { 'Authorization': 'Bearer ' + getToken() } });
+      const docData = await docRes.json();
+      const photo = docData.success && docData.document && docData.document.data && docData.document.data.photo;
+      if (photo && !cvPhoto) setCvPhoto(photo);
+    } catch (e) {}
+  })();
+
+  // Compteurs
+  document.getElementById('jobDescription').addEventListener('input', function() {
+    document.getElementById('jobDescCount').textContent = this.value.length;
+  });
+
+  // Mobile nav
+  function toggleMobileMenu() {
+    document.getElementById('navbarMenu').classList.toggle('active');
+    document.querySelector('.navbar-burger').classList.toggle('active');
+  }
+  function toggleDropdown(e, btn) {
+    e.stopPropagation();
+    btn.closest('.navbar-dropdown').classList.toggle('active');
+  }
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.navbar-dropdown').forEach(d => d.classList.remove('active'));
+  });
+
+  // Loading steps animation
+  let stepInterval;
+  function animateSteps() {
+    const ids = ['step1','step2','step3','step4'];
+    ids.forEach(id => { document.getElementById(id).className = 'loading-step'; });
+    document.getElementById(ids[0]).className = 'loading-step active';
+    let i = 0;
+    stepInterval = setInterval(() => {
+      document.getElementById(ids[i]).className = 'loading-step done';
+      i++;
+      if (i < ids.length) document.getElementById(ids[i]).className = 'loading-step active';
+      else clearInterval(stepInterval);
+    }, 1400);
+  }
+
+  async function generateApplication() {
+    const jobTitle = document.getElementById('jobTitle').value.trim();
+    const company = document.getElementById('company').value.trim();
+    const jobDescription = document.getElementById('jobDescription').value.trim();
+    const cvText = document.getElementById('cvText').value.trim();
+    const candidateName = document.getElementById('candidateName').value.trim();
+
+    document.getElementById('errorBox').style.display = 'none';
+
+    if (!jobTitle || !company || !jobDescription || !cvText) {
+      showError('Veuillez remplir tous les champs obligatoires (*).');
+      return;
+    }
+    if (cvText.length < 100) {
+      showError('Votre CV semble trop court. Collez le texte complet de votre CV.');
+      return;
+    }
+    if (jobDescription.length < 50) {
+      showError('La description de l\'offre semble trop courte.');
+      return;
+    }
+
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('loadingOverlay').classList.add('active');
+    animateSteps();
+
+    try {
+      const res = await fetch(API_BASE + '/ai/generate-application', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+        body: JSON.stringify({ cvText, jobTitle, company, jobDescription, candidateName })
+      });
+      clearInterval(stepInterval);
+      document.getElementById('loadingOverlay').classList.remove('active');
+
+      const data = await res.json();
+      if (!data.success) {
+        showError(data.error || 'Erreur lors de la génération. Réessayez.');
+        document.getElementById('generateBtn').disabled = false;
+        return;
+      }
+      renderResults(data);
+    } catch(e) {
+      clearInterval(stepInterval);
+      document.getElementById('loadingOverlay').classList.remove('active');
+      document.getElementById('generateBtn').disabled = false;
+      showError('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    }
+  }
+
+  function renderResults(data) {
+    const score = data.matchScore || 0;
+
+    // Couleurs selon score
+    let scoreColor, scoreBg, badgeBg, badgeColor;
+    if (score >= 75) {
+      scoreColor = '#16a34a'; scoreBg = '#f0fdf4'; badgeBg = '#d1fae5'; badgeColor = '#065f46';
+    } else if (score >= 50) {
+      scoreColor = '#d97706'; scoreBg = '#fffbeb'; badgeBg = '#fef3c7'; badgeColor = '#92400e';
+    } else {
+      scoreColor = 'var(--swiss-red)'; scoreBg = '#FFF8F8'; badgeBg = '#fee2e2'; badgeColor = '#991b1b';
+    }
+
+    const circle = document.getElementById('scoreCircle');
+    circle.style.background = scoreBg;
+    document.getElementById('scoreNum').style.color = scoreColor;
+    document.getElementById('scoreNum').textContent = score + '%';
+
+    const badge = document.getElementById('matchBadge');
+    badge.textContent = data.matchLabel || '';
+    badge.style.background = badgeBg;
+    badge.style.color = badgeColor;
+
+    document.getElementById('matchSummaryText').textContent = data.summary || '';
+
+    window._cvData = Object.assign({}, data.cv || {}, cvPhoto ? { photo: cvPhoto } : {});
+    document.getElementById('cvPreviewPage').innerHTML = buildGenevaExecutiveCV(window._cvData);
+    document.getElementById('letterPreviewPage').innerHTML = buildLetterHTML(data.coverLetter || '');
+
+    // Keywords
+    document.getElementById('keywordsList').innerHTML = (data.keywords || []).map(k =>
+      '<span class="tag tag-red">' + esc(k) + '</span>'
+    ).join('');
+
+    // Improvements
+    document.getElementById('improvementsList').innerHTML = (data.improvements || []).map(i =>
+      '<div class="improvement-item">' + esc(i) + '</div>'
+    ).join('');
+
+    // Gaps
+    document.getElementById('gapsList').innerHTML = (data.gaps || []).map(g =>
+      '<div class="gap-item">' +
+        '<div class="gap-dot sev-' + (g.severity || 'medium') + '"></div>' +
+        '<div><div class="gap-skill">' + esc(g.skill || '') + '</div>' +
+        '<div class="gap-tip">' + esc(g.tip || '') + '</div></div>' +
+      '</div>'
+    ).join('');
+
+    if (data.credits_remaining !== undefined) {
+      document.querySelector('.credits-pill').innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> ' + data.credits_remaining + ' crédits restants';
+    }
+
+    window._letter = data.coverLetter || '';
+    window._company = document.getElementById('company').value.trim();
+
+    const applyBtn = document.getElementById('btnApplyNow');
+    const applyHint = document.getElementById('applyNowHint');
+    if (currentJobUrl) {
+      applyBtn.href = currentJobUrl;
+      applyBtn.style.display = 'inline-flex';
+      applyHint.style.display = 'block';
+    } else {
+      applyBtn.style.display = 'none';
+      applyHint.style.display = 'none';
+    }
+
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyContent(elId, btn) {
+    navigator.clipboard.writeText(document.getElementById(elId).textContent).then(() => {
+      btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copié !';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function downloadPDF(type) {
+    if (type === 'cv') {
+      downloadCvAsPDF();
+      return;
+    }
+    downloadLetterAsPDF();
+  }
+
+  // ============================================================
+  // CV OPTIMISÉ — rendu via le modèle Geneva Executive (même moteur que le
+  // générateur de CV, cv-templates.html) au lieu d'un texte mis en page à la main.
+  // ============================================================
+  const PERMIT_OPTIONS = [
+    { id: 'non_applicable', title: 'Non applicable' },
+    { id: 'citoyen_suisse', title: 'Citoyen Suisse' },
+    { id: 'permis_b', title: 'Permis B' },
+    { id: 'permis_c', title: 'Permis C' },
+    { id: 'permis_g', title: 'Permis G' },
+    { id: 'permis_l', title: 'Permis L' }
+  ];
+  const LANG_LEVELS = [
+    { id: 'notions', label: 'Notions', dots: 1 },
+    { id: 'intermediaire', label: 'Intermédiaire (B1)', dots: 2 },
+    { id: 'courant', label: 'Courant (B2-C1)', dots: 3 },
+    { id: 'bilingue', label: 'Bilingue (C2)', dots: 4 },
+    { id: 'maternelle', label: 'Langue maternelle', dots: 5 }
+  ];
+  function formatMonthCv(m) {
+    if (!m) return '';
+    const parts = m.split('-');
+    const months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+    const idx = parseInt(parts[1], 10) - 1;
+    return (months[idx] || '') + ' ' + parts[0];
+  }
+  function getAvailabilityLabelCv(cv) {
+    const labels = { immediate: 'Disponible immédiatement', '1mois': 'Disponible sous 1 mois', '2mois': 'Disponible sous 2 mois', '3mois': 'Disponible sous 3 mois' };
+    return labels[cv.availability] || '';
+  }
+
+  function buildGenevaExecutiveCV(cv) {
+    const skills = ['technical', 'tools', 'soft', 'other'].reduce(function (acc, k) { return acc.concat((cv.skills && cv.skills[k]) || []); }, []);
+    const fullName = esc(cv.firstName || 'Prénom') + '<br>' + esc(cv.lastName || 'Nom');
+    const permitObj = PERMIT_OPTIONS.find(function (p) { return p.id === cv.permit; });
+
+    const skillsHtml = skills.map(function (s) {
+      return '<div class="skill-item">' + esc(s) + '</div>';
+    }).join('') || '<div style="font-size:11px;color:rgba(255,255,255,.4);">—</div>';
+
+    const langsHtml = (cv.languages || []).map(function (lang) {
+      const levelObj = LANG_LEVELS.find(function (l) { return l.id === lang.level; }) || LANG_LEVELS[2];
+      return '<div class="lang-row"><div><div class="lang-name">' + esc(lang.name || 'Langue') + '</div><div class="lang-sub">' + levelObj.label + '</div></div>' +
+        '<div class="lang-dots">' + [1,2,3,4,5].map(function (n) { return '<div class="dot' + (n <= levelObj.dots ? ' on' : '') + '"></div>'; }).join('') + '</div></div>';
+    }).join('') || '<div style="font-size:11px;color:rgba(255,255,255,.4);">—</div>';
+
+    const expHtml = (cv.experience || []).map(function (exp) {
+      const dates = formatMonthCv(exp.startDate) + ' – ' + (exp.current ? 'Présent' : formatMonthCv(exp.endDate));
+      const descLines = (exp.description || '').split('\n').filter(Boolean);
+      return '<div class="exp"><div class="exp-head"><span class="exp-poste">' + esc(exp.title || 'Poste') + '</span><span class="exp-dates">' + dates + '</span></div>' +
+        '<div class="exp-co">' + esc(exp.company || 'Entreprise') + (exp.city ? ' — ' + esc(exp.city) : '') + '</div>' +
+        '<ul class="exp-ul">' + (descLines.length ? descLines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') : '') + '</ul></div>';
+    }).join('') || '<p style="color:#999;font-size:12px;">—</p>';
+
+    const eduHtml = (cv.education || []).map(function (edu) {
+      const dates = formatMonthCv(edu.startDate) + ' – ' + formatMonthCv(edu.endDate);
+      const titre = esc(edu.degree || 'Diplôme') + (edu.domain ? ' <span class="edu-domain">— ' + esc(edu.domain) + '</span>' : '');
+      const ecole = esc(edu.institution || 'Établissement') + (edu.city ? ' — ' + esc(edu.city) : '');
+      return '<div class="edu"><div class="edu-titre">' + titre + '</div><div class="edu-ecole">' + ecole + '</div><div class="edu-date">' + dates + '</div></div>';
+    }).join('') || '<p style="color:#999;font-size:12px;">—</p>';
+
+    const interestsHtml = (cv.interests || []).length
+      ? '<div class="s-section"><div class="s-label">Centres d\'intérêt</div><div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          cv.interests.map(function (i) { return '<span class="interest-tag">' + esc(i) + '</span>'; }).join('') +
+        '</div></div>' : '';
+
+    const infoRows = [];
+    if (permitObj) infoRows.push('<div class="info-row"><span>🪪</span><span>' + permitObj.title + '</span></div>');
+    if (cv.availability) infoRows.push('<div class="info-row"><span>📅</span><span>' + getAvailabilityLabelCv(cv) + '</span></div>');
+
+    return '<div class="sidebar">' +
+        '<div class="photo-wrap"><div class="photo">' + (cv.photo ? '<img src="' + cv.photo + '">' : '<span style="font-size:44px;opacity:.35;">👤</span>') + '</div></div>' +
+        '<div class="sidebar-name"><div class="job-title">' + esc(cv.jobTitle || 'Titre du poste') + '</div></div>' +
+        '<div class="s-section"><div class="s-label">Contact</div>' +
+          '<div class="contact-row"><span>📍</span><span>' + esc(cv.address || '') + (cv.address && cv.city ? '<br>' : '') + esc(cv.city || '') + '</span></div>' +
+          '<div class="contact-row"><span>📞</span><span>' + esc(cv.phone || '') + '</span></div>' +
+          '<div class="contact-row"><span>✉️</span><span>' + esc(cv.email || '') + '</span></div>' +
+          (cv.linkedin ? '<div class="contact-row"><span>🔗</span><span>' + esc(cv.linkedin) + '</span></div>' : '') +
+          infoRows.join('') +
+        '</div>' +
+        '<div class="s-section"><div class="s-label">Compétences</div>' + skillsHtml + '</div>' +
+        '<div class="s-section"><div class="s-label">Langues</div>' + langsHtml + '</div>' +
+        interestsHtml +
+      '</div>' +
+      '<div class="main">' +
+        '<div class="main-top"><h1>' + fullName + '</h1>' +
+          '<div class="title-line">' + esc(cv.jobTitle || 'Titre du poste') + '</div></div>' +
+        (cv.profile ? '<div class="m-section"><div class="m-label">Profil Professionnel</div><p class="profile-text">' + esc(cv.profile) + '</p></div>' : '') +
+        '<div class="m-section"><div class="m-label">Expérience Professionnelle</div>' + expHtml + '</div>' +
+        '<div class="m-section"><div class="m-label">Formation</div>' + eduHtml + '</div>' +
+      '</div>';
+  }
+
+  async function downloadCvAsPDF() {
+    const win = window.open('', '_blank');
+    if (!win) {
+      showError('Le navigateur a bloqué la fenêtre. Autorisez les pop-ups pour ce site puis réessayez.');
+      return;
+    }
+    const previewStyles = document.getElementById('applyPageStyles').textContent;
+    const cv = window._cvData || {};
+    const co = (window._company || 'candidature').replace(/[^a-zA-Z0-9]/g, '_');
+    const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>CV — ' + esc((cv.firstName || '') + ' ' + (cv.lastName || '')) + '</title>' +
+      '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">' +
+      '<style>* { margin:0; padding:0; box-sizing:border-box; } @page { size: A4; margin: 0; } body { font-family: "Source Sans 3", sans-serif; }' + previewStyles + '</style></head>' +
+      '<body><div class="cvpreview tpl-classique-1"><div class="page">' + buildGenevaExecutiveCV(cv) + '</div></div></body></html>';
+    win.document.write(html);
+    win.document.close();
+    win.addEventListener('load', function () { setTimeout(function () { win.print(); }, 500); });
+  }
+
+  // (generateCVPDF texte-brut retirée — le CV utilise maintenant downloadCvAsPDF(),
+  // qui rend le vrai modèle Geneva Executive via window.print())
+
+  // Classe chaque bloc (paragraphe séparé par une ligne vide) du texte généré par l'IA pour
+  // lui appliquer un style cohérent avec l'identité visuelle du CV (Playfair Display / navy
+  // / gold) au lieu du bloc de texte brut jsPDF d'avant — sans changer le texte lui-même.
+  function classifyLetterBlock(text, idx, total) {
+    const firstLine = text.split('\n')[0].trim();
+    if (idx === 0) return 'l-sender';
+    if (/^(Concernant|Objet|Concerne)/i.test(firstLine)) return 'l-subject';
+    if (/,\s*le\s+\d/i.test(firstLine)) return 'l-date';
+    if (idx === total - 1 && firstLine.split(' ').length <= 4) return 'l-signature';
+    return '';
+  }
+
+  function buildLetterHTML(letterText) {
+    const blocks = (letterText || '').split(/\n\s*\n+/).map(function (b) { return b.trim(); }).filter(Boolean);
+    const bodyHtml = blocks.map(function (b, idx) {
+      const cls = classifyLetterBlock(b, idx, blocks.length);
+      return '<p class="' + cls + '">' + esc(b).replace(/\n/g, '<br>') + '</p>';
+    }).join('');
+    return '<div class="l-topbar"></div><div class="l-body">' + bodyHtml + '</div>';
+  }
+
+  function copyLetterText(btn) {
+    navigator.clipboard.writeText(window._letter || '').then(() => {
+      btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copié !';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  async function downloadLetterAsPDF() {
+    const win = window.open('', '_blank');
+    if (!win) {
+      showError('Le navigateur a bloqué la fenêtre. Autorisez les pop-ups pour ce site puis réessayez.');
+      return;
+    }
+    const previewStyles = document.getElementById('applyPageStyles').textContent;
+    const co = (window._company || 'candidature').replace(/[^a-zA-Z0-9]/g, '_');
+    const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lettre de motivation</title>' +
+      '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">' +
+      '<style>* { margin:0; padding:0; box-sizing:border-box; } @page { size: A4; margin: 0; } body { font-family: "Source Sans 3", sans-serif; }' + previewStyles + '</style></head>' +
+      '<body><div class="letterpreview"><div class="page">' + buildLetterHTML(window._letter || '') + '</div></div></body></html>';
+    win.document.write(html);
+    win.document.close();
+    win.addEventListener('load', function () { setTimeout(function () { win.print(); }, 500); });
+  }
+
+  function newApplication() {
+    document.getElementById('formSection').style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('generateBtn').disabled = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showError(msg) {
+    const b = document.getElementById('errorBox');
+    b.textContent = msg; b.style.display = 'block';
+    b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+<script src="public/js/notifications.js?v=20260831a"></script>
+<script src="public/js/credits.js?v=20260821a"></script>
+</body>
+</html>

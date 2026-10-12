@@ -31,7 +31,7 @@ function createNotificationBadge() {
   notifBell.className = 'notification-bell';
   notifBell.innerHTML = `
     <button class="notif-btn" onclick="toggleNotificationModal()" title="Notifications">
-      🔔
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span class="notif-count" id="notifCount" style="display: none;">0</span>
     </button>
   `;
@@ -262,7 +262,7 @@ function createNotificationModal() {
   modal.innerHTML = `
     <div class="notification-content">
       <div class="notification-header">
-        <h2>🔔 Notifications</h2>
+        <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Notifications</h2>
         <div class="notification-actions">
           <button class="btn-mark-all" onclick="markAllAsRead()">Tout marquer comme lu</button>
           <button class="modal-close-btn" onclick="toggleNotificationModal()">&times;</button>
@@ -297,7 +297,7 @@ async function loadNotifications() {
       displayNotifications(data.notifications);
     }
   } catch (error) {
-    // console.error('❌ Erreur chargement notifications:', error);
+    // console.error('Erreur chargement notifications:', error);
   }
 }
 
@@ -307,7 +307,7 @@ async function loadNotifications() {
 function updateNotificationBadge(count) {
   const badge = document.getElementById('notifCount');
   if (!badge) {
-    // console.error('❌ Badge element not found!');
+    // console.error('Badge element not found!');
     return;
   }
 
@@ -327,7 +327,7 @@ function displayNotifications(notifications) {
   if (!list) return;
 
   if (notifications.length === 0) {
-    list.innerHTML = '<div class="notification-empty">📭 Aucune notification</div>';
+    list.innerHTML = '<div class="notification-empty"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Aucune notification</div>';
     return;
   }
 
@@ -347,7 +347,7 @@ function displayNotifications(notifications) {
             </button>
           ` : ''}
           <button class="notification-delete" onclick="event.stopPropagation(); deleteNotification('${notif.id}')">
-            🗑️
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           </button>
         </div>
       </div>
@@ -360,13 +360,13 @@ function displayNotifications(notifications) {
  */
 function getNotificationIcon(type) {
   const icons = {
-    'team_invite': '👥',
-    'job_alert': '💼',
-    'application_update': '📝',
-    'system': '⚙️',
-    'team_activity': '🎉'
+    'team_invite': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    'job_alert': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    'application_update': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
+    'system': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+    'team_activity': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l6.5-2.2c.6 1.3 2 2.2 3.5 2.2 2.2 0 4-1.8 4-4 0-1.5-.9-2.9-2.2-3.5L16 8l6-2-2 6-6.5 2.2"/><path d="M22 2L2 9l7 3 3 7z"/></svg>'
   };
-  return icons[type] || '📬';
+  return icons[type] || '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>';
 }
 
 /**
@@ -400,28 +400,23 @@ async function handleNotificationClick(notifId, actionUrl, isRead) {
 
 /**
  * Afficher un message de succès
+ * Ne définit ces fonctions QUE si la page ne fournit pas déjà les siennes
+ * (ex: modal-system.js), pour ne jamais écraser une modale stylée par un
+ * alert() natif du navigateur.
  */
-function showSuccess(message) {
-  // Utiliser la fonction globale si elle existe, sinon alert
-  const globalShowSuccess = window.parent?.showSuccess || window.top?.showSuccess;
-  if (globalShowSuccess && globalShowSuccess !== showSuccess) {
-    globalShowSuccess(message);
-  } else {
+if (typeof window.showSuccess !== 'function') {
+  window.showSuccess = function (message) {
     alert(message);
-  }
+  };
 }
 
 /**
  * Afficher un message d'erreur
  */
-function showError(message) {
-  // Utiliser la fonction globale si elle existe, sinon alert
-  const globalShowError = window.parent?.showError || window.top?.showError;
-  if (globalShowError && globalShowError !== showError) {
-    globalShowError(message);
-  } else {
+if (typeof window.showError !== 'function') {
+  window.showError = function (message) {
     alert(message);
-  }
+  };
 }
 
 /**
@@ -438,7 +433,7 @@ async function handleNotificationAction(notifId, actionUrl, data) {
       const result = await response.json();
 
       if (result.success) {
-        showSuccess('✅ Invitation acceptée ! Bienvenue dans l\'équipe !');
+        showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Invitation acceptée ! Bienvenue dans l\'équipe !');
         await deleteNotification(notifId);
         await loadNotifications();
         // Rediriger vers la page équipe
@@ -466,7 +461,7 @@ async function markNotificationAsRead(notifId) {
     });
     await loadNotifications();
   } catch (error) {
-    // console.error('❌ Erreur marquer comme lu:', error);
+    // console.error('Erreur marquer comme lu:', error);
   }
 }
 
@@ -480,7 +475,7 @@ async function markAllAsRead() {
     });
     await loadNotifications();
   } catch (error) {
-    // console.error('❌ Erreur marquer tout comme lu:', error);
+    // console.error('Erreur marquer tout comme lu:', error);
   }
 }
 

@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -349,13 +350,14 @@
             }
         }
     </style>
+    <script src="/analytics.js"></script>
 </head>
 <body>
-    <script src="public/js/auth.js"></script>
+    <script src="public/js/auth.js?v=20260821a"></script>
     
     <div class="onboarding-container">
         <div class="header">
-            <h1>🎯 Complétez votre profil</h1>
+            <h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Complétez votre profil</h1>
             <p>Pour que notre IA trouve les offres parfaites pour vous</p>
         </div>
         
@@ -381,7 +383,7 @@
         <div class="form-container">
             <!-- ÉTAPE 1: Informations de base -->
             <div class="step active" data-step="1">
-                <h2 class="step-title">👤 Informations de base</h2>
+                <h2 class="step-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Informations de base</h2>
                 <p class="step-description">Commençons par vos informations personnelles</p>
                 
                 <div class="form-group">
@@ -434,7 +436,7 @@
             
             <!-- ÉTAPE 2: Expériences -->
             <div class="step" data-step="2">
-                <h2 class="step-title">💼 Expériences professionnelles</h2>
+                <h2 class="step-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Expériences professionnelles</h2>
                 <p class="step-description">Ajoutez vos expériences les plus pertinentes (min. 1)</p>
                 
                 <div id="experiencesContainer">
@@ -442,13 +444,13 @@
                 </div>
                 
                 <button type="button" class="add-more-btn" onclick="addExperience()">
-                    ➕ Ajouter une expérience
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter une expérience
                 </button>
             </div>
             
             <!-- ÉTAPE 3: Compétences -->
             <div class="step" data-step="3">
-                <h2 class="step-title">⚡ Compétences & Langues</h2>
+                <h2 class="step-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Compétences & Langues</h2>
                 <p class="step-description">Listez vos compétences principales</p>
                 
                 <div class="form-group">
@@ -464,7 +466,7 @@
                         <!-- Les langues seront ajoutées ici -->
                     </div>
                     <button type="button" class="add-more-btn" onclick="addLanguage()">
-                        ➕ Ajouter une langue
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter une langue
                     </button>
                 </div>
                 
@@ -474,14 +476,14 @@
                         <!-- Les certifications seront ajoutées ici -->
                     </div>
                     <button type="button" class="add-more-btn" onclick="addCertification()">
-                        ➕ Ajouter une certification
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter une certification
                     </button>
                 </div>
             </div>
             
             <!-- ÉTAPE 4: Objectifs de carrière -->
             <div class="step" data-step="4">
-                <h2 class="step-title">🎯 Objectifs de carrière</h2>
+                <h2 class="step-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Objectifs de carrière</h2>
                 <p class="step-description">Aidez notre IA à trouver les offres parfaites</p>
                 
                 <div class="form-group">
@@ -766,7 +768,7 @@
             
             // Mettre à jour les boutons
             document.getElementById('btnBack').style.display = currentStep === 1 ? 'none' : 'block';
-            document.getElementById('btnNext').textContent = currentStep === totalSteps ? 'Terminer ✓' : 'Suivant →';
+            document.getElementById('btnNext').textContent = currentStep === totalSteps ? 'Terminer <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : 'Suivant →';
         }
         
         // Validation
@@ -839,17 +841,17 @@
         
         // Soumettre le profil
         async function submitProfile() {
-            console.log('🚀 submitProfile appelée');
+            console.log(' submitProfile appelée');
             
             // Débogage - Vérifier les éléments trouvés
             const expElements = document.querySelectorAll('#experiencesContainer .experience-item');
-            console.log('📊 Éléments expérience trouvés:', expElements.length);
+            console.log(' Éléments expérience trouvés:', expElements.length);
             
             const langElements = document.querySelectorAll('#languagesContainer .experience-item');
-            console.log('📊 Éléments langue trouvés:', langElements.length);
+            console.log(' Éléments langue trouvés:', langElements.length);
             
             const certElements = document.querySelectorAll('#certificationsContainer .experience-item');
-            console.log('📊 Éléments certification trouvés:', certElements.length);
+            console.log(' Éléments certification trouvés:', certElements.length);
             
             // Collecter toutes les données
             const profile = {
@@ -903,33 +905,33 @@
                 }
             };
             
-            console.log('📦 Profil collecté:', profile);
-            console.log('📊 Expériences:', profile.experiences.length);
-            console.log('📊 Compétences:', profile.skills.length);
-            console.log('📊 Langues:', profile.languages.length);
-            console.log('📊 Certifications:', profile.certifications.length);
+            console.log(' Profil collecté:', profile);
+            console.log(' Expériences:', profile.experiences.length);
+            console.log(' Compétences:', profile.skills.length);
+            console.log(' Langues:', profile.languages.length);
+            console.log(' Certifications:', profile.certifications.length);
             
-            console.log('🔄 Début affichage loading...');
+            console.log(' Début affichage loading...');
             
             // Afficher le loading
             document.getElementById('navigationButtons').style.display = 'none';
             document.querySelector('.step.active').style.display = 'none';
             document.getElementById('loadingState').classList.add('show');
             
-            console.log('✅ Loading affiché');
+            console.log(' Loading affiché');
             
             try {
-                console.log('🌐 Appel authenticatedFetch /profile/complete...');
+                console.log(' Appel authenticatedFetch /profile/complete...');
                 
                 const response = await authenticatedFetch('/profile/complete', {
                     method: 'POST',
                     body: JSON.stringify(profile)
                 });
                 
-                console.log('📥 Response reçue:', response);
+                console.log(' Response reçue:', response);
                 
                 if (!response) {
-                    console.error('❌ Response est NULL ! authenticatedFetch a retourné null');
+                    console.error(' Response est NULL ! authenticatedFetch a retourné null');
                     alert('Erreur : Pas de réponse du serveur');
                     // Restaurer l'UI
                     document.getElementById('loadingState').classList.remove('show');
@@ -939,20 +941,20 @@
                     return;
                 }
                 
-                console.log('📊 Response.ok:', response.ok);
-                console.log('📊 Response.status:', response.status);
+                console.log(' Response.ok:', response.ok);
+                console.log(' Response.status:', response.status);
                 
                 if (!response.ok) {
-                    console.error('❌ Response not OK, status:', response.status);
+                    console.error(' Response not OK, status:', response.status);
                     throw new Error('Erreur serveur');
                 }
                 
-                console.log('🔄 Parsing JSON...');
+                console.log(' Parsing JSON...');
                 const data = await response.json();
-                console.log('📦 Data reçue:', data);
+                console.log(' Data reçue:', data);
                 
                 if (data.success) {
-                    console.log('🎉 SUCCÈS ! Redirection vers dashboard...');
+                    console.log(' SUCCÈS ! Redirection vers dashboard...');
                     
                     // Mettre à jour le localStorage avec profile_completed = 1
                     const user = getUser();
@@ -960,7 +962,7 @@
                         user.profile_completed = 1;
                         user.profileCompleted = 1; // Les deux formats pour compatibilité
                         localStorage.setItem('swisscv_user', JSON.stringify(user));
-                        console.log('✅ localStorage mis à jour:', user);
+                        console.log(' localStorage mis à jour:', user);
                     }
                     
                     // Rediriger vers le dashboard
@@ -968,13 +970,13 @@
                         window.location.href = 'dashboard.html';
                     }, 500);
                 } else {
-                    console.error('❌ data.success est false:', data.error);
+                    console.error(' data.success est false:', data.error);
                     throw new Error(data.error || 'Erreur inconnue');
                 }
             } catch (error) {
-                console.error('❌ Erreur complète:', error);
-                console.error('❌ Message:', error.message);
-                console.error('❌ Stack:', error.stack);
+                console.error(' Erreur complète:', error);
+                console.error(' Message:', error.message);
+                console.error(' Stack:', error.stack);
                 
                 alert(`Erreur lors de la sauvegarde du profil: ${error.message}\n\nVeuillez vérifier la console pour plus de détails.`);
                 
@@ -998,6 +1000,6 @@
         });
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
 </body>
 </html>

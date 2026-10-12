@@ -264,6 +264,8 @@
             }
         }
     </style>
+    <script src="/analytics.js"></script>
+    <script src="/sync-user.js"></script>
 </head>
 <body>
     <header class="header">
@@ -395,7 +397,11 @@
     <script>
         // Vérifier si l'utilisateur est Premium
         function isPremiumUser() {
-            return localStorage.getItem('swisscv_premium') === 'true';
+            // Plan lu dans le profil synchronisé avec le serveur (sync-user.js), jamais dans un drapeau posé par une page de succès
+            try {
+                var u = JSON.parse(localStorage.getItem('swisscv_user') || 'null');
+                return !!u && (u.tier === 'premium' || u.tier === 'pro');
+            } catch (e) { return false; }
         }
 
         // Afficher le badge approprié

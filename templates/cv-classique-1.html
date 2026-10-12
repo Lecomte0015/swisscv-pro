@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Classique — Geneva Executive</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: #EAECEF;
+  color: #2C2C2C;
+}
+
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0 60px;
+}
+
+.page {
+  display: flex;
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.18);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 36%;
+  background: #1B2A4A;
+  color: white;
+  padding: 44px 28px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.photo-wrap {
+  display: flex;
+  justify-content: center;
+}
+.photo {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 3px solid rgba(201,168,76,0.6);
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.photo-placeholder {
+  font-size: 44px;
+  opacity: 0.35;
+}
+
+.sidebar-name {
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding-bottom: 22px;
+}
+.sidebar-name h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+.sidebar-name .job-title {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #C9A84C;
+}
+
+.s-section { display: flex; flex-direction: column; gap: 9px; }
+.s-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 5px;
+  margin-bottom: 3px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.82);
+}
+.cicon { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.4;
+}
+
+/* Skill bars */
+.skill { margin-bottom: 8px; }
+.skill-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 4px;
+}
+.skill-top .pct { font-size: 10px; color: rgba(255,255,255,0.4); }
+.skill-track {
+  height: 3px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+}
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C9A84C, #E8C96A);
+  border-radius: 2px;
+}
+
+/* Language dots */
+.lang-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.lang-name { font-size: 11.5px; color: rgba(255,255,255,0.85); }
+.lang-sub { font-size: 9.5px; color: rgba(255,255,255,0.38); }
+.lang-dots { display: flex; gap: 4px; }
+.dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+.dot.on { background: #C9A84C; }
+
+/* MAIN */
+.main {
+  width: 64%;
+  padding: 44px 38px 44px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.main-top {
+  border-bottom: 2px solid #1B2A4A;
+  padding-bottom: 18px;
+}
+.main-top h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #1B2A4A;
+  line-height: 1.15;
+}
+.main-top .title-line {
+  margin-top: 5px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #C9A84C;
+}
+
+.m-section { display: flex; flex-direction: column; gap: 12px; }
+.m-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1B2A4A;
+  border-bottom: 2px solid #C9A84C;
+  padding-bottom: 5px;
+  margin-bottom: 4px;
+}
+
+.profile-text {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #4A4A4A;
+}
+
+/* Expérience */
+.exp { margin-bottom: 14px; }
+.exp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.exp-poste {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1B2A4A;
+}
+.exp-dates {
+  font-size: 10.5px;
+  color: #999;
+  white-space: nowrap;
+}
+.exp-co {
+  font-size: 11.5px;
+  color: #C9A84C;
+  font-weight: 600;
+  margin: 1px 0 5px;
+}
+.exp-ul {
+  list-style: none;
+  padding: 0;
+}
+.exp-ul li {
+  font-size: 11.5px;
+  color: #555;
+  line-height: 1.55;
+  padding-left: 13px;
+  position: relative;
+  margin-bottom: 3px;
+}
+.exp-ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #C9A84C;
+  font-size: 9px;
+  top: 3px;
+}
+
+/* Formation */
+.edu { margin-bottom: 10px; }
+.edu-titre { font-size: 12.5px; font-weight: 600; color: #1B2A4A; }
+.edu-ecole { font-size: 11.5px; color: #C9A84C; font-weight: 600; }
+.edu-date { font-size: 10.5px; color: #999; }
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+/* Download bar */
+.dl-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 48px;
+  background: #1B2A4A;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 9999;
+  font-family: 'Source Sans 3', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.dl-bar-left { display: flex; align-items: center; gap: 12px; }
+.dl-badge {
+  background: rgba(201,168,76,0.2);
+  border: 1px solid #C9A84C;
+  color: #C9A84C;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.8); }
+.dl-btn {
+  background: #C9A84C;
+  color: #1B2A4A;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.dl-btn:hover { background: #E8C96A; }
+
+@media (max-width: 600px) {
+  .dl-bar { padding: 0 12px; }
+  .dl-title { display: none; }
+  .dl-btn { padding: 7px 14px; font-size: 12px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div class="dl-bar-left">
+    <span class="dl-badge">Classique</span>
+    <span class="dl-title">Geneva Executive — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="photo-wrap">
+      <div class="photo"><span class="photo-placeholder">👤</span></div>
+    </div>
+
+    <div class="sidebar-name">
+      <h1>Jean-Pierre<br>Müller</h1>
+      <div class="job-title">Directeur Financier</div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-label">Contact</div>
+      <div class="contact-row"><span class="cicon">📍</span><span>Rue de Rive 14<br>1204 Genève</span></div>
+      <div class="contact-row"><span class="cicon">📞</span><span>+41 79 123 45 67</span></div>
+      <div class="contact-row"><span class="cicon">✉️</span><span>jp.muller@email.ch</span></div>
+      <div class="contact-row"><span class="cicon">🔗</span><span>linkedin.com/in/jp-muller</span></div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-label">Informations</div>
+      <div class="info-row"><span class="cicon">🇨🇭</span><span>Nationalité suisse</span></div>
+      <div class="info-row"><span class="cicon">📅</span><span>Né le 15.03.1985</span></div>
+      <div class="info-row"><span class="cicon">🪪</span><span>Permis de conduire B</span></div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-label">Compétences</div>
+      <div class="skill"><div class="skill-top"><span>Analyse financière</span></div><div class="skill-track"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Contrôle de gestion</span></div><div class="skill-track"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>SAP / ERP</span></div><div class="skill-track"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Excel & Power BI</span></div><div class="skill-track"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill"><div class="skill-top"><span>Leadership d'équipe</span></div><div class="skill-track"><div class="skill-fill" style="width:85%"></div></div></div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-label">Langues</div>
+      <div class="lang-row"><div><div class="lang-name">Français</div><div class="lang-sub">Langue maternelle</div></div><div class="lang-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div></div>
+      <div class="lang-row"><div><div class="lang-name">Allemand</div><div class="lang-sub">Courant (C1)</div></div><div class="lang-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div></div>
+      <div class="lang-row"><div><div class="lang-name">Anglais</div><div class="lang-sub">Courant (C1)</div></div><div class="lang-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div></div>
+      <div class="lang-row"><div><div class="lang-name">Italien</div><div class="lang-sub">Intermédiaire (B1)</div></div><div class="lang-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-top">
+      <h1>Jean-Pierre<br>Müller</h1>
+      <div class="title-line">Directeur Financier · CFO</div>
+    </div>
+
+    <div class="m-section">
+      <div class="m-label">Profil Professionnel</div>
+      <p class="profile-text">Directeur financier avec 15 ans d'expérience dans le secteur bancaire et financier suisse. Expertise reconnue en pilotage financier, contrôle de gestion et conformité réglementaire FINMA. Fort leadership, capacité à diriger des équipes pluridisciplinaires et à conduire des projets de transformation dans des environnements complexes.</p>
+    </div>
+
+    <div class="m-section">
+      <div class="m-label">Expérience Professionnelle</div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Directeur Financier (CFO)</span><span class="exp-dates">01.2020 – Présent</span></div>
+        <div class="exp-co">Swiss Financial Group SA — Genève</div>
+        <ul class="exp-ul">
+          <li>Direction d'une équipe de 12 personnes, supervision d'un budget annuel de CHF 250M</li>
+          <li>Implémentation d'un nouveau ERP réduisant les délais de clôture de 40%</li>
+          <li>Présentation des résultats trimestriels au conseil d'administration</li>
+          <li>Gestion de la conformité réglementaire FINMA et audits externes</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Responsable Contrôle de Gestion</span><span class="exp-dates">03.2015 – 12.2019</span></div>
+        <div class="exp-co">UBS AG — Zurich</div>
+        <ul class="exp-ul">
+          <li>Élaboration et suivi du budget consolidé pour 4 divisions (CHF 180M)</li>
+          <li>Mise en œuvre des reportings financiers mensuels et tableaux de bord</li>
+          <li>Coordination des clôtures trimestrielles IFRS</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Analyste Financier Senior</span><span class="exp-dates">06.2011 – 02.2015</span></div>
+        <div class="exp-co">Credit Suisse — Genève</div>
+        <ul class="exp-ul">
+          <li>Analyse de portefeuilles d'investissement et modélisation financière</li>
+          <li>Préparation des due diligences pour opérations M&A</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="m-section">
+      <div class="m-label">Formation</div>
+      <div class="edu">
+        <div class="edu-titre">Master en Finance d'Entreprise</div>
+        <div class="edu-ecole">Université de Genève (UNIGE)</div>
+        <div class="edu-date">2009 – 2011</div>
+      </div>
+      <div class="edu">
+        <div class="edu-titre">Bachelor en Sciences Économiques</div>
+        <div class="edu-ecole">HEC Lausanne (UNIL)</div>
+        <div class="edu-date">2005 – 2009</div>
+      </div>
+      <div class="edu">
+        <div class="edu-titre">Diplôme d'Expert-Comptable Fédéral</div>
+        <div class="edu-ecole">IESFE — Institut Suisse</div>
+        <div class="edu-date">2013</div>
+      </div>
+    </div>
+
+    <div class="m-section">
+      <div class="m-label">Certifications</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="background:#F0F4FF;color:#1B2A4A;font-size:11px;font-weight:600;padding:4px 12px;border-radius:12px;border:1px solid #C9D4F0;">CFA Level II</span>
+        <span style="background:#F0F4FF;color:#1B2A4A;font-size:11px;font-weight:600;padding:4px 12px;border-radius:12px;border:1px solid #C9D4F0;">IFRS Certified</span>
+        <span style="background:#F0F4FF;color:#1B2A4A;font-size:11px;font-weight:600;padding:4px 12px;border-radius:12px;border:1px solid #C9D4F0;">SAP FI/CO</span>
+        <span style="background:#F0F4FF;color:#1B2A4A;font-size:11px;font-weight:600;padding:4px 12px;border-radius:12px;border:1px solid #C9D4F0;">Prince2</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

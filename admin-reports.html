@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rapports Email - SwissCV Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin/css/mobile-menu.css">
     <link rel="stylesheet" href="admin/css/notifications.css">
     <link rel="stylesheet" href="admin/css/dark-mode.css">
     <style>
@@ -228,6 +227,133 @@
         /* Loading */
         .loading { text-align: center; padding: 48px; color: #9ca3af; font-size: 15px; }
 
+        /* Row clickable */
+        .data-table tbody tr { cursor: pointer; }
+        .data-table tbody tr:hover td { background: #f0f4ff; }
+
+        /* ========== MODAL EMAIL PREVIEW ========== */
+        .email-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .email-modal-overlay.open { display: flex; }
+
+        .email-modal {
+            background: white;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 760px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        .email-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .email-modal-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 4px;
+        }
+
+        .email-modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .email-modal-meta span {
+            font-size: 13px;
+            color: #6b7280;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 3px 10px;
+        }
+
+        .email-modal-meta span strong {
+            color: #374151;
+        }
+
+        .email-modal-close {
+            background: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            font-size: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: background 0.2s;
+        }
+        .email-modal-close:hover { background: #e5e7eb; color: #111; }
+
+        .email-modal-body {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .email-modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 480px;
+        }
+
+        .email-modal-no-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 32px;
+            color: #9ca3af;
+            text-align: center;
+            gap: 12px;
+        }
+        .email-modal-no-preview svg {
+            width: 48px;
+            height: 48px;
+            opacity: 0.4;
+        }
+        .email-modal-no-preview p {
+            font-size: 14px;
+            max-width: 320px;
+            line-height: 1.5;
+        }
+
+        .email-modal-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            color: #9ca3af;
+            font-size: 15px;
+            gap: 12px;
+        }
+
         /* Webhook info */
         .info-box {
             background: #eff6ff;
@@ -256,36 +382,12 @@
             .data-table { display: block; overflow-x: auto; }
         }
     </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
 </head>
 
 <body>
-    <nav class="admin-navbar">
-        <h1>🔐 Admin Dashboard</h1>
-        <div class="admin-nav-links">
-            <a href="admin-dashboard.html">Dashboard</a>
-            <a href="admin-users.html">Utilisateurs</a>
-            <a href="admin-testimonials.html">💬 Témoignages</a>
-            <a href="admin-analytics.html">Analytics</a>
-            <a href="admin-support.html">Support</a>
-            <a href="admin-logs.html">Logs</a>
-            <a href="admin-reports.html" class="active">📧 Emails</a>
-            <a href="admin-cms.html">CMS</a>
-            <div class="notifications-container">
-                <button class="notifications-bell">
-                    🔔
-                    <span class="notifications-badge" id="notificationsBadge" style="display:none;">0</span>
-                </button>
-                <div class="notifications-dropdown" id="notificationsDropdown">
-                    <div class="notifications-header">Notifications</div>
-                    <div id="notificationsList">
-                        <div class="notifications-empty">⏳ Chargement...</div>
-                    </div>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="logout()">Déconnexion</button>
-        </div>
-    </nav>
-
     <div class="container">
         <div class="page-header">
             <h2>📧 Emails envoyés</h2>
@@ -372,6 +474,22 @@
                 </tbody>
             </table>
             <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+
+    <!-- ========== MODAL EMAIL PREVIEW ========== -->
+    <div class="email-modal-overlay" id="emailModalOverlay" onclick="closeEmailModal(event)">
+        <div class="email-modal" id="emailModal">
+            <div class="email-modal-header">
+                <div>
+                    <h3 id="modalSubject">Chargement...</h3>
+                    <div class="email-modal-meta" id="modalMeta"></div>
+                </div>
+                <button class="email-modal-close" onclick="closeEmailModalDirect()">✕</button>
+            </div>
+            <div class="email-modal-body" id="modalBody">
+                <div class="email-modal-loading">⏳ Chargement de l'aperçu...</div>
+            </div>
         </div>
     </div>
 
@@ -520,7 +638,7 @@
                 return;
             }
             tbody.innerHTML = logs.map(l => {
-                return '<tr>' +
+                return '<tr onclick="openEmailModal(' + l.id + ')" title="Cliquer pour voir l\'email">' +
                     '<td style="font-weight:500;">' + (l.user_email || '–') + '</td>' +
                     '<td>' + typeBadge(l.template_type) + '</td>' +
                     '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b7280;">' + (l.subject || '–') + '</td>' +
@@ -531,6 +649,81 @@
                 '</tr>';
             }).join('');
         }
+
+        // ========== MODAL EMAIL PREVIEW ==========
+        async function openEmailModal(emailId) {
+            const overlay = document.getElementById('emailModalOverlay');
+            const modalSubject = document.getElementById('modalSubject');
+            const modalMeta = document.getElementById('modalMeta');
+            const modalBody = document.getElementById('modalBody');
+
+            modalSubject.textContent = 'Chargement...';
+            modalMeta.innerHTML = '';
+            modalBody.innerHTML = '<div class="email-modal-loading">⏳ Chargement de l\'aperçu...</div>';
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const res = await fetch(API_BASE + '/admin/emails/' + emailId, {
+                    headers: { 'Authorization': 'Bearer ' + getAdminToken() }
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error || 'Erreur');
+
+                const e = data.email;
+                modalSubject.textContent = e.subject || '(Sans objet)';
+                modalMeta.innerHTML =
+                    '<span><strong>À :</strong> ' + (e.user_email || '–') + '</span>' +
+                    '<span>' + typeBadge(e.template_type) + '</span>' +
+                    '<span><strong>Envoyé :</strong> ' + formatDate(e.sent_at) + '</span>' +
+                    (e.opened_at ? '<span style="color:#065f46;background:#d1fae5;border-color:#a7f3d0;"><strong>Ouvert :</strong> ' + formatDate(e.opened_at) + '</span>' : '') +
+                    (e.clicked_at ? '<span style="color:#1d4ed8;background:#dbeafe;border-color:#93c5fd;"><strong>Cliqué :</strong> ' + formatDate(e.clicked_at) + '</span>' : '');
+
+                if (e.html_content) {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.minHeight = '500px';
+                    iframe.style.border = 'none';
+                    iframe.style.display = 'block';
+                    modalBody.innerHTML = '';
+                    modalBody.appendChild(iframe);
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(e.html_content);
+                    doc.close();
+                    // Adjust iframe height to content
+                    setTimeout(function() {
+                        try {
+                            var h = doc.body.scrollHeight;
+                            if (h > 100) iframe.style.minHeight = Math.min(h + 20, 600) + 'px';
+                        } catch(ex) {}
+                    }, 300);
+                } else {
+                    modalBody.innerHTML =
+                        '<div class="email-modal-no-preview">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>' +
+                        '<p>Aperçu non disponible.<br>Le contenu HTML n\'est enregistré que pour les emails envoyés après la mise à jour du 26 mars 2026.</p>' +
+                        '</div>';
+                }
+            } catch (err) {
+                modalBody.innerHTML = '<div class="email-modal-no-preview"><p>Erreur : ' + err.message + '</p></div>';
+            }
+        }
+
+        function closeEmailModal(event) {
+            if (event.target === document.getElementById('emailModalOverlay')) {
+                closeEmailModalDirect();
+            }
+        }
+
+        function closeEmailModalDirect() {
+            document.getElementById('emailModalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeEmailModalDirect();
+        });
 
         function renderPagination() {
             const el = document.getElementById('pagination');
@@ -547,9 +740,7 @@
 
         loadAll();
     </script>
-    <script src="admin/js/mobile-menu.js"></script>
     <script src="admin/js/notifications.js"></script>
-    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>

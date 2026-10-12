@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -206,12 +207,14 @@
             }
         }
     </style>
+    <script src="/analytics.js"></script>
+    <script src="/checkout-intent.js"></script>
 </head>
 
 <body>
     <div class="auth-container">
         <div class="logo">
-            <div class="logo-icon">🇨🇭</div>
+            <div class="logo-icon"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="2" width="6" height="20" rx="1"/><rect x="2" y="9" width="20" height="6" rx="1"/></svg></div>
             <div class="logo-text">SwissCV Pro</div>
         </div>
 
@@ -310,14 +313,14 @@
             const password = document.getElementById('loginPassword').value;
             const btn = document.getElementById('loginBtn');
 
-            console.log('📤 Tentative de connexion:', email);
+            console.log(' Tentative de connexion:', email);
 
             clearMessages();
             btn.disabled = true;
             btn.innerHTML = 'Connexion en cours...<span class="loading-spinner"></span>';
 
             try {
-                console.log('🌐 Appel API:', `${API_ENDPOINT}/auth/login`);
+                console.log(' Appel API:', `${API_ENDPOINT}/auth/login`);
 
                 const response = await fetch(`${API_ENDPOINT}/auth/login`, {
                     method: 'POST',
@@ -325,41 +328,36 @@
                     body: JSON.stringify({ email, password })
                 });
 
-                console.log('📥 Réponse HTTP:', response.status, response.statusText);
+                console.log(' Réponse HTTP:', response.status, response.statusText);
 
                 const data = await response.json();
-                console.log('📦 Données reçues:', data);
+                console.log(' Données reçues:', data);
 
                 if (data.success) {
-                    console.log('✅ Connexion réussie');
-                    console.log('🔑 Token reçu:', data.token ? 'Oui' : 'Non');
-                    console.log('👤 User reçu:', data.user);
+                    console.log(' Connexion réussie');
+                    console.log(' Token reçu:', data.token ? 'Oui' : 'Non');
+                    console.log(' User reçu:', data.user);
 
                     // Sauvegarder le token
                     localStorage.setItem('swisscv_token', data.token);
                     localStorage.setItem('swisscv_user', JSON.stringify(data.user));
 
-                    console.log('💾 Token sauvegardé:', localStorage.getItem('swisscv_token') ? 'Oui' : 'Non');
-                    console.log('💾 User sauvegardé:', localStorage.getItem('swisscv_user') ? 'Oui' : 'Non');
+                    console.log(' Token sauvegardé:', localStorage.getItem('swisscv_token') ? 'Oui' : 'Non');
+                    console.log(' User sauvegardé:', localStorage.getItem('swisscv_user') ? 'Oui' : 'Non');
 
                     showSuccess('Connexion réussie ! Redirection...');
 
-                    console.log('🔄 Vérification profil complété:', data.user.profileCompleted);
+                    console.log(' Vérification profil complété:', data.user.profileCompleted);
 
                     setTimeout(() => {
-                        console.log('➡️ Redirection maintenant !');
+                        console.log(' Redirection maintenant !');
 
-                        // Rediriger selon profil complété
-                        if (data.user.profileCompleted) {
-                            console.log('✅ Profil complété → dashboard.html');
-                            window.location.href = 'dashboard.html';
-                        } else {
-                            console.log('⚠️ Profil incomplet → onboarding.html');
-                            window.location.href = 'onboarding.html';
-                        }
+                        // Rediriger selon profil complété — ou vers le paiement du plan choisi sur la page tarifs
+                        const defaultPage = data.user.profileCompleted ? 'dashboard.html' : 'app.html';
+                        window.location.href = swisscvIntent.nextPage(defaultPage, data.user.tier || data.user.subscription_tier);
                     }, 1000);
                 } else {
-                    console.error('❌ Connexion échouée:', data.error);
+                    console.error(' Connexion échouée:', data.error);
 
                     // Gérer l'erreur de confirmation d'email
                     if (data.errorCode === 'EMAIL_NOT_CONFIRMED') {
@@ -368,7 +366,7 @@
                         // Ajouter bouton pour renvoyer l'email
                         const errorEl = document.getElementById('errorMessage');
                         const resendBtn = document.createElement('button');
-                        resendBtn.textContent = '📧 Renvoyer l\'email de confirmation';
+                        resendBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Renvoyer l\'email de confirmation';
                         resendBtn.className = 'btn';
                         resendBtn.style.marginTop = '12px';
                         resendBtn.style.background = '#666';
@@ -383,7 +381,7 @@
                     }
                 }
             } catch (error) {
-                console.error('❌ Erreur complète:', error);
+                console.error(' Erreur complète:', error);
                 showError('Erreur de connexion au serveur');
             } finally {
                 btn.disabled = false;
@@ -392,6 +390,8 @@
         });
 
         // Signup
+        if (window.swisscvTrack) swisscvTrack('signup_page_viewed');
+
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -400,7 +400,7 @@
             const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
             const btn = document.getElementById('signupBtn');
 
-            console.log('📤 Tentative d\'inscription:', email);
+            console.log(' Tentative d\'inscription:', email);
 
             clearMessages();
 
@@ -419,26 +419,27 @@
             btn.innerHTML = 'Création en cours...<span class="loading-spinner"></span>';
 
             try {
-                console.log('🌐 Appel API:', `${API_ENDPOINT}/auth/signup`);
+                console.log(' Appel API:', `${API_ENDPOINT}/auth/signup`);
 
                 const response = await fetch(`${API_ENDPOINT}/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email, password, attribution: window.swisscvAttribution ? window.swisscvAttribution() : null })
                 });
 
-                console.log('📥 Réponse HTTP:', response.status, response.statusText);
+                console.log(' Réponse HTTP:', response.status, response.statusText);
 
                 const data = await response.json();
-                console.log('📦 Données reçues:', data);
+                console.log(' Données reçues:', data);
 
                 if (data.success) {
-                    console.log('✅ Inscription réussie');
-                    console.log('🔑 Token reçu:', data.token ? 'Oui' : 'Non');
+                    console.log(' Inscription réussie');
+                    if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
+                    console.log(' Token reçu:', data.token ? 'Oui' : 'Non');
 
-                    showSuccess('🎉 Compte créé avec succès ! Vérifiez votre email pour confirmer votre compte (pensez à vérifier les spams).');
+                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l6.5-2.2c.6 1.3 2 2.2 3.5 2.2 2.2 0 4-1.8 4-4 0-1.5-.9-2.9-2.2-3.5L16 8l6-2-2 6-6.5 2.2"/><path d="M22 2L2 9l7 3 3 7z"/></svg> Compte créé avec succès ! Vérifiez votre email pour confirmer votre compte (pensez à vérifier les spams).');
 
-                    console.log('🔄 Basculer vers onglet connexion dans 5 secondes');
+                    console.log(' Basculer vers onglet connexion dans 5 secondes');
 
                     // Basculer vers l'onglet login après 5 secondes
                     setTimeout(() => {
@@ -446,11 +447,11 @@
                         showSuccess('Confirmez votre email puis connectez-vous !');
                     }, 5000);
                 } else {
-                    console.error('❌ Inscription échouée:', data.error);
+                    console.error(' Inscription échouée:', data.error);
                     showError(data.error || 'Erreur lors de la création du compte');
                 }
             } catch (error) {
-                console.error('❌ Erreur complète:', error);
+                console.error(' Erreur complète:', error);
                 showError('Erreur de connexion au serveur');
             } finally {
                 btn.disabled = false;
@@ -481,7 +482,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    showSuccess('✅ Email de confirmation renvoyé ! Vérifiez votre boîte de réception (et les spams).');
+                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Email de confirmation renvoyé ! Vérifiez votre boîte de réception (et les spams).');
                     // Supprimer le bouton de renvoi
                     const errorEl = document.getElementById('errorMessage');
                     const btn = errorEl.querySelector('button');
@@ -504,6 +505,19 @@
             if (btn) btn.remove();
         }
 
+        // Plan choisi sur la page tarifs (?plan=premium|pro) : mémorisé le temps de se connecter / s'inscrire / confirmer l'email
+        swisscvIntent.captureFromUrl();
+        (function showPlanNotice() {
+            const plan = swisscvIntent.get();
+            const tabs = document.querySelector('.tabs');
+            if (!plan || !tabs) return;
+            const notice = document.createElement('div');
+            notice.id = 'planNotice';
+            notice.style.cssText = 'background:#fff5f5;border:1px solid #fecaca;color:#7f1d1d;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:14px;line-height:1.5;';
+            notice.textContent = 'Plan ' + (plan === 'pro' ? 'Pro' : 'Premium') + ' sélectionné. Connectez-vous ou créez votre compte : vous passerez ensuite directement au paiement.';
+            tabs.parentNode.insertBefore(notice, tabs);
+        })();
+
         // Si déjà connecté, vérifier le profil et rediriger
         (async function () {
             const token = localStorage.getItem('swisscv_token');
@@ -517,12 +531,9 @@
                     if (response.ok) {
                         const data = await response.json();
                         if (data.success && data.user) {
-                            // Rediriger selon profil complété
-                            if (data.user.profileCompleted) {
-                                window.location.href = 'dashboard.html';
-                            } else {
-                                window.location.href = 'onboarding.html';
-                            }
+                            // Rediriger selon profil complété — ou vers le paiement du plan choisi sur la page tarifs
+                            const defaultPage = data.user.profileCompleted ? 'dashboard.html' : 'app.html';
+                            window.location.href = swisscvIntent.nextPage(defaultPage, data.user.tier || data.user.subscription_tier);
                         }
                     } else {
                         // Token invalide, le laisser sur login

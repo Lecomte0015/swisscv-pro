@@ -6,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics — Admin SwissCV Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin/css/mobile-menu.css">
     <link rel="stylesheet" href="admin/css/notifications.css">
     <link rel="stylesheet" href="admin/css/dark-mode.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="admin/js/mobile-menu.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -186,36 +184,12 @@
             }
         }
     </style>
+    <script src="admin/js/session-guard.js"></script>
+    <link rel="stylesheet" href="admin/css/admin-shell.css">
+    <script src="admin/js/admin-shell.js"></script>
 </head>
 
 <body>
-    <nav class="admin-navbar">
-        <h1>🔐 Admin Dashboard</h1>
-        <div class="admin-nav-links">
-            <a href="admin-dashboard.html">Dashboard</a>
-            <a href="admin-users.html">Utilisateurs</a>
-            <a href="admin-testimonials.html">💬 Témoignages</a>
-            <a href="admin-analytics.html" class="active">Analytics</a>
-            <a href="admin-support.html">Support</a>
-            <a href="admin-logs.html">Logs</a>
-            <a href="admin-reports.html">📧 Rapports</a>
-            <a href="admin-cms.html">CMS</a>
-            <div class="notifications-container">
-                <button class="notifications-bell">
-                    🔔
-                    <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
-                </button>
-                <div class="notifications-dropdown" id="notificationsDropdown">
-                    <div class="notifications-header">Notifications</div>
-                    <div id="notificationsList">
-                        <div class="notifications-empty">⏳ Chargement...</div>
-                    </div>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="logout()">Déconnexion</button>
-        </div>
-    </nav>
-
     <div class="container">
         <h2>📊 Analytics Avancées</h2>
 
@@ -225,22 +199,22 @@
             <div class="metric-card">
                 <h3>Taux de Conversion</h3>
                 <div class="value" id="conversionRate">-</div>
-                <div class="trend up">↑ +2.3% vs mois dernier</div>
+                <div class="trend" id="conversionNote" style="color:#9ca3af;font-weight:500;"></div>
             </div>
             <div class="metric-card">
                 <h3>MRR (Monthly Recurring Revenue)</h3>
                 <div class="value" id="mrr">-</div>
-                <div class="trend up">↑ +18% vs mois dernier</div>
+                <div class="trend" id="mrrNote" style="color:#9ca3af;font-weight:500;"></div>
             </div>
             <div class="metric-card">
                 <h3>Churn Rate</h3>
                 <div class="value" id="churnRate">-</div>
-                <div class="trend down">↓ -1.1% vs mois dernier</div>
+                <div class="trend" id="churnRateNote" style="color:#9ca3af;font-weight:500;"></div>
             </div>
             <div class="metric-card">
                 <h3>LTV (Lifetime Value)</h3>
                 <div class="value" id="ltv">-</div>
-                <div class="trend up">↑ +12% vs mois dernier</div>
+                <div class="trend" id="ltvNote" style="color:#9ca3af;font-weight:500;"></div>
             </div>
         </div>
 
@@ -256,6 +230,7 @@
             <div class="chart-card">
                 <h3>Revenus Mensuels</h3>
                 <canvas id="revenueChart"></canvas>
+                <p id="revenueChartNote" style="margin-top:8px;font-size:12px;color:#9ca3af;"></p>
             </div>
             <div class="chart-card">
                 <h3>Funnel de Conversion</h3>
@@ -293,9 +268,31 @@
                 };
 
                 if (elements.conversionRate) elements.conversionRate.textContent = `${data.conversion_rate || 0}%`;
-                if (elements.mrr) elements.mrr.textContent = `€${data.mrr || 0}`;
-                if (elements.churnRate) elements.churnRate.textContent = `${data.churn_rate || 0}%`;
-                if (elements.ltv) elements.ltv.textContent = `€${data.ltv || 0}`;
+                if (elements.mrr) elements.mrr.textContent = `CHF ${data.mrr || 0}`;
+                const convNoteEl = document.getElementById('conversionNote');
+                if (convNoteEl && data.real_users !== undefined) {
+                    convNoteEl.textContent = `${data.paying_customers} client(s) payant(s) sur ${data.real_users} inscrits réels — voir l'onglet Marketing`;
+                }
+                const mrrNoteEl = document.getElementById('mrrNote');
+                if (mrrNoteEl && data.mrr_basis === 'list_price') {
+                    mrrNoteEl.textContent = 'Au tarif public, avant remises (ex. SWISS20)';
+                }
+
+                if (elements.churnRate) {
+                    elements.churnRate.textContent = (data.churn_rate === null || data.churn_rate === undefined) ? 'N/D' : `${data.churn_rate}%`;
+                }
+                const churnRateNoteEl = document.getElementById('churnRateNote');
+                if (churnRateNoteEl && (data.churn_rate === null || data.churn_rate === undefined)) {
+                    churnRateNoteEl.textContent = 'Historique insuffisant';
+                }
+
+                if (elements.ltv) {
+                    elements.ltv.textContent = (data.ltv === null || data.ltv === undefined) ? 'N/D' : `CHF ${data.ltv}`;
+                }
+                const ltvNoteEl = document.getElementById('ltvNote');
+                if (ltvNoteEl && (data.ltv === null || data.ltv === undefined)) {
+                    ltvNoteEl.textContent = 'Historique insuffisant';
+                }
 
                 // Créer graphiques avec vraies données
                 createGrowthChart(data.monthly_registrations);
@@ -401,15 +398,33 @@
 
         // Revenue Chart avec vraies données
         function createRevenueChart(metrics) {
+            const monthlyMrr = metrics.monthly_mrr || {};
+            const months = Object.keys(monthlyMrr).sort();
+            const monthLabels = { '01': 'Jan', '02': 'Fév', '03': 'Mar', '04': 'Avr', '05': 'Mai', '06': 'Juin', '07': 'Juil', '08': 'Août', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Déc' };
+
+            const labels = months.map(m => {
+                const [year, month] = m.split('-');
+                return `${monthLabels[month] || month} ${year}`;
+            });
+            const data = months.map(m => monthlyMrr[m]);
+
+            const note = document.getElementById('revenueChartNote');
+            if (note) {
+                note.textContent = months.length <= 1
+                    ? 'Suivi démarré récemment — l\'historique se construira jour après jour.'
+                    : `Basé sur ${months.length} mois d'instantanés réels du MRR.`;
+            }
+
             new Chart(document.getElementById('revenueChart'), {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                    labels: labels.length ? labels : ['Aujourd\'hui'],
                     datasets: [{
-                        label: 'Revenus (€)',
-                        data: [0, 0, 0, 0, 0, parseFloat(metrics.mrr)],
+                        label: 'Revenus (CHF)',
+                        data: data.length ? data : [parseFloat(metrics.mrr) || 0],
                         borderColor: '#f59e0b',
                         backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        spanGaps: false,
                         tension: 0.4
                     }]
                 },
@@ -503,9 +518,7 @@
             initPage();
         }
     </script>
-    <script src="admin/js/mobile-menu.js"></script>
     <script src="admin/js/notifications.js"></script>
-    <script src="admin/js/dark-mode.js"></script>
 </body>
 
 </html>

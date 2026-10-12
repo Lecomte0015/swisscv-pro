@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -257,6 +258,7 @@
             color: #666;
         }
     </style>
+    <script src="/analytics.js"></script>
 </head>
 
 <body>
@@ -533,11 +535,11 @@
             <!-- Menu Outils CV (Premium/Pro) -->
             <div class="navbar-dropdown" id="cvToolsMenu" style="display:none;">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    🎯 Outils CV <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
@@ -547,17 +549,17 @@
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    📊 Suivi <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="favorites.html" class="dropdown-item">⭐ Favoris <span id="favoritesBadge"
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris <span id="favoritesBadge"
                             style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
                     <a href="job-tracker.html" class="dropdown-item">Tracker</a>
                 </div>
             </div>
 
             <a href="profile.html" class="navbar-link">Profil</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
 
             <a href="support.html" class="navbar-link">Support</a>
             <a href="team.html" class="navbar-link" id="teamLink" style="display:none;">Équipe</a>
@@ -618,7 +620,7 @@
         })();
     </script>
     <!-- Système de Notifications -->
-    <script src="public/js/notifications.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
 </body>
 
 </html>

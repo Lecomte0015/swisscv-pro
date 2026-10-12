@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="public/css/credits.css">
     <link rel="stylesheet" href="public/css/user-menu.css">
     <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
         * {
             margin: 0;
             padding: 0;
@@ -861,6 +862,9 @@
             }
         }
     </style>
+    <script src="sync-user.js"></script>
+    <script src="/analytics.js"></script>
+    <script src="/checkout-intent.js"></script>
 </head>
 
 <body>
@@ -878,31 +882,31 @@
             <!-- Menu Outils CV -->
             <div class="navbar-dropdown" id="cvToolsMenu">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    🎯 Outils CV <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
                     <a href="app.html" class="dropdown-item">Analyser CV</a>
-                    <a href="cv-templates.html" class="dropdown-item">📄 Templates</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
                     <a href="cover-letter.html" class="dropdown-item">Lettre</a>
                 </div>
             </div>
 
             <a href="job-search.html" class="navbar-link">Offres</a>
-            <a href="interview-prep.html" class="navbar-link">🎯 Entretien</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
 
             <!-- Menu Suivi -->
             <div class="navbar-dropdown">
                 <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
-                    📊 Suivi <span class="arrow">▼</span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="favorites.html" class="dropdown-item">⭐ Favoris</a>
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris</a>
                     <a href="job-tracker.html" class="dropdown-item">Tracker</a>
                 </div>
             </div>
 
             <!-- Lien Team (Pro uniquement) -->
-            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;">👥 Team</a>
+            <a href="team.html" class="navbar-link pro-only-link" id="teamNavLink" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team</a>
 
             <!-- Credit Balance Display -->
             <div class="credits-display" title="Voir mes crédits">
@@ -924,29 +928,29 @@
                     <div class="user-menu-divider"></div>
 
                     <a href="profile.html" class="user-menu-item">
-                        <span class="menu-icon">👤</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                         <span>Mon Profil</span>
                     </a>
 
                     <a href="support.html" class="user-menu-item">
-                        <span class="menu-icon">💬</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
                         <span>Support</span>
                     </a>
 
                     <a href="credits.html" class="user-menu-item">
-                        <span class="menu-icon">💳</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
                         <span>Crédits</span>
                     </a>
 
                     <a href="settings.html" class="user-menu-item">
-                        <span class="menu-icon">⚙️</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                         <span>Paramètres</span>
                     </a>
 
                     <div class="user-menu-divider"></div>
 
                     <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
-                        <span class="menu-icon">🚪</span>
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                         <span>Déconnexion</span>
                     </a>
                 </div>
@@ -1004,6 +1008,20 @@
             <p>Gérez votre solde de crédits et consultez votre historique d'utilisation</p>
         </div>
 
+        <div id="jobPackBadge" style="display:none;background:#111827;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;color:white;">
+            <svg class="icon" style="width:20px;height:20px;color:#fca5a5;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <span style="font-size:14px;">Pack Recherche d'Emploi actif — paiement unique, aucun renouvellement</span>
+        </div>
+
+        <div class="job-pack-banner" style="background:linear-gradient(135deg,#D50000 0%,#7f1d1d 100%);border-radius:14px;padding:24px 28px;margin-bottom:24px;color:white;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.85;margin-bottom:6px;">Nouveau — paiement unique</div>
+                <div style="font-size:19px;font-weight:700;margin-bottom:4px;">Pack Recherche d'Emploi</div>
+                <div style="font-size:14px;opacity:.9;">Tous les outils essentiels pour votre recherche, sans abonnement.</div>
+            </div>
+            <a href="pack-recherche-emploi.html" style="background:white;color:#D50000;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap;">Découvrir le Pack →</a>
+        </div>
+
         <div class="credits-grid">
             <div class="credit-card">
                 <h2>Solde Actuel</h2>
@@ -1029,7 +1047,7 @@
 
         <!-- Section Recharge de Crédits -->
         <div class="recharge-section" id="rechargeSection">
-            <h2>💳 Recharger mes crédits</h2>
+            <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Recharger mes crédits</h2>
             <p class="section-description">Achetez des crédits supplémentaires pour continuer à utiliser nos services</p>
 
             <div class="credit-packs">
@@ -1063,7 +1081,7 @@
 
         <!-- Section Plans d'abonnement -->
         <div class="subscription-section">
-            <h2>🚀 Passer à un plan supérieur</h2>
+            <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Passer à un plan supérieur</h2>
             <p class="section-description">Débloquez plus de fonctionnalités avec un abonnement</p>
 
             <div class="plans-grid">
@@ -1112,16 +1130,16 @@
 
         <!-- Section Méthode de paiement -->
         <div class="payment-section">
-            <h2>💰 Méthode de paiement</h2>
+            <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Méthode de paiement</h2>
             <div class="payment-card" id="paymentMethodCard">
                 <div class="no-payment-method" id="noPaymentMethod">
-                    <div class="no-payment-icon">💳</div>
+                    <div class="no-payment-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
                     <p>Aucune carte enregistrée</p>
                     <button class="add-card-btn" onclick="addPaymentMethod()">Ajouter une carte</button>
                 </div>
                 <div class="saved-payment-method" id="savedPaymentMethod" style="display: none;">
                     <div class="card-info">
-                        <div class="card-brand" id="cardBrand">💳</div>
+                        <div class="card-brand" id="cardBrand"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
                         <div class="card-details">
                             <span class="card-number" id="cardNumber">•••• •••• •••• 4242</span>
                             <span class="card-expiry" id="cardExpiry">Expire 12/25</span>
@@ -1136,10 +1154,10 @@
         </div>
 
         <div class="history-section">
-            <h2>📊 Historique d'utilisation</h2>
+            <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Historique d'utilisation</h2>
             <div class="transaction-list" id="transactionList">
                 <div class="empty-state">
-                    <div class="empty-state-icon">📭</div>
+                    <div class="empty-state-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
                     <h3>Aucune transaction</h3>
                     <p>Votre historique d'utilisation apparaîtra ici</p>
                 </div>
@@ -1148,10 +1166,10 @@
     </div>
 
     <!-- Load auth.js first to provide authenticatedFetch -->
-    <script src="public/js/auth.js"></script>
+    <script src="public/js/auth.js?v=20260821a"></script>
     <!-- Load notifications.js for notification bell -->
-    <script src="public/js/notifications.js?v=1766451961"></script>
-    <script src="public/js/credits.js"></script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
+    <script src="public/js/credits.js?v=20260821a"></script>
     <script>
         const API_BASE = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
 
@@ -1234,6 +1252,12 @@
             if (data.balance <= data.monthly_limit * 0.2) {
                 document.getElementById('upgradeCta').style.display = 'block';
             }
+
+            if (data.has_job_pack) {
+                document.getElementById('jobPackBadge').style.display = 'flex';
+                const banner = document.querySelector('.job-pack-banner');
+                if (banner) banner.style.display = 'none';
+            }
         }
 
         function displayHistory(transactions) {
@@ -1244,12 +1268,14 @@
             }
 
             const actionIcons = {
-                'cv_analysis': '📄',
-                'cover_letter': '✉️',
-                'interview_prep': '🎯',
-                'cv_compare': '📊',
-                'monthly_reset': '🔄',
-                'credit_purchase': '💰'
+                'cv_analysis': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+                'cover_letter': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>',
+                'interview_prep': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                'cv_compare': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+                'cv_template': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+                'monthly_reset': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+                'credit_purchase': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+                'job_pack_purchase': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
             };
 
             const actionNames = {
@@ -1257,8 +1283,10 @@
                 'cover_letter': 'Lettre de motivation',
                 'interview_prep': 'Préparation entretien',
                 'cv_compare': 'Comparaison CV/Offre',
+                'cv_template': 'Création de CV suisse',
                 'monthly_reset': 'Reset mensuel',
-                'credit_purchase': 'Achat de crédits'
+                'credit_purchase': 'Achat de crédits',
+                'job_pack_purchase': "Pack Recherche d'Emploi"
             };
 
             list.innerHTML = transactions.map(t => {
@@ -1276,7 +1304,7 @@
                 return `
                     <div class="transaction-item">
                         <div class="transaction-info">
-                            <div class="transaction-icon">${actionIcons[t.action_type] || '💳'}</div>
+                            <div class="transaction-icon">${actionIcons[t.action_type] || '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>'}</div>
                             <div class="transaction-details">
                                 <h3>${actionNames[t.action_type] || t.action_type}</h3>
                                 <p>${date}</p>
@@ -1352,6 +1380,7 @@
 
                 const data = await response.json();
                 if (data.url) {
+                    if (typeof gtag === 'function') gtag('event', 'begin_checkout', { currency: 'CHF', items: [{ item_name: credits + ' credits' }] });
                     window.location.href = data.url;
                 } else {
                     throw new Error('URL de paiement non reçue');
@@ -1381,6 +1410,7 @@
 
                 const data = await response.json();
                 if (data.url) {
+                    if (typeof gtag === 'function') gtag('event', 'begin_checkout', { currency: 'CHF', items: [{ item_name: plan }] });
                     window.location.href = data.url;
                 } else {
                     throw new Error('URL de paiement non reçue');
@@ -1461,11 +1491,11 @@
                     document.getElementById('savedPaymentMethod').style.display = 'flex';
 
                     const brandIcons = {
-                        'visa': '💳 Visa',
-                        'mastercard': '💳 Mastercard',
-                        'amex': '💳 Amex'
+                        'visa': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Visa',
+                        'mastercard': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Mastercard',
+                        'amex': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Amex'
                     };
-                    document.getElementById('cardBrand').textContent = brandIcons[data.paymentMethod.brand] || '💳';
+                    document.getElementById('cardBrand').textContent = brandIcons[data.paymentMethod.brand] || '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>';
                     document.getElementById('cardNumber').textContent = '•••• •••• •••• ' + data.paymentMethod.last4;
                     document.getElementById('cardExpiry').textContent = 'Expire ' + data.paymentMethod.exp_month + '/' + data.paymentMethod.exp_year;
                 }
@@ -1483,32 +1513,74 @@
             document.getElementById('loadingOverlay').classList.remove('show');
         }
 
+        // Vérifie auprès du serveur (et non via l'URL) qu'un paiement a bien été confirmé par Stripe
+        async function verifyCheckoutReturn(sessionId) {
+            if (!sessionId) {
+                showNotification('Retour de paiement reçu. Vos crédits apparaîtront dès la confirmation de Stripe.', 'info');
+                loadCreditData();
+                return;
+            }
+            showNotification('Confirmation du paiement en cours…', 'info');
+            for (let attempt = 0; attempt < 12; attempt++) {
+                try {
+                    const res = await authenticatedFetch('/stripe/checkout-status?session_id=' + encodeURIComponent(sessionId));
+                    const data = res ? await res.json() : null;
+                    if (data && data.success && data.status === 'completed') {
+                        showNotification('Paiement confirmé : ' + Number(data.credits) + ' crédits ont été ajoutés à votre compte.', 'success');
+                        loadCreditData();
+                        return;
+                    }
+                } catch (e) { /* on réessaie */ }
+                await new Promise(r => setTimeout(r, 2500));
+            }
+            showNotification('Paiement en cours de confirmation par Stripe. Vos crédits apparaîtront sous peu ; sans changement d\'ici quelques minutes, contactez le support.', 'warning');
+            loadCreditData();
+        }
+
+        // Arrivée depuis la page tarifs avec un plan choisi (?checkout=premium|pro) : on ouvre directement le paiement.
+        // Le paramètre est retiré de l'URL AVANT la redirection : un retour arrière depuis Stripe ne relance pas le paiement.
+        async function maybeAutoCheckout() {
+            const wanted = new URLSearchParams(window.location.search).get('checkout');
+            if (wanted !== 'premium' && wanted !== 'pro') return;
+            window.history.replaceState({}, document.title, window.location.pathname);
+            if (window.swisscvIntent) swisscvIntent.clear();
+            try {
+                const res = await authenticatedFetch('/credits/balance');
+                const data = res ? await res.json() : null;
+                const rank = { free: 0, premium: 1, pro: 2 };
+                if (data && data.success && (rank[data.tier] || 0) >= rank[wanted]) {
+                    showNotification('Vous avez déjà le plan ' + (data.tier === 'pro' ? 'Pro' : 'Premium') + ' ou supérieur.', 'info');
+                    return;
+                }
+            } catch (e) { /* le serveur revérifie de toute façon */ }
+            upgradePlan(wanted);
+        }
+
         // Handle URL parameters (success/cancel from Stripe)
         function handleUrlParams() {
             const params = new URLSearchParams(window.location.search);
 
             if (params.get('success') === 'true') {
-                const credits = params.get('credits');
-                showNotification(`🎉 Achat réussi ! ${credits} crédits ont été ajoutés à votre compte.`, 'success');
-                // Reload credit data
-                loadCreditData();
-                // Clean URL
+                // Une URL de retour n'est JAMAIS une preuve de paiement : on interroge le serveur, qui ne répond
+                // « confirmé » qu'après réception du webhook Stripe signé.
+                const sessionId = params.get('session_id');
                 window.history.replaceState({}, document.title, window.location.pathname);
+                verifyCheckoutReturn(sessionId);
             }
 
             if (params.get('canceled') === 'true') {
-                showNotification('❌ Achat annulé.', 'warning');
+                showNotification('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Achat annulé.', 'warning');
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
             if (params.get('card_added') === 'true') {
-                showNotification('✅ Carte ajoutée avec succès !', 'success');
+                showNotification('Retour de Stripe : votre carte apparaîtra ci-dessous dès sa validation.', 'info');
                 loadPaymentMethod();
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
             if (params.get('card_canceled') === 'true') {
-                showNotification('❌ Ajout de carte annulé.', 'warning');
+                showNotification('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Ajout de carte annulé.', 'warning');
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
@@ -1562,6 +1634,7 @@
             handleUrlParams();
             updatePlanCards();
             loadPaymentMethod();
+            maybeAutoCheckout();
         });
     </script>
 

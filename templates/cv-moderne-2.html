@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Moderne — Basel Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body { font-family: 'DM Sans', sans-serif; background: #E2E5E9; color: #1A1A1A; }
+.page-wrapper { display: flex; justify-content: center; padding: 30px 0 60px; }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.2);
+  display: flex;
+}
+
+/* SIDEBAR LEFT */
+.sidebar {
+  width: 38%;
+  background: #0F1923;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-top {
+  padding: 44px 28px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.photo {
+  width: 96px; height: 96px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  overflow: hidden;
+}
+.photo span { font-size: 40px; opacity: 0.25; }
+
+.s-name {
+  text-align: center;
+  margin-bottom: 6px;
+}
+.s-name h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+.s-role {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: #2DD4BF;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Contact in sidebar */
+.s-contact { display: flex; flex-direction: column; gap: 8px; }
+.s-contact-row {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11.5px; color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+.s-contact-icon {
+  width: 26px; height: 26px;
+  background: rgba(45,212,191,0.1);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Sidebar sections */
+.sidebar-body { padding: 28px; display: flex; flex-direction: column; gap: 24px; flex: 1; }
+
+.s-sec-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 10px;
+}
+
+/* Info */
+.s-info-item {
+  display: flex; gap: 8px;
+  font-size: 11px; color: rgba(255,255,255,0.6);
+  margin-bottom: 5px; align-items: flex-start;
+}
+
+/* Skills */
+.sk-item { margin-bottom: 10px; }
+.sk-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.sk-name { font-size: 11.5px; color: rgba(255,255,255,0.75); font-weight: 500; }
+.sk-pct { font-size: 10px; color: #2DD4BF; font-weight: 600; }
+.sk-track { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.sk-fill { height: 100%; background: #2DD4BF; border-radius: 2px; }
+
+/* Lang */
+.lang-item { margin-bottom: 9px; }
+.lang-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.lang-name { font-size: 11.5px; color: rgba(255,255,255,0.8); font-weight: 500; }
+.lang-lv { font-size: 10px; color: #2DD4BF; font-weight: 600; }
+.lang-dots { display: flex; gap: 3px; }
+.ld { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+.ld.on { background: #2DD4BF; }
+
+/* Certifs */
+.cert-item {
+  display: flex; gap: 8px; align-items: flex-start;
+  margin-bottom: 8px;
+}
+.cert-dot { width: 6px; height: 6px; border-radius: 50%; background: #2DD4BF; flex-shrink: 0; margin-top: 4px; }
+.cert-text { font-size: 11px; color: rgba(255,255,255,0.65); line-height: 1.45; }
+
+/* MAIN */
+.main { flex: 1; padding: 40px 36px; display: flex; flex-direction: column; gap: 24px; }
+
+.m-top {}
+.m-top h1 {
+  font-size: 30px; font-weight: 700; color: #0F1923;
+  line-height: 1.15; letter-spacing: -0.5px;
+}
+.m-top .m-role {
+  font-size: 13px; color: #2DD4BF; font-weight: 600; margin-top: 4px;
+}
+.m-top .m-tagline {
+  font-size: 11.5px; color: #999; margin-top: 3px;
+}
+
+/* Section */
+.m-sec { display: flex; flex-direction: column; gap: 12px; }
+.m-sec-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: #0F1923;
+  border-left: 3px solid #2DD4BF;
+  padding-left: 10px;
+  margin-bottom: 2px;
+}
+
+.profile-p { font-size: 12px; line-height: 1.78; color: #555; }
+
+/* Exp */
+.exp { margin-bottom: 16px; }
+.exp-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 4px; }
+.exp-poste { font-size: 13px; font-weight: 600; color: #111; }
+.exp-badge {
+  font-size: 10px; font-weight: 600; color: white;
+  background: #0F1923;
+  padding: 2px 9px; border-radius: 10px;
+}
+.exp-co { font-size: 11.5px; color: #888; margin: 2px 0 5px; }
+.exp-co strong { color: #2DD4BF; }
+.exp-ul { list-style: none; }
+.exp-ul li {
+  font-size: 11.5px; color: #555; line-height: 1.55;
+  padding-left: 14px; position: relative; margin-bottom: 3px;
+}
+.exp-ul li::before {
+  content: '›'; position: absolute; left: 0;
+  color: #2DD4BF; font-size: 14px; top: -1px;
+}
+
+/* Edu */
+.edu { margin-bottom: 10px; }
+.edu-deg { font-size: 12.5px; font-weight: 600; color: #111; }
+.edu-sch { font-size: 11.5px; color: #2DD4BF; font-weight: 500; }
+.edu-yr { font-size: 10.5px; color: #999; }
+
+/* Tags */
+.tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 10.5px; font-weight: 500;
+  background: #F0FDFA; color: #0F766E;
+  border: 1px solid #99F6E4;
+  padding: 3px 10px; border-radius: 10px;
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page-wrapper { padding: 0; }
+  .page { box-shadow: none; }
+  .dl-bar { display: none !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+.dl-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: #0F1923;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 9999;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+.dl-badge { background: rgba(45,212,191,0.15); border: 1px solid #2DD4BF; color: #2DD4BF; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+.dl-title { font-size: 13px; color: rgba(255,255,255,0.6); margin-left: 12px; }
+.dl-btn { background: #2DD4BF; color: #0F1923; border: none; padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.dl-btn:hover { background: #5EEAD4; }
+@media (max-width: 600px) { .dl-bar { padding: 0 12px; } .dl-title { display: none; } .dl-btn { padding: 7px 14px; font-size: 12px; } }
+
+</style>
+</head>
+<body>
+
+<div class="dl-bar">
+  <div style="display:flex;align-items:center">
+    <span class="dl-badge">Moderne</span>
+    <span class="dl-title">Basel Tech — SwissCV Pro</span>
+  </div>
+  <button class="dl-btn" onclick="window.print()">⬇ Exporter en PDF</button>
+</div>
+<div style="height:48px"></div>
+
+<div class="page-wrapper">
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <div class="photo"><span>👤</span></div>
+      <div class="s-name"><h2>Nadia<br>Fontaine</h2></div>
+      <div class="s-role">Product Manager · Fintech</div>
+      <div class="s-contact">
+        <div class="s-contact-row"><div class="s-contact-icon">📍</div><span>Aeschenplatz 6<br>4051 Bâle</span></div>
+        <div class="s-contact-row"><div class="s-contact-icon">📞</div><span>+41 61 345 67 89</span></div>
+        <div class="s-contact-row"><div class="s-contact-icon">✉️</div><span>n.fontaine@email.ch</span></div>
+        <div class="s-contact-row"><div class="s-contact-icon">🔗</div><span>linkedin.com/in/nfontaine</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-body">
+
+      <div>
+        <div class="s-sec-title">Informations</div>
+        <div class="s-info-item"><span>🇨🇭</span><span>Nationalité suisse</span></div>
+        <div class="s-info-item"><span>📅</span><span>Née le 03.05.1991</span></div>
+        <div class="s-info-item"><span>🪪</span><span>Permis B</span></div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Compétences</div>
+        <div class="sk-item"><div class="sk-top"><span class="sk-name">Product Strategy</span><span class="sk-pct">95%</span></div><div class="sk-track"><div class="sk-fill" style="width:95%"></div></div></div>
+        <div class="sk-item"><div class="sk-top"><span class="sk-name">Agile / Scrum</span><span class="sk-pct">92%</span></div><div class="sk-track"><div class="sk-fill" style="width:92%"></div></div></div>
+        <div class="sk-item"><div class="sk-top"><span class="sk-name">Data Analysis</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill" style="width:80%"></div></div></div>
+        <div class="sk-item"><div class="sk-top"><span class="sk-name">UX Research</span><span class="sk-pct">78%</span></div><div class="sk-track"><div class="sk-fill" style="width:78%"></div></div></div>
+        <div class="sk-item"><div class="sk-top"><span class="sk-name">SQL / Analytics</span><span class="sk-pct">72%</span></div><div class="sk-track"><div class="sk-fill" style="width:72%"></div></div></div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Langues</div>
+        <div class="lang-item"><div class="lang-top"><span class="lang-name">Français</span><span class="lang-lv">Natif</span></div><div class="lang-dots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div></div>
+        <div class="lang-item"><div class="lang-top"><span class="lang-name">Anglais</span><span class="lang-lv">C2</span></div><div class="lang-dots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div></div>
+        <div class="lang-item"><div class="lang-top"><span class="lang-name">Allemand</span><span class="lang-lv">B2</span></div><div class="lang-dots"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div></div></div>
+        <div class="lang-item"><div class="lang-top"><span class="lang-name">Italien</span><span class="lang-lv">A2</span></div><div class="lang-dots"><div class="ld on"></div><div class="ld on"></div><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>
+      </div>
+
+      <div>
+        <div class="s-sec-title">Certifications</div>
+        <div class="cert-item"><div class="cert-dot"></div><div class="cert-text">PSPO II — Scrum.org</div></div>
+        <div class="cert-item"><div class="cert-dot"></div><div class="cert-text">Google Analytics 4</div></div>
+        <div class="cert-item"><div class="cert-dot"></div><div class="cert-text">AWS Cloud Practitioner</div></div>
+        <div class="cert-item"><div class="cert-dot"></div><div class="cert-text">CFA Level I</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="m-top">
+      <h1>Nadia<br>Fontaine</h1>
+      <div class="m-role">Product Manager · Fintech & Payments</div>
+      <div class="m-tagline">Bâle, Suisse · Disponible immédiatement</div>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Profil</div>
+      <p class="profile-p">Product Manager avec 8 ans d'expérience dans la fintech et les paiements numériques. Forte capacité à transformer des insights utilisateurs en feuilles de route produit actionnables. Habituée à travailler en autonomie dans des organisations agiles internationales, avec un track record de lancement de produits à fort impact (ARR +CHF 12M).</p>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Expérience</div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Senior Product Manager</span><span class="exp-badge">01.2022 – Présent</span></div>
+        <div class="exp-co"><strong>SIX Group AG</strong> — Bâle</div>
+        <ul class="exp-ul">
+          <li>Ownership du produit SIX Payment Terminal (2.4M transactions/jour, 18 pays)</li>
+          <li>Lancement de la fonctionnalité TWINT intégrée : +340K utilisateurs en 6 mois</li>
+          <li>Animation de 4 squads cross-fonctionnelles (32 personnes) en mode OKR</li>
+          <li>Réduction du churn de 18% grâce à une refonte de l'onboarding (A/B testing)</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Product Manager</span><span class="exp-badge">04.2019 – 12.2021</span></div>
+        <div class="exp-co"><strong>PostFinance AG</strong> — Berne</div>
+        <ul class="exp-ul">
+          <li>Refonte complète de l'application mobile PostFinance (1.2M utilisateurs actifs)</li>
+          <li>Implémentation du framework RICE pour la priorisation du backlog</li>
+          <li>Coordination avec les équipes compliance FINMA et IT Security</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="exp-head"><span class="exp-poste">Business Analyst</span><span class="exp-badge">09.2016 – 03.2019</span></div>
+        <div class="exp-co"><strong>Aduno Gruppe</strong> — Zurich</div>
+        <ul class="exp-ul">
+          <li>Analyse des flux de paiements et modélisation des processus métier</li>
+          <li>Rédaction de spécifications fonctionnelles pour l'équipe de développement</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Formation</div>
+      <div class="edu">
+        <div class="edu-deg">Master en Management (MScM) — Finance</div>
+        <div class="edu-sch">Université de Saint-Gall (HSG)</div>
+        <div class="edu-yr">2014 – 2016</div>
+      </div>
+      <div class="edu">
+        <div class="edu-deg">Bachelor en Économie & Informatique</div>
+        <div class="edu-sch">HESB — Berne University of Applied Sciences</div>
+        <div class="edu-yr">2011 – 2014</div>
+      </div>
+    </div>
+
+    <div class="m-sec">
+      <div class="m-sec-title">Outils & Méthodes</div>
+      <div class="tag-row">
+        <span class="tag">Jira</span><span class="tag">Confluence</span><span class="tag">Figma</span>
+        <span class="tag">Mixpanel</span><span class="tag">Amplitude</span><span class="tag">Tableau</span>
+        <span class="tag">OKR</span><span class="tag">Shape Up</span><span class="tag">Design Thinking</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>

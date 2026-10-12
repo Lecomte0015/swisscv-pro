@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Préférences email — SwissCV Pro</title>
+    <link rel="canonical" href="https://swisscv-pro.ch/unsubscribe">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #F4F4F5; font-family: 'Inter', -apple-system, 'Segoe UI', Arial, sans-serif; color: #0D0D0D; }
+        .card { width: 100%; max-width: 480px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, .08); }
+        .band { background: #D50000; padding: 18px 28px; display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 700; font-size: 18px; }
+        .mark { width: 30px; height: 30px; border-radius: 8px; background: #fff; color: #D50000; display: grid; place-items: center; font-size: 22px; font-weight: 800; }
+        .body { padding: 28px; }
+        h1 { margin: 0 0 10px; font-size: 22px; letter-spacing: -.01em; }
+        p { margin: 0 0 20px; color: #4B5563; line-height: 1.6; font-size: 15px; }
+        button { width: 100%; min-height: 48px; border: 0; border-radius: 10px; background: #D50000; color: #fff; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+        button.secondary { background: #fff; color: #0D0D0D; border: 1px solid #D1D5DB; }
+        button:disabled { opacity: .6; cursor: wait; }
+        button:focus-visible { outline: 3px solid #3B82F6; outline-offset: 2px; }
+        a { color: #D50000; }
+        .small { font-size: 13px; color: #6B7280; margin-top: 18px; margin-bottom: 0; }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <div class="band"><span class="mark" aria-hidden="true">+</span> SwissCV Pro</div>
+        <div class="body" id="box" aria-live="polite">
+            <h1>Chargement…</h1>
+        </div>
+    </main>
+    <script>
+        (function () {
+            var API = 'https://swisscv-pro.dallyhermann-71e.workers.dev';
+            var q = new URLSearchParams(location.search);
+            var u = q.get('u'), t = q.get('t');
+            var box = document.getElementById('box');
+            function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+            function qs() { return '?u=' + encodeURIComponent(u) + '&t=' + encodeURIComponent(t); }
+            function invalid() {
+                box.innerHTML = '<h1>Lien invalide</h1><p>Ce lien de désinscription n\'est pas valide ou est incomplet. Utilisez le lien présent en bas du dernier email reçu, ou écrivez-nous à <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a>.</p>';
+            }
+            function render(unsub) {
+                if (unsub) {
+                    box.innerHTML = '<h1>Vous êtes désinscrit(e)</h1><p>Vous ne recevrez plus d\'emails promotionnels de SwissCV Pro. Vous continuerez à recevoir les emails liés à votre compte (confirmation, paiement, sécurité).</p>' +
+                        '<button type="button" class="secondary" id="act">Je me suis trompé(e) : me réabonner</button><p class="small">Besoin d\'aide ? <a href="mailto:contact@swisscv-pro.ch">contact@swisscv-pro.ch</a></p>';
+                } else {
+                    box.innerHTML = '<h1>Se désinscrire des emails</h1><p>Confirmez que vous ne souhaitez plus recevoir d\'emails promotionnels de SwissCV Pro (offres, nouveautés, vœux). Les emails liés à votre compte restent actifs.</p>' +
+                        '<button type="button" id="act">Me désinscrire</button><p class="small">Vous pouvez changer d\'avis plus tard sur cette même page.</p>';
+                }
+                document.getElementById('act').addEventListener('click', function () {
+                    var b = this; b.disabled = true;
+                    fetch(API + '/marketing/' + (unsub ? 'resubscribe' : 'unsubscribe') + qs(), { method: 'POST' })
+                        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok && d.success, d: d }; }); })
+                        .then(function (x) { if (x.ok) render(!!x.d.unsubscribed); else { b.disabled = false; alert('Une erreur est survenue, réessayez dans un instant.'); } })
+                        .catch(function () { b.disabled = false; alert('Connexion impossible, réessayez dans un instant.'); });
+                });
+            }
+            if (!u || !t) { invalid(); return; }
+            fetch(API + '/marketing/status' + qs())
+                .then(function (r) { return r.json().then(function (d) { return { ok: r.ok && d.success, d: d }; }); })
+                .then(function (x) { if (x.ok) render(!!x.d.unsubscribed); else invalid(); })
+                .catch(function () { box.innerHTML = '<h1>Connexion impossible</h1><p>Réessayez dans un instant.</p>'; });
+        })();
+    </script>
+</body>
+
+</html>
