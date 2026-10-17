@@ -5,6 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Équipe — SwissCV Pro</title>
+    <!-- Identité visuelle (logo, icônes) -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/brand/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#D50000">
+    <link rel="stylesheet" href="/brand/brand.css">
+    <meta property="og:image" content="https://swisscv-pro.ch/brand/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SwissCV Pro — Décrochez plus d'entretiens en Suisse">
+    <meta property="og:site_name" content="SwissCV Pro">
+    <meta name="twitter:card" content="summary_large_image">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <style>
@@ -1030,53 +1043,7 @@
             ⏳ Chargement de votre équipe...
         </div>
 
-        <div id="teamContent" style="display:none;">
-            <!-- EN-TÊTE ÉQUIPE -->
-            <div class="card">
-                <div class="team-header">
-                    <div class="team-info">
-                        <h1 id="teamName">Mon Équipe</h1>
-                        <p id="teamStats">0/5 membres</p>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn btn-secondary" onclick="showRenameModal()" id="btnRename"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
-                            Renommer</button>
-                        <button class="btn btn-danger" onclick="deleteTeam()" id="btnDelete"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Supprimer</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MEMBRES -->
-            <div class="card">
-                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Membres de l'équipe</h2>
-                <div id="membersGrid" class="members-grid"></div>
-            </div>
-
-            <!-- INVITATIONS EN ATTENTE -->
-            <div class="card" id="invitationsCard" style="display:none;">
-                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Invitations en attente</h2>
-                <div id="invitationsGrid" class="members-grid"></div>
-            </div>
-
-            <!-- INVITER UN MEMBRE -->
-            <div class="card" id="inviteCard">
-                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Inviter un nouveau membre</h2>
-                <form id="inviteForm" onsubmit="inviteMember(event)">
-                    <div class="form-group">
-                        <label for="inviteEmail">Email du membre</label>
-                        <input type="email" id="inviteEmail" required placeholder="exemple@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="inviteRole">Rôle</label>
-                        <select id="inviteRole">
-                            <option value="member">Membre</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn" id="btnInvite"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Envoyer l'invitation</button>
-                </form>
-            </div>
-        </div>
+        <div id="teamContent" style="display:none;"></div>
     </div>
 
     <!-- MODAL RENOMMER -->
@@ -1106,12 +1073,7 @@
             <form onsubmit="submitCreateTeam(event)">
                 <div class="form-group">
                     <label for="createTeamName">Nom de l'équipe *</label>
-                    <input type="text" id="createTeamName" required placeholder="Ex: Équipe RH Suisse">
-                </div>
-                <div class="form-group">
-                    <label for="createTeamDescription">Description (optionnel)</label>
-                    <input type="text" id="createTeamDescription"
-                        placeholder="Ex: Équipe de recrutement pour la Suisse romande">
+                    <input type="text" id="createTeamName" required placeholder="Ex : Cabinet Conseil Carrière Lausanne" maxlength="80">
                 </div>
                 <button type="submit" class="btn" id="btnCreateTeam"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Créer l'équipe</button>
             </form>
@@ -1119,541 +1081,279 @@
     </div>
 
     <script>
+        // ============ Équipe (plan Pro) ============
         let teamData = null;
         let userRole = null;
+        const ROLE_LABELS = { owner: 'Propriétaire', admin: 'Admin', member: 'Membre' };
+        const INVITE_KEY = 'swisscv_pending_invite';
 
-        // Charger l'équipe au démarrage
-        (async function () {
-            const user = getUser();
-            if (!user) {
-                window.location.href = "login.html";
-                return;
-            }
+        function esc(v) {
+            return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        function getRoleLabel(role) { return ROLE_LABELS[role] || role; }
+        function fmtDate(ts) { return ts ? new Date(ts * 1000).toLocaleDateString('fr-CH') : ''; }
+        function showMsg(id, text) {
+            const div = document.getElementById(id);
+            div.textContent = text;
+            div.classList.add('show');
+            setTimeout(() => div.classList.remove('show'), 6000);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function showSuccess(text) { showMsg('successMessage', text); }
+        function showError(text) { showMsg('errorMessage', text); }
+        async function api(path, options) {
+            const res = await authenticatedFetch(path, options);
+            let data = {};
+            try { data = await res.json(); } catch (e) { /* réponse vide */ }
+            return { ok: res.ok, status: res.status, data };
+        }
 
-            // Vérifier si l'utilisateur a un token d'invitation dans l'URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const inviteToken = urlParams.get('invite');
-
-            // Si l'utilisateur a un token d'invitation, essayer de l'accepter
-            if (inviteToken) {
-                await handleInvitationAcceptance(inviteToken);
-            }
-
-            // Vérifier si l'utilisateur est PRO OU membre d'une équipe
-            let canAccess = user.tier === 'pro';
-
-            if (!canAccess) {
-                // Vérifier si l'utilisateur est membre d'une équipe
-                try {
-                    const response = await authenticatedFetch('/teams/my-team');
-                    const data = await response.json();
-                    canAccess = data.success && data.team;
-                } catch (error) {
-                    console.log('Pas encore membre d\'une équipe');
+        (async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const invite = params.get('invite');
+            if (invite && /^[a-f0-9]{32,64}$/i.test(invite)) {
+                // Pas connecté : on garde l'invitation et on revient ici après connexion / inscription
+                if (!getToken()) {
+                    try { localStorage.setItem(INVITE_KEY, invite); } catch (e) { /* stockage bloqué */ }
+                    window.location.href = 'login.html';
+                    return;
                 }
+                await acceptInvitation(invite);
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
-
-            if (!canAccess) {
-                alert('Fonctionnalité réservée au plan PRO\n\nPassez au plan PRO pour créer et gérer une équipe.\n\nSi vous avez reçu une invitation, utilisez le lien fourni.');
-                window.location.href = "pricing.html";
-                return;
-            }
-
-            // Mettre à jour le badge
-            const badge = document.getElementById("userBadge");
-            if (badge) {
-                if (user.tier === 'pro') {
-                    badge.className = "navbar-badge pro";
-                    badge.textContent = "Pro";
-                } else if (user.tier === 'premium') {
-                    badge.className = "navbar-badge premium";
-                    badge.textContent = "Premium";
-                } else {
-                    badge.className = "navbar-badge free";
-                    badge.textContent = "Free";
-                }
-            }
-
+            if (!getToken()) { window.location.href = 'login.html'; return; }
             await loadTeam();
         })();
+
+        async function acceptInvitation(token) {
+            try {
+                const r = await api('/teams/invitations/' + encodeURIComponent(token) + '/accept', { method: 'POST' });
+                try { localStorage.removeItem(INVITE_KEY); } catch (e) { /* ignore */ }
+                if (r.ok) showSuccess('Invitation acceptée : bienvenue dans l\'équipe « ' + (r.data.team && r.data.team.name || '') + ' » !');
+                else showError(r.data.error || 'Impossible d\'accepter cette invitation');
+            } catch (e) {
+                showError('Erreur de connexion');
+            }
+        }
 
         async function loadTeam() {
             const loading = document.getElementById('loading');
             const content = document.getElementById('teamContent');
-
             loading.style.display = 'block';
             content.style.display = 'none';
-
             try {
-                const response = await authenticatedFetch('/teams/my-team');
-                const data = await response.json();
-
-                if (data.success && data.team) {
-                    teamData = data.team;
-                    userRole = data.role;
-
-                    // Restaurer le HTML original si nécessaire
-                    if (!document.getElementById('teamName')) {
-                        content.innerHTML = `
-                            <!-- EN-TÊTE ÉQUIPE -->
-                            <div class="card">
-                                <div class="team-header">
-                                    <div class="team-info">
-                                        <h1 id="teamName">Mon Équipe</h1>
-                                        <p id="teamStats">0/5 membres</p>
-                                    </div>
-                                    <div style="display: flex; gap: 12px;">
-                                        <button class="btn btn-secondary" onclick="showRenameModal()" id="btnRename"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg> Renommer</button>
-                                        <button class="btn btn-danger" onclick="deleteTeam()" id="btnDelete"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Supprimer</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- MEMBRES -->
-                            <div class="card">
-                                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Membres de l'équipe</h2>
-                                <div id="membersGrid" class="members-grid"></div>
-                            </div>
-
-                            <!-- INVITATIONS EN ATTENTE -->
-                            <div class="card" id="invitationsCard" style="display:none;">
-                                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Invitations en attente</h2>
-                                <div id="invitationsGrid" class="members-grid"></div>
-                            </div>
-
-                            <!-- INVITER UN MEMBRE -->
-                            <div class="card" id="inviteCard">
-                                <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Inviter un nouveau membre</h2>
-                                <form id="inviteForm" onsubmit="inviteMember(event)">
-                                    <div class="form-group">
-                                        <label for="inviteEmail">Email du membre</label>
-                                        <input type="email" id="inviteEmail" required placeholder="exemple@email.com">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inviteRole">Rôle</label>
-                                        <select id="inviteRole">
-                                            <option value="member">Membre</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn" id="btnInvite"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Envoyer l'invitation</button>
-                                </form>
-                            </div>
-                        `;
-                    }
-
-                    // Afficher l'équipe
-                    document.getElementById('teamName').textContent = teamData.name;
-                    document.getElementById('teamStats').textContent = `${data.members.length}/${teamData.max_members} membres`;
-
-                    // Afficher les membres
-                    displayMembers(data.members);
-
-                    // Charger les invitations
-                    await loadInvitations();
-
-                    // Gérer les permissions
-                    const isOwner = userRole === 'owner';
-                    const isAdmin = userRole === 'admin' || isOwner;
-
-                    document.getElementById('btnRename').style.display = isAdmin ? 'block' : 'none';
-                    document.getElementById('btnDelete').style.display = isOwner ? 'block' : 'none';
-                    document.getElementById('inviteCard').style.display = isAdmin ? 'block' : 'none';
-
-                    content.style.display = 'block';
+                const r = await api('/teams/my-team');
+                if (!r.ok) { showError(r.data.error || 'Erreur lors du chargement de l\'équipe'); return; }
+                if (r.data.team) {
+                    teamData = r.data.team;
+                    userRole = r.data.role;
+                    renderTeam(r.data);
                 } else {
-                    // Pas d'équipe, proposer d'en créer une
-                    showCreateTeamPrompt();
+                    teamData = null;
+                    userRole = null;
+                    renderNoTeam(r.data.invitations_received || []);
                 }
+                content.style.display = 'block';
             } catch (error) {
-                console.error('Erreur chargement équipe:', error);
                 showError('Erreur lors du chargement de l\'équipe');
             } finally {
                 loading.style.display = 'none';
             }
         }
 
-        function displayMembers(members) {
-            const grid = document.getElementById('membersGrid');
-
-            if (!members || members.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><div class="icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><p>Aucun membre</p></div>';
-                return;
+        function renderNoTeam(received) {
+            const user = getUser() || {};
+            const isPro = (user.tier || user.subscription_tier) === 'pro';
+            let html = '';
+            if (received.length) {
+                html += '<div class="card"><h2>Invitations reçues</h2><div class="members-grid">' + received.map(inv =>
+                    '<div class="member-card"><div class="member-info"><div class="member-details"><h3>' + esc(inv.team_name) + '</h3>' +
+                    '<p>Rôle proposé : ' + esc(getRoleLabel(inv.role)) + ' · valable jusqu\'au ' + esc(fmtDate(inv.expires_at)) + '</p></div></div>' +
+                    '<div class="member-actions"><button class="btn" data-accept="' + esc(inv.token) + '">Rejoindre</button>' +
+                    '<button class="btn btn-secondary" data-decline="' + esc(inv.id) + '">Refuser</button></div></div>'
+                ).join('') + '</div></div>';
             }
-
-            grid.innerHTML = members.map(member => {
-                const initials = (member.full_name || member.email).substring(0, 2).toUpperCase();
-                const canManage = (userRole === 'owner' || (userRole === 'admin' && member.role !== 'owner'));
-
-                return `
-            <div class="member-card">
-                <div class="member-info">
-                    <div class="member-avatar">${initials}</div>
-                    <div class="member-details">
-                        <h3>${member.full_name || member.email}</h3>
-                        <p>${member.email}</p>
-                    </div>
-                    <span class="badge ${member.role}">${getRoleLabel(member.role)}</span>
-                </div>
-                <div class="member-actions">
-                    ${canManage && member.role !== 'owner' ? `
-                        ${userRole === 'owner' ? `
-                            <button class="btn btn-secondary" onclick="changeRole('${member.id}', '${member.role}')">
-                                ${member.role === 'admin' ? '↓ Membre' : '↑ Admin'}
-                            </button>
-                        ` : ''}
-                        <button class="btn btn-danger" onclick="removeMember('${member.id}', '${member.full_name || member.email}')">
-                            Retirer
-                        </button>
-                    ` : ''}
-                </div>
-            </div>
-        `;
-            }).join('');
+            if (isPro) {
+                html += '<div class="card" style="text-align:center;padding:56px 32px;">' +
+                    '<h2 style="font-size:26px;margin-bottom:12px;">Créez l\'équipe de votre cabinet</h2>' +
+                    '<p style="color:#666;margin:0 auto 28px;max-width:560px;line-height:1.6;">Invitez jusqu\'à 4 conseillers (5 places avec vous). Ils utilisent les crédits de votre abonnement Pro, et vous suivez leur consommation mois par mois.</p>' +
+                    '<button class="btn" onclick="createTeam()">Créer mon équipe</button></div>';
+            } else if (!received.length) {
+                html += '<div class="card" style="text-align:center;padding:56px 32px;">' +
+                    '<h2 style="font-size:26px;margin-bottom:12px;">Les équipes font partie du plan Pro</h2>' +
+                    '<p style="color:#666;margin:0 auto 28px;max-width:560px;line-height:1.6;">Le plan Pro permet à un cabinet (outplacement, coaching, conseil en carrière) de partager ses crédits avec ses conseillers. Si vous avez reçu une invitation, ouvrez le lien de l\'email en étant connecté(e) avec l\'adresse invitée.</p>' +
+                    '<a class="btn" href="pricing.html">Découvrir le plan Pro</a></div>';
+            }
+            const content = document.getElementById('teamContent');
+            content.innerHTML = html;
+            content.querySelectorAll('[data-accept]').forEach(b => b.addEventListener('click', async () => { await acceptInvitation(b.dataset.accept); await loadTeam(); }));
+            content.querySelectorAll('[data-decline]').forEach(b => b.addEventListener('click', async () => {
+                const r = await api('/teams/invitations/' + encodeURIComponent(b.dataset.decline), { method: 'DELETE' });
+                if (r.ok) { showSuccess('Invitation refusée'); await loadTeam(); } else showError(r.data.error || 'Erreur');
+            }));
         }
 
-        async function loadInvitations() {
-            try {
-                const response = await authenticatedFetch('/teams/invitations');
-                const data = await response.json();
+        function renderTeam(data) {
+            const isOwner = userRole === 'owner';
+            const isManager = isOwner || userRole === 'admin';
+            const credits = data.credits || {};
+            const members = data.members || [];
+            const pending = data.pending_invitations || [];
+            const seatsLeft = Math.max(0, (teamData.max_members || 5) - (teamData.seats_used || members.length));
+            let html = '';
 
-                if (data.success && data.invitations && data.invitations.length > 0) {
-                    const card = document.getElementById('invitationsCard');
-                    const grid = document.getElementById('invitationsGrid');
+            html += '<div class="card"><div class="team-header"><div class="team-info">' +
+                '<h1>' + esc(teamData.name) + '</h1>' +
+                '<p>' + members.length + ' membre(s) · ' + (teamData.seats_used || members.length) + '/' + esc(teamData.max_members) + ' places utilisées · votre rôle : ' + esc(getRoleLabel(userRole)) + '</p>' +
+                (teamData.active ? '' : '<p style="color:#B80000;font-weight:600;margin-top:8px;">Équipe suspendue : l\'abonnement Pro du propriétaire n\'est plus actif. Chacun utilise ses propres crédits.</p>') +
+                '</div><div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                (isOwner ? '<button class="btn btn-secondary" onclick="showRenameModal()">Renommer</button><button class="btn btn-danger" onclick="deleteTeam()">Supprimer l\'équipe</button>' : '<button class="btn btn-secondary" onclick="leaveTeam()">Quitter l\'équipe</button>') +
+                '</div></div></div>';
 
-                    grid.innerHTML = data.invitations.map(inv => `
-                <div class="member-card">
-                    <div class="member-info">
-                        <div class="member-avatar"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
-                        <div class="member-details">
-                            <h3>${inv.email}</h3>
-                            <p>Invité le ${new Date(inv.created_at * 1000).toLocaleDateString('fr-CH')}</p>
-                        </div>
-                        <span class="badge ${inv.role}">${getRoleLabel(inv.role)}</span>
-                    </div>
-                    <div class="member-actions">
-                        <button class="btn btn-secondary" onclick="copyInviteLink('${inv.token || ''}')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copier lien</button>
-                        <button class="btn btn-danger" onclick="cancelInvitation('${inv.id}')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Annuler</button>
-                    </div>
-                </div>
-            `).join('');
+            html += '<div class="card"><h2>Crédits de l\'équipe</h2>' +
+                '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;">' +
+                '<div style="flex:1;min-width:160px;background:#FFF5F5;border-radius:12px;padding:18px;"><div style="font-size:13px;color:#666;">Solde disponible</div><div style="font-size:32px;font-weight:800;">' + esc(credits.balance) + '</div><div style="font-size:12px;color:#888;">sur ' + esc(credits.monthly_limit) + ' par mois</div></div>' +
+                (isManager ? '<div style="flex:1;min-width:160px;background:#F6F7F9;border-radius:12px;padding:18px;"><div style="font-size:13px;color:#666;">Consommés ce mois-ci</div><div style="font-size:32px;font-weight:800;">' + esc(credits.used_this_month || 0) + '</div><div style="font-size:12px;color:#888;">par l\'ensemble de l\'équipe</div></div>' : '') +
+                '</div><p style="font-size:13px;color:#666;margin-top:14px;line-height:1.5;">Les outils (analyse, lettres, candidatures…) utilisent d\'abord ces crédits partagés, puis, s\'ils sont épuisés, les crédits personnels de chacun.</p></div>';
 
-                    card.style.display = 'block';
-                } else {
-                    document.getElementById('invitationsCard').style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Erreur chargement invitations:', error);
+            html += '<div class="card"><h2>Membres de l\'équipe</h2><div class="members-grid">' + members.map(m => {
+                const name = m.full_name || m.email;
+                const canManage = m.role !== 'owner' && (isOwner || (userRole === 'admin' && m.role === 'member'));
+                return '<div class="member-card"><div class="member-info">' +
+                    '<div class="member-avatar">' + esc(String(name || '?').substring(0, 2).toUpperCase()) + '</div>' +
+                    '<div class="member-details"><h3>' + esc(name) + '</h3><p>' + esc(m.email) +
+                    (isManager && m.credits_used_month !== undefined ? ' · ' + esc(m.credits_used_month) + ' crédit(s) ce mois-ci' : '') + '</p></div>' +
+                    '<span class="badge ' + esc(m.role) + '">' + esc(getRoleLabel(m.role)) + '</span></div>' +
+                    '<div class="member-actions">' +
+                    (isOwner && m.role !== 'owner' ? '<button class="btn btn-secondary" data-role="' + esc(m.id) + '" data-current="' + esc(m.role) + '">' + (m.role === 'admin' ? 'Passer membre' : 'Passer admin') + '</button>' : '') +
+                    (canManage ? '<button class="btn btn-danger" data-remove="' + esc(m.id) + '" data-name="' + esc(name) + '">Retirer</button>' : '') +
+                    '</div></div>';
+            }).join('') + '</div></div>';
+
+            if (isManager && pending.length) {
+                html += '<div class="card"><h2>Invitations en attente</h2><div class="members-grid">' + pending.map(inv =>
+                    '<div class="member-card"><div class="member-info"><div class="member-details"><h3>' + esc(inv.email) + '</h3>' +
+                    '<p>Invité(e) le ' + esc(fmtDate(inv.created_at)) + ' · expire le ' + esc(fmtDate(inv.expires_at)) + '</p></div>' +
+                    '<span class="badge ' + esc(inv.role) + '">' + esc(getRoleLabel(inv.role)) + '</span></div>' +
+                    '<div class="member-actions"><button class="btn btn-danger" data-cancel="' + esc(inv.id) + '">Annuler</button></div></div>'
+                ).join('') + '</div></div>';
             }
-        }
 
-        async function handleInvitationAcceptance(token) {
-            try {
-                const response = await authenticatedFetch(`/teams/invitations/${token}/accept`, {
-                    method: 'POST'
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Invitation acceptée ! Bienvenue dans l\'équipe !');
-                    // Nettoyer l'URL
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                } else {
-                    showError(data.error || 'Erreur lors de l\'acceptation de l\'invitation');
-                }
-            } catch (error) {
-                console.error('Erreur acceptation invitation:', error);
-                showError('Erreur lors de l\'acceptation de l\'invitation');
+            if (isManager && teamData.active) {
+                html += '<div class="card"><h2>Inviter un conseiller</h2>' +
+                    (seatsLeft > 0 ? '<p style="color:#666;margin-bottom:16px;">' + seatsLeft + ' place(s) disponible(s). La personne reçoit un email avec un lien pour rejoindre l\'équipe (valable 7 jours).</p>' +
+                        '<form id="inviteForm"><div class="form-group"><label for="inviteEmail">Email du conseiller</label>' +
+                        '<input type="email" id="inviteEmail" required placeholder="prenom.nom@cabinet.ch"></div>' +
+                        (isOwner ? '<div class="form-group"><label for="inviteRole">Rôle</label><select id="inviteRole"><option value="member">Membre</option><option value="admin">Admin (peut inviter des membres)</option></select></div>' : '') +
+                        '<button type="submit" class="btn" id="btnInvite">Envoyer l\'invitation</button></form><div id="inviteLinkBox" style="display:none;margin-top:16px;"></div>'
+                        : '<p style="color:#666;">Toutes les places sont utilisées. Retirez un membre ou annulez une invitation pour en libérer une.</p>') +
+                    '</div>';
             }
+
+            const content = document.getElementById('teamContent');
+            content.innerHTML = html;
+            content.querySelectorAll('[data-role]').forEach(b => b.addEventListener('click', () => changeRole(b.dataset.role, b.dataset.current)));
+            content.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', () => removeMember(b.dataset.remove, b.dataset.name)));
+            content.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', () => cancelInvitation(b.dataset.cancel)));
+            const form = document.getElementById('inviteForm');
+            if (form) form.addEventListener('submit', inviteMember);
         }
 
         async function inviteMember(event) {
             event.preventDefault();
-
-            const email = document.getElementById('inviteEmail').value;
-            const role = document.getElementById('inviteRole').value;
+            const email = document.getElementById('inviteEmail').value.trim();
+            const roleEl = document.getElementById('inviteRole');
+            const role = roleEl ? roleEl.value : 'member';
             const btn = document.getElementById('btnInvite');
-
             btn.disabled = true;
-            btn.textContent = '⏳ Envoi...';
-
+            btn.textContent = 'Envoi…';
             try {
-                const response = await authenticatedFetch('/teams/invite', {
-                    method: 'POST',
-                    body: JSON.stringify({ email, role })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showSuccess(`<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Invitation envoyée à ${email}`);
-                    document.getElementById('inviteForm').reset();
-                    await loadInvitations();
-                } else {
-                    showError(data.error || 'Erreur lors de l\'invitation');
+                const r = await api('/teams/invite', { method: 'POST', body: JSON.stringify({ email, role }) });
+                if (!r.ok) { showError(r.data.error || 'Erreur lors de l\'invitation'); return; }
+                await loadTeam();
+                showSuccess(r.data.email_sent ? 'Invitation envoyée à ' + email : 'Invitation créée, mais l\'email n\'a pas pu être envoyé : transmettez le lien ci-dessous.');
+                const box = document.getElementById('inviteLinkBox');
+                if (box && r.data.invite_link) {
+                    box.style.display = 'block';
+                    box.innerHTML = '<p style="font-size:13px;color:#666;margin-bottom:8px;">Lien d\'invitation (à transmettre uniquement à ' + esc(email) + ') :</p>' +
+                        '<div style="display:flex;gap:8px;"><input type="text" readonly id="inviteLinkInput" value="' + esc(r.data.invite_link) + '" style="flex:1;">' +
+                        '<button type="button" class="btn btn-secondary" id="copyInviteLink">Copier</button></div>';
+                    document.getElementById('copyInviteLink').addEventListener('click', () => {
+                        navigator.clipboard.writeText(r.data.invite_link).then(() => showSuccess('Lien copié')).catch(() => showError('Copie impossible'));
+                    });
                 }
             } catch (error) {
-                console.error('Erreur invitation:', error);
                 showError('Erreur de connexion');
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg> Envoyer l\'invitation';
+                const b = document.getElementById('btnInvite');
+                if (b) { b.disabled = false; b.textContent = 'Envoyer l\'invitation'; }
             }
         }
 
         async function removeMember(memberId, memberName) {
-            if (!confirm(` Retirer ${memberName} de l'équipe ?\n\nCette action est irréversible.`)) {
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch(`/teams/members/${memberId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    showSuccess(`<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${memberName} a été retiré de l'équipe`);
-                    await loadTeam();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du retrait');
-                }
-            } catch (error) {
-                console.error('Erreur retrait membre:', error);
-                showError('Erreur de connexion');
-            }
+            if (!confirm('Retirer ' + memberName + ' de l\'équipe ?')) return;
+            const r = await api('/teams/members/' + encodeURIComponent(memberId), { method: 'DELETE' });
+            if (r.ok) { showSuccess(memberName + ' a été retiré(e) de l\'équipe'); await loadTeam(); } else showError(r.data.error || 'Erreur lors du retrait');
         }
 
         async function changeRole(memberId, currentRole) {
-            const newRole = currentRole === 'admin' ? 'member' : 'admin';
+            const role = currentRole === 'admin' ? 'member' : 'admin';
+            const r = await api('/teams/members/' + encodeURIComponent(memberId) + '/role', { method: 'PUT', body: JSON.stringify({ role }) });
+            if (r.ok) { showSuccess('Rôle modifié'); await loadTeam(); } else showError(r.data.error || 'Erreur lors du changement de rôle');
+        }
 
-            try {
-                const response = await authenticatedFetch(`/teams/members/${memberId}/role`, {
-                    method: 'PUT',
-                    body: JSON.stringify({ role: newRole })
-                });
+        async function cancelInvitation(invitationId) {
+            if (!confirm('Annuler cette invitation ?')) return;
+            const r = await api('/teams/invitations/' + encodeURIComponent(invitationId), { method: 'DELETE' });
+            if (r.ok) { showSuccess('Invitation annulée'); await loadTeam(); } else showError(r.data.error || 'Erreur lors de l\'annulation');
+        }
 
-                if (response.ok) {
-                    showSuccess(`<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Rôle modifié avec succès`);
-                    await loadTeam();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du changement de rôle');
-                }
-            } catch (error) {
-                console.error('Erreur changement rôle:', error);
-                showError('Erreur de connexion');
-            }
+        async function leaveTeam() {
+            if (!confirm('Quitter l\'équipe « ' + teamData.name + ' » ? Vous utiliserez ensuite vos propres crédits.')) return;
+            const r = await api('/teams/leave', { method: 'POST' });
+            if (r.ok) { showSuccess('Vous avez quitté l\'équipe'); await loadTeam(); } else showError(r.data.error || 'Erreur');
         }
 
         function showRenameModal() {
             document.getElementById('newTeamName').value = teamData.name;
             document.getElementById('renameModal').classList.add('show');
         }
-
-        function closeRenameModal() {
-            document.getElementById('renameModal').classList.remove('show');
-        }
+        function closeRenameModal() { document.getElementById('renameModal').classList.remove('show'); }
 
         async function renameTeam(event) {
             event.preventDefault();
-
-            const newName = document.getElementById('newTeamName').value;
-
-            try {
-                const response = await authenticatedFetch(`/teams/${teamData.id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify({ name: newName })
-                });
-
-                if (response.ok) {
-                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Équipe renommée avec succès');
-                    closeRenameModal();
-                    await loadTeam();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors du renommage');
-                }
-            } catch (error) {
-                console.error('Erreur renommage:', error);
-                showError('Erreur de connexion');
-            }
+            const name = document.getElementById('newTeamName').value.trim();
+            const r = await api('/teams/' + encodeURIComponent(teamData.id), { method: 'PUT', body: JSON.stringify({ name }) });
+            if (r.ok) { closeRenameModal(); showSuccess('Équipe renommée'); await loadTeam(); } else showError(r.data.error || 'Erreur lors du renommage');
         }
 
         async function deleteTeam() {
-            if (!confirm('SUPPRIMER L\'ÉQUIPE ?\n\nCette action est IRRÉVERSIBLE.\n\nTous les membres seront retirés et l\'équipe sera définitivement supprimée.')) {
-                return;
-            }
-
-            const confirmation = prompt('Pour confirmer, tapez "SUPPRIMER" en majuscules :');
-            if (confirmation !== 'SUPPRIMER') {
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch(`/teams/${teamData.id}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    alert('Équipe supprimée avec succès');
-                    window.location.href = 'profile.html';
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la suppression');
-                }
-            } catch (error) {
-                console.error('Erreur suppression:', error);
-                showError('Erreur de connexion');
-            }
+            if (!confirm('Supprimer l\'équipe ? Tous les membres seront retirés et les invitations annulées. Cette action est irréversible.')) return;
+            if (prompt('Pour confirmer, tapez SUPPRIMER :') !== 'SUPPRIMER') return;
+            const r = await api('/teams/' + encodeURIComponent(teamData.id), { method: 'DELETE' });
+            if (r.ok) { showSuccess('Équipe supprimée'); await loadTeam(); } else showError(r.data.error || 'Erreur lors de la suppression');
         }
 
-        function copyInviteLink(token) {
-            const link = `${window.location.origin}/team.html?invite=${token}`;
-            navigator.clipboard.writeText(link).then(() => {
-                showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Lien d\'invitation copié !');
-            }).catch(() => {
-                showError('Erreur lors de la copie');
-            });
-        }
-
-        async function cancelInvitation(invitationId) {
-            if (!confirm('Voulez-vous vraiment annuler cette invitation ?')) {
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch(`/teams/invitations/${invitationId}`, {
-                    method: 'DELETE'
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Invitation annulée');
-                    await loadInvitations();
-                } else {
-                    showError(data.error || 'Erreur lors de l\'annulation');
-                }
-            } catch (error) {
-                console.error('Erreur annulation invitation:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        function showCreateTeamPrompt() {
-            const content = document.getElementById('teamContent');
-            content.innerHTML = `
-        <div class="card" style="text-align: center; padding: 60px 40px;">
-            <div style="font-size: 64px; margin-bottom: 24px;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="6" x2="9" y2="6"/><line x1="15" y1="6" x2="15" y2="6"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="9" y2="14"/><line x1="15" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg></div>
-            <h2 style="font-size: 28px; margin-bottom: 16px;">Créez votre équipe</h2>
-            <p style="color: #666; margin-bottom: 32px;">Invitez jusqu'à 5 membres et gérez vos analyses en équipe</p>
-            <button class="btn" onclick="createTeam()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Créer mon équipe</button>
-        </div>
-    `;
-            content.style.display = 'block';
-        }
-
-        async function createTeam() {
-            // Ouvrir la modal au lieu du prompt
-            document.getElementById('createTeamModal').classList.add('show');
-        }
-
+        function createTeam() { document.getElementById('createTeamModal').classList.add('show'); }
         function closeCreateTeamModal() {
             document.getElementById('createTeamModal').classList.remove('show');
             document.getElementById('createTeamName').value = '';
-            document.getElementById('createTeamDescription').value = '';
         }
 
         async function submitCreateTeam(event) {
             event.preventDefault();
-
-            const teamName = document.getElementById('createTeamName').value;
-            const teamDescription = document.getElementById('createTeamDescription').value;
+            const name = document.getElementById('createTeamName').value.trim();
             const btn = document.getElementById('btnCreateTeam');
-
-            btn.disabled = true;
-            btn.textContent = '⏳ Création...';
-
+            if (btn) { btn.disabled = true; btn.textContent = 'Création…'; }
             try {
-                const response = await authenticatedFetch('/teams/create', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        name: teamName,
-                        description: teamDescription || null
-                    })
-                });
-
-                if (response.ok) {
-                    showSuccess('<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Équipe créée avec succès !');
-                    closeCreateTeamModal();
-                    await loadTeam();
-                } else {
-                    const error = await response.json();
-                    showError(error.error || 'Erreur lors de la création');
-                }
-            } catch (error) {
-                console.error('Erreur création équipe:', error);
+                const r = await api('/teams/create', { method: 'POST', body: JSON.stringify({ name }) });
+                if (r.ok) { closeCreateTeamModal(); showSuccess('Équipe créée : invitez maintenant vos conseillers'); await loadTeam(); }
+                else showError(r.data.error || 'Erreur lors de la création');
+            } catch (e) {
                 showError('Erreur de connexion');
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Créer l\'équipe';
+                if (btn) { btn.disabled = false; btn.textContent = 'Créer l\'équipe'; }
             }
-        }
-
-        function getRoleLabel(role) {
-            const labels = {
-                owner: 'Propriétaire',
-                admin: 'Admin',
-                member: 'Membre'
-            };
-            return labels[role] || role;
-        }
-
-        function showSuccess(message) {
-            const div = document.getElementById('successMessage');
-            div.textContent = message;
-            div.classList.add('show');
-            setTimeout(() => div.classList.remove('show'), 5000);
-        }
-
-        function showError(message) {
-            const div = document.getElementById('errorMessage');
-            div.textContent = message;
-            div.classList.add('show');
-            setTimeout(() => div.classList.remove('show'), 5000);
-        }
-
-        // Gérer les invitations via URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const inviteToken = urlParams.get('invite');
-        if (inviteToken) {
-            (async () => {
-                if (!confirm('Accepter cette invitation à rejoindre une équipe ?')) {
-                    window.location.href = 'team.html';
-                    return;
-                }
-
-                try {
-                    const response = await authenticatedFetch('/teams/accept-invitation', {
-                        method: 'POST',
-                        body: JSON.stringify({ token: inviteToken })
-                    });
-
-                    if (response.ok) {
-                        alert('Invitation acceptée ! Bienvenue dans l\'équipe.');
-                        window.location.href = 'team.html';
-                    } else {
-                        const error = await response.json();
-                        alert((error.error || 'Invitation invalide'));
-                        window.location.href = 'team.html';
-                    }
-                } catch (error) {
-                    alert('Erreur de connexion');
-                    window.location.href = 'team.html';
-                }
-            })();
         }
     </script>
     <!-- Système de Notifications -->

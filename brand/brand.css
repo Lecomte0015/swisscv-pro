@@ -1,0 +1,39 @@
+/* Identité visuelle SwissCV Pro — logo (croix suisse) devant le nom de marque.
+   Chargé sur toutes les pages via le bloc « Identité visuelle » du <head>.
+   Source du logo : /brand/logo-mark.svg (rouge #D50000, croix blanche). */
+a.logo,
+a.navbar-brand,
+.footer-about > h3:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+}
+a.logo::before,
+a.navbar-brand::before,
+.footer-about > h3:first-child::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: url("/brand/logo-mark.svg") center / contain no-repeat;
+}
+
+/* Pages de connexion / inscription / mot de passe : l'ancienne croix noire devient le logo officiel */
+.logo-icon > svg.icon { display: none; }
+.logo-icon:has(> svg.icon) {
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: auto;
+    margin-right: auto;
+    background: url("/brand/logo-mark.svg") center / contain no-repeat;
+}
+
+/* Le nom ne se coupe jamais en deux lignes */
+a.logo, a.navbar-brand { white-space: nowrap; }
+
+/* Pages guides (en-tête .header-buttons) : sur petit écran, on garde le logo et le bouton principal */
+@media (max-width: 480px) {
+    header .header-buttons a.btn-login { display: none; }
+    header .header-buttons a.btn-cta { white-space: nowrap; padding: 10px 14px; font-size: 13px; }
+    header.header .header-content { padding-left: 16px; padding-right: 16px; gap: 12px; }
+}

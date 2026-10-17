@@ -7,11 +7,11 @@ cd "$(dirname "$0")/.."
 rm -rf dist && mkdir dist
 
 # Fichiers racine publics (liste blanche)
-for f in *.html _headers _redirects robots.txt sitemap.xml analytics.js checkout-intent.js sync-user.js; do
+for f in *.html _headers _redirects robots.txt sitemap.xml analytics.js checkout-intent.js sync-user.js favicon.ico site.webmanifest; do
   [ -f "$f" ] && cp "$f" dist/
 done
 # Dossiers publics (liste blanche)
-for d in accueil analyseur-cv modeles-cv modeles-emails succes tarifs admin public templates; do
+for d in accueil analyseur-cv modeles-cv modeles-emails succes tarifs admin public templates brand; do
   [ -d "$d" ] && cp -R "$d" dist/
 done
 # Nettoyage : fichiers parasites du disque externe / macOS et documents internes éventuels

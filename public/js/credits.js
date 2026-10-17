@@ -29,8 +29,8 @@ async function loadCreditBalance() {
         if (data.success) {
             updateCreditDisplay(data.balance, data.monthly_limit);
 
-            // Update Team link visibility based on existing user tier (don't override tier from balance API)
-            updateTeamLinkVisibility();
+            // Lien « Équipe » : abonnés Pro et membres d'une équipe
+            updateTeamLinkVisibility(!!data.team);
         }
     } catch (error) {
         console.error('Error loading credit balance:', error);
@@ -218,12 +218,12 @@ function addCreditCostBadge(buttonElement, actionType) {
 /**
  * Show/hide Team link based on user tier
  */
-function updateTeamLinkVisibility() {
+function updateTeamLinkVisibility(inTeam) {
     const teamLink = document.getElementById('teamNavLink');
     if (!teamLink) return;
 
     const user = getUser();
-    if (user && user.subscription_tier === 'pro') {
+    if (inTeam || (user && (user.subscription_tier === 'pro' || user.tier === 'pro'))) {
         teamLink.style.display = 'inline-block';
     } else {
         teamLink.style.display = 'none';

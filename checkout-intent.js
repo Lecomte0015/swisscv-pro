@@ -39,6 +39,11 @@
         clear: function () { var s = store(); if (s) { try { s.removeItem(KEY); } catch (e) { /* ignore */ } } },
         // Page de destination après une authentification réussie
         nextPage: function (defaultPage, currentTier) {
+            // Invitation d'équipe en attente (lien ouvert avant connexion) : on y retourne en priorité
+            var st = store();
+            var invite = null;
+            try { invite = st ? st.getItem('swisscv_pending_invite') : null; } catch (e) { invite = null; }
+            if (invite && /^[a-f0-9]{32,64}$/i.test(invite)) return 'team.html?invite=' + invite;
             var i = read();
             if (!i) return defaultPage;
             if ((RANK[currentTier] || 0) >= RANK[i.plan]) { this.clear(); return defaultPage; }

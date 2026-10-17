@@ -36,3 +36,8 @@ wrangler.staging.toml
 # Fichiers parasites macOS (disque externe) et réglages locaux
 ._*
 .claude/
+
+# Médias lourds (vidéos promo, rendus, voix off) : conservés sur le disque, pas dans git
+videos/
+marketing/**/*.mp4
+marketing/**/*.wav

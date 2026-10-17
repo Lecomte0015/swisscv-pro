@@ -1,0 +1,30 @@
+PROGRAMME DE PUBLICATION FACEBOOK — SwissCV Pro
+================================================
+
+Un dossier = une publication, dans l'ordre. Dans chaque dossier :
+  - le visuel (visuel.png) ou les vidéos (video-fil-4x5.mp4 / reel-9x16.mp4)
+  - texte-publication.txt : le texte à copier-coller tel quel (le lien tracé est déjà dedans)
+
+Comment publier :
+  1. Ouvrir le dossier du jour
+  2. Créer une publication sur la page, ajouter le visuel (ou la vidéo)
+  3. Copier-coller le contenu de texte-publication.txt
+  4. Publier à 12h15 ou 18h30 (ou programmer avec l'outil de planification de Meta Business Suite)
+  5. Épingler la publication 01 en haut de la page
+
+Calendrier :
+01  lun-19-10   lancement             image
+02  mer-21-10   6-secondes            image
+03  ven-23-10   video-presentation    vidéo 4:5 dans le fil + Reel 9:16 (même jour)
+04  dim-25-10   5-regles              image
+05  mar-27-10   ats                   image
+06  jeu-29-10   5-credits             image
+07  sam-31-10   modeles               image
+08  lun-02-11   lettre                image
+09  mer-04-11   offres                image
+10  ven-06-11   suivi                 image
+11  dim-08-11   entretien             image
+12  mar-10-11   pack                  image
+
+Le kit de la page (photo de profil, couverture) est dans ../page/
+Les explications complètes sont dans ../GUIDE.md

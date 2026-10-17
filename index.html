@@ -5,8 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwissCV Pro — Optimisez votre CV pour le marché suisse</title>
+    <!-- Identité visuelle (logo, icônes) -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/brand/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#D50000">
+    <link rel="stylesheet" href="/brand/brand.css">
+    <meta property="og:image" content="https://swisscv-pro.ch/brand/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SwissCV Pro — Décrochez plus d'entretiens en Suisse">
+    <meta property="og:site_name" content="SwissCV Pro">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swisscv-pro.ch/">
+    <meta property="og:title" content="SwissCV Pro — Décrochez plus d'entretiens en Suisse">
+    <meta property="og:description" content="Analyse IA de votre CV, modèles suisses, lettres de motivation et offres d'emploi. 5 crédits offerts à l'inscription, sans carte bancaire.">
+    <meta property="og:locale" content="fr_CH">
     <meta name="description"
-        content="Analysez et optimisez votre CV gratuitement selon les standards du marché suisse romand. Score détaillé, lettres de motivation IA, ATS scoring. 2 analyses gratuites.">
+        content="Analysez et optimisez votre CV gratuitement selon les standards du marché suisse romand. Score détaillé, lettres de motivation IA, ATS scoring. 5 crédits offerts à l'inscription.">
     <link rel="canonical" href="https://swisscv-pro.ch/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -248,9 +266,52 @@
         }
 
         .hero-content {
-            max-width: 700px;
+            max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .hero-text h1 { text-wrap: balance; }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-phone {
+            position: relative;
+            width: 300px;
+            aspect-ratio: 540 / 1170;
+            padding: 11px;
+            border-radius: 46px;
+            background: #1B1B1B;
+            box-shadow: 0 0 0 2px #3A3A3A, 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 140px rgba(213, 0, 0, 0.22);
+        }
+
+        .hero-phone::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 84px;
+            height: 22px;
+            border-radius: 12px;
+            background: #1B1B1B;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .hero-phone-screen {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 36px;
+            object-fit: cover;
+            background: #F6F7F9;
         }
 
         .hero-text h1 {
@@ -277,7 +338,7 @@
             display: flex;
             gap: 16px;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .hero-cta-primary {
@@ -301,16 +362,20 @@
 
         .hero-cta-secondary {
             display: inline-block;
-            color: #555;
-            padding: 16px 24px;
+            color: inherit;
+            padding: 15px 28px;
+            border: 1.5px solid currentColor;
+            border-radius: 4px;
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
-            transition: color 0.2s;
+            opacity: 0.85;
+            transition: opacity 0.2s, background 0.2s;
         }
 
         .hero-cta-secondary:hover {
-            color: var(--swiss-red);
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .hero-note {
@@ -436,6 +501,118 @@
             font-size: 14px;
             color: #666;
             line-height: 1.6;
+        }
+
+        /* Étapes + vidéo synchronisée */
+        .steps-section .steps-content {
+            max-width: 1100px;
+        }
+
+        .steps-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: center;
+        }
+
+        .steps-section .steps-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .steps-section .steps-grid::before {
+            display: none;
+        }
+
+        .steps-section .step-item {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            column-gap: 18px;
+            align-items: start;
+            text-align: left;
+            padding: 20px 22px;
+            border: 1px solid var(--swiss-gray);
+            border-radius: 14px;
+            background: #fff;
+            cursor: pointer;
+            overflow: hidden;
+            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+        }
+
+        .steps-section .step-item:hover,
+        .steps-section .step-item:focus-visible {
+            border-color: #FFCDD2;
+            outline: none;
+        }
+
+        .steps-section .step-item.is-active {
+            border-color: #FFCDD2;
+            background: #FFF5F5;
+            box-shadow: 0 10px 30px rgba(213, 0, 0, 0.08);
+        }
+
+        .steps-section .step-number {
+            grid-row: 1 / span 2;
+            width: 56px;
+            height: 56px;
+            margin: 0;
+        }
+
+        .steps-section .step-number svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .steps-section .step-item.is-active .step-number {
+            background: var(--swiss-red);
+            border-color: var(--swiss-red);
+        }
+
+        .steps-section .step-item.is-active .step-number svg {
+            color: #fff;
+        }
+
+        .steps-section .step-item h3 {
+            margin: 4px 0 6px;
+        }
+
+        .steps-section .step-progress {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: calc(var(--p, 0) * 100%);
+            background: var(--swiss-red);
+            transition: width 0.25s linear;
+        }
+
+        .steps-video {
+            border-radius: 22px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: #F6F7F9;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .steps-video video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 900px) {
+            .steps-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .steps-video {
+                order: -1;
+                width: 100%;
+                max-width: 520px;
+                margin: 0 auto;
+            }
         }
 
         /* ========== FEATURES ========== */
@@ -909,6 +1086,20 @@
                 font-size: 36px;
             }
 
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                text-align: center;
+            }
+
+            .hero-cta-group {
+                justify-content: center;
+            }
+
+            .hero-phone {
+                width: 260px;
+            }
+
             .trust-bar-content {
                 flex-wrap: wrap;
                 justify-content: center;
@@ -948,6 +1139,10 @@
 
             .hero-cta-group {
                 flex-direction: column;
+            }
+
+            .hero-phone {
+                width: 230px;
             }
 
             .section-header h2 {
@@ -1037,13 +1232,22 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Votre prochain emploi en <span>Suisse romande</span></h1>
-                <p>Analysez votre CV, trouvez des offres adaptées à votre profil et postulez — le tout depuis une seule plateforme.</p>
+                <h1>Décrochez plus d'entretiens en Suisse avec <span>un CV optimisé</span></h1>
+                <p>Analysez votre CV, trouvez des offres adaptées et générez vos candidatures en quelques clics.</p>
                 <div class="hero-cta-group">
                     <a href="app.html" class="hero-cta-primary">Analyser mon CV gratuitement</a>
-                    <a href="pricing.html" class="hero-cta-secondary">Voir les tarifs</a>
+                    <a href="login.html" class="hero-cta-secondary">Se connecter</a>
                 </div>
-                <p class="hero-note">5 crédits offerts à l'inscription · Sans engagement · Sans carte bancaire</p>
+                <p class="hero-note">5 crédits offerts à l'inscription, sans engagement</p>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-phone">
+                    <video class="hero-phone-screen" autoplay muted loop playsinline preload="auto"
+                        poster="/brand/video/hero-phone-poster.webp" width="540" height="1170"
+                        aria-label="Démonstration : un CV est analysé, reçoit son score, puis devient un CV suisse complet">
+                        <source src="/brand/video/hero-phone.mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
         </div>
     </section>
@@ -1078,29 +1282,42 @@
                 <p>Trois étapes pour passer de votre CV à votre prochain entretien</p>
             </div>
 
-            <div class="steps-grid">
-                <div class="step-item">
-                    <div class="step-number">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div class="steps-layout">
+                <div class="steps-grid">
+                    <div class="step-item">
+                        <div class="step-number">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <h3>1. Uploadez votre CV</h3>
+                        <p>Importez votre CV au format PDF. L'analyse démarre instantanément.</p>
+                        <span class="step-progress" aria-hidden="true"></span>
                     </div>
-                    <h3>1. Importez votre CV</h3>
-                    <p>Déposez votre CV en PDF. Notre outil l'analyse en quelques secondes selon les critères du marché suisse.</p>
+
+                    <div class="step-item">
+                        <div class="step-number">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                        <h3>2. Recevez votre analyse</h3>
+                        <p>Score détaillé, compatibilité ATS, points forts et axes d'amélioration.</p>
+                        <span class="step-progress" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-number">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>3. Optimisez et postulez</h3>
+                        <p>Appliquez les recommandations et générez vos lettres de motivation.</p>
+                        <span class="step-progress" aria-hidden="true"></span>
+                    </div>
                 </div>
 
-                <div class="step-item">
-                    <div class="step-number">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    </div>
-                    <h3>2. Trouvez les bonnes offres</h3>
-                    <p>Recherchez des offres correspondant à votre profil. Comparez votre CV avec chaque poste avant de postuler.</p>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-number">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                    <h3>3. Postulez en quelques clics</h3>
-                    <p>Générez votre CV adapté et votre lettre de motivation pour chaque offre. Téléchargez le PDF et envoyez.</p>
+                <div class="steps-video">
+                    <video muted loop playsinline preload="none" width="720" height="720"
+                        poster="/brand/video/comment-ca-marche-poster.webp"
+                        aria-label="Démonstration en 3 étapes : déposer son CV, recevoir l'analyse, créer son CV suisse">
+                        <source src="/brand/video/comment-ca-marche.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </div>
@@ -1283,8 +1500,7 @@
                 <h4>Entreprises</h4>
                 <ul>
                     <li><a href="pricing.html#pro">SwissCV Pro</a></li>
-                    <li><a href="#">API Documentation</a></li>
-                    <li><a href="#">Team Management</a></li>
+                    <li><a href="pricing.html">Équipes (plan Pro)</a></li>
                 </ul>
             </div>
 
@@ -1301,7 +1517,7 @@
         </div>
 
         <div class="footer-bottom">
-            © 2024 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
+            © 2026 SwissCV Pro. Tous droits réservés. - Hébergé en Suisse
         </div>
     </footer>
 
@@ -1836,6 +2052,44 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadTestimonials);
+    </script>
+
+    <script>
+        // Vidéos de démonstration : respect de « réduire les animations », lecture de la section
+        // « Comment ça marche » uniquement quand elle est visible, étapes synchronisées et cliquables.
+        (function () {
+            var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var hero = document.querySelector('.hero-phone-screen');
+            if (hero && reduce) { hero.removeAttribute('autoplay'); hero.pause(); }
+
+            var v = document.querySelector('.steps-video video');
+            if (!v) return;
+            var items = Array.prototype.slice.call(document.querySelectorAll('.steps-grid .step-item'));
+            var CH = [0, 7, 13], END = 19;
+            function update() {
+                var t = v.currentTime, i = t >= CH[2] ? 2 : t >= CH[1] ? 1 : 0;
+                items.forEach(function (el, k) {
+                    var a = CH[k], b = k < 2 ? CH[k + 1] : END;
+                    var p = k === i ? Math.min(1, Math.max(0, (t - a) / (b - a))) : (k < i ? 1 : 0);
+                    el.classList.toggle('is-active', k === i);
+                    el.style.setProperty('--p', p);
+                });
+            }
+            v.addEventListener('timeupdate', update);
+            items.forEach(function (el, k) {
+                el.setAttribute('role', 'button');
+                el.setAttribute('tabindex', '0');
+                function go() { v.currentTime = CH[k]; v.play().catch(function () {}); update(); }
+                el.addEventListener('click', go);
+                el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+            });
+            if (!reduce && 'IntersectionObserver' in window) {
+                new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) { if (e.isIntersecting) v.play().catch(function () {}); else v.pause(); });
+                }, { threshold: 0.35 }).observe(v);
+            }
+            update();
+        })();
     </script>
 </body>
 

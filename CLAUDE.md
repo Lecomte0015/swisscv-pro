@@ -145,8 +145,26 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - **Campagnes email marketing (✅ déployé le 12.10.2026 : migration 042, Worker `1b08fc39-d7f2-46b7-a0ef-7b100da835b6` (précédent `047053e0-2325-430c-9b5b-e0ff523d7604`), Pages `dda66d09` (précédent `4cb87f04`) ; voir RAPPORT_CAMPAGNES_2026-10-12.md ; aucune campagne envoyée à ce jour)** : page `admin-campaigns.html` ; moteur dans `index.js` (`MKT_THEMES`, `renderMarketingEmail`, `processMarketingCampaign`, `handleMarketingRoutes`) ; tables `marketing_campaigns` / `marketing_sends` (clé primaire campagne+utilisateur = jamais deux fois le même email), `users.marketing_opt_out` (migration 042). Envoi via l'API batch Resend, plafond journalier appliqué DANS la requête de réservation, reprise par le cron ; désinscription par jeton HMAC (`/marketing/unsubscribe`, page `unsubscribe.html`). Toute nouvelle campagne = test à soi-même d'abord, puis petit groupe. Les emails transactionnels (confirmation, paiement) ne sont jamais concernés par la désinscription marketing.
 - Contentsquare et Google Analytics sont chargés uniquement par `analytics.js` après consentement : ne pas remettre de balise `<script>` de suivi directement dans les pages.
 
+## Identité visuelle et page d'accueil (17.10.2026)
+- **Logo** : croix blanche dans un carré rouge `#D50000` → `brand/logo-mark.svg`. Ajouté devant « SwissCV Pro » sur toutes les pages par `brand/brand.css` (règles `a.logo::before`, `a.navbar-brand::before`, `.footer-about > h3`, `.logo-icon`). Chaque page charge un bloc « Identité visuelle » dans le `<head>` (favicon, icônes, manifeste, brand.css, balises og:image). Modifier le logo = modifier ce dossier, pas les pages.
+- **Icônes** : `favicon.ico`, `brand/icon.svg`, `brand/apple-touch-icon.png`, `site.webmanifest` (whitelist de `scripts/build-public.sh`, qui copie aussi `brand/`).
+- **Aperçu des liens (Facebook…)** : `brand/og-image.png` 1200×630. L'avertissement `fb:app_id` du débogueur Facebook est sans effet.
+- **Accueil** : texte et couleurs du haut de page viennent du **CMS** (`page_sections`, section `hero`), pas du HTML (le HTML n'est qu'un repli). Haut de page = téléphone avec la boucle `brand/video/hero-phone.mp4` ; « Comment ça marche » = `brand/video/comment-ca-marche.mp4` synchronisée avec les 3 étapes (chapitres 0 / 7 / 13 s dans le script en bas d'`index.html`).
+- **Le score « 100 »** des visuels est le score de **complétude** du générateur de CV, pas le score d'analyse IA : l'étiqueter « Score CV » / « CV complet », jamais « Score ATS ».
+- **Sources des vidéos et visuels** : `marketing/remotion/` (Remotion ; voir son LISEZ-MOI). Kit Facebook prêt à publier : `marketing/facebook/programme/`.
+
+## Équipes du plan Pro — lot 1 (✅ déployé le 17.10.2026 : migration 043, Worker `2b94cd3d-0934-461c-aa10-5ffbe9548071` ; version précédente pour retour arrière : `1b08fc39-d7f2-46b7-a0ef-7b100da835b6` ; Pages `23006ea6`)
+- Cible : cabinets d'outplacement / coachs (« plan Pro A »). Une équipe = un propriétaire **Pro** + admins/membres, **5 places** (`teams.max_members`, propriétaire et invitations en attente compris).
+- Tables `teams`, `team_members`, `team_invitations` (existaient en prod sans migration, documentées dans 043) + `team_credit_usage` (consommation du pot commun par membre).
+- **Crédits partagés** : `reserveCredits()` débite d'abord le compte du propriétaire si l'utilisateur est membre d'une équipe active (`getTeamMembership`, propriétaire `subscription_tier = 'pro'`), sinon ses propres crédits. Elle renvoie `payerId` + `usageId` ; les appelants remboursent via `releaseHeldCredits(env, creditsHeldUserId, creditsHeld, creditsHeldUsageId)`. Tout nouvel outil payant doit suivre ce schéma. Les pré-contrôles de solde utilisent `hasTeamCredits()`.
+- Propriétaire plus Pro → équipe « suspendue » (plus de partage ni d'invitation), automatiquement.
+- Invitations : email Resend `createTeamInvitationHTML` (lien `team.html?invite=<jeton>`, 7 jours, adresse invitée obligatoire). Lien ouvert sans être connecté → jeton gardé dans `localStorage.swisscv_pending_invite`, `checkout-intent.js` (`nextPage`) y renvoie après connexion/inscription.
+- Routes : `GET /teams/my-team` (équipe, membres, consommation du mois, crédits, invitations), `POST /teams/create`, `POST /teams/invite`, `GET /teams/invitations`, `POST /teams/invitations/:jeton/accept`, `DELETE /teams/invitations/:id`, `PUT|DELETE /teams/:id`, `DELETE /teams/members/:id`, `PUT /teams/members/:id/role`, `POST /teams/leave`.
+- Tests : `tests/billing/teams.test.mjs` ; démo locale dans un navigateur : `node tests/billing/team-devserver.mjs` (après `./scripts/build-public.sh`).
+- Lot 2 prévu (non fait) : dossiers candidats (exige consentement des candidats + mise à jour CGU/confidentialité, LPD). « API access » affiché « Bientôt » sur la page Tarifs.
+
 ## Migrations appliquées
-001 → 042 appliquées en remote D1
+001 → 043 appliquées en remote D1
 Dernière : `032_job_pack.sql` — colonnes `has_job_pack`/`job_pack_purchased_at`/`job_pack_reminder_sent` sur `users` + table `job_pack_events`
 
 ## Parcours inscription → première utilisation (revu août 2026)
@@ -170,7 +188,7 @@ Maintenant :
 ## Pack Recherche d'Emploi (ajouté août 2026)
 Offre à paiement unique (CHF 19.90, `JOB_PACK_CONFIG` dans `index.js`), complémentaire à Gratuit/Premium — voir [PACK_RECHERCHE_EMPLOI.md](PACK_RECHERCHE_EMPLOI.md) et [PACK_IMPLEMENTATION_PLAN.md](PACK_IMPLEMENTATION_PLAN.md). Page de vente : `pack-recherche-emploi.html`. Réutilise le pool `credits_balance` existant (pas de système de quota séparé) — 55 crédits sans expiration. Prix fixé par estimation manuelle, à confirmer une fois `ai_usage` accumule des données réelles.
 
-⚠️ Trouvé pendant l'audit, non corrigé (hors scope du Pack) : les crédits gratuits ne se renouvellent jamais réellement après l'inscription (`credits_last_reset_at` n'est mis à jour que pour les abonnés payants) — la mention "5 crédits/mois" sur `pricing.html`/`credits.html` ne correspond pas au comportement réel.
+✅ Renouvellement des crédits gratuits : corrigé et en production. `resetFreeTierCredits()` (cron quotidien 8h) remonte le solde des comptes free à `FREE_TIER_MONTHLY_CREDITS` (5) tous les 30 jours glissants, sans jamais réduire un solde supérieur. Vérifié en base le 13.10.2026 (dernier renouvellement le 11.10, aucun compte free en retard). La mention « 5 crédits/mois » de `pricing.html`/`credits.html` est donc exacte.
 
 Visibilité du Pack ajoutée le 31.08.2026 (le Pack n'était accessible que via lien direct sinon) : bannière sur `pricing.html` (section dédiée avant les recharges de crédits à l'unité), mention dans l'email `credits_depleted`. Pas encore intégré dans un déclencheur comportemental (ex. quand les crédits deviennent bas dans `app.html`).
 
