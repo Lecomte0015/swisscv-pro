@@ -1127,7 +1127,7 @@
         }
 
         async function deleteAccount() {
-            if (!confirm('ATTENTION : Cette action est IRRÉVERSIBLE!\n\nÊtes-vous absolument sûr de vouloir supprimer votre compte?\n\nToutes vos données seront définitivement supprimées:\n• Profil\n• Analyses CV\n• Lettres de motivation\n• Favoris\n• Historique\n\nTapez "SUPPRIMER" pour confirmer.')) {
+            if (!confirm('ATTENTION : Cette action est IRRÉVERSIBLE!\n\nÊtes-vous absolument sûr de vouloir supprimer votre compte?\n\nToutes vos données seront définitivement supprimées :\n• Profil\n• Analyses CV et CV créés\n• Candidatures suivies, recherches, favoris\n\nUn abonnement en cours sera résilié. Si vous possédez une équipe Pro, elle sera supprimée avec ses dossiers candidats.\n\nTapez "SUPPRIMER" pour confirmer.')) {
                 return;
             }
 
@@ -1139,7 +1139,8 @@
 
             try {
                 const response = await authenticatedFetch('/delete-account', {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    body: JSON.stringify({ confirm: 'SUPPRIMER' })
                 });
 
                 if (response.ok) {

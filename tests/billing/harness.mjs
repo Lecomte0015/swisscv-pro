@@ -95,6 +95,10 @@ export function installFakeNetwork(state) {
       return json(state.stripeCustomers[id] || { id, email: null });
     }
     if (url.startsWith('https://api.stripe.com/v1/customers') && method === 'POST') return json({ id: 'cus_created_' + (++state.sessionCounter) });
+    if (url.startsWith('https://api.stripe.com/v1/subscriptions/') && method === 'DELETE') {
+      state.stripeCancelled = (state.stripeCancelled || []).concat(decodeURIComponent(url.split('/subscriptions/')[1]));
+      return state.stripeCancelStatus ? json({ error: { code: 'api_error' } }, state.stripeCancelStatus) : json({ id: 'sub', status: 'canceled' });
+    }
     if (url.startsWith('https://api.stripe.com/v1/subscriptions/') && method === 'GET') {
       const id = decodeURIComponent(url.split('/subscriptions/')[1]);
       return state.stripeSubscriptions[id] ? json(state.stripeSubscriptions[id]) : json({ error: 'not found' }, 404);

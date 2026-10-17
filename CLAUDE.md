@@ -171,7 +171,14 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - **Conservation** : `purgeExpiredCandidates()` (cron 8h) supprime les dossiers sans activité depuis 12 mois et avertit le conseiller 30 jours avant ; toute modification relance le délai (`touchCandidate`). Supprimer un dossier ou une équipe efface tout ce qui y est rattaché.
 - Générateur de CV ouvert aux membres d'une équipe Pro active (`isActiveTeamMember`). Pages légales mises à jour (sous-traitants dont Anthropic, section dossiers candidats, contact `contact@swisscv-pro.ch`).
 - Tests : `tests/billing/candidates.test.mjs` (le banc expose `runScheduled()` pour le cron).
-- ⚠️ Non corrigé : la suppression de compte n'existe pas côté serveur (`/account/delete`, `/delete-account` appelés par profile.html / settings.html) ; « Hébergé en Suisse » encore affiché dans le bandeau de confiance (CMS) et les pieds de page ; 2FA et « audits réguliers » promis dans privacy.html sans vérification.
+- ⚠️ Non corrigé : « Hébergé en Suisse » encore affiché dans le bandeau de confiance (CMS) et les pieds de page ; 2FA et « audits réguliers » promis dans privacy.html sans vérification.
+
+## Suppression de compte et export des données (✅ déployé le 17.10.2026 : Worker `71c7b050-8924-46fb-873c-f76cf73444fd` ; précédent `8c632077-8149-41e5-afb4-e5498aef23be` ; Pages `6fd1c76d`)
+- `POST /account/delete` (profile.html) et `DELETE /delete-account` (settings.html), corps `{ "confirm": "SUPPRIMER" }` → `handleDeleteAccount`. Ordre : résiliation Stripe (échec = rien n'est supprimé) → équipe (propriétaire : équipe + dossiers supprimés ; membre : ses dossiers candidats réattribués au propriétaire) → effacement des données personnelles (`ACCOUNT_PERSONAL_TABLES` + analyses/CV personnels, tickets, avis, email_logs) → **anonymisation** de la ligne `users` (jamais supprimée : paiements, transactions et FK). Emails : confirmation à la personne + info à contact@ (email masqué). Comptes admin refusés.
+- Compte Supabase : supprimé via l'API admin si le secret `SUPABASE_SERVICE_ROLE_KEY` est configuré, sinon l'email à contact@ donne l'identifiant à supprimer à la main.
+- `GET /profile/export` → `handleExportProfile` (données personnelles en JSON, sans les dossiers candidats du cabinet).
+- Toute nouvelle table contenant des données personnelles (colonne `user_id`) doit être ajoutée à `ACCOUNT_PERSONAL_TABLES` (ou traitée explicitement) et à l'export.
+- Tests : `tests/billing/account.test.mjs`.
 
 ## Migrations appliquées
 001 → 044 appliquées en remote D1
