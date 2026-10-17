@@ -23,6 +23,11 @@ for (const u of users) {
   await t.DB.prepare('UPDATE users SET full_name = ? WHERE id = ?').bind(u.name, u.id).run();
   tokens[u.id] = { token: await t.makeToken(u.id, u.email), user: { id: u.id, email: u.email, full_name: u.name, tier: u.tier, subscription_tier: u.tier, credits_balance: u.balance } };
 }
+// Équipe déjà constituée (Claire propriétaire, Paul conseiller) ; Sara reste à inviter depuis l'interface
+const created = await t.call('POST', '/teams/create', { token: tokens.demo_owner.token, body: { name: 'Cabinet Martin Carrières' } });
+const inv = await t.call('POST', '/teams/invite', { token: tokens.demo_owner.token, body: { email: 'paul@cabinet-demo.ch' } });
+await t.call('POST', '/teams/invitations/' + inv.data.invite_link.split('invite=')[1] + '/accept', { token: tokens.demo_coach1.token });
+tokens.team_id = created.data.team_id;
 fs.writeFileSync('/tmp/team_demo_tokens.json', JSON.stringify(tokens, null, 2));
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.json': 'application/json' };

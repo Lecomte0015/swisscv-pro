@@ -12,6 +12,7 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#D50000">
     <link rel="stylesheet" href="/brand/brand.css">
+    <script src="/public/js/candidate-context.js?v=20261017a"></script>
     <meta property="og:image" content="https://swisscv-pro.ch/brand/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -1896,7 +1897,7 @@
             const response = await authenticatedFetch('/credits/balance');
             if (!response) return { allowed: false };
             const data = await response.json();
-            const allowed = data.success && (data.tier === 'premium' || data.tier === 'pro' || data.has_job_pack);
+            const allowed = data.success && (data.tier === 'premium' || data.tier === 'pro' || data.has_job_pack || !!(data.team && data.team.active));
             return { allowed: allowed };
         } catch (e) {
             return { allowed: false };

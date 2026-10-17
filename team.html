@@ -1207,6 +1207,7 @@
                 '<p>' + members.length + ' membre(s) · ' + (teamData.seats_used || members.length) + '/' + esc(teamData.max_members) + ' places utilisées · votre rôle : ' + esc(getRoleLabel(userRole)) + '</p>' +
                 (teamData.active ? '' : '<p style="color:#B80000;font-weight:600;margin-top:8px;">Équipe suspendue : l\'abonnement Pro du propriétaire n\'est plus actif. Chacun utilise ses propres crédits.</p>') +
                 '</div><div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                '<a class="btn" href="candidats.html">Dossiers candidats</a>' +
                 (isOwner ? '<button class="btn btn-secondary" onclick="showRenameModal()">Renommer</button><button class="btn btn-danger" onclick="deleteTeam()">Supprimer l\'équipe</button>' : '<button class="btn btn-secondary" onclick="leaveTeam()">Quitter l\'équipe</button>') +
                 '</div></div></div>';
 

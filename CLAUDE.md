@@ -161,10 +161,20 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Invitations : email Resend `createTeamInvitationHTML` (lien `team.html?invite=<jeton>`, 7 jours, adresse invitée obligatoire). Lien ouvert sans être connecté → jeton gardé dans `localStorage.swisscv_pending_invite`, `checkout-intent.js` (`nextPage`) y renvoie après connexion/inscription.
 - Routes : `GET /teams/my-team` (équipe, membres, consommation du mois, crédits, invitations), `POST /teams/create`, `POST /teams/invite`, `GET /teams/invitations`, `POST /teams/invitations/:jeton/accept`, `DELETE /teams/invitations/:id`, `PUT|DELETE /teams/:id`, `DELETE /teams/members/:id`, `PUT /teams/members/:id/role`, `POST /teams/leave`.
 - Tests : `tests/billing/teams.test.mjs` ; démo locale dans un navigateur : `node tests/billing/team-devserver.mjs` (après `./scripts/build-public.sh`).
-- Lot 2 prévu (non fait) : dossiers candidats (exige consentement des candidats + mise à jour CGU/confidentialité, LPD). « API access » affiché « Bientôt » sur la page Tarifs.
+- « API access » affiché « Bientôt » sur la page Tarifs.
+
+## Dossiers candidats — lot 2 (✅ déployé le 17.10.2026 : migration 044, Worker `8c632077-8149-41e5-afb4-e5498aef23be` ; version précédente pour retour arrière : `2b94cd3d-0934-461c-aa10-5ffbe9548071` ; Pages `0aa7e55a`)
+- Page `candidats.html` (liste + détail `?id=`). Tables `candidates`, `candidate_documents` (lettres / candidatures 1 clic générées pour un candidat), `candidate_notes`, `candidate_applications` ; colonne `candidate_id` sur `cv_analyses` et `cv_builder_documents` (NULL = usage personnel).
+- **Visibilité** : le conseiller du dossier (`counsellor_id`) + propriétaire et admins de l'équipe (`getAccessibleCandidate`). **Consentement** attesté à la création (`consent_at`, `consent_by`, `consent_version`). Création bloquée si l'équipe est suspendue.
+- **Outils en « mode candidat »** : `public/js/candidate-context.js` (chargé dans app, cover-letter, apply, cv-templates, job-search) — ouvert par `?candidate=<id>`, gardé dans `sessionStorage.swisscv_candidate`, quitté par `?candidate=none`. Il ajoute `candidate_id` aux requêtes `/analyze-cv-text`, `/generate-cover-letter`, `/ai/generate-application`, `/cv-builder/save` et `/cv-builder/list`, met le nom du candidat comme signataire et isole `swisscv_last_cv`. Côté serveur, `resolveToolCandidate()` vérifie l'accès AVANT tout débit.
+- Les requêtes « personnelles » (historique, statistiques du tableau de bord, liste des CV, mots-clés des suggestions, alertes emploi auto) excluent `candidate_id IS NOT NULL`. Tout nouvel écran listant analyses/CV doit faire de même.
+- **Conservation** : `purgeExpiredCandidates()` (cron 8h) supprime les dossiers sans activité depuis 12 mois et avertit le conseiller 30 jours avant ; toute modification relance le délai (`touchCandidate`). Supprimer un dossier ou une équipe efface tout ce qui y est rattaché.
+- Générateur de CV ouvert aux membres d'une équipe Pro active (`isActiveTeamMember`). Pages légales mises à jour (sous-traitants dont Anthropic, section dossiers candidats, contact `contact@swisscv-pro.ch`).
+- Tests : `tests/billing/candidates.test.mjs` (le banc expose `runScheduled()` pour le cron).
+- ⚠️ Non corrigé : la suppression de compte n'existe pas côté serveur (`/account/delete`, `/delete-account` appelés par profile.html / settings.html) ; « Hébergé en Suisse » encore affiché dans le bandeau de confiance (CMS) et les pieds de page ; 2FA et « audits réguliers » promis dans privacy.html sans vérification.
 
 ## Migrations appliquées
-001 → 043 appliquées en remote D1
+001 → 044 appliquées en remote D1
 Dernière : `032_job_pack.sql` — colonnes `has_job_pack`/`job_pack_purchased_at`/`job_pack_reminder_sent` sur `users` + table `job_pack_events`
 
 ## Parcours inscription → première utilisation (revu août 2026)

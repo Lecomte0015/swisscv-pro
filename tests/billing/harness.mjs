@@ -70,7 +70,7 @@ async function buildDb() {
     if (/^UPDATE users/i.test(stmt)) continue;
     try { await DB.prepare(stmt).run(); } catch (e) { if (!/duplicate column/i.test(String(e.message))) throw e; }
   }
-  for (const f of ['039_billing_idempotency.sql', '040_feedback_single_credit.sql', '041_rate_limits.sql', '042_marketing_campaigns.sql', '043_teams.sql']) {
+  for (const f of ['039_billing_idempotency.sql', '040_feedback_single_credit.sql', '041_rate_limits.sql', '042_marketing_campaigns.sql', '043_teams.sql', '044_candidates.sql']) {
     for (const stmt of splitSql(fs.readFileSync(path.join(root, 'migrations', f), 'utf8'))) await DB.prepare(stmt).run();
   }
   return { mf, DB };
@@ -204,10 +204,13 @@ export async function createEnv() {
 
   async function close() { restoreFetch(); await mf.dispose(); try { fs.unlinkSync(tmp); } catch (e) { /* ignore */ } }
 
+  // Déclenche le cron quotidien (handler scheduled) et attend ses tâches
+  async function runScheduled() { await worker.scheduled({ cron: '0 8 * * *', scheduledTime: Date.now() }, env, ctx); await Promise.all(pending.splice(0)); }
+
   // Accès brut au Worker (utilisé par le serveur de démonstration local, jamais par les tests)
   async function raw(req) { const res = await worker.fetch(req, env, ctx); await Promise.all(pending.splice(0)); return res; }
 
-  return { env, DB, state, call, raw, webhook, signStripe, makeToken, seedUser, q, qa, userRow, calls, close, workerPath, source: fs.readFileSync(workerPath, 'utf8') };
+  return { env, DB, state, call, raw, runScheduled, webhook, signStripe, makeToken, seedUser, q, qa, userRow, calls, close, workerPath, source: fs.readFileSync(workerPath, 'utf8') };
 }
 
 // Objets Stripe de test

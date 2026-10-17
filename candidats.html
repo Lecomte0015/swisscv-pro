@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossiers candidats — SwissCV Pro</title>
+    <meta name="robots" content="noindex">
+    <!-- Identité visuelle (logo, icônes) -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/brand/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#D50000">
+    <link rel="stylesheet" href="/brand/brand.css">
+    <meta property="og:image" content="https://swisscv-pro.ch/brand/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SwissCV Pro — Décrochez plus d'entretiens en Suisse">
+    <meta property="og:site_name" content="SwissCV Pro">
+    <meta name="twitter:card" content="summary_large_image">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swiss-red: #D50000;
+            --swiss-black: #0D0D0D;
+            --swiss-gray: #E6E6E6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F8F9FA;
+            color: var(--swiss-black);
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .team-info h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .team-info p {
+            color: #666;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--swiss-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #B80000;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #F5F5F5;
+            color: var(--swiss-black);
+            border: 2px solid #E6E6E6;
+        }
+
+        .btn-secondary:hover {
+            background: #E6E6E6;
+            border-color: var(--swiss-black);
+        }
+
+        .btn-danger {
+            background: #FFE5E5;
+            color: #D50000;
+            border: 2px solid #D50000;
+        }
+
+        .btn-danger:hover {
+            background: #D50000;
+            color: white;
+        }
+
+        .members-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .member-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: 8px;
+            border: 2px solid #E6E6E6;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D50000, #FF5252);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .member-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .member-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.owner {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: black;
+        }
+
+        .badge.admin {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .badge.member {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--swiss-gray);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--swiss-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #E8F5E9;
+            border: 1px solid #4CAF50;
+            color: #2E7D32;
+        }
+
+        .error-message {
+            background: #FFE5E5;
+            border: 1px solid #FF5252;
+            color: #D50000;
+        }
+
+        .success-message.show,
+        .error-message.show {
+            display: block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="public/js/modal-system.js?v=20260831a"></script>
+    <link rel="stylesheet" href="public/css/user-menu.css">
+    <link rel="stylesheet" href="public/css/credits.css">
+    <script src="/analytics.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <script>
+        const API_BASE = "https://swisscv-pro.dallyhermann-71e.workers.dev";
+        function getToken() { return localStorage.getItem("swisscv_token"); }
+        function getUser() { const u = localStorage.getItem("swisscv_user"); return u ? JSON.parse(u) : null; }
+        function logout() { localStorage.removeItem("swisscv_token"); localStorage.removeItem("swisscv_user"); window.location.href = "index.html"; }
+        async function authenticatedFetch(endpoint, options = {}) {
+            const token = getToken();
+            if (!token) { window.location.href = "login.html"; throw new Error("Not authenticated"); }
+            const response = await fetch(API_BASE + endpoint, { ...options, headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token, ...options.headers } });
+            if (response.status === 401) { logout(); throw new Error("Unauthorized"); }
+            return response;
+        }
+    </script>
+    <style>
+        .navbar {
+            background: white;
+            border-bottom: 2px solid #E0E0E0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0D0D0D;
+            text-decoration: none
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navbar-link {
+            padding: 8px 16px;
+            background: #F5F5F5;
+            border-radius: 6px;
+            color: #0D0D0D;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .navbar-link:hover {
+            background: #E0E0E0
+        }
+
+        .navbar-link.active {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .navbar-badge.premium {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black
+        }
+
+        .navbar-badge.pro {
+            background: linear-gradient(135deg, #9C27B0 0%, #E91E63 100%);
+            color: white
+        }
+
+        .navbar-badge.free {
+            background: #E0E0E0;
+            color: #666
+        }
+
+        .navbar-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #D50000;
+            border-radius: 6px;
+            color: #D50000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap
+        }
+
+        .navbar-btn:hover {
+            background: #D50000;
+            color: white
+        }
+
+        .navbar-burger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px
+        }
+
+        .navbar-burger span {
+            width: 25px;
+            height: 3px;
+            background: #0D0D0D;
+            border-radius: 2px;
+            transition: all 0.3s
+        }
+
+        .navbar-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px)
+        }
+
+        .navbar-burger.active span:nth-child(2) {
+            opacity: 0
+        }
+
+        .navbar-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px)
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 12px 20px
+            }
+
+            .navbar-burger {
+                display: flex
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 62px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #E0E0E0;
+                z-index: 9999
+            }
+
+            .navbar-menu.active {
+                max-height: 600px
+            }
+
+            .navbar-link,
+            .navbar-badge,
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 8px;
+                display: block
+            }
+
+            .container {
+                padding: 0 16px
+            }
+
+            .card {
+                padding: 20px
+            }
+
+            .team-header {
+                flex-direction: column;
+                align-items: flex-start
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr
+            }
+
+            .member-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px
+            }
+
+            .member-info {
+                width: 100%;
+                flex-wrap: wrap
+            }
+
+            .member-details {
+                flex: 1;
+                min-width: 0
+            }
+
+            .member-details h3,
+            .member-details p {
+                word-break: break-word;
+                overflow-wrap: break-word
+            }
+
+            .member-actions {
+                width: 100%;
+                flex-direction: column
+            }
+
+            .member-actions .btn {
+                width: 100%
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 24px
+            }
+
+            .team-info h1 {
+                font-size: 22px
+            }
+
+            .modal-content {
+                padding: 24px
+            }
+
+            .member-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px
+            }
+
+            .member-details h3 {
+                font-size: 15px
+            }
+
+            .member-details p {
+                font-size: 13px
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 18px
+            }
+
+            .navbar-link {
+                font-size: 16px;
+                padding: 12px
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 12px
+            }
+
+            .card {
+                padding: 16px
+            }
+
+            .btn {
+                width: 100%;
+                padding: 14px;
+                font-size: 14px
+            }
+
+            .page-header h1 {
+                font-size: 20px
+            }
+
+            .team-info h1 {
+                font-size: 20px
+            }
+
+            .member-card {
+                padding: 12px
+            }
+
+            .member-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 14px
+            }
+
+            .member-details h3 {
+                font-size: 14px
+            }
+
+            .member-details p {
+                font-size: 12px
+            }
+
+            .badge {
+                font-size: 11px;
+                padding: 3px 10px
+            }
+        }
+
+        /* Menus déroulants */
+        .navbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #0D0D0D;
+            /* Changed from white to match existing navbar-link color */
+            font-size: 14px;
+            /* Changed from 16px to match existing navbar-link font-size */
+            font-weight: 600;
+            /* Added to match existing navbar-link font-weight */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            /* Changed from 12px 16px to match existing navbar-link padding */
+            transition: background 0.3s;
+            border-radius: 6px;
+            /* Added to match existing navbar-link border-radius */
+        }
+
+        .dropdown-toggle:hover {
+            background: #E0E0E0;
+            /* Changed from rgba(255,255,255,0.1) to match existing navbar-link hover */
+            border-radius: 6px;
+        }
+
+        .dropdown-toggle .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .navbar-dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            font-size: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Badge plan */
+        .plan-badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .plan-badge.free {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1024px) {
+            .navbar-dropdown {
+                width: 100%;
+            }
+
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                color: #0D0D0D;
+                /* Ensure text color is visible on mobile */
+                background: #F5F5F5;
+                /* Match navbar-link background */
+            }
+
+            .dropdown-toggle:hover {
+                background: #E0E0E0;
+                /* Match navbar-link hover background */
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                margin-left: 20px;
+                margin-top: 0;
+                background: transparent;
+                /* Changed from rgba(255,255,255,0.05) to transparent for better integration */
+            }
+
+            .navbar-dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .navbar-dropdown.active .arrow {
+                transform: rotate(180deg);
+            }
+
+            .dropdown-item {
+                color: #0D0D0D;
+                /* Changed from white to match other mobile links */
+                padding: 10px 20px;
+                background: #F5F5F5;
+                /* Match navbar-link background */
+                margin-bottom: 8px;
+                /* Add margin for spacing */
+                border-radius: 6px;
+                /* Add border-radius */
+            }
+
+            .dropdown-item:hover {
+                background: #E0E0E0;
+                /* Changed from rgba(255,255,255,0.1) to match other mobile links */
+            }
+        }
+    </style>
+    </style>
+        <nav class="navbar">
+        <a href="index.html" class="navbar-brand">SwissCV Pro</a>
+        <div class="navbar-burger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="dashboard.html" class="navbar-link">Dashboard</a>
+            <!-- Menu Outils CV (Tous les plans) -->
+            <div class="navbar-dropdown" id="cvToolsMenu">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Outils CV <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="app.html" class="dropdown-item">Analyser CV</a>
+                    <a href="cv-templates.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Templates</a>
+                    <a href="cover-letter.html" class="dropdown-item">Lettre</a>
+                </div>
+            </div>
+
+            <a href="job-search.html" class="navbar-link">Offres</a>
+            <a href="interview-prep.html" class="navbar-link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Entretien</a>
+
+
+            <!-- Menu Suivi -->
+            <div class="navbar-dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown(event, this)">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Suivi <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="favorites.html" class="dropdown-item"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Favoris <span id="favoritesBadge"
+                            style="display:none; background:#FFD700; color:#000; padding:2px 6px; border-radius:10px; font-size:11px; margin-left:4px;">0</span></a>
+                    <a href="job-tracker.html" class="dropdown-item">Tracker</a>
+                </div>
+            </div>
+
+            <!-- Lien Team (Pro uniquement) -->
+            <a href="team.html" class="navbar-link pro-only-link active" id="teamNavLink" style="display:none;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team</a>
+
+            <!-- Menu Utilisateur Dropdown -->
+            
+            <!-- Credit Balance Display -->
+            <div class="credits-display" title="Voir mes crédits">
+                <span class="credits-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+                <span class="credits-balance" id="creditsBalance">--</span>
+                <span class="credits-limit">/ <span id="creditsLimit">--</span></span>
+            </div>
+<div class="user-avatar-btn" id="userAvatarBtn">
+                <div class="user-avatar-circle" onclick="toggleUserDropdown(event)">U</div>
+
+                <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <div class="user-menu-header">
+                        <div class="user-menu-name">Utilisateur</div>
+                        <div class="user-menu-email" id="userEmail">email@example.com</div>
+                        <span class="user-menu-badge" id="planBadge">Free</span>
+                    </div>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="profile.html" class="user-menu-item">
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                        <span>Mon Profil</span>
+                    </a>
+
+                    <a href="support.html" class="user-menu-item">
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                        <span>Support</span>
+                    </a>
+
+                    <a href="credits.html" class="user-menu-item">
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+                        <span>Crédits</span>
+                    </a>
+
+                    <a href="settings.html" class="user-menu-item">
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                        <span>Paramètres</span>
+                    </a>
+
+                    <div class="user-menu-divider"></div>
+
+                    <a href="#" class="user-menu-item user-menu-logout" onclick="logout(); return false;">
+                        <span class="menu-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userMenuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.getElementById('userMenuDropdown');
+            const avatar = document.getElementById('userAvatarBtn');
+            if (dropdown && avatar && !avatar.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+        });
+
+        function toggleMobileMenu() {
+            const m = document.getElementById('navbarMenu');
+            const b = document.querySelector('.navbar-burger');
+            m.classList.toggle('active');
+            b.classList.toggle('active');
+        }
+
+        function toggleDropdown(event, button) {
+            if (window.innerWidth <= 1024) {
+                event.preventDefault();
+                event.stopPropagation();
+                const dropdown = button.closest('.navbar-dropdown');
+                dropdown.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.navbar-link, .navbar-btn, .dropdown-item').forEach(l => {
+            l.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    const m = document.getElementById('navbarMenu');
+                    const b = document.querySelector('.navbar-burger');
+                    m.classList.remove('active');
+                    b.classList.remove('active');
+                }
+            })
+        });
+
+        // Close user menu when clicking on menu items
+        document.querySelectorAll('.user-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = document.getElementById('userMenuDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        });
+
+        (function () {
+            const u = getUser();
+            const planBadge = document.getElementById("planBadge");
+            const cvToolsMenu = document.getElementById("cvToolsMenu");
+            const teamLink = document.getElementById("teamLink");
+
+            if (u && planBadge) {
+                const tier = u.subscription_tier || u.tier || 'free';
+                planBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                planBadge.className = `plan-badge ${tier}`;
+                // Mettre à jour le nom et l'email de l'utilisateur dans le menu
+                const userNameEl = document.querySelector('.user-menu-name');
+                const userEmailEl = document.getElementById('userEmail');
+                const userAvatarCircle = document.querySelector('.user-avatar-circle');
+
+                if (userNameEl && u.name) {
+                    userNameEl.textContent = u.name;
+                }
+
+                if (userEmailEl && u.email) {
+                    userEmailEl.textContent = u.email;
+                }
+
+                // Mettre à jour l'avatar avec l'initiale du nom ou email
+                if (userAvatarCircle) {
+                    const initial = u.name ? u.name.charAt(0).toUpperCase() : 
+                                   u.email ? u.email.charAt(0).toUpperCase() : 'U';
+                    userAvatarCircle.textContent = initial;
+                }
+
+
+                // Afficher menu Outils CV pour Premium/Pro
+                if (cvToolsMenu && (tier === 'premium' || tier === 'pro')) {
+                    cvToolsMenu.style.display = 'inline-block';
+                }
+
+                // Afficher lien Équipe pour Pro
+                if (tier === 'pro' && teamLink) {
+                    teamLink.style.display = 'inline-block';
+                }
+            }
+        })();
+    </script>
+
+    <style>
+        .cand-toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin: 16px 0 4px; }
+        .cand-toolbar input, .cand-toolbar select { padding: 10px 12px; border: 1px solid #DDD; border-radius: 8px; font: inherit; }
+        .cand-toolbar input { flex: 1; min-width: 200px; }
+        .cand-list { display: grid; gap: 12px; margin-top: 16px; }
+        .cand-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 16px 18px; border: 1px solid #E6E6E6; border-radius: 12px; background: #fff; text-decoration: none; color: inherit; transition: border-color .2s, box-shadow .2s; }
+        .cand-row:hover { border-color: #FFCDD2; box-shadow: 0 8px 24px rgba(0,0,0,.05); }
+        .cand-row h3 { font-size: 17px; margin: 0 0 4px; }
+        .cand-meta { font-size: 13px; color: #666; }
+        .cand-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        .chip { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #F3F4F6; color: #333; white-space: nowrap; }
+        .chip.red { background: #FFF0F0; color: #B80000; }
+        .chip.green { background: #ECFDF3; color: #15803D; }
+        .chip.dark { background: #0D0D0D; color: #fff; }
+        .cand-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 14px; }
+        .cand-actions a { display: block; padding: 14px 16px; border: 1px solid #E6E6E6; border-radius: 10px; text-decoration: none; color: #0D0D0D; font-weight: 600; background: #fff; }
+        .cand-actions a:hover { border-color: #D50000; color: #D50000; }
+        .cand-actions small { display: block; font-weight: 400; color: #777; margin-top: 4px; font-size: 12px; }
+        .item { padding: 14px 0; border-top: 1px solid #F0F0F0; }
+        .item:first-of-type { border-top: 0; }
+        .item-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+        .item-title { font-weight: 700; }
+        .item-sub { font-size: 13px; color: #777; }
+        .linkbtn { background: none; border: 0; color: #D50000; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0 4px; }
+        .linkbtn.grey { color: #777; }
+        .empty { color: #888; font-size: 14px; padding: 8px 0; }
+        .consent-box { background: #FFF5F5; border: 1px solid #FFCDD2; border-radius: 10px; padding: 14px; font-size: 13px; line-height: 1.55; color: #333; }
+        .consent-box label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+        .consent-box input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
+        .doc-view { white-space: pre-wrap; font-size: 14px; line-height: 1.6; background: #FAFAFA; border-radius: 10px; padding: 16px; max-height: 55vh; overflow: auto; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 640px) { .cand-row { grid-template-columns: 1fr; } .cand-chips { justify-content: flex-start; } .row2 { grid-template-columns: 1fr; } }
+    </style>
+
+    <div class="container">
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+        <div id="loading" class="loading">Chargement…</div>
+        <div id="view" style="display:none;"></div>
+    </div>
+
+    <!-- MODAL : NOUVEAU DOSSIER -->
+    <div id="newModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouveau dossier candidat</h2>
+                <button class="modal-close" onclick="closeModal('newModal')">&times;</button>
+            </div>
+            <form id="newForm">
+                <div class="row2">
+                    <div class="form-group"><label for="nFirst">Prénom *</label><input type="text" id="nFirst" required maxlength="80"></div>
+                    <div class="form-group"><label for="nLast">Nom *</label><input type="text" id="nLast" required maxlength="80"></div>
+                </div>
+                <div class="form-group"><label for="nEmail">Email du candidat (facultatif)</label><input type="email" id="nEmail" maxlength="254"></div>
+                <div class="form-group"><label for="nJob">Poste visé (facultatif)</label><input type="text" id="nJob" maxlength="120" placeholder="Ex : Vendeuse, comptable, logisticien…"></div>
+                <div class="form-group" id="nCounsellorGroup" style="display:none;"><label for="nCounsellor">Conseiller responsable</label><select id="nCounsellor"></select></div>
+                <div class="consent-box">
+                    <label><input type="checkbox" id="nConsent" required>
+                        <span>J'atteste avoir informé ce candidat et obtenu son accord pour que ses données (CV, analyses, lettres, candidatures et notes de suivi) soient enregistrées dans SwissCV Pro et utilisées par notre cabinet pour l'accompagner dans sa recherche d'emploi. Le dossier est supprimé automatiquement 12 mois après la dernière activité, ou plus tôt sur simple demande du candidat.</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn" id="btnNew" style="margin-top:16px;">Créer le dossier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL : DOCUMENT (lettre / candidature) -->
+    <div id="docModal" class="modal">
+        <div class="modal-content" style="max-width:760px;">
+            <div class="modal-header">
+                <h2 id="docTitle">Document</h2>
+                <button class="modal-close" onclick="closeModal('docModal')">&times;</button>
+            </div>
+            <div id="docBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============ Dossiers candidats (plan Pro) ============
+        const STATUS = { en_cours: 'En cours', en_poste: 'En poste', archive: 'Archivé' };
+        const APP_STATUS = { a_postuler: 'À postuler', postule: 'Postulé', entretien: 'Entretien', offre: 'Offre', refuse: 'Refusé' };
+        let listData = null;
+        let current = null;
+
+        function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
+        function fmtDate(ts) { return ts ? new Date(ts * 1000).toLocaleDateString('fr-CH') : ''; }
+        function daysLeft(ts) { return Math.ceil((ts * 1000 - Date.now()) / 86400000); }
+        function showMsg(id, text) { const d = document.getElementById(id); d.textContent = text; d.classList.add('show'); setTimeout(() => d.classList.remove('show'), 6000); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function ok(t) { showMsg('successMessage', t); }
+        function ko(t) { showMsg('errorMessage', t); }
+        function openModal(id) { document.getElementById(id).classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        async function api(path, options) {
+            const res = await authenticatedFetch(path, options);
+            let data = {}; try { data = await res.json(); } catch (e) { /* vide */ }
+            return { ok: res.ok, status: res.status, data };
+        }
+
+        (async function init() {
+            if (!getToken()) { window.location.href = 'login.html'; return; }
+            // Quitter le mode candidat éventuellement actif dans cet onglet quand on revient à la liste
+            const id = new URLSearchParams(location.search).get('id');
+            if (id) await showDetail(id); else { try { sessionStorage.removeItem('swisscv_candidate'); } catch (e) { /* ignore */ } await showList(); }
+        })();
+
+        // ---------------- LISTE ----------------
+        async function showList() {
+            setLoading(true);
+            const r = await api('/candidates');
+            setLoading(false);
+            if (!r.ok) { ko(r.data.error || 'Erreur de chargement'); return; }
+            listData = r.data;
+            const view = document.getElementById('view');
+            if (!r.data.team) {
+                view.innerHTML = '<div class="card" style="text-align:center;padding:56px 32px;"><h2 style="font-size:26px;margin-bottom:12px;">Dossiers candidats</h2>' +
+                    '<p style="color:#666;max-width:560px;margin:0 auto 24px;line-height:1.6;">Les dossiers candidats sont réservés aux équipes du plan Pro : chaque conseiller y range les analyses, CV, lettres et candidatures des personnes qu\'il accompagne.</p>' +
+                    '<a class="btn" href="team.html">Mon équipe</a> <a class="btn btn-secondary" href="pricing.html">Découvrir le plan Pro</a></div>';
+                view.style.display = 'block';
+                return;
+            }
+            const manager = r.data.team.role === 'owner' || r.data.team.role === 'admin';
+            view.innerHTML = '<div class="card"><div class="team-header"><div class="team-info"><h1>Dossiers candidats</h1>' +
+                '<p>' + esc(r.data.team.name) + ' · ' + (manager ? 'tous les dossiers de l\'équipe' : 'vos dossiers') + ' · conservés 12 mois après la dernière activité</p>' +
+                (r.data.team.active ? '' : '<p style="color:#B80000;font-weight:600;margin-top:8px;">Équipe suspendue : consultation possible, création de dossiers bloquée.</p>') +
+                '</div><div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+                '<a class="btn btn-secondary" href="team.html">Mon équipe</a>' +
+                (r.data.team.active ? '<button class="btn" onclick="openNew()">+ Nouveau dossier</button>' : '') + '</div></div>' +
+                '<div class="cand-toolbar"><input type="search" id="q" placeholder="Rechercher un candidat, un poste…" oninput="renderRows()">' +
+                '<select id="fStatus" onchange="renderRows()"><option value="">Tous les statuts</option>' + Object.keys(STATUS).map(k => '<option value="' + k + '">' + STATUS[k] + '</option>').join('') + '</select></div>' +
+                '<div class="cand-list" id="rows"></div></div>';
+            view.style.display = 'block';
+            renderRows();
+        }
+
+        function renderRows() {
+            const q = (document.getElementById('q').value || '').toLowerCase();
+            const st = document.getElementById('fStatus').value;
+            const manager = listData.team.role === 'owner' || listData.team.role === 'admin';
+            const rows = listData.candidates.filter(c => (!st || c.status === st) && (!q || (c.first_name + ' ' + c.last_name + ' ' + (c.target_job || '') + ' ' + (c.counsellor_name || '')).toLowerCase().includes(q)));
+            document.getElementById('rows').innerHTML = rows.length ? rows.map(c => {
+                const left = daysLeft(c.delete_at);
+                return '<a class="cand-row" href="candidats.html?id=' + encodeURIComponent(c.id) + '"><div><h3>' + esc(c.first_name + ' ' + c.last_name) + '</h3>' +
+                    '<div class="cand-meta">' + esc(c.target_job || 'Poste non précisé') + (manager ? ' · suivi par ' + esc(c.counsellor_name) : '') + ' · dernière activité le ' + fmtDate(c.last_activity_at) + '</div></div>' +
+                    '<div class="cand-chips"><span class="chip ' + (c.status === 'en_poste' ? 'green' : c.status === 'archive' ? '' : 'dark') + '">' + esc(STATUS[c.status] || c.status) + '</span>' +
+                    '<span class="chip">' + c.analyses_count + ' analyse(s)</span><span class="chip">' + c.cv_count + ' CV</span><span class="chip">' + c.documents_count + ' lettre(s)/cand.</span>' +
+                    (left <= 60 ? '<span class="chip red">Suppression dans ' + Math.max(0, left) + ' j</span>' : '') + '</div></a>';
+            }).join('') : '<p class="empty">' + (listData.candidates.length ? 'Aucun dossier ne correspond à la recherche.' : 'Aucun dossier pour le moment. Créez le premier avec « Nouveau dossier ».') + '</p>';
+        }
+
+        function openNew() {
+            document.getElementById('newForm').reset();
+            const manager = listData.team.role === 'owner' || listData.team.role === 'admin';
+            const g = document.getElementById('nCounsellorGroup');
+            if (manager && listData.counsellors.length > 1) {
+                const me = (getUser() || {}).id;
+                document.getElementById('nCounsellor').innerHTML = listData.counsellors.map(c => '<option value="' + esc(c.user_id) + '"' + (c.user_id === me ? ' selected' : '') + '>' + esc(c.full_name || c.email) + '</option>').join('');
+                g.style.display = 'block';
+            } else g.style.display = 'none';
+            openModal('newModal');
+        }
+
+        document.getElementById('newForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnNew');
+            btn.disabled = true;
+            const body = {
+                first_name: document.getElementById('nFirst').value.trim(), last_name: document.getElementById('nLast').value.trim(),
+                email: document.getElementById('nEmail').value.trim(), target_job: document.getElementById('nJob').value.trim(),
+                consent: document.getElementById('nConsent').checked
+            };
+            if (document.getElementById('nCounsellorGroup').style.display !== 'none') body.counsellor_id = document.getElementById('nCounsellor').value;
+            const r = await api('/candidates', { method: 'POST', body: JSON.stringify(body) });
+            btn.disabled = false;
+            if (!r.ok) { ko(r.data.error || 'Erreur'); return; }
+            closeModal('newModal');
+            location.href = 'candidats.html?id=' + encodeURIComponent(r.data.candidate.id);
+        });
+
+        // ---------------- DÉTAIL ----------------
+        async function showDetail(id) {
+            setLoading(true);
+            const r = await api('/candidates/' + encodeURIComponent(id));
+            setLoading(false);
+            if (!r.ok) { ko(r.data.error || 'Dossier introuvable'); setTimeout(() => location.href = 'candidats.html', 1800); return; }
+            current = r.data;
+            const c = r.data.candidate, manager = r.data.role === 'owner' || r.data.role === 'admin';
+            const enc = encodeURIComponent(c.id);
+            const left = daysLeft(c.delete_at);
+            let counsellorField = '<span>' + esc(c.counsellor_name) + '</span>';
+            if (manager) {
+                const lr = await api('/candidates');
+                const opts = (lr.data.counsellors || []).map(u => '<option value="' + esc(u.user_id) + '"' + (u.user_id === c.counsellor_id ? ' selected' : '') + '>' + esc(u.full_name || u.email) + '</option>').join('');
+                if (opts) counsellorField = '<select id="dCounsellor" onchange="updateField(\'counsellor_id\', this.value)">' + opts + '</select>';
+            }
+            const v = document.getElementById('view');
+            v.innerHTML =
+                '<p style="margin-bottom:12px;"><a href="candidats.html" style="color:#666;">← Tous les dossiers</a></p>' +
+                '<div class="card"><div class="team-header"><div class="team-info"><h1>' + esc(c.first_name + ' ' + c.last_name) + '</h1>' +
+                '<p>' + esc(c.target_job || 'Poste non précisé') + (c.email ? ' · ' + esc(c.email) : '') + '</p>' +
+                '<p class="item-sub" style="margin-top:6px;">Consentement attesté le ' + fmtDate(c.consent_at) + ' · ' + (left <= 60 ? '<strong style="color:#B80000;">suppression automatique dans ' + Math.max(0, left) + ' jour(s)</strong> (une nouvelle activité relance le délai)' : 'suppression automatique le ' + fmtDate(c.delete_at) + ' sans nouvelle activité') + '</p></div>' +
+                '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' +
+                '<select id="dStatus" onchange="updateField(\'status\', this.value)">' + Object.keys(STATUS).map(k => '<option value="' + k + '"' + (k === c.status ? ' selected' : '') + '>' + STATUS[k] + '</option>').join('') + '</select>' +
+                '<button class="btn btn-secondary" onclick="exportJson()">Exporter</button><button class="btn btn-danger" onclick="deleteCandidate()">Supprimer</button></div></div>' +
+                '<p class="item-sub" style="margin-top:10px;">Conseiller responsable : ' + counsellorField + '</p>' +
+                (r.data.team_active ? '<div class="cand-actions">' +
+                    '<a href="app.html?candidate=' + enc + '">Analyser un CV<small>1 crédit · score et recommandations</small></a>' +
+                    '<a href="cv-templates.html?candidate=' + enc + '&new=1">Créer un CV suisse<small>générateur, 6 modèles</small></a>' +
+                    '<a href="cover-letter.html?candidate=' + enc + '">Lettre de motivation<small>2 crédits</small></a>' +
+                    '<a href="job-search.html?candidate=' + enc + '">Trouver une offre<small>puis candidature 1 clic (3 crédits)</small></a></div>' : '<p style="color:#B80000;margin-top:12px;">Équipe suspendue : les outils ne peuvent plus être utilisés pour ce dossier.</p>') +
+                '</div>' +
+                section('Analyses de CV', r.data.analyses.map(a =>
+                    '<div class="item"><div class="item-head"><span class="item-title">Score ' + esc(a.score) + '/100 · ' + esc(a.filename || 'CV') + '</span><span class="item-sub">' + fmtDate(a.created_at) +
+                    ' <button class="linkbtn grey" onclick="delItem(\'analyses\',\'' + esc(a.id) + '\')">Supprimer</button></span></div>' +
+                    (a.improvements && a.improvements.length ? '<div class="item-sub" style="margin-top:6px;">À améliorer : ' + a.improvements.slice(0, 3).map(esc).join(' · ') + '</div>' : '') + '</div>').join(''), 'Aucune analyse. Utilisez « Analyser un CV » ci-dessus.') +
+                section('CV suisses', r.data.cv_documents.map(d =>
+                    '<div class="item"><div class="item-head"><span class="item-title">' + esc(d.name || 'CV') + '</span><span class="item-sub">modifié le ' + fmtDate(d.updated_at) +
+                    ' <a class="linkbtn" href="cv-templates.html?candidate=' + enc + '&id=' + encodeURIComponent(d.id) + '">Ouvrir</a> <button class="linkbtn grey" onclick="delItem(\'cvs\',\'' + esc(d.id) + '\')">Supprimer</button></span></div></div>').join(''), 'Aucun CV. Utilisez « Créer un CV suisse » ci-dessus.') +
+                section('Lettres et candidatures 1 clic', r.data.documents.map(d =>
+                    '<div class="item"><div class="item-head"><span class="item-title">' + (d.kind === 'letter' ? 'Lettre · ' : 'Candidature 1 clic · ') + esc(d.title) + '</span><span class="item-sub">' + fmtDate(d.created_at) +
+                    ' <button class="linkbtn" onclick="viewDoc(\'' + esc(d.id) + '\')">Voir</button> <button class="linkbtn grey" onclick="delItem(\'documents\',\'' + esc(d.id) + '\')">Supprimer</button></span></div></div>').join(''), 'Aucune lettre ni candidature générée pour ce candidat.') +
+                section('Suivi des candidatures', '<form id="appForm" class="row2" style="margin-bottom:8px;"><input id="aTitle" placeholder="Poste *" required maxlength="160" style="padding:10px;border:1px solid #DDD;border-radius:8px;"><input id="aCompany" placeholder="Entreprise *" required maxlength="160" style="padding:10px;border:1px solid #DDD;border-radius:8px;">' +
+                    '<input id="aUrl" placeholder="Lien de l\'offre (facultatif)" maxlength="500" style="padding:10px;border:1px solid #DDD;border-radius:8px;"><button class="btn" type="submit">Ajouter</button></form>' +
+                    (r.data.applications.length ? r.data.applications.map(a =>
+                        '<div class="item"><div class="item-head"><span class="item-title">' + esc(a.job_title) + ' · ' + esc(a.company) + (a.job_url ? ' <a class="linkbtn" target="_blank" rel="noopener" href="' + esc(a.job_url) + '">offre</a>' : '') + '</span><span class="item-sub">' +
+                        '<select onchange="updateApp(\'' + esc(a.id) + '\', this.value)">' + Object.keys(APP_STATUS).map(k => '<option value="' + k + '"' + (k === a.status ? ' selected' : '') + '>' + APP_STATUS[k] + '</option>').join('') + '</select>' +
+                        ' <button class="linkbtn grey" onclick="delItem(\'applications\',\'' + esc(a.id) + '\')">Supprimer</button></span></div></div>').join('') : '<p class="empty">Aucune candidature suivie.</p>'), null) +
+                section('Notes de suivi', '<form id="noteForm" style="display:flex;gap:10px;margin-bottom:8px;"><textarea id="noteText" rows="2" maxlength="5000" placeholder="Compte rendu d\'entretien, prochaine étape…" style="flex:1;padding:10px;border:1px solid #DDD;border-radius:8px;font:inherit;"></textarea><button class="btn" type="submit">Ajouter</button></form>' +
+                    (r.data.notes.length ? r.data.notes.map(n =>
+                        '<div class="item"><div class="item-head"><span class="item-sub">' + esc(n.author_name) + ' · ' + fmtDate(n.created_at) + '</span><button class="linkbtn grey" onclick="delItem(\'notes\',\'' + esc(n.id) + '\')">Supprimer</button></div><div style="white-space:pre-wrap;margin-top:4px;">' + esc(n.note) + '</div></div>').join('') : '<p class="empty">Aucune note.</p>'), null);
+            v.style.display = 'block';
+            document.getElementById('appForm').addEventListener('submit', addApp);
+            document.getElementById('noteForm').addEventListener('submit', addNote);
+        }
+
+        function section(title, inner, emptyText) {
+            const content = inner || (emptyText ? '<p class="empty">' + emptyText + '</p>' : '');
+            return '<div class="card"><h2>' + title + '</h2>' + content + '</div>';
+        }
+
+        async function updateField(field, value) {
+            const body = {}; body[field] = value;
+            const r = await api('/candidates/' + encodeURIComponent(current.candidate.id), { method: 'PUT', body: JSON.stringify(body) });
+            if (r.ok) { ok('Dossier mis à jour'); await showDetail(current.candidate.id); } else ko(r.data.error || 'Erreur');
+        }
+        async function addNote(e) {
+            e.preventDefault();
+            const note = document.getElementById('noteText').value.trim();
+            if (!note) return;
+            const r = await api('/candidates/' + encodeURIComponent(current.candidate.id) + '/notes', { method: 'POST', body: JSON.stringify({ note }) });
+            if (r.ok) await showDetail(current.candidate.id); else ko(r.data.error || 'Erreur');
+        }
+        async function addApp(e) {
+            e.preventDefault();
+            const body = { job_title: document.getElementById('aTitle').value.trim(), company: document.getElementById('aCompany').value.trim(), job_url: document.getElementById('aUrl').value.trim() };
+            const r = await api('/candidates/' + encodeURIComponent(current.candidate.id) + '/applications', { method: 'POST', body: JSON.stringify(body) });
+            if (r.ok) await showDetail(current.candidate.id); else ko(r.data.error || 'Erreur');
+        }
+        async function updateApp(appId, status) {
+            const r = await api('/candidates/' + encodeURIComponent(current.candidate.id) + '/applications/' + encodeURIComponent(appId), { method: 'PUT', body: JSON.stringify({ status }) });
+            if (r.ok) ok('Statut mis à jour'); else ko(r.data.error || 'Erreur');
+        }
+        async function delItem(kind, itemId) {
+            if (!confirm('Supprimer définitivement cet élément du dossier ?')) return;
+            const r = await api('/candidates/' + encodeURIComponent(current.candidate.id) + '/' + kind + '/' + encodeURIComponent(itemId), { method: 'DELETE' });
+            if (r.ok) await showDetail(current.candidate.id); else ko(r.data.error || 'Erreur');
+        }
+        async function deleteCandidate() {
+            const c = current.candidate;
+            if (!confirm('Supprimer définitivement le dossier de ' + c.first_name + ' ' + c.last_name + ' ? Analyses, CV, lettres, candidatures et notes seront effacés. Cette action est irréversible.')) return;
+            const r = await api('/candidates/' + encodeURIComponent(c.id), { method: 'DELETE' });
+            if (r.ok) { try { sessionStorage.removeItem('swisscv_candidate'); } catch (e) { /* ignore */ } location.href = 'candidats.html'; } else ko(r.data.error || 'Erreur');
+        }
+        function viewDoc(docId) {
+            const d = current.documents.find(x => x.id === docId);
+            if (!d) return;
+            const c = d.content || {};
+            document.getElementById('docTitle').textContent = (d.kind === 'letter' ? 'Lettre — ' : 'Candidature 1 clic — ') + (d.title || '');
+            let html = '';
+            if (d.kind === 'letter') html = '<div class="doc-view">' + esc(c.letter) + '</div>';
+            else html = '<p style="margin-bottom:10px;"><strong>Compatibilité : ' + esc(c.matchScore) + '/100</strong> ' + esc(c.matchLabel || '') + '</p>' +
+                (c.summary ? '<p style="margin-bottom:10px;">' + esc(c.summary) + '</p>' : '') +
+                (c.gaps && c.gaps.length ? '<p class="item-sub" style="margin-bottom:10px;">Écarts : ' + c.gaps.map(esc).join(' · ') + '</p>' : '') +
+                '<h3 style="margin:12px 0 6px;">Lettre</h3><div class="doc-view">' + esc(c.coverLetter) + '</div>';
+            const text = d.kind === 'letter' ? c.letter : c.coverLetter;
+            html += '<button class="btn btn-secondary" style="margin-top:12px;" id="copyDoc">Copier la lettre</button>';
+            document.getElementById('docBody').innerHTML = html;
+            document.getElementById('copyDoc').addEventListener('click', () => navigator.clipboard.writeText(text || '').then(() => ok('Lettre copiée')).catch(() => ko('Copie impossible')));
+            openModal('docModal');
+        }
+        function exportJson() {
+            const c = current.candidate;
+            const blob = new Blob([JSON.stringify(current, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'dossier-' + (c.first_name + '-' + c.last_name).toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.json';
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        }
+        function setLoading(on) {
+            document.getElementById('loading').style.display = on ? 'block' : 'none';
+            if (on) document.getElementById('view').style.display = 'none';
+        }
+    </script>
+    <script src="public/js/notifications.js?v=20260831a"></script>
+    <script src="public/js/credits.js?v=20260821a"></script>
+</body>
+</html>
