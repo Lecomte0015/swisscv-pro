@@ -146,3 +146,34 @@ test('[USAGE] téléchargement du CV généré : facturé UNE fois par document,
   assert.equal((await t.q("SELECT download_charged_at d FROM cv_builder_documents WHERE id = 'doc_poor_01'")).d, null);
   assert.equal(await balance('cvb_user_02'), 1);
 });
+
+test('[HONNÊTETÉ] réponse IA illisible : une nouvelle tentative, puis erreur, crédit rendu, AUCUNE analyse inventée enregistrée', async () => {
+  resetAi();
+  await t.seedUser({ id: 'garbage_user_01', email: 'garbage1@test.invalid', balance: 3 });
+  const tok = await t.makeToken('garbage_user_01', 'garbage1@test.invalid');
+  t.state.anthropicRaw = 'Désolé, je ne peux pas produire de JSON pour ce document.';
+  const r = await t.call('POST', '/analyze-cv-text', { token: tok, body: { cvText: CV, filename: 'cv.pdf' } });
+  t.state.anthropicRaw = null;
+  assert.equal(r.status, 502);
+  assert.equal(r.data.credits_refunded, true);
+  assert.equal(t.state.anthropicCalls, 2, 'une seule nouvelle tentative');
+  assert.equal(await balance('garbage_user_01'), 3, 'crédit rendu');
+  assert.equal((await t.qa("SELECT * FROM cv_analyses WHERE user_id = 'garbage_user_01'")).length, 0, 'aucune analyse enregistrée');
+  resetAi();
+});
+
+test('[HONNÊTETÉ] réponse IA incomplète (score manquant) puis correcte : la 2e tentative est utilisée', async () => {
+  resetAi();
+  await t.seedUser({ id: 'garbage_user_02', email: 'garbage2@test.invalid', balance: 3 });
+  const tok = await t.makeToken('garbage_user_02', 'garbage2@test.invalid');
+  let calls = 0;
+  const realRaw = '{"score":64,"atsScore":58,"strongPoints":["Expérience claire chez ACME"],"improvements":["Préciser le niveau CECR de l\'anglais"],"swissAdvice":"Indiquer le permis si pertinent.","keywords":["vente"]}';
+  Object.defineProperty(t.state, 'anthropicRaw', { configurable: true, get() { calls++; return calls === 1 ? '{"strongPoints":["x"]}' : realRaw; } });
+  const r = await t.call('POST', '/analyze-cv-text', { token: tok, body: { cvText: CV } });
+  delete t.state.anthropicRaw;
+  t.state.anthropicRaw = null;
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  assert.equal(r.data.analysis.score, 64);
+  assert.equal(await balance('garbage_user_02'), 2);
+  resetAi();
+});

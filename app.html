@@ -1483,12 +1483,12 @@
 
             <div class="photo-option">
                 <label>
-                    <input type="checkbox" id="hasPhotoCheckbox" checked>
+                    <input type="checkbox" id="hasPhotoCheckbox">
                     <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Mon CV contient une photo professionnelle</span>
                 </label>
                 <p class="help-text">
-                    <strong>Standard suisse :</strong> La photo est fortement recommandée en Suisse.
-                    Son absence peut réduire significativement votre score (-25 points).
+                    Cochez seulement si votre CV contient une photo : l'analyse en tient compte.
+                    En Suisse, la photo est courante mais reste un choix personnel.
                 </p>
             </div>
 
@@ -1540,12 +1540,13 @@
                 <h3
                     style="font-size: 24px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
                     <span class="icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></span>
-                    Score ATS (Applicant Tracking System)
+                    Lisibilité par les logiciels de tri (ATS)
                 </h3>
+                <p style="font-size:13px;color:#666;margin:-14px 0 18px;">Estimation de la facilité avec laquelle un logiciel de tri des candidatures lit votre CV. Ce n'est pas une mesure faite par un vrai logiciel de recrutement, ni une prédiction de la décision d'un employeur.</p>
 
                 <div class="ats-score-display">
                     <div class="ats-score-value" id="atsScoreValue">—</div>
-                    <div class="ats-score-label">Compatibilité ATS</div>
+                    <div class="ats-score-label">Estimation ATS</div>
                 </div>
             </div>
 
@@ -2511,11 +2512,13 @@
             }
 
             // Score ATS — visible mais analyse détaillée verrouillée pour les free
-            if (result.ats_score) {
+            // Le serveur renvoie « atsScore » ; l'historique stocke « ats_score »
+            const atsValue = (typeof result.atsScore === 'number') ? result.atsScore : result.ats_score;
+            if (atsValue) {
                 const ats = document.getElementById('atsSection');
                 if (ats) {
                     ats.style.display = 'block';
-                    document.getElementById('atsScoreValue').textContent = result.ats_score + '%';
+                    document.getElementById('atsScoreValue').textContent = atsValue + '/100';
                     if (!isPremium) {
                         const atsLabel = ats.querySelector('.ats-score-label');
                         if (atsLabel && !ats.querySelector('.ats-lock-note')) {
@@ -2657,11 +2660,12 @@
                     }
 
                     // Score ATS si disponible
-                    if (currentAnalysisResult.ats_score) {
+                    const exportAts = (typeof currentAnalysisResult.atsScore === 'number') ? currentAnalysisResult.atsScore : currentAnalysisResult.ats_score;
+                    if (exportAts) {
                         y += 5;
                         doc.setFontSize(16);
                         doc.setFont('helvetica', 'bold');
-                        doc.text(`Score ATS: ${currentAnalysisResult.ats_score}%`, margin, y);
+                        doc.text(`Estimation ATS : ${exportAts}/100`, margin, y);
                     }
 
                     // Télécharger
@@ -2686,7 +2690,7 @@
                 fileInfo.classList.remove('show');
                 analyzeBtn.disabled = true;
                 document.getElementById('resultsSection').classList.remove('show');
-                document.getElementById('hasPhotoCheckbox').checked = true;
+                document.getElementById('hasPhotoCheckbox').checked = false;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 updateRemainingCount();
         }

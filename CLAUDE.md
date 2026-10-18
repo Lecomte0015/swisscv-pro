@@ -180,6 +180,12 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Toute nouvelle table contenant des données personnelles (colonne `user_id`) doit être ajoutée à `ACCOUNT_PERSONAL_TABLES` (ou traitée explicitement) et à l'export.
 - Tests : `tests/billing/account.test.mjs`.
 
+## Audit stratégique — lot 1 (✅ déployé le 18.10.2026 : Worker `6250db9c-f1f3-4dba-9992-bc2ec8f1921b` ; précédent `d54058be-80ed-4b8a-8c0d-b83965224b14` ; Pages `56439cfe` ; voir AUDIT_STRATEGIQUE_2026-10-18.md)
+- Analyse CV : plus jamais de résultat de repli inventé (`parseCvAnalysis()` + 1 nouvelle tentative, sinon 502 et crédit rendu). Les 8 anciennes analyses de repli (« Expérience professionnelle présente », score 70) restent dans l'historique des utilisateurs à la demande du fondateur, mais sont exclues de `/public/stats`.
+- `/public/stats` exclut comptes internes, bannis et `contact-form`. Témoignages 1-3 (exemples de la migration 001) passés en `rejected` ; seul l'id 10 est un vrai avis publié. Ne jamais remettre de témoignage codé en dur dans une page.
+- Pages : promesses alignées sur les règles réelles (pas de limite « analyses/mois » ni « lettres/semaine » côté serveur ; suivi de candidatures illimité pour tous) ; score ATS affiché comme « Estimation ATS /100 » ; case photo décochée par défaut.
+- **Mesure de qualité de l'analyse** : `node tests/quality/run-baseline.mjs` (20 CV synthétiques, vrai Worker, seul Anthropic est réel, clé lue dans `.dev.vars`), `--dry` sans appel payant. Grille : `tests/quality/rubric.md`. Référence : MESURE_QUALITE_ANALYSE_2026-10-18.md. Toute modification du moteur se compare à cette référence.
+
 ## Migrations appliquées
 001 → 044 appliquées en remote D1
 Dernière : `032_job_pack.sql` — colonnes `has_job_pack`/`job_pack_purchased_at`/`job_pack_reminder_sent` sur `users` + table `job_pack_events`

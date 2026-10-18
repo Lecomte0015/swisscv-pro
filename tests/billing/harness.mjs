@@ -51,7 +51,7 @@ const FALLBACK_DDL = [
   "CREATE TABLE feedback_responses (id TEXT PRIMARY KEY, user_id TEXT, email TEXT NOT NULL, blocker_reason TEXT NOT NULL, quality_rating TEXT, missing_feature TEXT, comment TEXT, credited INTEGER DEFAULT 0, created_at INTEGER DEFAULT (unixepoch()), usage_features TEXT, nps_score INTEGER)",
   "CREATE TABLE cv_builder_documents (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, template_id TEXT, name TEXT, data TEXT, created_at INTEGER, updated_at INTEGER, deleted_at INTEGER, download_charged_at INTEGER)",
   "CREATE TABLE job_applications (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, job_title TEXT NOT NULL, company TEXT NOT NULL, job_url TEXT, status TEXT DEFAULT 'a_consulter', applied_date INTEGER DEFAULT (unixepoch()), deadline INTEGER, reminder_date INTEGER, status_history TEXT DEFAULT '[]', priority TEXT DEFAULT 'medium', salary_expectation INTEGER, last_status_change INTEGER, created_at INTEGER DEFAULT (unixepoch()), updated_at INTEGER DEFAULT (unixepoch()), deleted_at INTEGER, notes TEXT, notes_updated_at INTEGER, reminder_note TEXT, reminder_updated_at INTEGER)",
-  "CREATE TABLE ai_usage (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT, feature TEXT, tokens_used INTEGER, cost_estimate REAL, created_at INTEGER DEFAULT (unixepoch()))",
+  "CREATE TABLE ai_usage (id TEXT PRIMARY KEY, user_id TEXT, feature TEXT, tokens_used INTEGER, cost_estimate REAL, created_at INTEGER DEFAULT (unixepoch()))",
   "CREATE TABLE metrics_snapshots (id INTEGER PRIMARY KEY AUTOINCREMENT, snapshot_date TEXT NOT NULL UNIQUE, total_users INTEGER NOT NULL, premium_users INTEGER NOT NULL, pro_users INTEGER NOT NULL, mrr INTEGER NOT NULL, created_at INTEGER DEFAULT (unixepoch()))"
 ];
 
@@ -108,6 +108,7 @@ export function installFakeNetwork(state) {
       state.anthropicCalls = (state.anthropicCalls || 0) + 1;
       const callNo = state.anthropicCalls;
       if (state.anthropicFail || (state.anthropicFailOn && state.anthropicFailOn(callNo))) return json({ error: 'surcharge simulée' }, 529);
+      if (state.anthropicRaw !== undefined && state.anthropicRaw !== null) return json({ content: [{ text: state.anthropicRaw }], usage: { input_tokens: 10, output_tokens: 10 } });
       return json({ content: [{ text: '{"score":70,"atsScore":70,"strongPoints":["a"],"improvements":["b"],"swissAdvice":"c","keywords":["x","y"],"matchScore":80,"strengths":[],"gaps":[],"recommendations":[],"verdict":"v","cv":{"firstName":"A","lastName":"B"},"letter":"Madame, Monsieur"}' }], usage: { input_tokens: 10, output_tokens: 10 } });
     }
     if (url === 'https://api.resend.com/emails/batch') {
