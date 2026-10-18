@@ -1,0 +1,322 @@
+{
+ "cv01": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Tâches sans portée en 1re priorité ; langues sans niveau seulement suggérées dans les conseils."
+ },
+ "cv02": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Tâches vagues et liste de technologies bien traitées ; points forts cités."
+ },
+ "cv03": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 3,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Chevauchement en 1re priorité sur 3 exécutions, points forts précis."
+ },
+ "cv04": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 1,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Densité bien priorisée ; point fort « niveaux certifiés » non appuyé par le CV (désormais filtré par le code) ; score 84 un peu haut."
+ },
+ "cv05": {
+  "notes": {
+   "Diagnostic": 2,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Projets et période 2024-2025 bien vus ; l'accroche de reconversion n'est plus demandée."
+ },
+ "cv06": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Interruption de 4 ans en 1re priorité sur les 3 exécutions, sans supposer la cause."
+ },
+ "cv07": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 3,
+   "Utilité": 3,
+   "Extraction": 2
+  },
+  "critique": false,
+  "commentaire": "Coordonnées et tâches manquantes bien priorisées ; score bas cohérent."
+ },
+ "cv08": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 2,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 3,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Désordre bien vu, score 38 cohérent ; e-mail jugé non professionnel à cause du domaine fictif .invalid (artefact du jeu de test)."
+ },
+ "cv09": {
+  "notes": {
+   "Diagnostic": 2,
+   "Pertinence": 2,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Colonnes mélangées désormais repérées (3e) ; 1re priorité = domaine .invalid (artefact) ; projet chiffré non retenu en point fort."
+ },
+ "cv10": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Fautes listées en 1re priorité, stable."
+ },
+ "cv11": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Absence des langues en 1re priorité ; points forts chiffrés et cités."
+ },
+ "cv12": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Coordonnées absentes en 1re priorité."
+ },
+ "cv13": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 1,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Reconnaissance Croix-Rouge et permis G en tête (excellent) ; MAIS affirme que la région d'Annemasse est « majoritairement germanophone » (faux : Genève est francophone)."
+ },
+ "cv14": {
+  "notes": {
+   "Diagnostic": 2,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Bon CV bien noté ; « ajouter les mois » repasse en 1re priorité aux exécutions 2 et 3 ; écart de score 6."
+ },
+ "cv15": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Allemand absent à Bâle en 1re priorité ; permis G reconnu."
+ },
+ "cv16": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Tâches vagues bien vues ; conseil sur l'allemand A2 peu utile."
+ },
+ "cv17": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Photo respectée ; poste vide et profil générique repérés ; écart de score 6, ATS 8."
+ },
+ "cv18": {
+  "notes": {
+   "Diagnostic": 0,
+   "Pertinence": 2,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Toujours manqué : poste terminé en 2025 sans suite (et dates sans mois, devenu secondaire par choix)."
+ },
+ "cv19": {
+  "notes": {
+   "Diagnostic": 2,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 2,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "Repère les anciens postes mais propose d'abord de les enrichir avant de les regrouper."
+ },
+ "cv20": {
+  "notes": {
+   "Diagnostic": 3,
+   "Pertinence": 3,
+   "Spécificité": 3,
+   "Applicabilité": 3,
+   "Faits": 3,
+   "Rédaction": 2,
+   "Cohérence": 3,
+   "Score": 2,
+   "Utilité": 3,
+   "Extraction": 3
+  },
+  "critique": false,
+  "commentaire": "E-mail non professionnel en 1re priorité."
+ }
+}

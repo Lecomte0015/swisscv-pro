@@ -1,0 +1,3403 @@
+{
+  "label": "v2",
+  "dry": false,
+  "model": "claude-sonnet-4-6 (index.js)",
+  "usage": {
+    "n": 30,
+    "tokens": 80839,
+    "cost": 0.667509
+  },
+  "results": [
+    {
+      "id": "cv01",
+      "run": 1,
+      "status": 200,
+      "ms": 20601,
+      "analysis": {
+        "score": 50,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Diplôme professionnel reconnu en Suisse obtenu à l'issue de l'apprentissage",
+          "Expérience pratique en fiduciaire couvrant plusieurs domaines de l'employée de commerce",
+          "Trois langues mentionnées, atout dans le contexte romand"
+        ],
+        "improvements": [
+          "Enrichir les tâches de l'apprentissage chez Fiduciaire Démo SA en ajoutant des éléments de portée ou de contexte pour chaque mission (par exemple : volume de documents traités, type de clients, logiciels comptables utilisés), afin de dépasser une simple liste de tâches.",
+          "Indiquer les mois en plus des années pour toutes les entrées de formation et d'expérience, afin de donner une chronologie précise conforme aux attentes du marché suisse.",
+          "Ajouter une ligne de références du type « Certificats de travail et références disponibles sur demande » en fin de CV, usage courant en Suisse."
+        ],
+        "swissAdvice": "En Suisse, le certificat de travail (Arbeitszeugnis) est un document clé : mentionner qu'il est disponible sur demande rassure les recruteurs. Pour un premier emploi après CFC, une lettre de motivation personnalisée et soignée est souvent aussi déterminante que le CV lui-même. Les offres en Romandie valorisent explicitement le bilinguisme français-allemand : un niveau précis d'allemand peut faire la différence. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "CFC d'employée de commerce",
+          "employée de commerce",
+          "fiduciaire",
+          "accueil téléphonique",
+          "saisie de factures",
+          "classement",
+          "aide à la comptabilité",
+          "Word",
+          "Excel",
+          "Outlook",
+          "français",
+          "allemand",
+          "anglais"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences listées (accueil téléphonique, saisie de factures, classement, aide à la comptabilité) sont des tâches sans portée, volume ni résultat mesurable."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et bien séparées (Formation, Expérience, Langues, Informatique, Loisirs), ce qui rend le document lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les entrées, ce qui ne permet pas de vérifier la précision du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Des outils courants sont mentionnés (Word, Excel, Outlook) et le CFC d'employée de commerce est explicite, mais les compétences métier restent très génériques."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 1,
+            "max": 4,
+            "justification": "Trois langues sont citées (français, allemand, anglais) mais aucun niveau CECR ni mention de langue maternelle n'est indiqué."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le CV contient un téléphone, un e-mail et une localité (Lausanne), ce qui couvre les éléments essentiels attendus en Suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des intitulés cohérents et une formulation sobre."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "langues_sans_niveau",
+            "desc": "Langues sans niveau (CECR)",
+            "detected": true
+          },
+          {
+            "id": "taches_sans_portee",
+            "desc": "Tâches listées sans volume ni résultat",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "cfc",
+            "desc": "CFC obtenu / apprentissage complet",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv02",
+      "run": 1,
+      "status": 200,
+      "ms": 19704,
+      "analysis": {
+        "score": 66,
+        "atsScore": 81,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Présence d'un profil GitHub, atout concret pour un recruteur technique.",
+          "Chronologie complète avec mois et continuité du parcours."
+        ],
+        "improvements": [
+          "Enrichir les descriptions de poste chez Démo Digital Sàrl et Agence Fictive SA : remplacer les tâches génériques par des réalisations concrètes qui précisent le contexte, la technologie utilisée et l'impact obtenu (ex. : type de projet, fonctionnalité livrée, problème résolu).",
+          "Réduire ou hiérarchiser la liste de compétences : des outils avancés comme Kubernetes, AWS, Azure et GCP côtoient un profil junior sans justification dans les expériences, ce qui peut nuire à la crédibilité ; ne conserver que les outils réellement maîtrisés et utilisés.",
+          "Ajouter une mention de références en bas de CV selon l'usage suisse : « Références et certificats de travail disponibles sur demande »."
+        ],
+        "swissAdvice": "En Suisse romande, les employeurs attendent souvent un certificat de travail (Arbeitszeugnis) pour chaque poste ; mentionner leur disponibilité rassure le recruteur. Le marché tech genevois valorise les profils capables de travailler en anglais au-delà du B2 ; progresser vers C1 serait un avantage. Enfin, un CV d'une page est la norme pour un profil junior en Suisse. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Développeur web",
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Node.js",
+          "Python",
+          "Django",
+          "PostgreSQL",
+          "Docker",
+          "GraphQL",
+          "CI/CD",
+          "Bachelor en informatique de gestion",
+          "Agile",
+          "Scrum",
+          "Git"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences ne mentionnent que des tâches génériques sans portée, volume ni résultat mesurable : « Développement de fonctionnalités, Correction de bugs, Participation aux réunions »."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, avec une longueur adaptée à un profil junior."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 4,
+            "max": 4,
+            "justification": "Toutes les dates incluent le mois, le parcours est continu et le poste actuel est indiqué par « aujourd'hui »."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "La section compétences liste des outils pertinents et variés : « React, Node.js, Docker, Kubernetes, AWS, Azure, GCP, GraphQL »."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les deux langues sont indiquées avec des niveaux clairs : « Français (langue maternelle), anglais (B2) »."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 4,
+            "max": 4,
+            "justification": "Le CV contient téléphone, e-mail, localité et profil GitHub : « Genève · noah.exemplaire@example.invalid · 078 000 00 02 · github.com/noah-exemple »."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 2,
+            "max": 4,
+            "justification": "La rédaction est correcte mais les descriptions de postes sont trop laconiques pour démontrer une maîtrise rédactionnelle réelle."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "competences_sans_contexte",
+            "desc": "Liste de 22 technologies sans contexte ni niveau",
+            "detected": true
+          },
+          {
+            "id": "taches_vagues",
+            "desc": "Tâches vagues (« développement de fonctionnalités »)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "bachelor",
+            "desc": "Bachelor HES",
+            "recognised": false
+          },
+          {
+            "id": "github",
+            "desc": "Lien GitHub",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv03",
+      "run": 1,
+      "status": 200,
+      "ms": 24756,
+      "analysis": {
+        "score": 71,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultat chiffré démontrant un impact opérationnel direct",
+          "Expérience d'encadrement d'équipe clairement quantifiée",
+          "Certifications métier spécifiques mentionnées",
+          "Outil ERP du secteur explicitement cité"
+        ],
+        "improvements": [
+          "Chevauchement de dates entre 'Magasinier principal, Transports Exemple Sàrl, Martigny (2017-2021)' et 'Magasinier, Distribution Démo SA, Sion (2015-2019)' : vérifier et corriger les années pour supprimer ce chevauchement, qui soulève une question immédiate chez un recruteur.",
+          "Ajouter les mois à toutes les dates (ex. 'mars 2021 – aujourd'hui') pour respecter le standard suisse et éviter toute ambiguïté sur la durée réelle des postes.",
+          "Enrichir les postes antérieurs (Magasinier 2015-2019 et Aide-magasinier 2010-2015) avec au moins un élément de portée ou de volume, car ils se réduisent actuellement à une seule tâche sans contexte.",
+          "Ajouter en fin de CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse romande, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés : préparez-les pour chaque poste. Le niveau B1 en allemand est un atout en Valais bilingue ; précisez si vous pouvez travailler en contexte germanophone. Les employeurs suisses apprécient les CV d'une à deux pages maximum, ce que ce document respecte bien. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "chef d'équipe entrepôt",
+          "magasinier",
+          "logistique",
+          "préparation de commandes",
+          "gestion des stocks",
+          "SAP",
+          "permis cariste",
+          "R489",
+          "permis C"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel présente des résultats chiffrés concrets (réduction des erreurs de 4 % à 1,5 %) et une réalisation managériale (encadrement de 12 magasiniers), mais les postes antérieurs se limitent à des listes de tâches sans portée ni volume."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires, l'ordre est antichronologique et la longueur est adaptée, bien que l'absence de mois dans les dates et la brièveté des postes anciens réduisent légèrement la lisibilité."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les dates sont indiquées en années seulement sans mois, et il existe un chevauchement inexpliqué entre le poste de Magasinier principal (2017-2021) et celui de Magasinier (2015-2019)."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des mots-clés métier pertinents sont présents (SAP, scan systématique, préparation de commandes, permis cariste R489 cat. 3 et 5), couvrant bien le profil logistique."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont listées avec des niveaux CECR explicites ou la mention langue maternelle (français langue maternelle, allemand B1, italien A2), ce qui est conforme aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents ; le permis de séjour C est mentionné, ce qui est utile sur le marché suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes tout au long du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "chevauchement",
+            "desc": "Postes 2015-2019 et 2017-2021 se chevauchent sans explication",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultat_chiffre",
+            "desc": "Résultat chiffré (erreurs 4 % → 1,5 %)",
+            "recognised": true
+          },
+          {
+            "id": "encadrement",
+            "desc": "Encadrement de 12 personnes",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv03",
+      "run": 2,
+      "status": 200,
+      "ms": 22868,
+      "analysis": {
+        "score": 71,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultat chiffré démontrant un impact opérationnel direct",
+          "Compétences techniques certifiées clairement mentionnées",
+          "Expérience managériale quantifiée",
+          "Outil ERP métier explicitement cité"
+        ],
+        "improvements": [
+          "Chevauchement de dates entre 'Magasinier principal, 2017-2021' et 'Magasinier, 2015-2019' : vérifier et corriger les années pour que le parcours soit cohérent et sans recoupement inexpliqué.",
+          "Ajouter les mois aux dates de toutes les expériences (ex. 03.2021 – aujourd'hui) : les recruteurs suisses attendent des dates mois/année pour évaluer la continuité du parcours.",
+          "Enrichir les postes antérieurs (Magasinier principal, Magasinier, Aide-magasinier) avec au moins un élément de portée ou de volume pour chacun, car ils se limitent actuellement à une liste de tâches.",
+          "Ajouter en bas du CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse romande, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés : préparez-les pour chaque poste. Le permis C est un atout à maintenir en évidence car il rassure les employeurs sur la stabilité du candidat. Pour la région valaisanne, le niveau d'allemand B1 est un plus à valoriser explicitement dans la lettre de motivation. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "chef d'équipe entrepôt",
+          "magasinier",
+          "logisticien",
+          "CFC de logisticien",
+          "SAP",
+          "gestion des stocks",
+          "préparation de commandes",
+          "permis cariste R489",
+          "scan systématique des commandes",
+          "réception et contrôle des marchandises",
+          "permis C"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel présente des résultats chiffrés concrets (réduction des erreurs de 4 % à 1,5 %) et une réalisation managériale (encadrement de 12 magasiniers), ce qui dépasse la simple liste de tâches ; les postes antérieurs restent plus descriptifs."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, bien que l'absence de mois pour les dates limite la précision."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les dates sont exprimées en années seulement sans mois, et un chevauchement inexpliqué apparaît entre le poste de Magasinier principal (2017-2021) et celui de Magasinier (2015-2019)."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des outils et compétences métier explicites sont présents : SAP, scan systématique des commandes, permis cariste R489 cat. 3 et 5, gestion des stocks."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR ou la mention langue maternelle : français (langue maternelle), allemand (B1), italien (A2)."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité sont présents ; l'e-mail est clairement identifiable comme personnel."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire, les formulations sont concises et aucune faute manifeste n'est détectable dans le texte extrait."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "chevauchement",
+            "desc": "Postes 2015-2019 et 2017-2021 se chevauchent sans explication",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultat_chiffre",
+            "desc": "Résultat chiffré (erreurs 4 % → 1,5 %)",
+            "recognised": true
+          },
+          {
+            "id": "encadrement",
+            "desc": "Encadrement de 12 personnes",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [
+          "03.2021"
+        ],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv03",
+      "run": 3,
+      "status": 200,
+      "ms": 22998,
+      "analysis": {
+        "score": 71,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultat chiffré démontrant un impact opérationnel direct",
+          "Expérience d'encadrement d'équipe clairement quantifiée",
+          "Certifications métier spécifiques mentionnées",
+          "Maîtrise d'un outil ERP reconnu dans la logistique"
+        ],
+        "improvements": [
+          "Chevauchement de dates entre 'Magasinier principal, Transports Exemple Sàrl, Martigny (2017-2021)' et 'Magasinier, Distribution Démo SA, Sion (2015-2019)' : vérifier et corriger les années pour que le parcours soit cohérent et sans recoupement.",
+          "Ajouter les mois à toutes les dates (ex. 'mars 2021 – aujourd'hui') : les recruteurs suisses attendent des dates précises avec mois pour évaluer la durée réelle de chaque poste.",
+          "Enrichir les postes antérieurs (Magasinier principal, Magasinier, Aide-magasinier) avec au moins un élément de portée ou de volume par poste, car ils se limitent actuellement à des listes de tâches sans résultat.",
+          "Ajouter en bas du CV la mention 'Références et certificats de travail disponibles sur demande', conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse romande, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés : préparez-les pour chaque poste. Le niveau B1 en allemand est un atout en Valais bilingue ; préciser si vous pouvez travailler en allemand renforce votre profil. Le CFC de logisticien est un titre reconnu nationalement : il peut être mis davantage en valeur dans l'en-tête. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Chef d'équipe entrepôt",
+          "Magasinier",
+          "Logistique",
+          "SAP",
+          "Permis cariste R489",
+          "Préparation de commandes",
+          "Gestion des stocks",
+          "CFC de logisticien",
+          "Permis C"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel présente des résultats chiffrés concrets (réduction des erreurs de 4 % à 1,5 %) et une réalisation managériale (encadrement de 12 magasiniers), mais les postes antérieurs se limitent à des listes de tâches sans portée."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais l'absence de mois pour les dates et la brièveté des postes anciens réduisent la lisibilité globale."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Un chevauchement inexpliqué apparaît entre le poste de Magasinier principal (2017-2021) et celui de Magasinier (2015-2019), ce qui nuit à la cohérence du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des outils et compétences métier explicites sont présents (SAP, scan systématique des commandes, permis cariste R489 cat. 3 et 5), couvrant bien le domaine logistique."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR clairs (B1, A2) et la langue maternelle est précisée, ce qui est conforme aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents ; le permis de séjour C est mentionné, ce qui est utile dans le contexte suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et professionnelles tout au long du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "chevauchement",
+            "desc": "Postes 2015-2019 et 2017-2021 se chevauchent sans explication",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultat_chiffre",
+            "desc": "Résultat chiffré (erreurs 4 % → 1,5 %)",
+            "recognised": true
+          },
+          {
+            "id": "encadrement",
+            "desc": "Encadrement de 12 personnes",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv04",
+      "run": 1,
+      "status": 200,
+      "ms": 24228,
+      "analysis": {
+        "score": 74,
+        "atsScore": 68,
+        "hasPhoto": true,
+        "strongPoints": [
+          "Expérience de direction financière à grande échelle clairement documentée",
+          "Réalisation stratégique majeure mise en avant avec un chiffre concret",
+          "Maîtrise de trois langues à un niveau élevé, atout décisif sur le marché zurichois",
+          "Diplôme fédéral reconnu explicitement mentionné avec son année"
+        ],
+        "improvements": [
+          "Reformater le poste actuel (CFO, Groupe Industriel Fictif AG) en liste à puces : le bloc de texte continu de plusieurs lignes masque les réalisations clés et décourage la lecture rapide d'un recruteur.",
+          "Ajouter les mois à toutes les périodes (ex. : 'janvier 2018 – aujourd'hui') : l'absence de mois est perçue comme un manque de précision sur le marché suisse et peut susciter des doutes.",
+          "Ajouter un lien LinkedIn dans les coordonnées : pour un profil CFO, l'absence de présence professionnelle en ligne est un signal négatif auprès des recruteurs et chasseurs de têtes suisses."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) ont une valeur déterminante : mentionner 'Références et certificats de travail disponibles sur demande' est un usage attendu. Pour un poste de CFO à Zurich, la maîtrise de l'allemand est un avantage concurrentiel fort, déjà bien mis en valeur. Le diplôme fédéral d'expert-comptable est une référence très reconnue : son positionnement en formation est approprié. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "CFO",
+          "Directrice financière",
+          "IFRS",
+          "Swiss GAAP RPC",
+          "SAP S/4HANA",
+          "consolidation",
+          "trésorerie",
+          "M&A",
+          "contrôle de gestion",
+          "Expert-comptable diplômée",
+          "reporting consolidé",
+          "gestion des risques",
+          "Power BI",
+          "fiscalité",
+          "conduite du changement"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel mentionne des réalisations concrètes avec volumes (refinancement de 120 MCHF, équipe de 35 personnes, intégration de deux sociétés), mais les postes antérieurs restent davantage orientés tâches que résultats chiffrés."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 2,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le poste actuel et le profil sont rédigés en blocs de texte très longs et continus, ce qui nuit fortement à la lisibilité."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont cohérentes et sans chevauchement, mais aucun mois n'est indiqué pour aucune période, ce qui est insuffisant selon les standards suisses."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 4,
+            "max": 4,
+            "justification": "La section compétences liste explicitement des outils et référentiels clés du métier : IFRS, Swiss GAAP RPC, SAP S/4HANA, consolidation, M&A, Power BI."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 4,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR clairs : français (langue maternelle), allemand (C1), anglais (C1), ce qui est particulièrement pertinent pour le marché zurichois."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Zurich) sont présents, mais l'absence d'un profil LinkedIn constitue un manque notable pour un profil de direction."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "L'orthographe est correcte et le vocabulaire professionnel est approprié, mais les phrases excessivement longues dans le profil et le poste actuel alourdissent la lecture."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "trop_dense",
+            "desc": "Paragraphes très longs, CV trop dense",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultats",
+            "desc": "Résultats chiffrés (clôture 12 → 6 jours, refinancement 120 MCHF)",
+            "recognised": true
+          },
+          {
+            "id": "diplome_federal",
+            "desc": "Expert-comptable diplômée",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv05",
+      "run": 1,
+      "status": 200,
+      "ms": 23849,
+      "analysis": {
+        "score": 50,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Une expérience concrète de management est mentionnée dans le parcours.",
+          "Un projet web en ligne démontre une mise en pratique réelle des compétences acquises.",
+          "La reconversion est appuyée par une formation récente et identifiable."
+        ],
+        "improvements": [
+          "Enrichir les descriptions des projets web (Site de réservation, Application de gestion de stock) en précisant le contexte, les fonctionnalités développées et les technologies utilisées côté client et serveur, afin de démontrer concrètement le niveau technique.",
+          "Ajouter les compétences et outils manquants du métier de développeur web (par exemple HTML, CSS, Git, bases de données, méthodes de travail) dans une rubrique Compétences dédiée, pour améliorer la visibilité auprès des recruteurs et des outils de tri automatique.",
+          "Ajouter les mois manquants pour les dates de formation et de fin de poste (ex. « 2024 » pour la fin chez Boulangerie Démo) afin de couvrir la chronologie sans zone d'ombre.",
+          "Ajouter en bas de CV la mention « Références et certificats de travail disponibles sur demande », usage courant en Suisse."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont des documents clés : mentionner leur disponibilité rassure les recruteurs. Pour une reconversion, le canton de Fribourg étant bilingue, un niveau d'allemand précis est un atout décisif à mettre en avant. Les bootcamps sont encore peu connus de certains employeurs suisses : un lien vers le projet en ligne ou un portfolio renforce la crédibilité du profil. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Développeur web",
+          "Full-stack",
+          "React",
+          "Node.js",
+          "Python",
+          "SQLite",
+          "Certificat de développeur web full-stack",
+          "Bootcamp",
+          "Commandes fournisseurs"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences en boulangerie listent des tâches génériques sans résultats ni portée mesurable, et les projets web manquent de description fonctionnelle ou d'impact."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et distinctes (Formation, Projets, Expérience, Langues) et le texte est lisible, bien que l'ordre antichronologique ne soit pas respecté dans la section Expérience."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont présentes mais les mois manquent pour la plupart des entrées, et la période 2024-2025 (entre la fin du poste de chef boulanger et le bootcamp) n'est pas couverte."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques outils sont mentionnés (React, Node.js, Python, SQLite) mais les intitulés de poste web et les compétences clés du métier (HTML, CSS, Git, API, etc.) sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 1,
+            "max": 4,
+            "justification": "L'allemand est indiqué avec « bonnes connaissances » sans niveau CECR, et le français n'a aucun niveau précisé, ce qui est insuffisant pour le marché suisse."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (1700 Fribourg) sont présents et complets."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, mais les formulations restent très succinctes et peu valorisantes."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "pas_d_accroche",
+            "desc": "Aucune accroche expliquant la reconversion",
+            "detected": true
+          },
+          {
+            "id": "competences_transferables",
+            "desc": "Compétences transférables non mises en valeur",
+            "detected": false
+          }
+        ],
+        "qualities": [
+          {
+            "id": "projets",
+            "desc": "Projets concrets en ligne",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv06",
+      "run": 1,
+      "status": 200,
+      "ms": 21171,
+      "analysis": {
+        "score": 61,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Des indicateurs de portée concrets sont présents dans le poste actuel.",
+          "La newsletter est associée à un volume d'audience chiffré.",
+          "Les niveaux de langue sont indiqués selon le référentiel CECR."
+        ],
+        "improvements": [
+          "Le poste « Assistante de communication, Fictif SA, Lausanne (2012-2014) » ne contient aucune tâche ni réalisation : ajouter au moins deux puces décrivant les missions principales.",
+          "Aucun outil concret n'est mentionné dans tout le CV : citer les logiciels ou plateformes utilisés (outils d'emailing, outils de gestion des réseaux sociaux, CMS, etc.) pour renforcer la lisibilité par les recruteurs et les ATS.",
+          "Le taux d'activité (60 %) du poste actuel est indiqué mais pas pour les postes précédents : préciser le taux pour chaque poste si pertinent, car c'est un usage courant en Suisse."
+        ],
+        "swissAdvice": "En Suisse romande, il est d'usage de joindre les certificats de travail (Arbeitszeugnisse) aux candidatures ou d'indiquer « Références et certificats de travail disponibles sur demande ». Le taux d'activité est une information attendue pour chaque poste. Un CV d'une page est la norme pour un profil avec ce niveau d'expérience. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "assistante marketing",
+          "communication",
+          "réseaux sociaux",
+          "newsletter",
+          "chargée de communication",
+          "Bachelor en communication",
+          "français",
+          "anglais",
+          "allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques éléments de portée sont présents (« 3 clients », « 4 000 abonnés », « 15 événements par an »), mais les postes de 2012-2014 et 2015-2019 restent peu développés en résultats concrets."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le poste de 2012-2014 est réduit à une seule ligne sans aucun détail."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Le poste actuel et celui de 2015-2019 ont des mois précis, mais la période 2012-2014 n'indique aucun mois, et un écart de juin 2019 à mars 2023 n'est pas expliqué."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés « réseaux sociaux », « newsletter » et « communication » sont présents, mais aucun outil marketing (CMS, CRM, outils d'emailing, etc.) n'est mentionné."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont listées avec des niveaux CECR explicites (C2, B2, B1), ce qui est conforme aux attentes du marché suisse."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité (Vevey) sont présents ; l'e-mail est clairement identifiable comme personnel."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes dans les puces."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "interruption",
+            "desc": "Période 06.2019 - 03.2023 sans explication",
+            "detected": false
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (4 000 abonnés, 15 événements)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv06",
+      "run": 2,
+      "status": 200,
+      "ms": 22742,
+      "analysis": {
+        "score": 61,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Des chiffres concrets ancrent la portée du poste actuel",
+          "Une expérience événementielle quantifiée est mise en avant",
+          "Les niveaux de langue sont indiqués selon le cadre CECR"
+        ],
+        "improvements": [
+          "Période 06.2019 – 03.2023 : une interruption de près de quatre ans est visible sans aucune indication ; ajouter une ligne factuelle (formation, activité indépendante, autre poste) si applicable, ou mentionner brièvement la situation pour éviter que les recruteurs ne s'interrogent.",
+          "Poste 2012-2014 chez Fictif SA : ajouter les mois de début et de fin ainsi qu'au moins une réalisation concrète, comme pour les autres postes.",
+          "Rubrique mots-clés / outils : aucun outil numérique n'est cité ; mentionner les plateformes ou logiciels effectivement utilisés (gestion de réseaux sociaux, envoi de newsletters, etc.) pour passer les filtres ATS.",
+          "Poste 2015-2019 chez Exemple Tourisme : enrichir au moins une des deux tâches avec un résultat ou une portée mesurable, sur le modèle de la newsletter actuelle."
+        ],
+        "swissAdvice": "En Suisse romande, il est courant d'ajouter en bas de CV la mention « Références et certificats de travail disponibles sur demande ». Le taux d'activité (60 %) est déjà indiqué, ce qui est apprécié par les employeurs suisses. Un CV d'une page est la norme pour un profil avec ce niveau d'expérience. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "assistante marketing",
+          "communication",
+          "réseaux sociaux",
+          "newsletter",
+          "chargée de communication",
+          "événements",
+          "médias",
+          "Bachelor en communication",
+          "français",
+          "anglais",
+          "allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques éléments de portée sont présents (« 4 000 abonnés », « 15 événements par an ») mais les postes de 2012-2014 et 2015-2019 restent des listes de tâches sans résultats mesurables."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais la rubrique formation est très succincte et placée après les langues dans certaines lectures."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Un écart non renseigné apparaît entre 06.2019 et 03.2023, et la période 2012-2014 ne comporte pas de mois précis."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés « réseaux sociaux », « newsletter » et « communication » sont présents, mais aucun outil concret (CMS, logiciel, plateforme) n'est mentionné."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR explicites : « Français (C2), anglais (B2), allemand (B1) »."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité sont présents : « 1800 Vevey · sarah.exemple@example.invalid · 078 000 00 06 »."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et homogène sur l'ensemble du document, sans faute apparente."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "interruption",
+            "desc": "Période 06.2019 - 03.2023 sans explication",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (4 000 abonnés, 15 événements)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [
+          "2015",
+          "2019"
+        ],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv06",
+      "run": 3,
+      "status": 200,
+      "ms": 22670,
+      "analysis": {
+        "score": 61,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Des indicateurs de volume concrets ancrent les missions dans une réalité mesurable.",
+          "La gestion multi-clients démontre une capacité à travailler en parallèle sur plusieurs comptes.",
+          "Les niveaux de langue sont indiqués selon le cadre CECR, ce qui est directement lisible par les recruteurs suisses."
+        ],
+        "improvements": [
+          "Poste 2012-2014 chez Fictif SA : ajouter au moins une ou deux missions concrètes pour éviter qu'une expérience entière apparaisse comme un blanc, et préciser les mois de début et de fin.",
+          "Absence d'outils et compétences techniques : le secteur marketing attend des mentions d'outils (gestion de contenu, planification, emailing, etc.) ; en ajouter une rubrique ou les intégrer aux missions renforcerait la lisibilité pour les recruteurs et les filtres automatiques.",
+          "Ajouter un profil LinkedIn ou un lien vers un portfolio : dans le secteur de la communication et du marketing, un profil en ligne est devenu un standard attendu par les recruteurs suisses."
+        ],
+        "swissAdvice": "En Suisse romande, il est d'usage de terminer le CV par la mention « Références et certificats de travail disponibles sur demande ». Les certificats de travail (Arbeitszeugnis) sont des documents clés : veillez à les avoir pour chaque poste. Un CV d'une page est apprécié pour un profil avec ce niveau d'expérience. Le taux d'activité (60 %) est bien indiqué, ce qui est une bonne pratique sur le marché suisse. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "assistante marketing",
+          "chargée de communication",
+          "réseaux sociaux",
+          "newsletter",
+          "communication",
+          "événements",
+          "médias",
+          "Bachelor en communication",
+          "français",
+          "anglais",
+          "allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques éléments de portée sont présents (« 3 clients », « 4 000 abonnés », « 15 événements par an »), mais les postes de 2012-2014 et 2015-2019 restent peu développés en résultats concrets."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le poste de 2012-2014 est réduit à une seule ligne sans aucun détail."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Le poste actuel et celui de 2015-2019 ont des mois précis, mais la période 2012-2014 n'indique aucun mois, et la période 06.2019 à 03.2023 représente une interruption de plus de 6 mois non renseignée."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés « assistante marketing » et « chargée de communication » sont présents, mais aucun outil numérique, logiciel ou compétence technique du métier n'est mentionné."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont accompagnées de niveaux CECR explicites (C2, B2, B1), ce qui est conforme aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité (Vevey) sont présents ; l'absence de lien LinkedIn est un manque mineur pour le secteur marketing."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes dans l'ensemble du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "interruption",
+            "desc": "Période 06.2019 - 03.2023 sans explication",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (4 000 abonnés, 15 événements)",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv07",
+      "run": 1,
+      "status": 200,
+      "ms": 17390,
+      "analysis": {
+        "score": 30,
+        "atsScore": 25,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Stabilité professionnelle démontrée chez un même employeur",
+          "Permis de conduire mentionné, atout courant dans le métier",
+          "Bilinguisme français-portugais indiqué"
+        ],
+        "improvements": [
+          "Détailler les tâches et responsabilités du poste de magasinier (réception, stockage, préparation de commandes, inventaires, outils utilisés, etc.) : sans ces informations, le CV ne permet pas à un recruteur d'évaluer le profil.",
+          "Ajouter un numéro de téléphone et une localité (ville ou région) : ces éléments sont indispensables pour être contacté et pour que les recruteurs suisses situent le candidat.",
+          "Détailler les emplois antérieurs ('divers emplois') avec au moins les intitulés de poste, les employeurs et les années, afin d'éviter un parcours opaque.",
+          "Ajouter la mention 'Références et certificats de travail disponibles sur demande' en fin de CV, usage standard en Suisse."
+        ],
+        "swissAdvice": "En Suisse, les recruteurs attendent généralement les certificats de travail (Arbeitszeugnis) pour chaque poste ; précisez que vous pouvez les fournir sur demande. La localité du candidat est importante car les employeurs suisses tiennent compte des temps de trajet. Un CV suisse standard fait une à deux pages avec des rubriques claires et un ordre antichronologique. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "magasinier",
+          "français",
+          "portugais",
+          "permis de conduire B"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Le poste de magasinier est mentionné mais sans aucune tâche, responsabilité ni résultat décrit."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 1,
+            "max": 4,
+            "justification": "Les informations sont listées en quelques lignes sans rubriques distinctes ni ordre structuré."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 1,
+            "max": 4,
+            "justification": "Seule une année de début est indiquée ('depuis 2019') sans mois, et les emplois antérieurs sont regroupés sous 'divers emplois' sans aucune date."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 1,
+            "max": 4,
+            "justification": "Seul l'intitulé 'magasinier' apparaît ; aucun outil, logiciel ou compétence spécifique au métier n'est mentionné."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 1,
+            "max": 4,
+            "justification": "Le français et le portugais sont cités mais sans niveau CECR ni indication de langue maternelle."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 2,
+            "max": 4,
+            "justification": "Un e-mail est présent, mais aucun numéro de téléphone ni localité ne figure dans le CV."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 2,
+            "max": 4,
+            "justification": "Le texte est court et lisible, sans faute apparente, mais la formulation est très sommaire."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "trop_court",
+            "desc": "CV très incomplet (pas de détails, pas de téléphone, pas de lieu)",
+            "detected": true
+          },
+          {
+            "id": "divers_emplois",
+            "desc": "« Divers emplois » sans précision",
+            "detected": true
+          }
+        ],
+        "qualities": [],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv08",
+      "run": 1,
+      "status": 200,
+      "ms": 23085,
+      "analysis": {
+        "score": 38,
+        "atsScore": 40,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Une compétence spécialisée dans la facturation médicale est mentionnée explicitement.",
+          "Une expérience en gestion de la relation client est présente."
+        ],
+        "improvements": [
+          "Restructurer le CV en rubriques distinctes et ordonnées (Expériences professionnelles en antichronologique, puis Formation, puis Compétences, puis Langues) : actuellement tout est mélangé dans un bloc illisible qui nuit immédiatement à la lisibilité.",
+          "Ajouter les mois à toutes les dates d'expérience et de formation (ex. 'janvier 2022 – aujourd'hui') : seules des années sont indiquées, ce qui est insuffisant selon les standards suisses.",
+          "Remplacer les niveaux de langue informels par des niveaux CECR : 'anglais un peu' ne permet pas à un recruteur d'évaluer la compétence réelle.",
+          "Enrichir les descriptions de poste avec la portée des tâches : par exemple pour 'agenda des médecins', préciser le contexte ou l'environnement de travail plutôt qu'une simple liste de tâches.",
+          "Reformuler l'accroche 'J'aime le contact humain et je suis motivée' en une phrase professionnelle centrée sur le profil et les secteurs visés, sans affirmations génériques."
+        ],
+        "swissAdvice": "En Suisse, les recruteurs attendent des mois précis pour chaque poste, pas seulement les années. La mention 'Références et certificats de travail disponibles sur demande' est l'usage standard. Un CV suisse tient généralement sur une à deux pages avec des rubriques clairement titrées. Pour la région de Neuchâtel, indiquer un niveau de français natif ou courant est un atout à valoriser explicitement. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "réceptionniste",
+          "assistante administrative",
+          "secrétaire",
+          "accueil",
+          "facturation TARMED",
+          "check-in",
+          "réservations",
+          "gestion des plaintes clients",
+          "agenda des médecins",
+          "CFC employée de bureau",
+          "Excel",
+          "Word"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les tâches sont listées sans portée ni résultats mesurables, par exemple 'accueil et le courrier' ou 'agenda des médecins, facturation TARMED' restent de simples énumérations sans contexte."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 1,
+            "max": 4,
+            "justification": "Les rubriques ne sont pas clairement délimitées, les expériences sont mélangées avec la formation et les hobbies dans un ordre non antichronologique et difficile à lire."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont présentes et cohérentes sans chevauchement, mais les mois sont absents pour toutes les expériences, ce qui nuit à la précision attendue en Suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques mots-clés utiles sont présents comme 'facturation TARMED', 'check-in', 'réservations', 'gestion des plaintes clients', mais les outils se limitent à 'Excel Word' sans précision."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 1,
+            "max": 4,
+            "justification": "Seuls 'français' et 'anglais un peu' sont mentionnés, sans niveau CECR ni indication de langue maternelle, ce qui est insuffisant pour le marché suisse."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le nom, la localité, l'adresse e-mail et le numéro de téléphone sont tous présents dès la première ligne."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 1,
+            "max": 4,
+            "justification": "La rédaction est informelle et peu structurée, avec des formulations comme 'anglais un peu' ou 'je faisais l'accueil et le courrier' qui manquent de professionnalisme."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "structure",
+            "desc": "Pas de rubriques claires, chronologie dans le désordre",
+            "detected": true
+          },
+          {
+            "id": "langue_vague",
+            "desc": "« anglais un peu »",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "tarmed",
+            "desc": "Compétence métier spécifique (facturation TARMED)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv09",
+      "run": 1,
+      "status": 200,
+      "ms": 20400,
+      "analysis": {
+        "score": 70,
+        "atsScore": 59,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Certification professionnelle reconnue internationalement mentionnée"
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences (ex. « janvier 2020 – aujourd'hui ») : les recruteurs suisses attendent des dates précises pour évaluer la durée exacte des postes.",
+          "Enrichir le poste chez Assurance Démo SA avec au moins un résultat ou une portée mesurable pour les 3 applications métier mentionnées, afin d'éviter une simple liste de tâches.",
+          "Ajouter en bas du CV la mention « Références et certificats de travail disponibles sur demande », conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont des documents clés : préparez-les pour chaque poste. Le marché bancaire romand valorise fortement les profils trilingues ; le niveau B2 en allemand est un atout à mettre en avant dans la lettre de motivation. Un CV suisse tient idéalement sur une à deux pages avec une mise en page sobre et sans colonnes entremêlées. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Chef de projet IT",
+          "Gestion de projet",
+          "Prince2",
+          "Scrum",
+          "Jira",
+          "Confluence",
+          "PMP",
+          "Core banking",
+          "Analyste métier",
+          "Master HEC",
+          "Migration",
+          "Banque",
+          "Assurance"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "La migration du core banking avec un budget de 8 MCHF et 40 personnes donne une portée concrète, mais l'expérience chez Assurance Démo SA reste limitée à une liste de tâches sans résultats mesurables."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 2,
+            "max": 4,
+            "justification": "Les rubriques sont identifiables mais la mise en page en colonnes a produit un texte mélangé (coordonnées et compétences imbriquées dans l'expérience) qui nuit à la lisibilité."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont présentes et le parcours est cohérent, mais l'absence de mois pour toutes les entrées (ex. « 2020 - aujourd'hui ») réduit la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Les outils et méthodologies clés du métier sont explicitement listés : Prince2, Scrum, Jira, Confluence, PMP, ce qui couvre bien le profil chef de projet IT."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 4,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR précis (Français C2, Anglais C1, Allemand B2), ce qui est excellent pour le marché suisse romand."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Lausanne) sont présents ; il manque une mention de disponibilité ou de références selon l'usage suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises, bien que les puces soient très courtes et pourraient être plus développées."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "mise_en_page",
+            "desc": "Mise en page en deux colonnes mal lue par les logiciels de tri",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "projet_chiffre",
+            "desc": "Projet chiffré (8 MCHF, 40 personnes)",
+            "recognised": false
+          },
+          {
+            "id": "certif",
+            "desc": "Certification PMP",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv10",
+      "run": 1,
+      "status": 200,
+      "ms": 22024,
+      "analysis": {
+        "score": 50,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Continuité professionnelle dans le même domaine depuis plusieurs années",
+          "Outil de comptabilité suisse mentionné explicitement"
+        ],
+        "improvements": [
+          "Corriger toutes les fautes d'orthographe et de frappe avant tout envoi : 'PROFESSIONELLE', 'Organistion', 'directeur générale', 'procès-verbals', 'par ans', 'Microsft Ofice' nuisent fortement à la crédibilité d'une assistante de direction.",
+          "Enrichir les tâches avec des éléments de portée ou de contexte : pour 'Organistion des séances du conseil de fondation (6 par ans)', préciser par exemple la préparation des dossiers, la coordination des participants ou la rédaction des convocations.",
+          "Ajouter les mois aux dates de toutes les expériences et formations, car les recruteurs suisses attendent une précision mois/année pour évaluer les durées et les transitions.",
+          "Développer les mots-clés métier en ajoutant des compétences explicites absentes du CV, comme la gestion de la correspondance, l'accueil, la coordination ou les outils de communication utilisés.",
+          "Ajouter une ligne 'Références et certificats de travail disponibles sur demande' en bas du CV, conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse romande, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés : mentionnez leur disponibilité. Pour un poste en fondation à Genève, la maîtrise du français écrit irréprochable est un critère éliminatoire. Un CV d'une page est la norme pour ce profil. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Assistante de direction",
+          "Secrétaire",
+          "Gestion de l'agenda",
+          "Conseil de fondation",
+          "Courriers juridiques",
+          "Gestion des délais",
+          "CFC d'employée de commerce",
+          "Diplôme d'assistante de direction",
+          "Word",
+          "Excel",
+          "PowerPoint",
+          "Abacus",
+          "Anglais B2"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences ne listent que des tâches génériques sans portée, volume ni résultat mesurable, par exemple 'Gestion de l'agenda du directeur générale' sans aucun contexte de complexité ou d'impact."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, avec une longueur adaptée et un texte lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les périodes, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques outils et intitulés métier sont présents ('Abacus', 'Assistante de direction', 'procès-verbals') mais les compétences clés du poste restent peu développées."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Le français est indiqué comme langue maternelle et l'anglais avec un niveau CECR explicite (B2), ce qui correspond aux standards attendus."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité ('1201 Genève') sont présents et suffisants pour le marché suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 1,
+            "max": 4,
+            "justification": "Plusieurs erreurs sont relevées : 'PROFESSIONELLE' (doublement du L manquant), 'directeur générale' (accord incorrect), 'Organistion' (lettre manquante), 'procès-verbals' (pluriel incorrect), 'par ans' (accord incorrect), 'Microsft Ofice' (fautes de frappe)."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "orthographe",
+            "desc": "Fautes d'orthographe (professionelle, organistion, procès-verbals, Microsft Ofice)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "diplome",
+            "desc": "Diplôme d'assistante de direction",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [
+          "Anglais B2"
+        ],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv10",
+      "run": 2,
+      "status": 200,
+      "ms": 20255,
+      "analysis": {
+        "score": 50,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Outil de comptabilité suisse mentionné, pertinent pour les employeurs romands.",
+          "Expérience dans un contexte juridique, valorisable pour des postes exigeants.",
+          "Diplôme spécialisé en plus du CFC, montrant une progression de formation."
+        ],
+        "improvements": [
+          "Corriger toutes les fautes d'orthographe et de frappe avant tout envoi : « Organistion », « procès-verbals », « par ans », « Microsft Ofice », « générale » (accord avec « directeur »).",
+          "Enrichir chaque tâche avec un élément de portée ou de contexte : par exemple, préciser la taille de l'organisation, la fréquence réelle des séances ou le type de documents produits, sans inventer de chiffres absents du CV.",
+          "Ajouter les mois aux dates de toutes les expériences et formations (ex. : « janvier 2019 – aujourd'hui ») pour répondre aux attentes de précision du marché suisse.",
+          "Ajouter une ligne de références en bas de CV : « Références et certificats de travail disponibles sur demande »."
+        ],
+        "swissAdvice": "En Suisse romande, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés : mentionnez leur disponibilité. Le niveau B2 en anglais est un atout à Genève, notamment dans les fondations et ONG. Un CV suisse tient idéalement sur une page pour ce profil. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "assistante de direction",
+          "secrétaire",
+          "gestion de l'agenda",
+          "conseil de fondation",
+          "courriers juridiques",
+          "gestion des délais",
+          "CFC d'employée de commerce",
+          "diplôme d'assistante de direction",
+          "Word",
+          "Excel",
+          "PowerPoint",
+          "Abacus",
+          "français",
+          "anglais B2"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les tâches listées (gestion d'agenda, rédaction de PV, courriers juridiques) sont décrites sans portée, volume ni résultat mesurable, ce qui limite fortement la valeur perçue."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, avec une longueur adaptée et un texte lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences et formations, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Des outils comme Abacus et des intitulés pertinents (assistante de direction, secrétaire) sont présents, mais les compétences métier restent peu développées."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Le français est indiqué comme langue maternelle et l'anglais avec le niveau CECR B2, ce qui correspond aux standards attendus."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Genève) sont présents et suffisants pour le marché suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 1,
+            "max": 4,
+            "justification": "Plusieurs erreurs sont relevées : « générale » (accord), « Organistion » (faute de frappe), « procès-verbals » (pluriel incorrect), « par ans », « Microsft Ofice »."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "orthographe",
+            "desc": "Fautes d'orthographe (professionelle, organistion, procès-verbals, Microsft Ofice)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "diplome",
+            "desc": "Diplôme d'assistante de direction",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [
+          "anglais B2"
+        ],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv10",
+      "run": 3,
+      "status": 200,
+      "ms": 22182,
+      "analysis": {
+        "score": 50,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Niveau de langue anglais explicitement certifié selon le cadre européen",
+          "Maîtrise d'un logiciel de comptabilité suisse spécifique au marché local",
+          "Expérience dans un contexte de gouvernance avec des séances régulières"
+        ],
+        "improvements": [
+          "Corriger toutes les fautes d'orthographe et de frappe ('professionelle', 'Organistion', 'procès-verbals', 'par ans', 'générale', 'Microsft Ofice') : elles nuisent gravement à la crédibilité d'une assistante de direction dont la rédaction est un cœur de métier.",
+          "Enrichir les tâches avec des éléments de portée ou de contexte pour chaque poste (ex. taille de l'organisation, type de documents rédigés, interlocuteurs) afin de dépasser une simple liste de tâches génériques.",
+          "Ajouter les mois aux dates de toutes les expériences et formations, car le marché suisse attend une chronologie précise au mois près.",
+          "Développer la rubrique informatique en précisant le niveau de maîtrise ou les usages concrets des outils listés, notamment pour Word et Excel qui sont centraux au poste.",
+          "Ajouter une ligne 'Références et certificats de travail disponibles sur demande' en bas du CV, conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont des documents clés : mentionner leur disponibilité rassure les recruteurs. Pour un poste à Genève dans le secteur des fondations, la maîtrise du français écrit irréprochable est un critère éliminatoire. Un CV d'une page est la norme pour ce type de profil. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Assistante de direction",
+          "Secrétaire",
+          "Gestion de l'agenda",
+          "Conseil de fondation",
+          "Courriers juridiques",
+          "Gestion des délais",
+          "Diplôme d'assistante de direction",
+          "Word",
+          "Excel",
+          "PowerPoint",
+          "Abacus",
+          "Fondation"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences ne listent que des tâches génériques sans portée, volume ni résultat mesurable, par exemple 'Gestion de l'agenda du directeur générale' sans aucun contexte de complexité ou d'impact."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre est antichronologique, avec une séparation nette entre expérience, formation, langues et informatique."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les entrées, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques outils et intitulés utiles sont présents comme 'Abacus' et 'Assistante de direction', mais les compétences métier restent peu développées."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Le français est indiqué comme langue maternelle et l'anglais avec un niveau CECR explicite 'B2', ce qui correspond aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité 'Genève' sont présents, couvrant les informations essentielles attendues."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 1,
+            "max": 4,
+            "justification": "Plusieurs fautes sont visibles : 'professionelle', 'générale' (accord), 'Organistion', 'procès-verbals', 'par ans', 'Microsft Ofice', ce qui nuit à la crédibilité du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "orthographe",
+            "desc": "Fautes d'orthographe (professionelle, organistion, procès-verbals, Microsft Ofice)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "diplome",
+            "desc": "Diplôme d'assistante de direction",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv11",
+      "run": 1,
+      "status": 200,
+      "ms": 22723,
+      "analysis": {
+        "score": 64,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultats commerciaux chiffrés et crédibles",
+          "Portefeuille client significatif couvrant deux régions linguistiques",
+          "Reconnaissance par les pairs dans le poste précédent",
+          "Expérience en marchés publics, compétence rare et valorisée"
+        ],
+        "improvements": [
+          "Ajouter une rubrique Langues avec les niveaux (ex. CECR) pour l'italien, l'allemand et toute autre langue pratiquée : l'absence totale est très pénalisante pour un poste couvrant le Tessin et la Suisse alémanique.",
+          "Préciser les mois de début et de fin pour chaque expérience et formation afin de répondre aux attentes suisses de transparence chronologique.",
+          "Enrichir le poste de Représentant chez Exemple Médical Sàrl avec au moins un résultat quantifié, au-delà de la seule mention des 120 cabinets médicaux.",
+          "Ajouter un profil LinkedIn ou une URL de profil professionnel dans les coordonnées, désormais attendu par la majorité des recruteurs suisses."
+        ],
+        "swissAdvice": "En Suisse, les recruteurs attendent systématiquement les certificats de travail (Arbeitszeugnis) : mentionner « Références et certificats de travail disponibles sur demande » en bas de CV est un usage courant. Le marché medtech suisse valorise la maîtrise des appels d'offres publics cantonaux, déjà visible ici. Pour les postes couvrant plusieurs régions linguistiques, indiquer les langues avec leur niveau est quasi obligatoire. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Key Account Manager",
+          "distribution de matériel médical",
+          "Salesforce",
+          "négociation",
+          "appels d'offres publics",
+          "contrats cadres",
+          "prospection",
+          "B2B",
+          "brevet fédéral de spécialiste de vente",
+          "Medtech",
+          "hôpitaux",
+          "cliniques"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Les réalisations sont chiffrées et concrètes (chiffre d'affaires passé de 6,2 à 7,3 MCHF, 2 contrats cadres cantonaux), mais le poste de représentant reste plus descriptif que quantifié en résultats."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le CV est très court et certaines sections (compétences, formation) pourraient être mieux développées."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences et formations, ce qui ne permet pas de vérifier la continuité précise du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des mots-clés métier pertinents sont présents (Salesforce, appels d'offres publics, Key Account Manager, matériel médical), mais le secteur medtech mériterait des termes plus spécifiques."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 0,
+            "max": 4,
+            "justification": "Aucune langue n'est mentionnée dans le CV, alors que le candidat opère au Tessin et en Suisse alémanique, ce qui rend cette absence particulièrement pénalisante."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Lugano) sont présents, mais l'e-mail est un exemple fictif et aucun profil LinkedIn n'est indiqué."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et concise avec des formulations orientées résultats, sans fautes apparentes, bien que le style soit parfois très elliptique."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "pas_de_langues",
+            "desc": "Aucune rubrique langues (alors qu'il travaille au Tessin et en Suisse alémanique)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultats",
+            "desc": "Résultats chiffrés (+18 %, 45 clients)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv12",
+      "run": 1,
+      "status": 200,
+      "ms": 18606,
+      "analysis": {
+        "score": 54,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Responsabilité d'encadrement démontrée dès le poste actuel",
+          "Multilinguisme adapté au marché bilingue de Bienne",
+          "Prise en charge de la mise en valeur du point de vente"
+        ],
+        "improvements": [
+          "Ajouter immédiatement un numéro de téléphone, une adresse e-mail et une localité : sans ces coordonnées, aucun recruteur ne peut contacter la candidate.",
+          "Préciser les mois pour toutes les dates d'expérience (ex. : mars 2021 – aujourd'hui) afin de répondre aux attentes de précision du marché suisse.",
+          "Enrichir les tâches du poste actuel avec des éléments de portée ou de contexte (type de magasin, gamme de produits, environnement de travail) pour dépasser une simple liste de tâches.",
+          "Ajouter des mots-clés métier concrets absents du CV, tels que les outils ou logiciels de caisse utilisés, ou des compétences comme la gestion de stock ou le merchandising, si cela correspond à la réalité."
+        ],
+        "swissAdvice": "En Suisse, il est d'usage de joindre les certificats de travail (Arbeitszeugnisse) à chaque candidature ou d'indiquer « Références et certificats de travail disponibles sur demande ». Le marché de Bienne étant bilingue, mentionner l'allemand B1 est un atout à valoriser dans la lettre de motivation. Une lettre de motivation personnalisée reste attendue pour la grande majorité des postes en commerce de détail. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "vendeuse",
+          "commerce de détail",
+          "conseil clientèle",
+          "encaissement",
+          "vitrine",
+          "assistante du commerce de détail",
+          "AFP",
+          "français",
+          "allemand",
+          "arabe",
+          "sens du service"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Trois tâches concrètes sont mentionnées (conseil clientèle, vitrine, formation d'apprenties) mais aucune portée, volume ou résultat chiffré ne vient illustrer leur impact."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, ce qui rend le parcours facile à lire d'un coup d'œil."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés « vendeuse » et « assistante du commerce de détail » sont présents, mais des compétences métier spécifiques (logiciels de caisse, gestion de stock, merchandising) sont absentes."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux clairs (langue maternelle / B1), ce qui correspond aux standards CECR attendus en Suisse."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 0,
+            "max": 4,
+            "justification": "Aucun numéro de téléphone, e-mail ni localité ne figure dans le CV, ce qui rend la candidate injoignable."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes tout au long du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "coordonnees",
+            "desc": "Ni téléphone, ni e-mail, ni localité",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "formation_apprenties",
+            "desc": "Forme des apprenties",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv13",
+      "run": 1,
+      "status": 200,
+      "ms": 22558,
+      "analysis": {
+        "score": 59,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Expérience en encadrement pédagogique mentionnée explicitement",
+          "Volume de charge de travail chiffré pour le poste actuel"
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences et de la formation (ex. 'mars 2020 – aujourd'hui') pour répondre aux attentes suisses de précision chronologique.",
+          "Développer le poste en EHPAD avec au moins deux missions ou éléments de contexte, car il est actuellement vide de tout contenu.",
+          "Intégrer des mots-clés techniques infirmiers absents du CV (ex. : soins de plaies, gestion de la douleur, dossier patient informatisé, protocoles) pour passer les filtres de sélection.",
+          "Ajouter une mention du niveau d'allemand ou indiquer explicitement son absence, car la Suisse est majoritairement germanophone et les employeurs suisses y sont attentifs.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les employeurs attendent systématiquement des certificats de travail (Arbeitszeugnis) pour chaque poste ; mentionnez leur disponibilité. La résidence à Annemasse implique de préciser votre situation de frontalière (permis G) dès la candidature pour rassurer les recruteurs suisses. Les hôpitaux suisses romands valorisent fortement la connaissance du système de santé suisse (LAMal, DRG) ; une phrase sur votre intérêt ou votre connaissance de ce cadre peut faire la différence. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Infirmière diplômée d'État",
+          "médecine interne",
+          "EHPAD",
+          "encadrement des étudiants infirmiers",
+          "Diplôme d'État d'infirmier",
+          "français",
+          "anglais"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Deux tâches sont mentionnées pour le poste actuel ('Prise en charge de 12 patients par poste', 'Encadrement des étudiants infirmiers'), mais le poste en EHPAD ne comporte aucune description de missions ni de portée."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques Expérience, Formation et Langues sont clairement séparées et l'ordre antichronologique est respecté, ce qui rend le CV lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les entrées, ce qui ne permet pas de vérifier la continuité précise du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés 'médecine interne' et 'EHPAD' sont présents, mais aucun outil, protocole ou compétence technique infirmière spécifique n'est cité."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 2,
+            "max": 4,
+            "justification": "Le français est indiqué 'langue maternelle' et l'anglais au niveau A2 (CECR), mais l'allemand, indispensable sur le marché suisse romand-alémanique, est absent."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité ('74100 Annemasse (France)') sont présents et permettent de contacter la candidate sans ambiguïté."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "Les formulations sont claires et sans faute apparente, avec des tirets cohérents pour les tâches du poste actuel."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "reconnaissance",
+            "desc": "Reconnaissance du diplôme français (CRS / Croix-Rouge suisse) non mentionnée",
+            "detected": false
+          },
+          {
+            "id": "permis",
+            "desc": "Statut de travail en Suisse (permis G) non indiqué",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "encadrement",
+            "desc": "Encadrement d'étudiants, 12 patients par poste",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv14",
+      "run": 1,
+      "status": 200,
+      "ms": 20189,
+      "analysis": {
+        "score": 84,
+        "atsScore": 78,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultats quantifiés démontrant un impact direct sur la qualité de service",
+          "Profil trilingue adapté au marché suisse bilingue DE/FR",
+          "Expérience de direction d'équipe clairement dimensionnée",
+          "Outils CRM du secteur explicitement mentionnés"
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de chaque poste (ex. : 'janvier 2021 – aujourd'hui') afin de permettre aux recruteurs de vérifier la continuité du parcours, exigence courante en Suisse.",
+          "Préciser dans la section Formation la date d'obtention effective du brevet fédéral et l'organisme certificateur, car ce diplôme est un atout différenciant qui mérite d'être détaillé.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont systématiquement demandés lors du processus de recrutement : préparez-les pour chaque poste listé. Le brevet fédéral est un titre reconnu nationalement ; mentionner l'organisme émetteur renforce sa crédibilité. Pour le marché bernois bilingue, la mise en avant du profil FR/DE en tête de CV est un avantage concurrentiel réel. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Responsable service clientèle",
+          "Conseiller clientèle senior",
+          "Salesforce Service Cloud",
+          "Zendesk",
+          "MS Office",
+          "Brevet fédéral",
+          "Management de la clientèle",
+          "Télécommunications",
+          "Traitement des réclamations",
+          "Chat client",
+          "Trilingue"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 4,
+            "max": 4,
+            "justification": "Les expériences incluent des résultats mesurables concrets : taux de résolution au premier appel passé de 68 % à 81 %, équipe de 18 conseillers, 25 personnes formées."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais l'absence de mois dans les dates et la brièveté du profil limitent la note."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les dates ne comportent que des années sans mois, ce qui ne permet pas de vérifier l'absence de lacunes entre les postes."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 4,
+            "max": 4,
+            "justification": "Les outils métier clés sont explicitement listés : Salesforce Service Cloud, Zendesk, ainsi que l'intitulé Responsable service clientèle."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 4,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR ou la mention langue maternelle : Allemand (langue maternelle), français (C1), anglais (B2)."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents, mais l'e-mail en domaine example.invalid signale qu'il faudra vérifier l'adresse réelle."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et cohérente ; les bullet points sont concis, sans fautes apparentes dans le texte extrait."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "references",
+            "desc": "Pas de mention des certificats de travail / références",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "langues_niveaux",
+            "desc": "Langues avec niveaux CECR",
+            "recognised": true
+          },
+          {
+            "id": "resultat",
+            "desc": "Résultat chiffré (68 % → 81 %)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv14",
+      "run": 2,
+      "status": 200,
+      "ms": 22293,
+      "analysis": {
+        "score": 84,
+        "atsScore": 78,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultats quantifiés démontrant un impact direct sur la qualité de service",
+          "Expérience managériale d'une équipe bilingue de taille significative",
+          "Profil trilingue avec niveaux certifiés, atout majeur sur le marché suisse",
+          "Outils CRM du secteur explicitement mentionnés"
+        ],
+        "improvements": [
+          "Ajouter les mois de début et de fin pour chaque poste (ex. 'janvier 2021 – aujourd'hui') : les recruteurs suisses et les ATS attendent des dates complètes pour évaluer la durée exacte des expériences.",
+          "Enrichir le poste chez Exemple Services AG avec au moins un résultat chiffré ou un indicateur de portée, car la section se limite actuellement à une liste de tâches sans volume ni résultat mesurable.",
+          "Ajouter une ligne 'Références et certificats de travail disponibles sur demande' en bas du CV, conformément à l'usage suisse standard."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) ont un poids important : mentionner leur disponibilité est attendu. Le brevet fédéral est un titre reconnu nationalement ; il peut être valorisé en précisant l'organisme certificateur. Pour le marché bernois bilingue DE/FR, le profil linguistique est un atout différenciateur à mettre en avant dès le titre ou le profil. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Responsable service clientèle",
+          "Conseiller clientèle senior",
+          "Salesforce Service Cloud",
+          "Zendesk",
+          "Brevet fédéral de spécialiste en management de la clientèle",
+          "CFC d'employé de commerce",
+          "Télécommunications",
+          "Chat client",
+          "Taux de résolution au premier appel",
+          "MS Office",
+          "Français C1",
+          "Anglais B2"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 4,
+            "max": 4,
+            "justification": "Les expériences incluent des résultats chiffrés concrets et une portée managériale claire, notamment 'Taux de résolution au premier appel passé de 68 % à 81 %' et la direction d'une équipe de 18 conseillers."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais l'absence de mois dans les dates et la brièveté de certaines sections limitent la note."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais aucun mois n'est précisé, ce qui est insuffisant selon les standards suisses, et '2021 - aujourd'hui' ne donne pas de mois de début."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 4,
+            "max": 4,
+            "justification": "Les outils métier clés sont explicitement listés ('Salesforce Service Cloud, Zendesk') et les intitulés de poste correspondent précisément au domaine visé."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 4,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR ou la mention 'langue maternelle', ce qui est exemplaire : 'Allemand (langue maternelle), français (C1), anglais (B2)'."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents, mais l'e-mail en domaine 'example.invalid' signale un contact fictif ; dans un CV réel, un e-mail professionnel valide est indispensable."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et les formulations sont concises, mais l'usage systématique de tirets sans verbe conjugué reste une convention acceptable en CV suisse."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "references",
+            "desc": "Pas de mention des certificats de travail / références",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "langues_niveaux",
+            "desc": "Langues avec niveaux CECR",
+            "recognised": true
+          },
+          {
+            "id": "resultat",
+            "desc": "Résultat chiffré (68 % → 81 %)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [
+          "Français C1",
+          "Anglais B2"
+        ],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv14",
+      "run": 3,
+      "status": 200,
+      "ms": 20354,
+      "analysis": {
+        "score": 84,
+        "atsScore": 78,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultats quantifiés démontrant un impact direct sur la performance du service",
+          "Expérience de management d'équipe bilingue clairement documentée",
+          "Maîtrise d'outils CRM de référence dans le secteur",
+          "Profil trilingue adapté au marché suisse romand et alémanique"
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences (ex. : 'janvier 2021 – aujourd'hui') afin de permettre aux recruteurs de vérifier la continuité du parcours, exigence courante en Suisse.",
+          "Enrichir le poste chez Exemple Services AG avec au moins un résultat ou un indicateur chiffré, car la rubrique se limite actuellement à une liste de tâches sans portée mesurable.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', attendue par les employeurs suisses."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont des documents clés : préparez-les pour chaque poste. Le brevet fédéral est un titre reconnu nationalement ; mentionner l'organisme certificateur renforcerait sa crédibilité. Pour le marché bernois bilingue, le profil FR/DE est un atout différenciateur à valoriser dès l'objet de la candidature. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Responsable service clientèle",
+          "Conseiller clientèle senior",
+          "Salesforce Service Cloud",
+          "Zendesk",
+          "Management de la clientèle",
+          "Brevet fédéral",
+          "Télécommunications",
+          "Taux de résolution au premier appel",
+          "Chat client",
+          "Traitement des réclamations",
+          "Trilingue"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 4,
+            "max": 4,
+            "justification": "Les expériences sont illustrées par des résultats mesurables concrets, notamment le taux de résolution au premier appel passé de 68 % à 81 % et la direction d'une équipe de 18 conseillers."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais l'absence de mois dans les dates et la brièveté du profil limitent la lisibilité."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais aucun mois n'est précisé, ce qui ne permet pas de vérifier l'absence de lacunes entre les postes."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 4,
+            "max": 4,
+            "justification": "Les outils métier clés sont explicitement nommés (Salesforce Service Cloud, Zendesk) et les intitulés de poste correspondent au secteur visé."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 4,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR précis ou la mention langue maternelle : Allemand (langue maternelle), français (C1), anglais (B2)."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents, mais l'absence d'un profil LinkedIn ou d'une URL professionnelle est une occasion manquée."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et cohérente avec des formulations orientées résultats, bien que les entrées soient très concises et parfois elliptiques."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "references",
+            "desc": "Pas de mention des certificats de travail / références",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "langues_niveaux",
+            "desc": "Langues avec niveaux CECR",
+            "recognised": true
+          },
+          {
+            "id": "resultat",
+            "desc": "Résultat chiffré (68 % → 81 %)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv15",
+      "run": 1,
+      "status": 200,
+      "ms": 21040,
+      "analysis": {
+        "score": 65,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Résultat chiffré démontrant un impact opérationnel direct",
+          "Portée du poste clairement quantifiée",
+          "Certification électrique mentionnée explicitement",
+          "Statut frontalier clairement indiqué, rassurant pour un employeur suisse"
+        ],
+        "improvements": [
+          "L'allemand est absent : indiquer le niveau (même débutant) est indispensable pour un poste à Bâle, où cette langue est la langue de travail dominante.",
+          "Le poste 'Électromécanicien, Usine Fictive, Mulhouse (2014-2019)' ne contient aucune tâche ni résultat : ajouter au moins deux lignes décrivant les missions ou équipements traités.",
+          "Aucune rubrique Compétences techniques n'est présente : ajouter une section listant les outils, types d'équipements ou logiciels (ex. GMAO) maîtrisés pour améliorer la détection par les ATS.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les employeurs attendent systématiquement les certificats de travail (Arbeitszeugnis) pour chaque poste : préparez-les avant de postuler. Le CV suisse standard fait une à deux pages maximum. Pour la région de Bâle, une connaissance même partielle de l'allemand est un critère de sélection fréquent et doit figurer explicitement. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Technicien de maintenance",
+          "Électromécanicien",
+          "Maintenance préventive",
+          "Habilitation électrique BR",
+          "BTS Maintenance des systèmes",
+          "Lignes de production",
+          "Permis G"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel inclut une réalisation chiffrée concrète (réduction des arrêts non planifiés de 22 % en 2023) et une portée précise (30 lignes de production), mais le poste précédent reste sans aucun détail."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques Expérience, Formation et Langues sont clairement séparées et l'ordre antichronologique est respecté, mais l'absence de rubrique Compétences techniques limite la lisibilité des savoir-faire."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais aucun mois n'est précisé, ce qui ne permet pas de vérifier la continuité exacte du parcours ni la durée précise de chaque poste."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés 'Technicien de maintenance' et 'Électromécanicien' sont présents, ainsi que 'habilitation électrique BR', mais les outils, logiciels de GMAO ou types d'équipements sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 2,
+            "max": 4,
+            "justification": "Le français est indiqué comme langue maternelle et l'anglais au niveau B1 (CECR), mais l'allemand, indispensable pour travailler à Bâle, n'est pas mentionné."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail, localité et permis G sont présents, couvrant les informations essentielles pour un candidat frontalier travaillant en Suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "Les formulations sont claires et concises, sans faute apparente, avec un style sobre adapté à un CV technique."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "allemand",
+            "desc": "Travaille à Bâle mais aucune mention de l'allemand",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "permis_g",
+            "desc": "Permis G indiqué",
+            "recognised": false
+          },
+          {
+            "id": "resultat",
+            "desc": "Résultat chiffré (−22 % d'arrêts)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv16",
+      "run": 1,
+      "status": 200,
+      "ms": 18976,
+      "analysis": {
+        "score": 65,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Maîtrise d'outils logiciels spécifiques au génie civil suisse",
+          "Expérience en cours en Suisse dans un bureau d'ingénieurs",
+          "Niveau de français adapté au marché romand",
+          "Formation en génie civil avec reconnaissance mentionnée"
+        ],
+        "improvements": [
+          "Enrichir les tâches listées sous chaque poste avec des éléments de portée ou de contexte (type d'ouvrages, phases de projet, responsabilités concrètes) pour dépasser le niveau d'une simple liste de tâches.",
+          "Ajouter en bas du CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les employeurs attendent souvent les certificats de travail (Arbeitszeugnis) pour chaque poste : les préparer à l'avance est un avantage. La connaissance des normes SIA est un atout distinctif à mettre en avant dans la lettre de motivation. Le marché romand valorise la maîtrise du français écrit professionnel, notamment pour la rédaction de rapports techniques. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "ingénieure civile",
+          "génie civil",
+          "responsable de projets",
+          "suivi de chantiers",
+          "calculs de structures",
+          "conception d'ouvrages",
+          "AutoCAD",
+          "Revit",
+          "SIA Norm",
+          "Cubus",
+          "Master en génie civil",
+          "bureau d'ingénieurs"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Les expériences listent des tâches (responsable de projets, suivi de chantiers, calculs de structures) sans portée, volumes ni résultats mesurables."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, avec une longueur adaptée et un texte lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des outils métier concrets sont présents (AutoCAD, Revit, SIA Norm, Cubus) ainsi que des intitulés de poste pertinents pour le génie civil."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les niveaux CECR sont indiqués pour toutes les langues (C1, B2, A2) et la langue maternelle est précisée, ce qui est conforme aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "La localité (Sion), le téléphone et l'e-mail sont présents ; le permis B est mentionné, ce qui est pertinent au vu du parcours international."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes dans l'ensemble du document."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "taches_vagues",
+            "desc": "« Responsable de projets » sans taille, budget ni type d'ouvrage",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "permis",
+            "desc": "Permis B indiqué",
+            "recognised": false
+          },
+          {
+            "id": "normes",
+            "desc": "Connaissance des normes SIA",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv17",
+      "run": 1,
+      "status": 200,
+      "ms": 19677,
+      "analysis": {
+        "score": 71,
+        "atsScore": 69,
+        "hasPhoto": true,
+        "strongPoints": [
+          "Des volumes chiffrés concrets illustrent la portée du poste actuel.",
+          "Une réalisation structurante est mentionnée au-delà des tâches courantes.",
+          "Le brevet fédéral, diplôme de référence en RH suisse, est clairement indiqué."
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences (ex. : 'janvier 2020 – aujourd'hui') pour répondre aux attentes des recruteurs suisses et éviter tout doute sur la continuité du parcours.",
+          "Compléter le poste 'Assistante RH, Exemple Retail SA, Morges' avec au moins deux tâches ou résultats concrets, car cette expérience de quatre ans est actuellement vide.",
+          "Mentionner les outils ou logiciels RH utilisés (SIRH, logiciel de paie, ATS) dans les expériences, car ces mots-clés sont déterminants pour le tri automatisé des candidatures.",
+          "Remplacer le profil générique ('dynamique, motivée et polyvalente') par deux ou trois éléments factuels tirés du parcours, afin de le rendre immédiatement différenciant."
+        ],
+        "swissAdvice": "En Suisse romande, il est d'usage de conclure le CV par la mention 'Références et certificats de travail disponibles sur demande'. Le brevet fédéral est un signal fort sur le marché suisse : il peut être mis davantage en avant dans le profil. Un CV d'une page est la norme pour un profil de ce niveau d'expérience. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Spécialiste RH",
+          "Recrutement",
+          "Gestion administrative des salaires",
+          "Processus d'intégration",
+          "Assistante RH",
+          "Brevet fédéral de spécialiste RH",
+          "Bachelor en psychologie",
+          "Français",
+          "Anglais",
+          "Allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel mentionne des volumes concrets (40 à 60 collaborateurs recrutés par an, gestion de 250 collaborateurs) et une réalisation structurante (mise en place d'un processus d'intégration), mais le poste d'assistante RH chez Exemple Retail SA ne contient aucune tâche ni résultat."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le profil se limite à une phrase générique sans apport différenciant."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais aucun mois n'est précisé, ce qui ne permet pas de vérifier la continuité exacte du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Des mots-clés métier pertinents sont présents (recrutement, gestion administrative des salaires, processus d'intégration, brevet fédéral de spécialiste RH), mais les outils SIRH ou logiciels utilisés sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR clairs (B2 pour l'anglais, B1 pour l'allemand) et le français est qualifié de langue maternelle."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Lausanne) sont présents, ce qui est suffisant pour le marché suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, mais le profil (« dynamique, motivée et polyvalente ») reste très générique."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "profil_generique",
+            "desc": "Profil générique (« dynamique, motivée, polyvalente »)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (40-60 recrutements, 250 salaires)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv17",
+      "run": 2,
+      "status": 200,
+      "ms": 21702,
+      "analysis": {
+        "score": 68,
+        "atsScore": 60,
+        "hasPhoto": true,
+        "strongPoints": [
+          "Des volumes chiffrés concrets illustrent la portée du poste actuel",
+          "Une réalisation structurante est mentionnée explicitement",
+          "Le brevet fédéral, diplôme clé du marché suisse, est indiqué"
+        ],
+        "improvements": [
+          "Ajouter les mois à toutes les dates d'expérience et de formation (ex. : 'janvier 2020 – aujourd'hui') : les recruteurs suisses attendent une précision au mois pour évaluer la durée réelle des postes.",
+          "Étoffer le poste 'Assistante RH, Exemple Retail SA, Morges' avec au moins deux à trois tâches ou réalisations concrètes, car il est actuellement entièrement vide et représente quatre années de carrière.",
+          "Remplacer le profil générique ('dynamique, motivée et polyvalente') par deux à trois phrases ciblées mentionnant le domaine RH, le contexte suisse et une valeur ajoutée spécifique.",
+          "Ajouter les outils et logiciels RH utilisés (SIRH, logiciel de paie, ATS, etc.) pour améliorer la visibilité auprès des recruteurs et des systèmes de tri automatique."
+        ],
+        "swissAdvice": "En Suisse, il est d'usage de conclure le CV par la mention 'Références et certificats de travail disponibles sur demande'. Le brevet fédéral est un atout reconnu sur le marché suisse : il peut être mis davantage en valeur dans le profil. Pour un poste en Suisse romande avec un niveau B1 en allemand, préciser si des échanges professionnels en allemand ont déjà eu lieu peut rassurer les employeurs. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Spécialiste RH",
+          "Assistante RH",
+          "Recrutement",
+          "Gestion administrative des salaires",
+          "Processus d'intégration",
+          "Brevet fédéral de spécialiste RH",
+          "Bachelor en psychologie",
+          "Français",
+          "Anglais",
+          "Allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel mentionne des volumes concrets (40 à 60 collaborateurs recrutés par an, gestion de 250 collaborateurs) et une réalisation structurante (mise en place d'un processus d'intégration), mais le poste d'assistante RH chez Exemple Retail SA est entièrement vide de contenu."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le profil reste très générique et le poste d'assistante RH manque de tout détail."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences et formations, ce qui ne correspond pas aux standards suisses de précision."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés de poste et quelques domaines RH apparaissent (recrutement, salaires, intégration), mais les outils RH, logiciels ou compétences spécifiques au marché suisse sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR clairs (B2 pour l'anglais, B1 pour l'allemand) et le français est mentionné comme langue maternelle."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (1003 Lausanne) sont présents et suffisants pour le marché suisse romand."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, mais le profil (« dynamique, motivée et polyvalente ») reste très convenu et peu différenciant."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "profil_generique",
+            "desc": "Profil générique (« dynamique, motivée, polyvalente »)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (40-60 recrutements, 250 salaires)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv17",
+      "run": 3,
+      "status": 200,
+      "ms": 20585,
+      "analysis": {
+        "score": 68,
+        "atsScore": 60,
+        "hasPhoto": true,
+        "strongPoints": [
+          "Des volumes chiffrés concrets illustrent la portée du poste actuel.",
+          "Une réalisation structurante est mentionnée au-delà des tâches courantes.",
+          "Le brevet fédéral est un diplôme reconnu et pertinent pour le marché suisse."
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences et formations (ex. : 'janvier 2020 – aujourd'hui') pour permettre une lecture précise de la continuité du parcours.",
+          "Compléter le poste 'Assistante RH, Exemple Retail SA, Morges' avec au moins deux à trois tâches ou réalisations concrètes, car il est actuellement vide.",
+          "Remplacer le profil générique ('dynamique, motivée et polyvalente') par deux ou trois phrases ciblées mentionnant le domaine RH, le contexte suisse et une valeur ajoutée spécifique.",
+          "Ajouter les outils et logiciels utilisés (SIRH, logiciel de paie, ATS) qui sont des mots-clés recherchés par les recruteurs suisses en RH."
+        ],
+        "swissAdvice": "En Suisse romande, il est courant de conclure le CV par la mention 'Références et certificats de travail disponibles sur demande'. Le brevet fédéral est un atout fort à mettre en avant explicitement dans le profil. Pour un poste RH en Suisse alémanique, le niveau B1 en allemand pourrait être un frein : il vaut la peine de préciser si des cours sont en cours. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Spécialiste RH",
+          "Assistante RH",
+          "Recrutement",
+          "Gestion administrative des salaires",
+          "Processus d'intégration",
+          "Brevet fédéral de spécialiste RH",
+          "Bachelor en psychologie",
+          "Français",
+          "Anglais",
+          "Allemand"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel mentionne des volumes concrets (40 à 60 collaborateurs recrutés par an, gestion de 250 collaborateurs) et une réalisation structurante (mise en place d'un processus d'intégration), mais le poste d'assistante RH chez Exemple Retail SA ne contient aucune tâche ni résultat."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, mais le profil reste très générique et n'apporte pas de valeur différenciante."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences et formations, ce qui ne permet pas de vérifier la continuité précise du parcours."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés de poste et quelques domaines RH sont présents (recrutement, salaires, intégration), mais les outils SIRH, logiciels de paie ou compétences spécifiques au marché suisse sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont listées avec des niveaux CECR explicites (B2, B1) et la langue maternelle est identifiée, ce qui est conforme aux standards suisses."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le CV contient un numéro de téléphone, une adresse e-mail et une localité (1003 Lausanne), couvrant les éléments essentiels attendus."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, mais le profil (« dynamique, motivée et polyvalente ») reste très convenu et peu informatif."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "profil_generique",
+            "desc": "Profil générique (« dynamique, motivée, polyvalente »)",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "chiffres",
+            "desc": "Chiffres concrets (40-60 recrutements, 250 salaires)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv18",
+      "run": 1,
+      "status": 200,
+      "ms": 20479,
+      "analysis": {
+        "score": 65,
+        "atsScore": 69,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Maîtrise de logiciels comptables standards du marché suisse",
+          "Responsabilité étendue couvrant plusieurs entités",
+          "Diplôme fédéral reconnu en finance et comptabilité"
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences et formations (ex. : 'janvier 2019 – décembre 2025') pour répondre aux attentes de précision des recruteurs suisses.",
+          "Enrichir le poste d'aide-comptable chez Fiduciaire Exemple avec au moins deux tâches concrètes, car la rubrique est actuellement vide.",
+          "Ajouter une indication de portée ou de contexte aux tâches du poste chez Horlogerie Fictive SA (ex. : volume de transactions, type de clôtures) pour dépasser le niveau d'une simple liste de tâches.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', conforme à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse romande, les recruteurs en comptabilité accordent une grande importance aux certificats de travail (Arbeitszeugnis) : mentionnez leur disponibilité. Le brevet fédéral est un titre reconnu nationalement ; il peut être mis davantage en valeur dans le titre ou l'accroche. La maîtrise d'Abacus est un atout distinctif sur le marché suisse, notamment dans les PME et fiduciaires. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Comptable",
+          "Aide-comptable",
+          "Brevet fédéral de spécialiste en finance et comptabilité",
+          "CFC d'employé de commerce",
+          "Abacus",
+          "SAP FI",
+          "Excel avancé",
+          "Bouclements",
+          "TVA",
+          "Déclarations TVA",
+          "Fiduciaire"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 2,
+            "max": 4,
+            "justification": "Les tâches sont listées (tenue de comptabilité, bouclements, TVA) mais sans portée chiffrée ni résultats mesurables, et le poste d'aide-comptable ne comporte aucune description."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et l'ordre antichronologique est respecté, avec une longueur adaptée et un texte lisible."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les expériences et formations, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 3,
+            "max": 4,
+            "justification": "Les outils métier clés sont explicitement mentionnés : Abacus, SAP FI, Excel avancé, ainsi que les intitulés de poste comptable et aide-comptable."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR clairs : français (langue maternelle), allemand (B2), anglais (B1)."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité (Neuchâtel) sont présents et suffisants pour le marché suisse."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire, les intitulés sont cohérents et aucune faute apparente n'est relevée dans le texte extrait."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "dates_sans_mois",
+            "desc": "Dates sans mois ; poste terminé en 2025 sans indication de la suite",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "brevet",
+            "desc": "Brevet fédéral",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv19",
+      "run": 1,
+      "status": 200,
+      "ms": 24564,
+      "analysis": {
+        "score": 68,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Réalisations quantifiées au poste actuel, démontrant un impact concret sur la performance.",
+          "Envergure managériale significative clairement exprimée.",
+          "Certification qualité sectorielle obtenue et maintenue, gage de rigueur.",
+          "Double formation professionnelle solide et cohérente avec le secteur."
+        ],
+        "improvements": [
+          "Ajouter les mois aux dates de toutes les expériences (ex. « janvier 2010 – aujourd'hui ») : les recruteurs suisses s'attendent à des dates précises pour évaluer les transitions.",
+          "Enrichir la rubrique 'mots-clés / compétences' ou les descriptions de poste avec des outils concrets utilisés (ERP, logiciels de planification, normes qualité complémentaires à IFS) pour améliorer la visibilité auprès des systèmes de tri automatique (ATS).",
+          "Réduire fortement le détail des postes 1986-1998 (Chef d'équipe et Ouvrier de production) : des tâches comme 'Chargement des camions' ou 'Nettoyage des installations' n'apportent pas de valeur pour un profil de Directeur de production et diluent l'impact du CV.",
+          "Ajouter en bas de CV la mention 'Références et certificats de travail disponibles sur demande', conformément à l'usage suisse."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) sont des documents clés : mentionner leur disponibilité rassure immédiatement le recruteur. Le marché agroalimentaire romand valorise fortement les certifications IFS et BRC ; les citer dans un titre ou un résumé de profil renforce la pertinence dès le premier regard. Un profil LinkedIn à jour est de plus en plus consulté par les recruteurs suisses avant même le premier contact. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "Directeur de production",
+          "Responsable de production",
+          "Agroalimentaire",
+          "IFS",
+          "Technologue en industrie laitière",
+          "CFC",
+          "Diplôme fédéral",
+          "Maître technologue",
+          "Chef d'équipe",
+          "Fromagerie",
+          "Laiterie",
+          "Allemand B2"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 3,
+            "max": 4,
+            "justification": "Le poste actuel présente des réalisations chiffrées convaincantes (3 sites, 140 collaborateurs, +15 % de productivité, certification IFS), mais les postes antérieurs à 1998 se limitent à des listes de tâches sans portée ni résultat."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires, l'ordre est antichronologique et la longueur est adaptée, bien que les postes anciens (1986-1998) soient détaillés de façon disproportionnée par rapport à leur pertinence."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Le parcours est continu et cohérent, mais aucune date ne comporte de mois, ce qui est attendu sur le marché suisse pour situer précisément les transitions."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Les intitulés de poste et la certification IFS sont présents, mais les outils de gestion de production, les normes qualité complémentaires et les compétences managériales explicites sont absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Le français est indiqué comme langue maternelle et l'allemand est nivelé B2, ce qui est pertinent pour un poste en Suisse romande avec interactions potentielles en Suisse alémanique."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 3,
+            "max": 4,
+            "justification": "Téléphone, e-mail et localité (Payerne) sont présents ; l'e-mail est clairement identifiable, mais un profil LinkedIn ou un lien professionnel est absent."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises, même si les puces des postes anciens manquent de dynamisme."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "debut_carriere",
+            "desc": "Postes de 1984-1998 trop détaillés par rapport à l'expérience récente",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "resultats",
+            "desc": "Résultats (IFS, +15 %, 140 collaborateurs)",
+            "recognised": true
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [
+          "Allemand B2"
+        ],
+        "photoEcho": true
+      }
+    },
+    {
+      "id": "cv20",
+      "run": 1,
+      "status": 200,
+      "ms": 21137,
+      "analysis": {
+        "score": 53,
+        "atsScore": 60,
+        "hasPhoto": false,
+        "strongPoints": [
+          "Expérience professionnelle en cours dans un cabinet juridique, cohérente avec la formation.",
+          "Maîtrise de trois langues avec niveaux certifiés, atout sur le marché suisse.",
+          "Participation à une compétition juridique internationale reconnue."
+        ],
+        "improvements": [
+          "Enrichir les descriptions de poste (Assistant juridique et stages) en ajoutant la portée des tâches : types de dossiers traités, volume de recherches, nature des notes rédigées — une liste de tâches sans contexte ne permet pas à un recruteur d'évaluer le niveau réel.",
+          "Remplacer l'adresse e-mail « lebogossdu74@example.invalid » par une adresse au format prénom.nom, nettement plus professionnelle pour un profil juridique.",
+          "Ajouter les mois aux dates de toutes les entrées (formation et expériences) : le marché suisse attend une chronologie précise au mois près.",
+          "Mentionner des domaines juridiques supplémentaires ou des outils utilisés (bases de données juridiques, logiciels de recherche) afin d'améliorer la visibilité du CV auprès des recruteurs et des systèmes de tri automatique."
+        ],
+        "swissAdvice": "En Suisse, les certificats de travail (Arbeitszeugnis) ont une valeur centrale : indiquer « Références et certificats de travail disponibles sur demande » en bas de CV est un usage courant. Pour un poste en droit des affaires à Genève, le niveau d'allemand B1 peut être un atout à valoriser explicitement selon les cantons visés. Le taux d'activité (20 %) est bien mentionné, ce qui est conforme aux attentes suisses. Photo, date de naissance et nationalité : ces informations sont facultatives en Suisse, les indiquer ou non reste votre choix.",
+        "keywords": [
+          "droit des affaires",
+          "assistant juridique",
+          "droit des contrats",
+          "recherches juridiques",
+          "service juridique",
+          "master en droit",
+          "bachelor en droit",
+          "moot court",
+          "anglais C1",
+          "allemand B1",
+          "Genève"
+        ],
+        "criteria": [
+          {
+            "key": "contenu",
+            "label": "Réalisations et portée des expériences",
+            "note": 1,
+            "max": 4,
+            "justification": "Les expériences listent uniquement des tâches génériques (« recherches juridiques en droit des contrats », « rédaction de notes internes ») sans portée, volume ni résultat mesurable."
+          },
+          {
+            "key": "structure",
+            "label": "Structure et lisibilité",
+            "note": 3,
+            "max": 4,
+            "justification": "Les rubriques sont claires et distinctes (Formation, Expérience, Langues, Divers), et le texte est lisible sans blocs mélangés."
+          },
+          {
+            "key": "chronologie",
+            "label": "Dates et cohérence du parcours",
+            "note": 2,
+            "max": 4,
+            "justification": "Les années sont indiquées mais les mois sont absents pour toutes les entrées, ce qui nuit à la précision attendue sur le marché suisse."
+          },
+          {
+            "key": "mots_cles",
+            "label": "Compétences et mots-clés du métier",
+            "note": 2,
+            "max": 4,
+            "justification": "Quelques termes métier sont présents (« droit des contrats », « assistant juridique », « service juridique ») mais les outils, logiciels ou domaines de spécialisation restent absents."
+          },
+          {
+            "key": "langues",
+            "label": "Langues et niveaux",
+            "note": 3,
+            "max": 4,
+            "justification": "Les trois langues sont indiquées avec des niveaux CECR ou la mention « langue maternelle » (français langue maternelle, anglais C1, allemand B1)."
+          },
+          {
+            "key": "coordonnees",
+            "label": "Coordonnées et informations utiles",
+            "note": 2,
+            "max": 4,
+            "justification": "Le téléphone, l'e-mail et la localité sont présents, mais l'adresse e-mail (« lebogossdu74@example.invalid ») n'est pas professionnelle."
+          },
+          {
+            "key": "redaction",
+            "label": "Orthographe et rédaction",
+            "note": 3,
+            "max": 4,
+            "justification": "La rédaction est claire et sans faute apparente, avec des formulations concises et cohérentes."
+          }
+        ],
+        "engineVersion": "v2"
+      },
+      "error": null,
+      "checks": {
+        "defects": [
+          {
+            "id": "email",
+            "desc": "Adresse e-mail non professionnelle",
+            "detected": true
+          }
+        ],
+        "qualities": [
+          {
+            "id": "formation",
+            "desc": "Parcours universitaire cohérent + emploi à temps partiel",
+            "recognised": false
+          }
+        ],
+        "forbidden": [],
+        "scoreOutOfBand": false,
+        "foreignNumbers": [],
+        "keywordsNotInCv": [
+          "anglais C1",
+          "allemand B1"
+        ],
+        "photoEcho": true
+      }
+    }
+  ]
+}

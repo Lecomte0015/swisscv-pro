@@ -109,6 +109,14 @@ export function installFakeNetwork(state) {
       const callNo = state.anthropicCalls;
       if (state.anthropicFail || (state.anthropicFailOn && state.anthropicFailOn(callNo))) return json({ error: 'surcharge simulée' }, 529);
       if (state.anthropicRaw !== undefined && state.anthropicRaw !== null) return json({ content: [{ text: state.anthropicRaw }], usage: { input_tokens: 10, output_tokens: 10 } });
+      // Analyse de CV (moteur v2) : réponse au format notation + points forts cités mot pour mot dans le CV reçu
+      let prompt = ''; try { prompt = JSON.parse(body).messages[0].content; } catch (e) { prompt = ''; }
+      const cvMatch = prompt.match(/<cv>\n([\s\S]*?)\n<\/cv>/);
+      if (cvMatch) {
+        const proof = cvMatch[1].split(/\s+/).slice(0, 4).join(' ');
+        const note = { note: 3, justification: 'simulé' };
+        return json({ content: [{ text: JSON.stringify({ criteria: { contenu: note, structure: note, chronologie: note, mots_cles: note, langues: note, coordonnees: note, redaction: note }, strongPoints: [{ point: 'Point fort simulé', preuve: proof }], improvements: ['Amélioration simulée'], swissAdvice: 'Conseil simulé.', keywords: cvMatch[1].split(/\s+/).filter(w => w.length > 3).slice(0, 3) }) }], usage: { input_tokens: 10, output_tokens: 10 } });
+      }
       return json({ content: [{ text: '{"score":70,"atsScore":70,"strongPoints":["a"],"improvements":["b"],"swissAdvice":"c","keywords":["x","y"],"matchScore":80,"strengths":[],"gaps":[],"recommendations":[],"verdict":"v","cv":{"firstName":"A","lastName":"B"},"letter":"Madame, Monsieur"}' }], usage: { input_tokens: 10, output_tokens: 10 } });
     }
     if (url === 'https://api.resend.com/emails/batch') {
