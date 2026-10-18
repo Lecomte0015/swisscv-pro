@@ -98,6 +98,10 @@
         <p class="sub">« Activé » = au moins 1 analyse de CV dans les 7 jours suivant l'inscription. « Payant » = a payé au moins une fois ou possède un abonnement Stripe actif. La source n'est enregistrée que pour les inscriptions faites depuis le 11.10.2026 ; les comptes plus anciens apparaissent en « inconnu ».</p>
         <div class="card" id="bySource"></div>
 
+        <h3>Parcours produit</h3>
+        <p class="sub">Suivi depuis le 18.10.2026, sans aucun contenu de CV. « Personnes » = comptes connectés ou visiteurs ayant accepté le bandeau ; les visites sans identifiant (bandeau pas encore accepté) ne sont comptées qu'en nombre d'événements. Rien n'est enregistré après un refus.</p>
+        <div class="card" id="productFunnel"></div>
+
         <h3>Tunnel de vente</h3>
         <p class="sub">Un clic sur « Choisir Premium » ou un paiement démarré n'est jamais compté comme un achat.</p>
         <div class="card" id="salesFunnel"></div>
@@ -152,6 +156,20 @@
             premium_cta_clicked: 'Clic « Choisir Premium / Pro »',
             checkout_started: 'Paiement démarré'
         };
+        const PRODUCT_STEPS = [
+            ['home_viewed', 'Accueil vu'],
+            ['home_cta_clicked', 'Clic vers l\'analyse / l\'inscription depuis l\'accueil'],
+            ['signup', 'Inscription'],
+            ['analysis_started', 'Analyse lancée (fichier choisi)'],
+            ['analysis_completed', 'Analyse réussie (serveur)'],
+            ['analysis_failed', 'Analyse échouée, crédit rendu (serveur)'],
+            ['results_viewed', 'Résultats lus (améliorations affichées à l\'écran)'],
+            ['locked_item_clicked', 'Clic sur un élément verrouillé'],
+            ['cv_downloaded', 'Téléchargement (PDF de l\'analyse / CV du générateur)'],
+            ['pricing_viewed', 'Page tarifs vue'],
+            ['checkout_started', 'Paiement démarré']
+        ];
+        const PLACE_LABELS = { hero: 'haut de page', nav: 'menu', footer: 'pied de page', features: 'fonctionnalités', pricing: 'tarifs', page: 'autre', strengths: 'points forts', improvements: 'améliorations', swiss_advice: 'conseils suisses', ats: 'score ATS', analysis_pdf: 'PDF de l\'analyse', cv_builder: 'générateur de CV' };
         const PACK_LABELS = {
             viewed: 'Page Pack vue',
             cta_clicked: 'Clic sur « Acheter »',
@@ -210,6 +228,7 @@
                 [pct(c.activation_rate), 'Activation (analyse sous 7 j)', c.activated + ' sur ' + c.signups],
                 [pct(c.repeat_rate), '2 analyses ou plus', c.repeat_users + ' sur ' + c.signups],
                 [pct(c.viewed_jobs_rate), 'Ont consulté des offres', 'suivi depuis le 11.10.2026'],
+                [pct(c.returned_7d_rate_of_activated), 'Revenus sous 7 jours', c.returned_7d + ' sur ' + c.activated + ' activés (entre J+1 et J+7 après la 1re analyse)'],
                 [pct(c.paying_rate), 'Conversion en client payant', c.paying + ' sur ' + c.signups + ' (cohorte)'],
                 [(s.premium_active + s.pro_active), 'Clients actifs Premium/Pro', s.premium_active + ' Premium · ' + s.pro_active + ' Pro'],
                 [s.mrr_list_price + ' CHF', 'MRR (tarif public)', 'avant remises'],
@@ -222,6 +241,19 @@
                 ['Source', 'Canal', 'Inscrits', 'Activés', 'Taux d\'activation', 'Payants'],
                 d.by_source.map(r => [esc(r.source), esc(r.medium || '—'), r.signups, r.activated, pct(ratio(r.activated, r.signups)), r.paying]),
                 'Aucune inscription sur la période.');
+
+            const productRows = [];
+            const pf = d.product_funnel || [];
+            PRODUCT_STEPS.forEach(([ev, label]) => {
+                const rows = pf.filter(r => r.event_type === ev);
+                const tot = (d.product_totals || []).find(r => r.event_type === ev) || {};
+                productRows.push(['<strong>' + esc(label) + '</strong>', tot.events || 0, tot.visitors || 0, tot.unidentified || 0]);
+                if (rows.length > 1 || (rows[0] && rows[0].place)) {
+                    rows.filter(r => r.place).forEach(r => productRows.push(['&nbsp;&nbsp;↳ ' + esc(PLACE_LABELS[r.place] || r.place), r.events, r.visitors, r.unidentified]));
+                }
+            });
+            document.getElementById('productFunnel').innerHTML = table(
+                ['Étape', 'Événements', 'Personnes', 'Sans identifiant'], productRows, '');
 
             const funnelRows = [];
             ['signup_page_viewed', 'pricing_viewed', 'premium_cta_clicked', 'checkout_started'].forEach(ev => {

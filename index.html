@@ -2091,6 +2091,22 @@
             update();
         })();
     </script>
+    <script>
+        // Mesure du parcours (lot 4) : visite de l'accueil et clics vers l'analyse ou l'inscription.
+        // Aucun contenu saisi : seulement le lieu du clic. Rien n'est envoyé après un refus de consentement (analytics.js).
+        (function () {
+            if (typeof window.swisscvTrack !== 'function') return;
+            window.swisscvTrack('home_viewed');
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest ? e.target.closest('a[href]') : null;
+                if (!a) return;
+                var href = a.getAttribute('href') || '';
+                if (!/(^|\/)(app|login|register|signup|cv-templates|job-search)(\.html)?([?#]|$)/.test(href)) return;
+                var place = a.closest('.hero') ? 'hero' : a.closest('nav, header') ? 'nav' : a.closest('footer') ? 'footer' : a.closest('.features') ? 'features' : a.closest('.pricing, #pricing') ? 'pricing' : 'page';
+                window.swisscvTrack('home_cta_clicked', null, place);
+            }, true);
+        })();
+    </script>
 </body>
 
 </html>

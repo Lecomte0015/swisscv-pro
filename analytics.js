@@ -119,8 +119,9 @@
         return id;
     }
 
-    // eventType : 'pricing_viewed' | 'premium_cta_clicked' | 'signup_page_viewed' ; plan : 'premium' | 'pro' (optionnel)
-    window.swisscvTrack = function (eventType, plan) {
+    // eventType : liste blanche côté serveur (POST /track) ; plan : 'premium' | 'pro' (optionnel) ;
+    // place : identifiant court du lieu du clic (lettres minuscules et _), jamais de contenu saisi par l'utilisateur
+    window.swisscvTrack = function (eventType, plan, place) {
         try {
             var consent = getConsent();
             if (consent === 'denied') return;
@@ -131,7 +132,7 @@
                 method: 'POST',
                 keepalive: true,
                 headers: headers,
-                body: JSON.stringify({ event_type: eventType, plan: plan || null, anon_id: consent === 'granted' ? getAnonId() : null })
+                body: JSON.stringify({ event_type: eventType, plan: plan || null, place: place || null, anon_id: consent === 'granted' ? getAnonId() : null })
             }).catch(function () { /* mesure non critique */ });
         } catch (e) { /* ignore */ }
     };

@@ -70,7 +70,7 @@ async function buildDb() {
     if (/^UPDATE users/i.test(stmt)) continue;
     try { await DB.prepare(stmt).run(); } catch (e) { if (!/duplicate column/i.test(String(e.message))) throw e; }
   }
-  for (const f of ['039_billing_idempotency.sql', '040_feedback_single_credit.sql', '041_rate_limits.sql', '042_marketing_campaigns.sql', '043_teams.sql', '044_candidates.sql']) {
+  for (const f of ['039_billing_idempotency.sql', '040_feedback_single_credit.sql', '041_rate_limits.sql', '042_marketing_campaigns.sql', '043_teams.sql', '044_candidates.sql', '045_analysis_engine_version.sql']) {
     for (const stmt of splitSql(fs.readFileSync(path.join(root, 'migrations', f), 'utf8'))) await DB.prepare(stmt).run();
   }
   return { mf, DB };

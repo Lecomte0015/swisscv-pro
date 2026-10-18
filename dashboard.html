@@ -1025,6 +1025,7 @@
                                     + '<div onclick="showAnalysisDetail(\'' + a.id + '\')" style="cursor:pointer;">'
                                     + '<div class="offer-title">' + (a.filename || 'CV analysé') + '</div>'
                                     + '<div class="offer-company">Analysé le ' + date + '</div>'
+                                    + (a.engineVersion ? '' : '<div style="font-size:12px;color:#888;margin-top:4px;" title="Depuis le 18.10.2026, le score est calculé à partir de 7 critères détaillés : les anciens scores ne sont pas directement comparables.">Ancienne méthode de calcul du score</div>')
                                     + '<div style="display:flex;gap:16px;margin:16px 0;">'
                                     + '<div style="flex:1;text-align:center;padding:12px;background:#F5F5F5;border-radius:8px;"><div style="font-size:24px;font-weight:700;color:#D50000;">' + (a.score||0) + '</div><div style="font-size:12px;color:#666;">Score CV</div></div>'
                                     + '<div style="flex:1;text-align:center;padding:12px;background:#F5F5F5;border-radius:8px;"><div style="font-size:24px;font-weight:700;color:#10b981;">' + (a.atsScore||0) + '</div><div style="font-size:12px;color:#666;">Score ATS</div></div>'
