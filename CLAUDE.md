@@ -192,7 +192,7 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Texte refusé avant débit si < 100 ou > 30 000 caractères ; CV entre balises `<cv>` ; température 0. Réponse : mêmes champs qu'avant + `criteria`, `engineVersion`, `analysisRuns` (détail affiché sous le score dans `app.html`).
 - Toute modification du prompt : relancer `node tests/quality/run-baseline.mjs --label=...` et comparer aux rapports de mesure.
 
-## Mesure du parcours — lot 4 (18.10.2026, à déployer : migration 045 AVANT le Worker)
+## Mesure du parcours — lot 4 (✅ déployé le 18.10.2026 : migration 045, Worker `86867d96-64c8-4398-8c8b-0f0a77498fe8` ; précédent `e8b17412-9329-4420-8765-80657431af50` ; Pages `48e7a762`)
 - Nouveaux événements navigateur (liste blanche de `POST /track`, via `swisscvTrack(event, plan, place)` d'`analytics.js`, rien après un refus) : `home_viewed`, `home_cta_clicked` (lieu : hero/nav/footer/features/pricing/page), `analysis_started`, `results_viewed` (carte des améliorations visible à 50 %), `locked_item_clicked` (strengths/improvements/swiss_advice/ats), `cv_downloaded` (analysis_pdf). `place` = `[a-z_]{1,24}` ; dédoublonnage par jour, étape, plan et lieu. **Jamais de contenu de CV ni de nom de fichier.**
 - Événements serveur : `analysis_completed` (`engine`, `score`, `candidate`), `analysis_failed`, `cv_downloaded` (`place: cv_builder`, au moment de la facturation du téléchargement).
 - `cv_analyses.engine_version` (migration 045, NULL = ancien moteur) : l'historique du tableau de bord affiche « Ancienne méthode de calcul du score » pour les anciennes analyses.
@@ -200,7 +200,7 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Tests : `tests/billing/funnel.test.mjs`.
 
 ## Migrations appliquées
-001 → 044 appliquées en remote D1 (045 à appliquer avec le lot 4)
+001 → 045 appliquées en remote D1
 Dernière : `032_job_pack.sql` — colonnes `has_job_pack`/`job_pack_purchased_at`/`job_pack_reminder_sent` sur `users` + table `job_pack_events`
 
 ## Parcours inscription → première utilisation (revu août 2026)
