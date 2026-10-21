@@ -13,6 +13,7 @@
     <meta name="theme-color" content="#D50000">
     <link rel="stylesheet" href="/brand/brand.css">
     <script src="/public/js/candidate-context.js?v=20261017a"></script>
+    <script src="/public/js/photo-import.js?v=20261021a"></script>
     <meta property="og:image" content="https://swisscv-pro.ch/brand/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -788,7 +789,7 @@
                 <div class="photo-upload">
                     <div class="photo-preview" id="photoPreview"><svg class="icon" style="width:28px;height:28px;color:#ccc;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></div>
                     <div>
-                        <input type="file" id="photoInput" accept="image/*" style="display:none;">
+                        <input type="file" id="photoInput" accept="image/*,.heic,.heif" style="display:none;">
                         <button class="btn-ghost" onclick="document.getElementById('photoInput').click()">Ajouter une photo</button>
                         <div style="font-size:11px;color:var(--gray-600);margin-top:6px;">Optionnel — recommandé pour le marché suisse</div>
                     </div>
@@ -1111,16 +1112,22 @@
         el.addEventListener('input', function () { cvData[key] = el.value; renderPreview(); renderStepsNav(); });
     });
 
+    // Photo convertie en JPEG 800 px (HEIC d'iPhone compris) : voir public/js/photo-import.js
     document.getElementById('photoInput').addEventListener('change', function (e) {
         const file = e.target.files[0];
+        e.target.value = '';
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (ev) {
-            cvData.photo = ev.target.result;
-            document.getElementById('photoPreview').innerHTML = '<img src="' + ev.target.result + '">';
+        const preview = document.getElementById('photoPreview');
+        const before = preview.innerHTML;
+        preview.innerHTML = '<span style="font-size:11px;color:#888;">…</span>';
+        swisscvReadPhoto(file).then(function (dataUrl) {
+            cvData.photo = dataUrl;
+            preview.innerHTML = '<img src="' + dataUrl + '">';
             renderPreview();
-        };
-        reader.readAsDataURL(file);
+        }).catch(function (err) {
+            preview.innerHTML = before;
+            (function (err) { if (typeof showError === 'function') showError(err.message, 'Photo non prise en charge'); else alert(err.message); })(err);
+        });
     });
 
     // ============================================
