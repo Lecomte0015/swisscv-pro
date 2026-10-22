@@ -289,6 +289,7 @@
             <div class="chart-card">
                 <h3>Répartition Plans</h3>
                 <canvas id="plansChart"></canvas>
+                <p id="plansNote" style="margin:12px 0 0;font-size:13px;color:#6b7280;line-height:1.4;"></p>
             </div>
         </div>
 
@@ -407,16 +408,30 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Free', 'Premium', 'Pro'],
+                    // Une recharge de crédits ou le Pack ne change pas le plan : ces comptes sont des « Free » qui ont acheté
+                    labels: ['Free', 'Free + recharge crédits', 'Free + Pack', 'Premium', 'Pro'],
                     datasets: [{
-                        data: [stats.free_users || 0, stats.premium_users || 0, stats.pro_users || 0],
-                        backgroundColor: ['#e5e7eb', '#f59e0b', '#667eea']
+                        data: [
+                            Math.max(0, (stats.free_users || 0) - (stats.free_credit_buyers || 0) - (stats.free_pack_buyers || 0)),
+                            stats.free_credit_buyers || 0,
+                            stats.free_pack_buyers || 0,
+                            stats.premium_users || 0,
+                            stats.pro_users || 0
+                        ],
+                        backgroundColor: ['#e5e7eb', '#D50000', '#10b981', '#f59e0b', '#667eea']
                     }]
                 },
                 options: {
                     responsive: true
                 }
             });
+            const note = document.getElementById('plansNote');
+            if (note) {
+                const buyers = stats.credit_buyers_all_plans || 0;
+                note.textContent = buyers
+                    ? 'Recharges de crédits : ' + buyers + ' client' + (buyers > 1 ? 's' : '') + ' (tous plans), ' + (stats.credit_purchases || 0) + ' achat' + ((stats.credit_purchases || 0) > 1 ? 's' : '') + ', ' + (stats.credits_sold || 0) + ' crédits vendus.'
+                    : 'Aucune recharge de crédits pour le moment.';
+            }
         }
 
         // Activité récente (vraies données)

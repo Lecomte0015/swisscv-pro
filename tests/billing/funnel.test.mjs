@@ -112,3 +112,23 @@ test('[MESURE] retour sous 7 jours : seul le compte revenu un autre jour est com
   assert.equal(r.data.cohort.activated, 2, 'les deux ont analysé 2 jours après l\'inscription');
   assert.equal(r.data.cohort.returned_7d, 1);
 });
+
+test('[TABLEAU DE BORD] répartition des plans : recharges de crédits et Pack comptés à part dans le plan gratuit', async () => {
+  await t.seedUser({ id: 'rp_free_only', email: 'rp1@test.invalid' });
+  await t.seedUser({ id: 'rp_free_credits', email: 'rp2@test.invalid' });
+  await t.seedUser({ id: 'rp_free_pack', email: 'rp3@test.invalid', pack: true });
+  await t.seedUser({ id: 'rp_premium_credits', email: 'rp4@test.invalid', tier: 'premium' });
+  const buy = (id, u) => t.DB.prepare("INSERT INTO credit_transactions (id, user_id, action_type, credits_used, credits_before, credits_after, created_at) VALUES (?, ?, 'credit_purchase', -5, 0, 5, unixepoch())").bind(id, u).run();
+  await buy('rp_t1', 'rp_free_credits');
+  await buy('rp_t2', 'rp_free_credits');
+  await buy('rp_t3', 'rp_premium_credits');
+  const before = await t.call('GET', '/admin/stats', { token: adminTok });
+  assert.equal(before.status, 200, JSON.stringify(before.data));
+  const s = before.data.stats;
+  assert.equal(s.free_credit_buyers, 1, 'un compte gratuit qui a acheté 2 recharges compte une fois');
+  assert.equal(s.free_pack_buyers, 1);
+  assert.equal(s.credit_buyers_all_plans, 2, 'le Premium qui a acheté une recharge compte dans le total tous plans');
+  assert.equal(s.credit_purchases, 3);
+  assert.equal(s.credits_sold, 15);
+  assert.ok(s.free_users >= s.free_credit_buyers + s.free_pack_buyers);
+});
