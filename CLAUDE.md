@@ -204,7 +204,7 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Permis « Non applicable » : n'apparaît plus sur le CV (`getPermitObj()` et équivalents dans apply/bulk-apply).
 - Tableau de bord admin, carte « Répartition Plans » : Free / Free + recharge crédits / Free + Pack / Premium / Pro (`/admin/stats` : `free_credit_buyers`, `free_pack_buyers`, `credit_buyers_all_plans`, `credit_purchases`, `credits_sold` ; recharges lues dans `credit_transactions.action_type = 'credit_purchase'`). Compte tous les comptes, internes compris.
 
-## Résultats d'analyse complets pour les acheteurs (décision du 22.10.2026, option 1)
+## Résultats d'analyse complets pour les acheteurs (décision du 22.10.2026, option 1 — ✅ déployé : Worker `e13cb6c5-9330-4bf1-81be-00a8c5e90400` ; précédent `fb0be52a-a81e-44ce-a078-ccfab99f1d85` ; Pages `9babd9c2`)
 - `hasFullResults(env, user)` (index.js) : Premium/Pro, Pack (`has_job_pack`), tout compte ayant au moins une `credit_transactions.action_type = 'credit_purchase'`, membre d'une équipe Pro active. Exposé en `full_results` (connexion, confirmation d'e-mail, `/auth/me`) et `fullResults` (réponse d'analyse, `/analyses/history`).
 - `app.html` (`displayResults`) et `dashboard.html` (détail de l'historique) : le CONTENU (tous les points forts/améliorations, conseils suisses, mots-clés, détail ATS) dépend de `fullResults` ; les bannières « Passer à Premium » et le rappel du Pack dépendent toujours du plan (`isPremium`).
 - Page Crédits : la recharge mentionne que les analyses s'affichent en entier dès le premier achat. Tests : `tests/billing/funnel.test.mjs`.
