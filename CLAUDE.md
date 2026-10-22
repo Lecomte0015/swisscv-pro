@@ -199,6 +199,11 @@ Pages : Dashboard, Utilisateurs, Témoignages, Analytics, Support, Logs, Emails,
 - Admin Marketing : section « Parcours produit » (`product_totals` = vrai total par étape, `product_funnel` = détail par lieu) + indicateur « Revenus sous 7 jours » (analyse ou événement entre J+1 et J+7 après la 1re analyse, rapporté aux activés).
 - Tests : `tests/billing/funnel.test.mjs`.
 
+## Corrections du 21-22.10.2026 (Pages `0d4d0742` puis `7b6c629d`, Worker `fb0be52a-a81e-44ce-a078-ccfab99f1d85` ; précédent `86867d96-64c8-4398-8c8b-0f0a77498fe8`)
+- Photos du CV (générateur, candidature 1 clic, en masse) : `public/js/photo-import.js` convertit toute photo en JPEG 800 px dans le navigateur ; HEIC décodé par `public/js/vendor/heic-to-1.6.6.js` (LGPL-3.0) puis `heic2any-0.0.4` en secours, chargés seulement pour un HEIC. Raison des échecs dans la console (`[photo]`).
+- Permis « Non applicable » : n'apparaît plus sur le CV (`getPermitObj()` et équivalents dans apply/bulk-apply).
+- Tableau de bord admin, carte « Répartition Plans » : Free / Free + recharge crédits / Free + Pack / Premium / Pro (`/admin/stats` : `free_credit_buyers`, `free_pack_buyers`, `credit_buyers_all_plans`, `credit_purchases`, `credits_sold` ; recharges lues dans `credit_transactions.action_type = 'credit_purchase'`). Compte tous les comptes, internes compris.
+
 ## Migrations appliquées
 001 → 045 appliquées en remote D1
 Dernière : `032_job_pack.sql` — colonnes `has_job_pack`/`job_pack_purchased_at`/`job_pack_reminder_sent` sur `users` + table `job_pack_events`

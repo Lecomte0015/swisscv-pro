@@ -28,11 +28,11 @@ const musicVolume = (f: number) => {
   return 0.85 - duck * 0.55;
 };
 
-const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
-const ease = Easing.bezier(0.16, 1, 0.3, 1);
-const easeIn = Easing.bezier(0.7, 0, 0.84, 0);
+export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
+export const ease = Easing.bezier(0.16, 1, 0.3, 1);
+export const easeIn = Easing.bezier(0.7, 0, 0.84, 0);
 
-const useLayout = () => {
+export const useLayout = () => {
   const {width: W, height: H} = useVideoConfig();
   const u = Math.min(W, H) / 1080;
   const portrait = H > W * 1.2;
@@ -43,7 +43,7 @@ const useLayout = () => {
 
 /* ---------- Primitives ---------- */
 
-const CrossMark: React.FC<{size: number; draw?: number; bg?: string; fg?: string; radius?: number}> = ({size, draw = 1, bg = C.red, fg = C.white, radius = 0.22}) => {
+export const CrossMark: React.FC<{size: number; draw?: number; bg?: string; fg?: string; radius?: number}> = ({size, draw = 1, bg = C.red, fg = C.white, radius = 0.22}) => {
   const bar = size * 0.2;
   const len = size * 0.62 * draw;
   return (
@@ -55,7 +55,7 @@ const CrossMark: React.FC<{size: number; draw?: number; bg?: string; fg?: string
 };
 
 // Word-by-word masked reveal
-const Words: React.FC<{text: string; delay?: number; size: number; color?: string; red?: number[]; weight?: number; stagger?: number; align?: 'left' | 'center'; underline?: number; lh?: number}> = ({text, delay = 0, size, color = C.dark, red = [], weight = 800, stagger = 3, align = 'left', underline, lh = 1.02}) => {
+export const Words: React.FC<{text: string; delay?: number; size: number; color?: string; red?: number[]; weight?: number; stagger?: number; align?: 'left' | 'center'; underline?: number; lh?: number}> = ({text, delay = 0, size, color = C.dark, red = [], weight = 800, stagger = 3, align = 'left', underline, lh = 1.02}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const words = text.split(' ');
@@ -76,7 +76,7 @@ const Words: React.FC<{text: string; delay?: number; size: number; color?: strin
   );
 };
 
-const Kicker: React.FC<{text: string; delay?: number; size: number; color?: string}> = ({text, delay = 0, size, color = C.red}) => {
+export const Kicker: React.FC<{text: string; delay?: number; size: number; color?: string}> = ({text, delay = 0, size, color = C.red}) => {
   const f = useCurrentFrame();
   const p = interpolate(f - delay, [0, 14], [0, 1], {...clamp, easing: ease});
   return (
@@ -87,7 +87,7 @@ const Kicker: React.FC<{text: string; delay?: number; size: number; color?: stri
   );
 };
 
-const Browser: React.FC<{width: number; src: string; aspect?: number; position?: string; children?: React.ReactNode; from?: number}> = ({width, src, aspect = 1.6, position = 'top center', children, from = 0}) => {
+export const Browser: React.FC<{width: number; src: string; aspect?: number; position?: string; children?: React.ReactNode; from?: number}> = ({width, src, aspect = 1.6, position = 'top center', children, from = 0}) => {
   const bar = width * 0.034;
   return (
     <div style={{width, borderRadius: width * 0.014, overflow: 'hidden', background: C.white, boxShadow: '0 ' + width * 0.04 + 'px ' + width * 0.09 + 'px rgba(13,13,13,0.35), 0 0 0 1px rgba(0,0,0,0.06)', position: 'relative'}}>
@@ -113,7 +113,7 @@ const Wipe: React.FC<{at: number; dur?: number}> = ({at, dur = 12}) => {
   return <AbsoluteFill style={{background: C.red, transform: 'translateX(' + p * 100 + '%) skewX(-18deg)', zIndex: 5}} />;
 };
 
-const SwissGrid: React.FC<{color?: string; opacity?: number; drift?: number}> = ({color = C.dark, opacity = 0.06, drift = 0}) => {
+export const SwissGrid: React.FC<{color?: string; opacity?: number; drift?: number}> = ({color = C.dark, opacity = 0.06, drift = 0}) => {
   const {u} = useLayout();
   const s = 90 * u;
   return (

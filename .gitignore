@@ -41,3 +41,7 @@ wrangler.staging.toml
 videos/
 marketing/**/*.mp4
 marketing/**/*.wav
+
+# Détourage vidéo local (modèle RobustVideoMatting + environnement Python)
+marketing/remotion/.rvm/
+marketing/remotion/.venv-matting/

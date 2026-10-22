@@ -3,6 +3,7 @@ import {Composition, Still} from 'remotion';
 import {Promo, TOTAL} from './Promo';
 import * as K from './Kit';
 import * as S from './Site';
+import {Talk, TALK_TOTAL} from './Talk';
 
 const POSTS: [string, React.FC][] = [
   ['P01-lancement', K.P01Launch], ['P02-6-secondes', K.P02Seconds], ['P03-5-regles', K.P03Rules], ['P04-ats', K.P04Ats],
@@ -16,6 +17,10 @@ export const Root: React.FC = () => (
     <Composition id="Portrait" component={Promo} durationInFrames={TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Square" component={Promo} durationInFrames={TOTAL} fps={30} width={1080} height={1080} />
     <Composition id="Feed45" component={Promo} durationInFrames={TOTAL} fps={30} width={1080} height={1350} />
+    <Composition id="TalkPortrait" component={Talk} durationInFrames={TALK_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="TalkFeed45" component={Talk} durationInFrames={TALK_TOTAL} fps={30} width={1080} height={1350} />
+    <Composition id="TalkSquare" component={Talk} durationInFrames={TALK_TOTAL} fps={30} width={1080} height={1080} />
+    <Composition id="TalkLandscape" component={Talk} durationInFrames={TALK_TOTAL} fps={30} width={1920} height={1080} />
     <Still id="profil-rouge" component={K.ProfileRed} width={1080} height={1080} />
     <Still id="profil-blanc" component={K.ProfileWhite} width={1080} height={1080} />
     <Still id="couverture" component={K.Cover} width={1640} height={624} />
