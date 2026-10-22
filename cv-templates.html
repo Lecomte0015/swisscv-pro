@@ -1330,7 +1330,11 @@
 
     // Petits éléments réutilisables, communs à tous les modèles
     function getFullName() { return (cvData.firstName || 'Prénom') + '<br>' + (cvData.lastName || 'Nom'); }
-    function getPermitObj() { return PERMIT_OPTIONS.find(function (p) { return p.id === cvData.permit; }); }
+    // « Non applicable » = choix fait dans le formulaire (compte pour la complétude), mais rien n'apparaît sur le CV
+    function getPermitObj() {
+        if (!cvData.permit || cvData.permit === 'non_applicable') return null;
+        return PERMIT_OPTIONS.find(function (p) { return p.id === cvData.permit; }) || null;
+    }
     function getAllSkills() { return ['technical', 'tools', 'soft', 'other'].reduce(function (acc, k) { return acc.concat(cvData.skills[k]); }, []); }
     function getAvailabilityLabel() {
         const labels = { immediate: 'Disponible immédiatement', '1mois': 'Disponible sous 1 mois', '2mois': 'Disponible sous 2 mois', '3mois': 'Disponible sous 3 mois' };

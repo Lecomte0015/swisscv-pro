@@ -884,7 +884,8 @@
   function buildGenevaExecutiveCV(cv) {
     const skills = ['technical', 'tools', 'soft', 'other'].reduce(function (acc, k) { return acc.concat((cv.skills && cv.skills[k]) || []); }, []);
     const fullName = esc(cv.firstName || 'Prénom') + '<br>' + esc(cv.lastName || 'Nom');
-    const permitObj = PERMIT_OPTIONS.find(function (p) { return p.id === cv.permit; });
+    // « Non applicable » : rien n'apparaît sur le CV
+    const permitObj = cv.permit && cv.permit !== 'non_applicable' ? PERMIT_OPTIONS.find(function (p) { return p.id === cv.permit; }) : null;
 
     const skillsHtml = skills.map(function (s) {
       return '<div class="skill-item">' + esc(s) + '</div>';
