@@ -132,3 +132,26 @@ test('[TABLEAU DE BORD] répartition des plans : recharges de crédits et Pack c
   assert.equal(s.credits_sold, 15);
   assert.ok(s.free_users >= s.free_credit_buyers + s.free_pack_buyers);
 });
+
+test('[RÉSULTATS COMPLETS] gratuit tronqué ; acheteur de crédits, Pack, Premium et membre d\'équipe : complets', async () => {
+  const CVX = 'Paul Résultats — magasinier expérimenté. '.repeat(10);
+  const check = async (id, opts, expected) => {
+    await t.seedUser({ id, email: id + '@test.invalid', balance: 5, ...opts });
+    const tok = await t.makeToken(id, id + '@test.invalid');
+    return { tok, id, expected };
+  };
+  const free = await check('fr_free', {}, false);
+  const buyer = await check('fr_buyer', {}, true);
+  await t.DB.prepare("INSERT INTO credit_transactions (id, user_id, action_type, credits_used, credits_before, credits_after, created_at) VALUES ('fr_t1', 'fr_buyer', 'credit_purchase', -5, 0, 5, unixepoch())").run();
+  const pack = await check('fr_pack', { pack: true }, true);
+  const prem = await check('fr_prem', { tier: 'premium' }, true);
+  for (const c of [free, buyer, pack, prem]) {
+    const me = await t.call('GET', '/auth/me', { token: c.tok });
+    assert.equal(me.data.user.full_results, c.expected, c.id + ' /auth/me');
+    const a = await t.call('POST', '/analyze-cv-text', { token: c.tok, body: { cvText: CVX } });
+    assert.equal(a.status, 200, JSON.stringify(a.data));
+    assert.equal(a.data.fullResults, c.expected, c.id + ' analyse');
+    const h = await t.call('GET', '/analyses/history', { token: c.tok });
+    assert.equal(h.data.fullResults, c.expected, c.id + ' historique');
+  }
+});
